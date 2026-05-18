@@ -1,0 +1,48 @@
+import React from 'react'
+import { CheckboxProp } from '../ui_interfaces'
+
+export default function CheckBox({ label, data, toggle, disabled = false }: CheckboxProp) {
+  return (
+    <div className='flex items-center text-sm'>
+      <div
+        className='relative flex h-5 w-5 flex-shrink-0 items-center justify-center
+          rounded-sm border border-gray-400 bg-white'
+      >
+        <input
+          type='checkbox'
+          checked={data}
+          onChange={toggle}
+          disabled={disabled}
+          className='checkbox absolute h-full w-full cursor-pointer opacity-0'
+        />
+        <div className='check-icon hidden rounded-sm bg-primary-500 text-white'>
+          <svg
+            className='icon icon-tabler icon-tabler-check'
+            xmlns='http://www.w3.org/2000/svg'
+            width={20}
+            height={20}
+            viewBox='0 0 24 24'
+            strokeWidth='1.5'
+            stroke='currentColor'
+            fill='none'
+            strokeLinecap='round'
+            strokeLinejoin='round'
+          >
+            <path
+              stroke='none'
+              d='M0 0h24v24H0z'
+            />
+            <path d='M5 12l5 5l10 -10' />
+          </svg>
+        </div>
+      </div>
+      <p className='ml-1 font-normal leading-4'>{label}</p>
+      {/* Code block ends */}
+      <style>
+        {`.checkbox:checked + .check-icon {
+                            display: flex;
+            }`}
+      </style>
+    </div>
+  )
+}

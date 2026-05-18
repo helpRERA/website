@@ -1,0 +1,422 @@
+@import '/node_modules/leaflet/dist/leaflet.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.Toastify__toast-container--bottom-center {
+  z-index: 999999 !important;
+}
+
+#nprogress .bar {
+  height: 0.4rem !important;
+  z-index: 99999 !important;
+}
+
+.tooltip {
+  @apply hidden;
+}
+
+.tooltip-parent {
+  @apply relative;
+}
+
+.tooltip-parent:hover .tooltip {
+  @apply block;
+}
+
+#map {
+  height: 500px;
+  margin: 0 0 1em 0;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.line-clamp {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp--two {
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp--one {
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp--three {
+  -webkit-line-clamp: 3;
+}
+
+line-clamp--five {
+  -webkit-line-clamp: 5;
+}
+
+.info2 {
+  padding: 6px 8px;
+  font: 14px/16px Arial;
+  background: rgba(229, 233, 236, 0.5);
+  border-radius: 5px;
+  color: black;
+  min-height: 50px;
+  z-index: 1 !important;
+}
+
+.info2 h4 {
+  font-family: Arial;
+  margin: 0 0 5px;
+  color: lightblue;
+}
+
+.leaflet-label {
+  background: none;
+  left: -22px;
+  border: none;
+  background-clip: none;
+}
+
+.leaflet-label:before {
+  border-right: 0px solid black;
+  border-right-color: inherit;
+  left: -10px;
+}
+
+.legend {
+  color: #555;
+  padding: 6px 8px;
+  font: 12px Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  background: white;
+  background: rgba(255, 255, 255, 0.8);
+  position: absolute;
+  bottom: 10vh;
+}
+
+.legend ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  clear: both;
+}
+
+.legend li {
+  display: inline-block;
+  width: 30px;
+  height: 22px;
+}
+
+.legend .min {
+  float: left;
+  padding-bottom: 5px;
+}
+
+.legend .max {
+  float: right;
+}
+
+.leaflet-container {
+  width: 100%;
+  background-color: #ffffff !important;
+  border: 0;
+}
+
+input[type='range'] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 100%;
+  outline: none;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  background-color: transparent;
+  pointer-events: none;
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  height: 5px;
+}
+
+input[type='range']::-moz-range-track {
+  -moz-appearance: none;
+  height: 5px;
+}
+
+input[type='range']::-ms-track {
+  appearance: none;
+  height: 5px;
+}
+
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 1rem;
+  width: 1rem;
+  background-color: var(--color-accent-dark);
+  cursor: pointer;
+  margin-top: -9px;
+  pointer-events: auto;
+  border-radius: 50%;
+}
+
+input[type='range']::-moz-range-thumb {
+  -webkit-appearance: none;
+  height: 1rem;
+  width: 1rem;
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: var(--color-accent-dark);
+  pointer-events: auto;
+}
+
+input[type='range']::-ms-thumb {
+  appearance: none;
+  height: 1rem;
+  width: 1rem;
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: var(--color-accent-dark);
+  pointer-events: auto;
+}
+
+input[type='range']:active::-webkit-slider-thumb {
+  background-color: #ffffff;
+  border: 3px solid var(--color-accent-dark);
+}
+
+@layer components {
+  .parallax {
+    /* The image used */
+    background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+      url('/imge/homebar_background.jpg');
+
+    /* Full height */
+    height: 100%;
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .login_background {
+    background-image: url('/imge/bg2.jpeg');
+  }
+
+  .dreg_background {
+    background-image: url('/imge/DeregisteredBackground.png');
+  }
+
+  .standard-label {
+    @apply mb-1 inline-block text-sm text-gray-700;
+  }
+
+  .error-text {
+    @apply bg-gray-200 text-sm text-red-500;
+  }
+
+  .standard-th {
+    @apply px-6 py-3  text-left font-semibold uppercase tracking-wider text-gray-700;
+  }
+
+  .standard-tr {
+    @apply border-b border-gray-800  text-sm leading-none text-gray-700;
+  }
+
+  .standard-td {
+    @apply max-w-xs break-words px-3 py-6;
+  }
+
+  .dashboard-tr {
+    @apply border-b border-gray-800  text-xs leading-none text-gray-700;
+  }
+
+  .dashboard-td {
+    @apply max-w-xs break-words px-3 py-3 text-center;
+  }
+
+  .bordered-tr {
+    @apply border-2 border-black;
+  }
+
+  .bordered-td {
+    @apply border-2 border-black py-2 text-center text-xs md:text-sm;
+  }
+
+  .login-background {
+    background: url('/login_background.jpg');
+  }
+
+  .spinner_svg {
+    animation: 2s linear infinite svg-animation;
+    max-width: 100px;
+  }
+
+  .nav-list {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 500ms ease-in;
+  }
+
+  .nav-item:hover .nav-list {
+    @apply visible opacity-100;
+  }
+
+  @keyframes svg-animation {
+    0% {
+      transform: rotateZ(0deg);
+    }
+
+    100% {
+      transform: rotateZ(360deg);
+    }
+  }
+
+  .spinner_circle {
+    animation: 1.4s ease-in-out infinite both circle-animation;
+    display: block;
+    fill: transparent;
+    stroke-linecap: round;
+    stroke-dasharray: 283;
+    stroke-dashoffset: 280;
+    stroke-width: 10px;
+    transform-origin: 50% 50%;
+  }
+
+  .modal {
+    position: fixed;
+    /* Stay in place */
+    z-index: 9999;
+    /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100vw;
+    /* Full width */
+    height: 100vh;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.8);
+    /* Black w/ opacity */
+  }
+
+  .container-square {
+    width: 100%;
+    padding-top: 100%;
+    /* 1:1 Aspect Ratio */
+    position: relative;
+    /* If you want text inside of it */
+    overflow: hidden;
+  }
+
+  .container-133 {
+    width: 100%;
+    padding-top: 133%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .container-75 {
+    width: 100%;
+    padding-top: 75%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  @keyframes circle-animation {
+    0%,
+    25% {
+      stroke-dashoffset: 280;
+      transform: rotate(0);
+    }
+
+    50%,
+    75% {
+      stroke-dashoffset: 75;
+      transform: rotate(45deg);
+    }
+
+    100% {
+      stroke-dashoffset: 280;
+      transform: rotate(360deg);
+    }
+  }
+}
+
+@layer base {
+  :root {
+    --color-header-dark: #585388;
+    --color-accent-light: #f5efef;
+    --color-accent-dark: #c7bda3;
+    --color-panel-dark: #857755;
+    --color-highlight-alert: #fbc3c3;
+    --color-highlight-light: #f6efdc;
+    --color-border-dark: #857755;
+    --color-button-base: #958a8a;
+    --color-button-muted: #d9d9d9;
+    --color-button-accent: #f2d387;
+    --color-addbutton-base: #f2d387;
+    --color-deletebutton: #958a8a;
+    --color-addbutton-base-hover: #ffe069;
+    --color-base-hover: #bbb4b4;
+    --color-muted-hover: #aeaeae;
+    --color-accent-hover: #c7bda3;
+    --color-light: #ffffff;
+    --color-dark: #857755;
+    --color-black: #000000;
+    --color-title-text: #635f5f;
+    --color-text-base: #000000;
+    --color-text-textbox: #958a8a;
+    --color-box-textbox: #ffffff;
+    --color-button-textbase: #ffffff;
+    --color-tab-accent: #c7bda3;
+    --color-tab-base: #f6efdc;
+    --color-card-yellow: #f6efdc;
+    --color-card--pink: #fbc3c3;
+    --color-card--progressbar: #93ab6d;
+    --color-dropdown: #b3c7a3;
+    --color-background: #f6f2f2;
+  }
+
+  html {
+    font-size: 16px;
+  }
+
+  span {
+    @apply text-sm;
+  }
+
+  .link {
+    @apply cursor-pointer font-bold text-blue-600 underline hover:text-blue-500;
+  }
+
+  body {
+    @apply break-words text-gray-800;
+  }
+
+  @font-face {
+    font-family: 'GeneralSans';
+    src: url('/fonts/GeneralSans-Regular.woff2');
+    font-style: normal;
+    font-weight: 400;
+  }
+  @font-face {
+    font-family: 'malayalam';
+    src: url('/fonts/malayalam.woff2');
+    font-style: normal;
+    font-weight: 400;
+  }
+  body {
+    font-family: 'GeneralSans', 'malayalam';
+  }
+
+  body {
+    @apply text-gray-800;
+  }
+}

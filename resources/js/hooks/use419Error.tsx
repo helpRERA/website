@@ -1,0 +1,21 @@
+import { usePage } from '@inertiajs/react'
+import { useEffect } from 'react'
+import { showError } from '../ui/alerts'
+
+const use419Error = (toast = true) => {
+  const errors = usePage().props.errors as Record<string, string>
+
+  useEffect(() => {
+    if (!toast) {
+      return
+    }
+    const keys = Object.keys(errors)
+    keys.forEach((key) => {
+      showError(errors[key])
+    })
+  }, [errors, toast])
+
+  return errors
+}
+
+export default use419Error
