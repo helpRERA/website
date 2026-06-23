@@ -19,6 +19,8 @@ class ViewBuilderPageController extends Controller
         $page = $resolve->getPage($routeName);
         $data = $resolveDataService->getData($page);
 
+
+
         return Inertia::render('UIEditor/OutputPage', [
             'page' => $page,
             'dependencies' => $data,
