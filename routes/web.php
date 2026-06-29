@@ -7,6 +7,7 @@ use App\Http\Controllers\AnnouncementListing\AnnouncementListingController;
 use App\Http\Controllers\Complaint\ComplaintController;
 use App\Http\Controllers\Complaint\ComplaintInfoController;
 use App\Http\Controllers\ContactUsController;
+use App\Http\Controllers\AgreementForSaleController;
 use App\Http\Controllers\Dashboard\DataDashboardController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DisplayPagesController;
@@ -69,6 +70,10 @@ Route::get('/agent-print-preview/{id}', [AgentListController::class, 'printPageR
 
 Route::get('/projects', [ProjectListController::class, 'index']);
 Route::get('/export-projects', [ProjectListController::class, 'exportExcel']);
+
+//agreement-for-sale
+
+Route::get('agreement-for-sale', [AgreementForSaleController::class, 'index']);
 
 //global-search
 Route::get('/search', [GlobalSearchController::class, 'index']);
