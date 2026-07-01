@@ -5,13 +5,17 @@ import { AgreementData } from '../../hooks/useAgreementData';
 interface SpanValProps {
   val: string | undefined;
   fallback?: string;
+  fieldKey?: string;
 }
 
-const SpanVal: React.FC<SpanValProps> = ({ val, fallback = '____________________' }) => {
+const SpanVal: React.FC<SpanValProps> = ({ val, fallback = '____________________', fieldKey }) => {
   const displayVal = val && val.trim() !== '' ? val : fallback;
   const isEmpty = !val || val.trim() === '';
   return (
-    <span className={`placeholder-field ${isEmpty ? 'empty' : ''}`}>
+    <span
+      className={`placeholder-field ${isEmpty ? 'empty' : ''}`}
+      data-field={fieldKey}
+    >
       {displayVal}
     </span>
   );
@@ -19,9 +23,11 @@ const SpanVal: React.FC<SpanValProps> = ({ val, fallback = '____________________
 
 interface DocumentPagesProps {
   data: AgreementData;
+  activeField?: string | null;
 }
 
 export default function DocumentPages({ data }: DocumentPagesProps) {
+  // activeField prop accepted but field highlighting is done via data-field + CSS in PreviewPanel
   const {
     dateDay, dateMonth, dateYear, executionPlace,
     promoterType, promoterCompany, promoterPartnership, promoterIndividual,
@@ -40,7 +46,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
     <div className="paper-container" id="preview-content">
       
       {/* PAGE 26 */}
-      <div className="paper-page" id="preview-section-0">
+      <div className="paper-page">
         <div className="page-number">26</div>
         <div className="page-content">
           <div className="legal-header">
@@ -50,7 +56,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           </div>
           
           <p>
-            This Agreement for Sale ("Agreement") executed on this <SpanVal val={dateDay} /> day of <SpanVal val={dateMonth} />, <SpanVal val={dateYear} /> at <SpanVal val={executionPlace} />,
+            This Agreement for Sale ("Agreement") executed on this <SpanVal val={dateDay} fieldKey="dateDay" /> day of <SpanVal val={dateMonth} fieldKey="dateMonth" />, <SpanVal val={dateYear} fieldKey="dateYear" /> at <SpanVal val={executionPlace} fieldKey="executionPlace" />,
           </p>
 
           <p style={{ textAlign: 'center', fontWeight: 'bold', margin: '1.5rem 0' }}>By and Between</p>
@@ -60,7 +66,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
             <div className="placeholder-block active">
               <p style={{ fontStyle: 'italic', fontWeight: 'bold', margin: '0 0 0.5rem 0' }}>[If the promoter is a company]</p>
               <p>
-                <SpanVal val={promoterCompany.name} /> (CIN No. <SpanVal val={promoterCompany.cin} />), a company incorporated under the provisions of the Companies Act, (Central Act 18 of 2015, 1956 or 2013, as the case may be), having its registered office at <SpanVal val={promoterCompany.registeredOffice} /> and its corporate office at <SpanVal val={promoterCompany.registeredOffice} /> (PAN <SpanVal val={promoterCompany.pan} />), represented by its authorized signatory <SpanVal val={promoterCompany.authorizedSignatory} /> (Aadhaar No. <SpanVal val={promoterCompany.signatoryAadhaar} />) authorized <i>vide</i> board resolution dated <SpanVal val={promoterCompany.boardResolutionDate} /> hereinafter referred to as the <b>"Promoter"</b> (which expression shall unless repugnant to the context or meaning thereof be deemed to mean and include its successor-in-interest, executors, administrators and permitted assignees);
+                <SpanVal val={promoterCompany.name} fieldKey="promoterCompany.name" /> (CIN No. <SpanVal val={promoterCompany.cin} fieldKey="promoterCompany.cin" />), a company incorporated under the provisions of the Companies Act, (Central Act 18 of 2015, 1956 or 2013, as the case may be), having its registered office at <SpanVal val={promoterCompany.registeredOffice} fieldKey="promoterCompany.registeredOffice" /> and its corporate office at <SpanVal val={promoterCompany.registeredOffice} fieldKey="promoterCompany.registeredOffice" /> (PAN <SpanVal val={promoterCompany.pan} fieldKey="promoterCompany.pan" />), represented by its authorized signatory <SpanVal val={promoterCompany.authorizedSignatory} fieldKey="promoterCompany.authorizedSignatory" /> (Aadhaar No. <SpanVal val={promoterCompany.signatoryAadhaar} fieldKey="promoterCompany.signatoryAadhaar" />) authorized <i>vide</i> board resolution dated <SpanVal val={promoterCompany.boardResolutionDate} fieldKey="promoterCompany.boardResolutionDate" /> hereinafter referred to as the <b>"Promoter"</b> (which expression shall unless repugnant to the context or meaning thereof be deemed to mean and include its successor-in-interest, executors, administrators and permitted assignees);
               </p>
             </div>
           )}
@@ -70,7 +76,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
             <div className="placeholder-block active">
               <p style={{ fontStyle: 'italic', fontWeight: 'bold', margin: '0 0 0.5rem 0' }}>[If the promoter is a Partnership firm]</p>
               <p>
-                <SpanVal val={promoterPartnership.name} />, a partnership firm registered under the Indian Partnership Act, 1932 (Central Act 12 of 1932) having its principal place of business at <SpanVal val={promoterPartnership.businessPlace} /> (PAN <SpanVal val={promoterPartnership.pan} />), represented by its authorized Partner <SpanVal val={promoterPartnership.authorizedPartner} /> (Aadhaar No. <SpanVal val={promoterPartnership.partnerAadhaar} />) authorized <i>vide</i> <SpanVal val={promoterPartnership.authorizedVide} />, hereinafter referred to as the <b>"Promoter"</b> (which expression shall unless repugnant to the context or meaning thereof be deemed to mean and include its successors-in-interest, executors, administrators and permitted assignees, including those of the respective partners);
+                <SpanVal val={promoterPartnership.name} fieldKey="promoterPartnership.name" />, a partnership firm registered under the Indian Partnership Act, 1932 (Central Act 12 of 1932) having its principal place of business at <SpanVal val={promoterPartnership.businessPlace} fieldKey="promoterPartnership.businessPlace" /> (PAN <SpanVal val={promoterPartnership.pan} fieldKey="promoterPartnership.pan" />), represented by its authorized Partner <SpanVal val={promoterPartnership.authorizedPartner} fieldKey="promoterPartnership.authorizedPartner" /> (Aadhaar No. <SpanVal val={promoterPartnership.partnerAadhaar} fieldKey="promoterPartnership.partnerAadhaar" />) authorized <i>vide</i> <SpanVal val={promoterPartnership.authorizedVide} fieldKey="promoterPartnership.authorizedVide" />, hereinafter referred to as the <b>"Promoter"</b> (which expression shall unless repugnant to the context or meaning thereof be deemed to mean and include its successors-in-interest, executors, administrators and permitted assignees, including those of the respective partners);
               </p>
             </div>
           )}
@@ -80,7 +86,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
             <div className="placeholder-block active">
               <p style={{ fontStyle: 'italic', fontWeight: 'bold', margin: '0 0 0.5rem 0' }}>[If the promoter is an Individual]</p>
               <p>
-                Mr./Ms. <SpanVal val={promoterIndividual.name} />, (Aadhaar No. <SpanVal val={promoterIndividual.aadhaar} />) {promoterIndividual.parentType === 'son' ? 'son' : 'daughter'} of <SpanVal val={promoterIndividual.parentName} /> aged about <SpanVal val={promoterIndividual.age} /> residing at <SpanVal val={promoterIndividual.residing} />, (PAN <SpanVal val={promoterIndividual.pan} />), hereinafter called the <b>"Promoter"</b> (which expression shall unless repugnant to the context or meaning thereof be deemed to mean and include his/her heirs, executors, administrators, successors-in-interest and permitted assignees).
+                Mr./Ms. <SpanVal val={promoterIndividual.name} fieldKey="promoterIndividual.name" />, (Aadhaar No. <SpanVal val={promoterIndividual.aadhaar} fieldKey="promoterIndividual.aadhaar" />) {promoterIndividual.parentType === 'son' ? 'son' : 'daughter'} of <SpanVal val={promoterIndividual.parentName} fieldKey="promoterIndividual.parentName" /> aged about <SpanVal val={promoterIndividual.age} fieldKey="promoterIndividual.age" /> residing at <SpanVal val={promoterIndividual.residing} fieldKey="promoterIndividual.residing" />, (PAN <SpanVal val={promoterIndividual.pan} fieldKey="promoterIndividual.pan" />), hereinafter called the <b>"Promoter"</b> (which expression shall unless repugnant to the context or meaning thereof be deemed to mean and include his/her heirs, executors, administrators, successors-in-interest and permitted assignees).
               </p>
             </div>
           )}
@@ -91,7 +97,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
       {/* PAGE 27 */}
       <div className="page-break-indicator" />
-      <div className="paper-page" id="preview-section-1">
+      <div className="paper-page">
         <div className="page-number">27</div>
         <div className="page-content">
           {/* ALLOTTEE COMPANY */}
@@ -99,7 +105,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
             <div className="placeholder-block active">
               <p style={{ fontStyle: 'italic', fontWeight: 'bold', margin: '0 0 0.5rem 0' }}>[If the Allottee is a company]</p>
               <p>
-                <SpanVal val={allotteeCompany.name} /> (CIN No. <SpanVal val={allotteeCompany.cin} />) a company incorporated under the provisions of the Companies Act, Central Act 1 of 1956, (1956 or 2013, as the case may be), having its registered office at <SpanVal val={allotteeCompany.registeredOffice} /> (PAN <SpanVal val={allotteeCompany.pan} />), represented by its authorized signatory, <SpanVal val={allotteeCompany.authorizedSignatory} />, (Aadhaar No. <SpanVal val={allotteeCompany.signatoryAadhaar} />) duly authorized <i>vide</i> board resolution dated <SpanVal val={allotteeCompany.boardResolutionDate} />, hereinafter referred to as the <b>"Allottee"</b> (which expression shall unless repugnant to the context or meaning thereof be deemed to mean and include its successor-in-interest, executors, administrators and permitted assignees).
+                <SpanVal val={allotteeCompany.name} fieldKey="allotteeCompany.name" /> (CIN No. <SpanVal val={allotteeCompany.cin} fieldKey="allotteeCompany.cin" />) a company incorporated under the provisions of the Companies Act, Central Act 1 of 1956, (1956 or 2013, as the case may be), having its registered office at <SpanVal val={allotteeCompany.registeredOffice} fieldKey="allotteeCompany.registeredOffice" /> (PAN <SpanVal val={allotteeCompany.pan} fieldKey="allotteeCompany.pan" />), represented by its authorized signatory, <SpanVal val={allotteeCompany.authorizedSignatory} fieldKey="allotteeCompany.authorizedSignatory" />, (Aadhaar No. <SpanVal val={allotteeCompany.signatoryAadhaar} fieldKey="allotteeCompany.signatoryAadhaar" />) duly authorized <i>vide</i> board resolution dated <SpanVal val={allotteeCompany.boardResolutionDate} fieldKey="allotteeCompany.boardResolutionDate" />, hereinafter referred to as the <b>"Allottee"</b> (which expression shall unless repugnant to the context or meaning thereof be deemed to mean and include its successor-in-interest, executors, administrators and permitted assignees).
               </p>
             </div>
           )}
@@ -109,7 +115,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
             <div className="placeholder-block active">
               <p style={{ fontStyle: 'italic', fontWeight: 'bold', margin: '0 0 0.5rem 0' }}>[If the Allottee is a Partnership]</p>
               <p>
-                <SpanVal val={allotteePartnership.name} />, a partnership firm registered under the Indian Partnership Act, 1932 (Central Act 12 of 1932) having its principal place of business at <SpanVal val={allotteePartnership.businessPlace} /> (PAN <SpanVal val={allotteePartnership.pan} />), represented by its authorized partner, <SpanVal val={allotteePartnership.authorizedPartner} /> (Aadhaar No. <SpanVal val={allotteePartnership.partnerAadhaar} />) authorized <i>vide</i> <SpanVal val={allotteePartnership.authorizedVide} />, hereinafter referred to as the <b>"Allottee"</b> (which expression shall unless repugnant to the context or meaning thereof be deemed to mean and include its successors-in-interest, executors, administrators and permitted assignees, including those of the respective partners).
+                <SpanVal val={allotteePartnership.name} fieldKey="allotteePartnership.name" />, a partnership firm registered under the Indian Partnership Act, 1932 (Central Act 12 of 1932) having its principal place of business at <SpanVal val={allotteePartnership.businessPlace} fieldKey="allotteePartnership.businessPlace" /> (PAN <SpanVal val={allotteePartnership.pan} fieldKey="allotteePartnership.pan" />), represented by its authorized partner, <SpanVal val={allotteePartnership.authorizedPartner} fieldKey="allotteePartnership.authorizedPartner" /> (Aadhaar No. <SpanVal val={allotteePartnership.partnerAadhaar} fieldKey="allotteePartnership.partnerAadhaar" />) authorized <i>vide</i> <SpanVal val={allotteePartnership.authorizedVide} fieldKey="allotteePartnership.authorizedVide" />, hereinafter referred to as the <b>"Allottee"</b> (which expression shall unless repugnant to the context or meaning thereof be deemed to mean and include its successors-in-interest, executors, administrators and permitted assignees, including those of the respective partners).
               </p>
             </div>
           )}
@@ -119,7 +125,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
             <div className="placeholder-block active">
               <p style={{ fontStyle: 'italic', fontWeight: 'bold', margin: '0 0 0.5rem 0' }}>[If the Allottee is an Individual]</p>
               <p>
-                Mr./Ms. <SpanVal val={allotteeIndividual.name} />, (Aadhaar No. <SpanVal val={allotteeIndividual.aadhaar} />) {allotteeIndividual.parentType === 'son' ? 'son' : allotteeIndividual.parentType === 'daughter' ? 'daughter' : 'wife'} of <SpanVal val={allotteeIndividual.parentName} />, aged about <SpanVal val={allotteeIndividual.age} />, residing at <SpanVal val={allotteeIndividual.residing} />, (PAN <SpanVal val={allotteeIndividual.pan} />), hereinafter called the <b>"Allottee"</b> (which expression shall unless repugnant to the context or meaning thereof be deemed to mean and include his/her heirs, executors, administrators, successors-in-interest and permitted assignees).
+                Mr./Ms. <SpanVal val={allotteeIndividual.name} fieldKey="allotteeIndividual.name" />, (Aadhaar No. <SpanVal val={allotteeIndividual.aadhaar} fieldKey="allotteeIndividual.aadhaar" />) {allotteeIndividual.parentType === 'son' ? 'son' : allotteeIndividual.parentType === 'daughter' ? 'daughter' : 'wife'} of <SpanVal val={allotteeIndividual.parentName} fieldKey="allotteeIndividual.parentName" />, aged about <SpanVal val={allotteeIndividual.age} fieldKey="allotteeIndividual.age" />, residing at <SpanVal val={allotteeIndividual.residing} fieldKey="allotteeIndividual.residing" />, (PAN <SpanVal val={allotteeIndividual.pan} fieldKey="allotteeIndividual.pan" />), hereinafter called the <b>"Allottee"</b> (which expression shall unless repugnant to the context or meaning thereof be deemed to mean and include his/her heirs, executors, administrators, successors-in-interest and permitted assignees).
               </p>
             </div>
           )}
@@ -129,7 +135,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
             <div className="placeholder-block active">
               <p style={{ fontStyle: 'italic', fontWeight: 'bold', margin: '0 0 0.5rem 0' }}>[If the Allottee is a HUF]</p>
               <p>
-                Mr. <SpanVal val={allotteeHuf.kartaName} />, (Aadhaar No. <SpanVal val={allotteeHuf.kartaAadhaar} />) son of <SpanVal val={allotteeHuf.parentName} /> aged about <SpanVal val={allotteeHuf.age} /> for self and as the Karta of the Hindu Joint Mitakshara Family known as <SpanVal val={allotteeHuf.familyName} /> HUF, having its place of business/residence at <SpanVal val={allotteeHuf.place} />, (PAN <SpanVal val={allotteeHuf.pan} />), hereinafter referred to as the <b>"Allottee"</b> (which expression shall unless repugnant to the context or meaning thereof be deemed to include his heirs, representatives, executors, administrators, successors-in-interest and permitted assigns as well as the members of the said HUF, their heirs, executors, administrators, successors-in-interest and permitted assignees).
+                Mr. <SpanVal val={allotteeHuf.kartaName} fieldKey="allotteeHuf.kartaName" />, (Aadhaar No. <SpanVal val={allotteeHuf.kartaAadhaar} fieldKey="allotteeHuf.kartaAadhaar" />) son of <SpanVal val={allotteeHuf.parentName} fieldKey="allotteeHuf.parentName" /> aged about <SpanVal val={allotteeHuf.age} fieldKey="allotteeHuf.age" /> for self and as the Karta of the Hindu Joint Mitakshara Family known as <SpanVal val={allotteeHuf.familyName} fieldKey="allotteeHuf.familyName" /> HUF, having its place of business/residence at <SpanVal val={allotteeHuf.place} fieldKey="allotteeHuf.place" />, (PAN <SpanVal val={allotteeHuf.pan} fieldKey="allotteeHuf.pan" />), hereinafter referred to as the <b>"Allottee"</b> (which expression shall unless repugnant to the context or meaning thereof be deemed to include his heirs, representatives, executors, administrators, successors-in-interest and permitted assigns as well as the members of the said HUF, their heirs, executors, administrators, successors-in-interest and permitted assignees).
               </p>
             </div>
           )}
@@ -142,7 +148,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
               </p>
               {jointAllottees.map((ja, idx) => (
                 <div key={ja.id} style={{ fontSize: '9.5pt', marginBottom: '0.5rem', paddingLeft: '1rem', borderLeft: '2px solid #ccc' }}>
-                  <b>Joint Allottee #{idx + 2}:</b> Mr./Ms. <SpanVal val={ja.name} /> (Aadhaar No. <SpanVal val={ja.aadhaar} />) {ja.parentType === 'son' ? 'son' : ja.parentType === 'daughter' ? 'daughter' : 'wife'} of <SpanVal val={ja.parentName} />, aged <SpanVal val={ja.age} /> years, residing at <SpanVal val={ja.residing} /> (PAN <SpanVal val={ja.pan} />).
+                  <b>Joint Allottee #{idx + 2}:</b> Mr./Ms. <SpanVal val={ja.name} fieldKey="jointAllottees" /> (Aadhaar No. <SpanVal val={ja.aadhaar} fieldKey="jointAllottees" />) {ja.parentType === 'son' ? 'son' : ja.parentType === 'daughter' ? 'daughter' : 'wife'} of <SpanVal val={ja.parentName} fieldKey="jointAllottees" />, aged <SpanVal val={ja.age} fieldKey="jointAllottees" /> years, residing at <SpanVal val={ja.residing} fieldKey="jointAllottees" /> (PAN <SpanVal val={ja.pan} fieldKey="jointAllottees" />).
                 </div>
               ))}
             </div>
@@ -154,7 +160,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title" style={{ marginTop: '1rem' }}>WHEREAS:</p>
           <div className="indent-1">
-            A. The Promoter is the absolute and lawful owner of (survey Nos.) <SpanVal val={landSurveyNos} /> totally admeasuring <SpanVal val={landAdmeasuring} /> square meters situated at <SpanVal val={landSituatedAt} /> in Tehsil & District <SpanVal val={landTehsilDistrict} /> ("Said Land") vide sale deed(s) dated <SpanVal val={landJDA.jdaDate} /> registered as documents No. <SpanVal val={landJDA.regNo} /> at the office of the Sub-Registrar;
+            A. The Promoter is the absolute and lawful owner of (survey Nos.) <SpanVal val={landSurveyNos} fieldKey="landSurveyNos" /> totally admeasuring <SpanVal val={landAdmeasuring} fieldKey="landAdmeasuring" /> square meters situated at <SpanVal val={landSituatedAt} fieldKey="landSituatedAt" /> in Tehsil & District <SpanVal val={landTehsilDistrict} fieldKey="landTehsilDistrict" /> ("Said Land") vide sale deed(s) dated <SpanVal val={landJDA.jdaDate} fieldKey="landJDA.jdaDate" /> registered as documents No. <SpanVal val={landJDA.regNo} fieldKey="landJDA.regNo" /> at the office of the Sub-Registrar;
           </div>
 
           {landOwnershipType === 'developer' && (
@@ -163,7 +169,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           {landOwnershipType === 'developer' && (
             <div className="indent-1" style={{ border: '1.5px dashed var(--accent-gold)', padding: '0.5rem', borderRadius: '4px' }}>
-              <SpanVal val={landJDA.ownerName} /> ("Owner") is the absolute and lawful owner of (khasra Nos./survey Nos.) <SpanVal val={landSurveyNos} /> totally admeasuring <SpanVal val={landAdmeasuring} /> square meters situated at <SpanVal val={landSituatedAt} /> in Tehsil & District <SpanVal val={landTehsilDistrict} /> vide sale deed(s) dated <SpanVal val={landJDA.jdaDate} /> registered as documents No. <SpanVal val={landJDA.regNo} /> at the office of the Sub-Registrar. The Owner and the Promoter have entered into a (collaboration/development/joint development) agreement dated <SpanVal val={landJDA.jdaDate} /> registered as document No. <SpanVal val={landJDA.regNo} /> at the office of the Sub-Registrar;
+              <SpanVal val={landJDA.ownerName} fieldKey="landJDA.ownerName" /> ("Owner") is the absolute and lawful owner of (khasra Nos./survey Nos.) <SpanVal val={landSurveyNos} fieldKey="landSurveyNos" /> totally admeasuring <SpanVal val={landAdmeasuring} fieldKey="landAdmeasuring" /> square meters situated at <SpanVal val={landSituatedAt} fieldKey="landSituatedAt" /> in Tehsil & District <SpanVal val={landTehsilDistrict} fieldKey="landTehsilDistrict" /> vide sale deed(s) dated <SpanVal val={landJDA.jdaDate} fieldKey="landJDA.jdaDate" /> registered as documents No. <SpanVal val={landJDA.regNo} fieldKey="landJDA.regNo" /> at the office of the Sub-Registrar. The Owner and the Promoter have entered into a (collaboration/development/joint development) agreement dated <SpanVal val={landJDA.jdaDate} fieldKey="landJDA.jdaDate" /> registered as document No. <SpanVal val={landJDA.regNo} fieldKey="landJDA.regNo" /> at the office of the Sub-Registrar;
             </div>
           )}
         </div>
@@ -171,17 +177,17 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
       {/* PAGE 28 */}
       <div className="page-break-indicator" />
-      <div className="paper-page" id="preview-section-2">
+      <div className="paper-page">
         <div className="page-number">28</div>
         <div className="page-content">
           
           {projectType === 'apartment' ? (
             <div className="indent-1">
-              B. The Said Land is earmarked for the purpose of building a <SpanVal val={projectBuildingType} /> project, comprising <SpanVal val={projectComprising} /> multistoried apartment buildings and <SpanVal val={projectOtherComponents} /> and the said project shall be known as '<SpanVal val={projectName} />' (<b>"Project"</b>);
+              B. The Said Land is earmarked for the purpose of building a <SpanVal val={projectBuildingType} fieldKey="projectBuildingType" /> project, comprising <SpanVal val={projectComprising} fieldKey="projectComprising" /> multistoried apartment buildings and <SpanVal val={projectOtherComponents} fieldKey="projectOtherComponents" /> and the said project shall be known as '<SpanVal val={projectName} fieldKey="projectName" />' (<b>"Project"</b>);
             </div>
           ) : (
             <div className="indent-1" style={{ border: '1.5px dashed var(--accent-gold)', padding: '0.5rem', borderRadius: '4px' }}>
-              B. The Said Land is earmarked for the purpose of plotted development of a <SpanVal val={projectBuildingType} /> project, comprising plots and <SpanVal val={plotOtherComponents} /> and the said project shall be known as '<SpanVal val={projectName} />' (<b>"Project"</b>);
+              B. The Said Land is earmarked for the purpose of plotted development of a <SpanVal val={projectBuildingType} fieldKey="projectBuildingType" /> project, comprising plots and <SpanVal val={plotOtherComponents} fieldKey="plotOtherComponents" /> and the said project shall be known as '<SpanVal val={projectName} fieldKey="projectName" />' (<b>"Project"</b>);
             </div>
           )}
 
@@ -194,31 +200,31 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           </div>
 
           <div className="indent-1" style={{ marginTop: '1rem' }}>
-            D. The <SpanVal val={commencementAuthority} /> has granted the commencement certificate to develop the Project vide approval dated <SpanVal val={commencementDate} /> bearing No. <SpanVal val={commencementNo} />;
+            D. The <SpanVal val={commencementAuthority} fieldKey="commencementAuthority" /> has granted the commencement certificate to develop the Project vide approval dated <SpanVal val={commencementDate} fieldKey="commencementDate" /> bearing No. <SpanVal val={commencementNo} fieldKey="commencementNo" />;
           </div>
 
           <div className="indent-1" style={{ marginTop: '1rem' }}>
-            E. The Promoter has obtained the final layout plan approvals for the Project from <SpanVal val={layoutAuthority} />. The Promoter agrees and undertakes that it shall not make any changes to these layout plans except in strict compliance with section 14 of the Act and other laws as applicable;
+            E. The Promoter has obtained the final layout plan approvals for the Project from <SpanVal val={layoutAuthority} fieldKey="layoutAuthority" />. The Promoter agrees and undertakes that it shall not make any changes to these layout plans except in strict compliance with section 14 of the Act and other laws as applicable;
           </div>
 
           <div className="indent-1" style={{ marginTop: '1rem' }}>
-            F. The Promoter has registered the Project under the provisions of the Act with the Real Estate Regulatory Authority at <SpanVal val={executionPlace} /> on <SpanVal val={reraRegDate} /> under the registration No. <SpanVal val={reraRegNo} />;
+            F. The Promoter has registered the Project under the provisions of the Act with the Real Estate Regulatory Authority at <SpanVal val={executionPlace} fieldKey="executionPlace" /> on <SpanVal val={reraRegDate} fieldKey="reraRegDate" /> under the registration No. <SpanVal val={reraRegNo} fieldKey="reraRegNo" />;
           </div>
         </div>
       </div>
 
       {/* PAGE 29 */}
       <div className="page-break-indicator" />
-      <div className="paper-page" id="preview-section-3">
+      <div className="paper-page">
         <div className="page-number">29</div>
         <div className="page-content">
           {projectType === 'apartment' ? (
             <div className="indent-1">
-              G. The Allottee had applied for an apartment in the Project vide application No. __________ dated <SpanVal val={commencementDate} /> and has been allotted apartment No. <SpanVal val={unitNo} /> having carpet area of <SpanVal val={unitCarpetArea} /> square feet, type __________ on <SpanVal val={unitFloor} /> floor in <SpanVal val={unitTower} /> ("Building") along with garage/closed parking No. <SpanVal val={garageDetails[0]?.no || 'Nil'} /> admeasuring <SpanVal val={garageDetails[0]?.area || '0'} /> square feet in the <SpanVal val={projectName} /> as permissible under the applicable law and of <i>pro rata</i> share in the common areas ("Common Areas") as defined under clause (n) of Section 2 of the Act (hereinafter referred to as the "Apartment" more particularly described in Schedule A and the floor plan of the apartment is annexed hereto and marked as Schedule B);
+              G. The Allottee had applied for an apartment in the Project vide application No. __________ dated <SpanVal val={commencementDate} fieldKey="commencementDate" /> and has been allotted apartment No. <SpanVal val={unitNo} fieldKey="unitNo" /> having carpet area of <SpanVal val={unitCarpetArea} fieldKey="unitCarpetArea" /> square feet, type __________ on <SpanVal val={unitFloor} fieldKey="unitFloor" /> floor in <SpanVal val={unitTower} fieldKey="unitTower" /> ("Building") along with garage/closed parking No. <SpanVal val={garageDetails[0]?.no || 'Nil'} fieldKey="garageDetails" /> admeasuring <SpanVal val={garageDetails[0]?.area || '0'} fieldKey="garageDetails" /> square feet in the <SpanVal val={projectName} fieldKey="projectName" /> as permissible under the applicable law and of <i>pro rata</i> share in the common areas ("Common Areas") as defined under clause (n) of Section 2 of the Act (hereinafter referred to as the "Apartment" more particularly described in Schedule A and the floor plan of the apartment is annexed hereto and marked as Schedule B);
             </div>
           ) : (
             <div className="indent-1" style={{ border: '1.5px dashed var(--accent-gold)', padding: '0.5rem', borderRadius: '4px' }}>
-              G. The Allottee had applied for a plot in the Project vide application No. __________ dated <SpanVal val={commencementDate} /> and has been allotted plot No. <SpanVal val={plotNo} /> having area of <SpanVal val={plotArea} /> square feet and plot for garage/closed parking admeasuring __________ square feet (if applicable) in the <SpanVal val={projectName} />, as permissible under the applicable law and of <i>pro rata</i> share in the common areas (hereinafter referred to as the "Plot" more particularly described in Schedule A);
+              G. The Allottee had applied for a plot in the Project vide application No. __________ dated <SpanVal val={commencementDate} fieldKey="commencementDate" /> and has been allotted plot No. <SpanVal val={plotNo} fieldKey="plotNo" /> having area of <SpanVal val={plotArea} fieldKey="plotArea" /> square feet and plot for garage/closed parking admeasuring __________ square feet (if applicable) in the <SpanVal val={projectName} fieldKey="projectName" />, as permissible under the applicable law and of <i>pro rata</i> share in the common areas (hereinafter referred to as the "Plot" more particularly described in Schedule A);
             </div>
           )}
 
@@ -246,7 +252,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
       {/* PAGE 30 */}
       <div className="page-break-indicator" />
-      <div className="paper-page" id="preview-section-4">
+      <div className="paper-page">
         <div className="page-number">30</div>
         <div className="page-content">
           <p style={{ fontWeight: 'bold' }}>
@@ -259,7 +265,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           </div>
 
           <div className="indent-1" style={{ marginTop: '1rem' }}>
-            1.2 The Total Price for the [Apartment/Plot] based on the carpet area is Rs. <SpanVal val={totalPrice} /> (<SpanVal val={totalPriceWords} />) ("Total Price") (Give break up and description):
+            1.2 The Total Price for the [Apartment/Plot] based on the carpet area is Rs. <SpanVal val={totalPrice} fieldKey="totalPrice" /> (<SpanVal val={totalPriceWords} fieldKey="totalPriceWords" />) ("Total Price") (Give break up and description):
           </div>
 
           {projectType === 'apartment' ? (
@@ -273,8 +279,8 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Tower: <SpanVal val={unitTower} /> | Apt: <SpanVal val={unitNo} /> | Floor: <SpanVal val={unitFloor} /></td>
-                    <td style={{ textAlign: 'center' }}>Rs. <SpanVal val={ratePerSqFt} /></td>
+                    <td>Tower: <SpanVal val={unitTower} fieldKey="unitTower" /> | Apt: <SpanVal val={unitNo} fieldKey="unitNo" /> | Floor: <SpanVal val={unitFloor} fieldKey="unitFloor" /></td>
+                    <td style={{ textAlign: 'center' }}>Rs. <SpanVal val={ratePerSqFt} fieldKey="ratePerSqFt" /></td>
                   </tr>
                 </tbody>
               </table>
@@ -341,9 +347,9 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
                 </thead>
                 <tbody>
                   <tr>
-                    <td>Plot No: <SpanVal val={plotNo} /> (Area: <SpanVal val={plotArea} /> sq ft)</td>
+                    <td>Plot No: <SpanVal val={plotNo} fieldKey="plotNo" /> (Area: <SpanVal val={plotArea} fieldKey="plotArea" /> sq ft)</td>
                     <td>Residential Plot</td>
-                    <td style={{ textAlign: 'center' }}>Rs. <SpanVal val={ratePerSqFt} /></td>
+                    <td style={{ textAlign: 'center' }}>Rs. <SpanVal val={ratePerSqFt} fieldKey="ratePerSqFt" /></td>
                   </tr>
                 </tbody>
               </table>
@@ -354,7 +360,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
       {/* PAGE 31 */}
       <div className="page-break-indicator" />
-      <div className="paper-page" id="preview-section-5">
+      <div className="paper-page">
         <div className="page-number">31</div>
         <div className="page-content">
           <p style={{ fontWeight: 'bold', margin: '0 0 0.5rem 0' }}>Explanation:—</p>
@@ -382,7 +388,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
       {/* PAGE 32 */}
       <div className="page-break-indicator" />
-      <div className="paper-page" id="preview-section-6">
+      <div className="paper-page">
         <div className="page-number">32</div>
         <div className="page-content">
           <div className="indent-1">
@@ -390,7 +396,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           </div>
 
           <div className="indent-1" style={{ marginTop: '1rem' }}>
-            1.5 The Promoter may allow, in its sole discretion, a rebate for early payments of installments payable by the Allottee by discounting such early payments @ <SpanVal val={earlyPaymentRebate} />% per annum for the period by which the respective installment has been preponed. The provision for allowing rebate and such rate of rebate shall not be subject to any revision/withdrawal, once granted to an Allottee by the Promoter.
+            1.5 The Promoter may allow, in its sole discretion, a rebate for early payments of installments payable by the Allottee by discounting such early payments @ <SpanVal val={earlyPaymentRebate} fieldKey="earlyPaymentRebate" />% per annum for the period by which the respective installment has been preponed. The provision for allowing rebate and such rate of rebate shall not be subject to any revision/withdrawal, once granted to an Allottee by the Promoter.
           </div>
 
           <div className="indent-1" style={{ marginTop: '1rem' }}>
@@ -415,7 +421,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
       {/* PAGE 33 */}
       <div className="page-break-indicator" />
-      <div className="paper-page" id="preview-section-7">
+      <div className="paper-page">
         <div className="page-number">33</div>
         <div className="page-content">
           <p style={{ textIndent: '2rem' }}>
@@ -430,7 +436,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           </div>
 
           <div className="indent-1" style={{ marginTop: '1.5rem' }}>
-            1.10 It is understood by the Allottee that all other areas and i.e. areas and facilities falling outside the Project, namely... shall not form a part of the declaration to be filed with <SpanVal val={commencementAuthority} /> under the <SpanVal val={relevantStateAct} />.
+            1.10 It is understood by the Allottee that all other areas and i.e. areas and facilities falling outside the Project, namely... shall not form a part of the declaration to be filed with <SpanVal val={commencementAuthority} fieldKey="commencementAuthority" /> under the <SpanVal val={relevantStateAct} fieldKey="relevantStateAct" />.
           </div>
 
           <div className="indent-1" style={{ marginTop: '1.5rem' }}>
@@ -441,11 +447,11 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
       {/* PAGE 34 */}
       <div className="page-break-indicator" />
-      <div className="paper-page" id="preview-section-8">
+      <div className="paper-page">
         <div className="page-number">34</div>
         <div className="page-content">
           <div className="indent-1">
-            1.12 The Allottee has paid a sum of Rs. <SpanVal val={paymentPlan[0]?.amount || '___'} /> (Rupees <SpanVal val={totalPriceWords} /> only) as booking amount being part payment towards the Total Price of the (Apartment/Plot) at the time of application the receipt of which the Promoter hereby acknowledges and the Allottee hereby agrees to pay the remaining price of the (Apartment/Plot) as prescribed in the Payment Plan as may be demanded by the Promoter within the time and in the manner specified therein:
+            1.12 The Allottee has paid a sum of Rs. <SpanVal val={paymentPlan[0]?.amount || '___'} fieldKey="paymentPlan" /> (Rupees <SpanVal val={totalPriceWords} fieldKey="totalPriceWords" /> only) as booking amount being part payment towards the Total Price of the (Apartment/Plot) at the time of application the receipt of which the Promoter hereby acknowledges and the Allottee hereby agrees to pay the remaining price of the (Apartment/Plot) as prescribed in the Payment Plan as may be demanded by the Promoter within the time and in the manner specified therein:
           </div>
           <p style={{ fontStyle: 'italic', margin: '0.5rem 0 0.5rem 2rem', fontSize: '9.5pt' }}>
             Provided that if the allottee delays in payment towards any amount for which is payable, he shall be liable to pay interest at the rate specified in the Rules.
@@ -453,7 +459,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title">2. Mode of Payment:</p>
           <p style={{ textIndent: '2rem' }}>
-            Subject to the terms of the Agreement and the Promoter abiding by the construction milestones, the Allottee shall make all payments, on demand by the Promoter, within the stipulated time as mentioned in the Payment Plan through A/c Payee cheque/demand draft or online payment (as applicable) in favour of '<SpanVal val={promoterCompany.name} />' payable at <SpanVal val={executionPlace} />.
+            Subject to the terms of the Agreement and the Promoter abiding by the construction milestones, the Allottee shall make all payments, on demand by the Promoter, within the stipulated time as mentioned in the Payment Plan through A/c Payee cheque/demand draft or online payment (as applicable) in favour of '<SpanVal val={promoterCompany.name} fieldKey="promoterCompany.name" />' payable at <SpanVal val={executionPlace} fieldKey="executionPlace" />.
           </p>
 
           <p className="legal-section-title">3. Compliance of Laws relating to remittances:</p>
@@ -465,7 +471,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
       {/* PAGE 35 */}
       <div className="page-break-indicator" />
-      <div className="paper-page" id="preview-section-9">
+      <div className="paper-page">
         <div className="page-number">35</div>
         <div className="page-content">
           <div className="indent-1">
@@ -489,14 +495,14 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title">7. Possession of the Apartment/Plot:</p>
           <div className="indent-1">
-            7.1 <i>Schedule for possession of the said (Apartment/Plot):</i> The Promoter agrees and understands that timely delivery of possession of the (Apartment/Plot) is the essence of the Agreement. The Promoter, based on the approved plans and specifications, assures to hand over possession of the (Apartment/Plot) on <SpanVal val={possessionTargetMonth} />
+            7.1 <i>Schedule for possession of the said (Apartment/Plot):</i> The Promoter agrees and understands that timely delivery of possession of the (Apartment/Plot) is the essence of the Agreement. The Promoter, based on the approved plans and specifications, assures to hand over possession of the (Apartment/Plot) on <SpanVal val={possessionTargetMonth} fieldKey="possessionTargetMonth" />
           </div>
         </div>
       </div>
 
       {/* PAGE 36 */}
       <div className="page-break-indicator" />
-      <div className="paper-page" id="preview-section-10">
+      <div className="paper-page">
         <div className="page-number">36</div>
         <div className="page-content">
           <p style={{ textIndent: '2rem' }}>
@@ -504,7 +510,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           </p>
 
           <div className="indent-1" style={{ marginTop: '1rem' }}>
-            7.2 <i>Procedure for taking possession:</i> The Promoter, upon obtaining the occupancy certificate* from the competent authority shall offer in writing the possession of the (Apartment/Plot), to the Allottee in terms of this Agreement to be taken within 3 (three) months from the date of issue of such notice and the Promoter shall give possession of the (Apartment/Plot) to the Allottee. The Promoter agrees and undertakes to indemnify the Allottee in case of failure of fulfillment of any of the provisions, formalities, documentation on part of the Promoter. The Allottee agree(s) to pay the maintenance charges as determined by the Promoter/association of allottees, as the case may be. The Promoter on its behalf shall offer the possession to the Allottee in writing within <SpanVal val={gracePeriodDays} /> days of receiving the occupancy certificate* of the Project.
+            7.2 <i>Procedure for taking possession:</i> The Promoter, upon obtaining the occupancy certificate* from the competent authority shall offer in writing the possession of the (Apartment/Plot), to the Allottee in terms of this Agreement to be taken within 3 (three) months from the date of issue of such notice and the Promoter shall give possession of the (Apartment/Plot) to the Allottee. The Promoter agrees and undertakes to indemnify the Allottee in case of failure of fulfillment of any of the provisions, formalities, documentation on part of the Promoter. The Allottee agree(s) to pay the maintenance charges as determined by the Promoter/association of allottees, as the case may be. The Promoter on its behalf shall offer the possession to the Allottee in writing within <SpanVal val={gracePeriodDays} fieldKey="gracePeriodDays" /> days of receiving the occupancy certificate* of the Project.
           </div>
 
           <div className="indent-1" style={{ marginTop: '1rem' }}>
@@ -519,7 +525,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
       {/* PAGE 37 */}
       <div className="page-break-indicator" />
-      <div className="paper-page" id="preview-section-11">
+      <div className="paper-page">
         <div className="page-number">37</div>
         <div className="page-content">
           <p style={{ textIndent: '2rem' }}>
@@ -558,7 +564,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
       {/* PAGE 38 */}
       <div className="page-break-indicator" />
-      <div className="paper-page" id="preview-section-12">
+      <div className="paper-page">
         <div className="page-number">38</div>
         <div className="page-content">
           <div className="indent-1">
@@ -599,7 +605,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
       {/* PAGE 39 */}
       <div className="page-break-indicator" />
-      <div className="paper-page" id="preview-section-13">
+      <div className="paper-page">
         <div className="page-number">39</div>
         <div className="page-content">
           <p className="legal-section-title">9. Events of defaults and consequences:</p>
@@ -640,7 +646,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
       {/* PAGE 40 */}
       <div className="page-break-indicator" />
-      <div className="paper-page" id="preview-section-14">
+      <div className="paper-page">
         <div className="page-number">40</div>
         <div className="page-content">
           <p className="legal-section-title">10. Conveyance of the said apartment:</p>
@@ -670,7 +676,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
       {/* PAGE 41 */}
       <div className="page-break-indicator" />
-      <div className="paper-page" id="preview-section-15">
+      <div className="paper-page">
         <div className="page-number">41</div>
         <div className="page-content">
           <p>
@@ -684,7 +690,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title">15. Usage:</p>
           <p style={{ textIndent: '2rem', fontStyle: 'italic' }}>
-            Use of Basement and Service Areas.— The basement(s) and service areas, if any, as located within the <SpanVal val={projectName} /> shall be earmarked for purposes such as parking spaces and services including but not limited to electric sub-station, transformer, DG set rooms, underground water tanks, pump rooms, maintenance and service rooms, fire fighting pumps and equipment's etc. and other permitted uses as per sanctioned plans. The Allottee shall not be permitted to use the services areas and the basements in any manner whatsoever, other than those earmarked as parking spaces, and the same shall be reserved for use by the association of allottees formed by the Allottees for rendering maintenance services.
+            Use of Basement and Service Areas.— The basement(s) and service areas, if any, as located within the <SpanVal val={projectName} fieldKey="projectName" /> shall be earmarked for purposes such as parking spaces and services including but not limited to electric sub-station, transformer, DG set rooms, underground water tanks, pump rooms, maintenance and service rooms, fire fighting pumps and equipment's etc. and other permitted uses as per sanctioned plans. The Allottee shall not be permitted to use the services areas and the basements in any manner whatsoever, other than those earmarked as parking spaces, and the same shall be reserved for use by the association of allottees formed by the Allottees for rendering maintenance services.
           </p>
 
           <p className="legal-section-title">16. General compliance with respect to the apartment:</p>
@@ -696,7 +702,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
       {/* PAGE 42 */}
       <div className="page-break-indicator" />
-      <div className="paper-page" id="preview-section-16">
+      <div className="paper-page">
         <div className="page-number">42</div>
         <div className="page-content">
           <p>
@@ -720,14 +726,14 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title">20. Apartment ownership Act:</p>
           <p style={{ textIndent: '2rem' }}>
-            The Promoter has assured the Allottees that the project in its entirety is in accordance with the provisions of the <SpanVal val={apartmentOwnershipAct} />. The Promoter showing compliance of various laws/regulations as applicable in the State.
+            The Promoter has assured the Allottees that the project in its entirety is in accordance with the provisions of the <SpanVal val={apartmentOwnershipAct} fieldKey="apartmentOwnershipAct" />. The Promoter showing compliance of various laws/regulations as applicable in the State.
           </p>
         </div>
       </div>
 
       {/* PAGE 43 */}
       <div className="page-break-indicator" />
-      <div className="paper-page" id="preview-section-17">
+      <div className="paper-page">
         <div className="page-number">43</div>
         <div className="page-content">
           <p className="legal-section-title">21. Binding effect:</p>
@@ -759,7 +765,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
       {/* PAGE 44 */}
       <div className="page-break-indicator" />
-      <div className="paper-page" id="preview-section-18">
+      <div className="paper-page">
         <div className="page-number">44</div>
         <div className="page-content">
           <p style={{ textIndent: '2rem' }}>
@@ -786,14 +792,14 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title">29. Place of execution:</p>
           <p style={{ textIndent: '2rem' }}>
-            The execution of this Agreement shall be complete only upon its execution by the Promoter through its authorized signatory at the Promoter's Office, or at some other place, which may be mutually agreed between the Promoter and the Allottee, in <SpanVal val={executionPlace} /> after the Agreement is duly executed by the Allottee and the Promoter or simultaneously with the execution the said Agreement shall be registered at the office of the Sub-Registrar. Hence this Agreement shall be deemed to have been executed at <SpanVal val={executionPlace} />.
+            The execution of this Agreement shall be complete only upon its execution by the Promoter through its authorized signatory at the Promoter's Office, or at some other place, which may be mutually agreed between the Promoter and the Allottee, in <SpanVal val={executionPlace} fieldKey="executionPlace" /> after the Agreement is duly executed by the Allottee and the Promoter or simultaneously with the execution the said Agreement shall be registered at the office of the Sub-Registrar. Hence this Agreement shall be deemed to have been executed at <SpanVal val={executionPlace} fieldKey="executionPlace" />.
           </p>
         </div>
       </div>
 
       {/* PAGE 45 */}
       <div className="page-break-indicator" />
-      <div className="paper-page" id="preview-section-19">
+      <div className="paper-page">
         <div className="page-number">45</div>
         <div className="page-content">
           <p className="legal-section-title">30. Notices:</p>
@@ -835,11 +841,11 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
       {/* PAGE 46 */}
       <div className="page-break-indicator" />
-      <div className="paper-page" id="preview-section-20">
+      <div className="paper-page">
         <div className="page-number">46</div>
         <div className="page-content">
           <p style={{ marginTop: '0.5rem' }}>
-            IN WITNESS WHEREOF parties herein above named have set their respective hands and signed this Agreement for sale at <SpanVal val={executionPlace} /> in the presence of attesting witness, signing as such on the day first above written.
+            IN WITNESS WHEREOF parties herein above named have set their respective hands and signed this Agreement for sale at <SpanVal val={executionPlace} fieldKey="executionPlace" /> in the presence of attesting witness, signing as such on the day first above written.
           </p>
 
           <p style={{ fontWeight: 'bold', textTransform: 'uppercase', marginTop: '1rem', borderBottom: '1px solid #000', paddingBottom: '0.2rem' }}>
@@ -863,12 +869,12 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
                 <div className="signature-row" style={{ marginTop: '1.5rem' }} key={ja.id}>
                   ({idx + 2}) Signature: __________________
                   <br />
-                  Name: <SpanVal val={ja.name} />
+                  Name: <SpanVal val={ja.name} fieldKey="jointAllottees" />
                 </div>
               ))}
 
               <p style={{ fontSize: '9.5pt', marginTop: '1rem' }}>
-                At <SpanVal val={executionPlace} /> on ______________ in the presence of:
+                At <SpanVal val={executionPlace} fieldKey="executionPlace" /> on ______________ in the presence of:
               </p>
             </div>
 
@@ -895,9 +901,9 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
                 <div key={w.id || idx} style={{ fontSize: '9.5pt' }}>
                   <b>{idx + 1}. Signature:</b> ___________________
                   <br />
-                  <b>Name:</b> <SpanVal val={w.name} />
+                  <b>Name:</b> <SpanVal val={w.name} fieldKey="witnesses" />
                   <br />
-                  <b>Address:</b> <SpanVal val={w.address} />
+                  <b>Address:</b> <SpanVal val={w.address} fieldKey="witnesses" />
                 </div>
               ))}
               {witnesses.length === 0 && (

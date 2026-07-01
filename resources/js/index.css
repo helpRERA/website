@@ -702,23 +702,38 @@ input:focus, select:focus, textarea:focus {
 
 /* Print Styling Override */
 @media print {
-  body {
-    background-color: white;
-    color: black;
+  /* Hide everything by default */
+  body * {
+    visibility: hidden;
   }
-  .form-panel, .preview-controls, .view-toggle-bar {
-    display: none !important;
+
+  /* Show only the document pages */
+  #preview-content,
+  #preview-content * {
+    visibility: visible;
   }
-  .preview-panel {
-    background-color: white;
-    padding: 0;
-    overflow: visible;
+
+  /* Position document at top-left */
+  #preview-content {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 210mm;
+    transform: none !important;
   }
+
+  /* Reset zoom wrapper */
+  .print-zoom-reset {
+    transform: none !important;
+    width: 210mm !important;
+  }
+
   .paper-container {
     gap: 0;
     transform: none !important;
     margin: 0;
   }
+
   .paper-page {
     box-shadow: none;
     page-break-after: always;
@@ -728,14 +743,59 @@ input:focus, select:focus, textarea:focus {
     width: 210mm;
     height: 297mm;
   }
+
+  /* Strip decorative styles same as PDF export */
+  .placeholder-field {
+    border-bottom: none !important;
+    background-color: transparent !important;
+  }
+
+  .placeholder-block {
+    border: none !important;
+    background-color: transparent !important;
+    text-decoration: none !important;
+    opacity: 1 !important;
+  }
+
+  .placeholder-block.inactive {
+    text-decoration: none !important;
+    opacity: 0.45 !important;
+  }
 }
 
-
-
-.paper-page {
-  transition: box-shadow 0.3s ease;
+/* Field focus pulse animation - highlights matching preview span when form input is focused */
+@keyframes field-focus-pulse {
+  0%   { background-color: rgba(194, 149, 43, 0);    outline: 2px solid transparent; }
+  20%  { background-color: rgba(194, 149, 43, 0.35); outline: 2px solid rgba(194, 149, 43, 0.8); border-radius: 3px; }
+  60%  { background-color: rgba(194, 149, 43, 0.25); outline: 2px solid rgba(194, 149, 43, 0.6); }
+  100% { background-color: rgba(194, 149, 43, 0);    outline: 2px solid transparent; }
 }
 
-.paper-page.section-active {
-  box-shadow: 0 0 0 3px var(--accent-gold);
+.field-focus-pulse {
+  animation: field-focus-pulse 2s ease-in-out forwards;
+  border-radius: 3px;
+}
+
+/* PDF Export overrides — strip all decorative/highlight styles for clean output */
+.pdf-export .placeholder-field {
+  border-bottom: none !important;
+  background-color: transparent !important;
+}
+
+.pdf-export .placeholder-block {
+  border: none !important;
+  background-color: transparent !important;
+  text-decoration: none !important;
+  opacity: 1 !important;
+}
+
+.pdf-export .placeholder-block.inactive {
+  text-decoration: none !important;
+  opacity: 0.45 !important;
+}
+
+.pdf-export .field-focus-pulse {
+  animation: none !important;
+  background-color: transparent !important;
+  outline: none !important;
 }

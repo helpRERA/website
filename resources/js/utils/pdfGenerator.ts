@@ -1,11 +1,9 @@
-import html2pdf from 'html2pdf.js';
-
 export async function generatePDF(elementId: string, filename: string): Promise<void> {
   const element = document.getElementById(elementId);
   if (!element) throw new Error(`Element #${elementId} not found`);
 
-  // Dynamic import avoids the module-level object resolution issue
   const html2pdf = (await import('html2pdf.js')).default;
+  element.classList.add('pdf-export');
 
   const options = {
     margin: 0,
@@ -15,5 +13,9 @@ export async function generatePDF(elementId: string, filename: string): Promise<
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
   };
 
-  await html2pdf().set(options).from(element).save();
+  try {
+    await html2pdf().set(options).from(element).save();
+  } finally {
+    element.classList.remove('pdf-export');
+  }
 }
