@@ -78,11 +78,11 @@ export const localization: LocalizationData = {
     malayalam: 'സമീപത്തുള്ള സ്കൂളുകളും ആശുപത്രികളും',
   },
   'ABOUT K-RERA': {
-    english: 'ABOUT K-RERA',
+    english: 'About',
     malayalam: 'കെ-ററയെ കുറിച്ച്',
   },
   'PUBLIC CORNER': {
-    english: 'PUBLIC CORNER',
+    english: 'Public Corner',
     malayalam: 'പൊതുവായ വിവരങ്ങൾ',
   },
   'FILING COMPLAINTS': {
@@ -90,21 +90,21 @@ export const localization: LocalizationData = {
     malayalam: 'പരാതികൾ',
   },
   'PROMOTER CORNER': {
-    english: 'PROMOTER CORNER',
+    english: 'Promoter corner',
     malayalam: 'പ്രൊമോട്ടർ വിവരങ്ങൾ',
   },
   'AGENT CORNER': {
-    english: 'AGENT CORNER',
+    english: 'Agent Corner',
     malayalam: 'ഏജന്റ് വിവരങ്ങൾ',
   },
 
   'CONTACT US': {
-    english: 'CONTACT US',
+    english: 'Contact Us',
     malayalam: 'ഞങ്ങളെ സമീപിക്കുക',
   },
 
   STATISTICS: {
-    english: 'STATISTICS',
+    english: 'Statistics',
     malayalam: 'സ്റ്റാറ്റിസ്റ്റിക്സ്',
   },
 
@@ -297,11 +297,11 @@ export const localization: LocalizationData = {
     malayalam: 'ബിൽഡിംഗ് എണ്ണം',
   },
   'APPELLATE TRIBUNAL': {
-    english: 'APPELLATE TRIBUNAL',
+    english: 'Appellate Tribunal',
     malayalam: 'അപേലേറ്റ് ട്രിബ്യുണൽ',
   },
   'LEGAL CORNER': {
-    english: 'LEGAL CORNER',
+    english: 'Legal Corner',
     malayalam: 'ലെഗൽ കോർണർ',
   },
   'Project Name / Locality / Promoter / Registration Number': {

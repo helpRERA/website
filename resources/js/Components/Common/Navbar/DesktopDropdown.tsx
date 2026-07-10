@@ -15,26 +15,12 @@ interface Properties {
 console.log(navSections)
 const DesktopDropdown = ({ nav, hoverDropdown, lang = 'en' }: Properties) => {
   return (
-    <div className='sticky top-0 z-[9999] hidden w-full items-center bg-primary-700 text-gray-200 shadow-lg lg:flex'>
-      <Link
-        as='a'
-        href='/'
-        className='nav-item hidden px-4 hover:cursor-pointer md:inline-block'
-      >
-        <svg
-          xmlns='http://www.w3.org/2000/svg'
-          className='h-6 w-6'
-          fill='none'
-          viewBox='0 0 24 24'
-          stroke='currentColor'
-          strokeWidth={2}
-        >
-          <path
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            d='M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6'
-          />
+    <div className='hidden w-full items-center text-gray-700 lg:flex'>
+      <Link as='a' href='/' className='nav-item hidden px-4 lg:px-5 text-[#0f2c59] hover:text-[#0b1e3b] md:inline-flex flex-col items-center justify-center'>
+        <svg xmlns='http://www.w3.org/2000/svg' className='h-5 w-5 mb-1' fill='currentColor' viewBox='0 0 24 24'>
+          <path d='M11.47 3.84a.75.75 0 011.06 0l8.99 9a.75.75 0 11-1.06 1.06l-1.21-1.22v6.57a2.25 2.25 0 01-2.25 2.25h-3a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-2.25a.75.75 0 00-.75.75v4.5a.75.75 0 01-.75.75h-3a2.25 2.25 0 01-2.25-2.25v-6.57l-1.21 1.22a.75.75 0 11-1.06-1.06l8.99-9z' />
         </svg>
+        <div className='h-[3px] w-6 bg-[#0f2c59] rounded-full'></div>
       </Link>
       {navSections.map((navSection) => {
         const navRecord = nav.find((record) => record.section === navSection.value)
@@ -43,11 +29,11 @@ const DesktopDropdown = ({ nav, hoverDropdown, lang = 'en' }: Properties) => {
             onMouseOver={() => {
               hoverDropdown(navSection.value)
             }}
-            className={`nav-item break-word hidden p-2 px-4 py-3 text-sm font-medium
+            className={`nav-item hidden whitespace-nowrap px-4 py-2 lg:px-5 text-sm font-medium transition-colors
                          ${
                            navSection.value === 'STATISTICS'
-                             ? 'bg-[#b5e48c] bg-opacity-60 hover:bg-opacity-80'
-                             : 'hover:bg-primary-600'
+                             ? 'text-[#0f2c59] hover:bg-gray-100'
+                             : 'hover:text-[#0f2c59] hover:bg-gray-50'
                          } md:inline-block`}
             key={navSection.value}
           >
@@ -55,10 +41,7 @@ const DesktopDropdown = ({ nav, hoverDropdown, lang = 'en' }: Properties) => {
               as='a'
               href={`${navSection.url}`}
             >
-              <Localization
-                text={localization[navSection.value]}
-                language={lang}
-              />
+              <Localization text={localization[navSection.value]} language={lang} />
             </Link>
             {navRecord && navRecord.items && (
               <div className='nav-list absolute left-0 top-full z-[9999] w-full flex-wrap bg-gray-200 shadow-md'>

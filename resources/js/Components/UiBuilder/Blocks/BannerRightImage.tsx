@@ -29,7 +29,7 @@ function BannerRightImage({
   language = 'en',
 }: Properties) {
   const onEdit = (
-    
+
     field: string,
     fieldType: BlockFieldTypes,
     oldValue: BlockFieldValues,
@@ -49,92 +49,74 @@ function BannerRightImage({
 
   return (
     <div
-      className={`${blockData.marginTop} ${blockData.marginBottom} px-5 pt-20 sm:px-0 lg:pt-0`}
+      className='relative w-full overflow-hidden'
       style={{
-        backgroundImage: `url(${blockData.image?.url ?? '/placeholder.avif'})`,
+        backgroundImage: `url('/imge/newhome.webp')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
       }}
     >
-    
-      <div
-        className='mx-auto flex w-full flex-col bg-gradient-to-b from-[rgba(55,65,81,0.75)] to-[rgba(17,24,79,0.75)]  py-10 px-7 sm:w-10/12
-                   sm:py-16 sm:px-12 lg:mx-0 lg:w-2/3 xl:w-1/2 2xl:py-28 2xl:px-24'
-      >
-        {editMode && (
-          <div className=''>
-            <EditLabel
-              onClick={() => onEdit('image', 'image', null, 'INSERT')}
-              label='Edit Image'
-            />
-          </div>
-        )}
-        <h1 className='text-2xl font-extrabold leading-10 text-white md:text-4xl'>
-          <Localization
-            text={blockData.title}
-            language={language}
-          />
-          {editMode && (
-            <EditLabel onClick={() => onEdit('title', 'text', blockData.title, 'INSERT')} />
-          )}
+      <div className='absolute inset-0 bg-black/40'></div>
+      <div className='cmpad relative z-10 flex min-h-[500px] flex-col items-center justify-center pb-16 pt-36 lg:min-h-[600px] lg:pt-48'>
+        <h1 className='text-center text-3xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl'>
+          Kerala Real Estate Regulatory Authority
         </h1>
-        <div className='flex flex-col gap-3'>
-          {blockData.description.items.map((item) => {
-            return (
-              <p
-                key={item.id.toString()}
-                className='mt-5 text-xs leading-normal text-white sm:mt-8 sm:text-base md:text-lg'
-              >
-                <Localization
-                  text={item.item}
-                  language={language}
+        <p className='mt-4 text-center text-xl font-medium text-gray-200 md:text-2xl lg:text-3xl'>
+          Ensuring Transparency in Real Estate
+        </p>
+
+        <div className='mt-14 w-full md:mt-16'>
+          <RegisteredList
+            language={language}
+            registeredProjects={registeredProjects}
+            registeredAgents={registeredAgents}
+            complaintsCount={complaintsCount}
+            promotersCount={promotersCount}
+          />
+        </div>
+
+        {/* Search Card UI */}
+        <div className='mx-auto mt-8 w-full max-w-5xl px-4 md:mt-10 lg:max-w-6xl'>
+          <div className='w-full rounded-xl bg-white p-6 shadow-xl md:p-8'>
+            <div className='grid grid-cols-1 gap-6 md:grid-cols-4'>
+              <div className='flex flex-col'>
+                <label className='mb-2 text-sm font-semibold text-[#0f2c59]'>Project Name</label>
+                <input
+                  type='text'
+                  placeholder='Enter Project Name'
+                  className='rounded-md border border-gray-200 p-3 text-sm focus:border-[#0f2c59] focus:outline-none focus:ring-1 focus:ring-[#0f2c59]'
                 />
-                {editMode && (
-                  <EditLabel
-                    onClick={() => onEdit('description', 'textItems', item.item, 'UPDATE', item.id)}
-                  />
-                )}
-              </p>
-            )
-          })}
-          {editMode && (
-            <AddLabel
-              onClick={() => onEdit('description', 'textItems', null, 'INSERT')}
-              label='Add Paragraph'
-            />
-          )}
+              </div>
+              <div className='flex flex-col'>
+                <label className='mb-2 text-sm font-semibold text-[#0f2c59]'>District</label>
+                <select className='rounded-md border border-gray-200 p-3 text-sm text-gray-500 focus:border-[#0f2c59] focus:outline-none focus:ring-1 focus:ring-[#0f2c59]'>
+                  <option value=''>Select District</option>
+                </select>
+              </div>
+              <div className='flex flex-col'>
+                <label className='mb-2 text-sm font-semibold text-[#0f2c59]'>Project Type</label>
+                <select className='rounded-md border border-gray-200 p-3 text-sm text-gray-500 focus:border-[#0f2c59] focus:outline-none focus:ring-1 focus:ring-[#0f2c59]'>
+                  <option value=''>Select Project Type</option>
+                </select>
+              </div>
+              <div className='flex flex-col justify-end'>
+                <button className='w-full rounded-md bg-[#0f2c59] p-3 text-sm font-bold text-white transition hover:bg-[#0b1e3b]'>
+                  Search
+                </button>
+              </div>
+            </div>
+            <div className='mt-6 flex flex-col items-center justify-between border-t border-gray-100 pt-5 sm:flex-row'>
+              <span className='text-sm text-gray-500'>Choose one or more options above to search</span>
+              <a href='#' className='mt-2 flex items-center gap-1 text-sm font-bold text-gray-800 hover:text-[#0f2c59] sm:mt-0'>
+                Advance Search
+                <svg xmlns='http://www.w3.org/2000/svg' className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2.5} d='M17 8l4 4m0 0l-4 4m4-4H3' />
+                </svg>
+              </a>
+            </div>
+          </div>
         </div>
-        <div className='mt-6 flex w-auto sm:mt-10'>
-          {blockData.link != null && (
-            <LinkButton
-              link={blockData.link}
-              lang={language}
-            />
-          )}
-          {editMode && onFieldEdit != null && (
-            <EditLabel
-              label='Edit LInk'
-              onClick={() => {
-                onFieldEdit({
-                  action: 'INSERT',
-                  field: 'link',
-                  fieldType: 'link',
-                  oldValue: blockData.link ?? null,
-                })
-              }}
-            />
-          )}
-        </div>
-      </div>
-      <div className='bg-gradient-to-b from-[rgba(17,24,79,0.75)] to-[rgba(17,24,79,0.75)]  px-4 pt-4 pb-4 md:col-span-4 lg:col-span-4'>
-        <RegisteredList
-          language={language}
-          registeredProjects={registeredProjects}
-          registeredAgents={registeredAgents}
-          complaintsCount={complaintsCount}
-          promotersCount={promotersCount}
-        />
       </div>
     </div>
   )

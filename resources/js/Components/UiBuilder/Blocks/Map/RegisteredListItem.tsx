@@ -7,26 +7,26 @@ interface Properties {
   lang?: Language
   title: TextData
   link: string
+  active?: boolean
 }
 
-const RegisteredListItem = ({ value, lang = 'en', title, link }: Properties) => {
+const RegisteredListItem = ({ value, lang = 'en', title, link, active = false }: Properties) => {
   return (
-    <div className='flex flex-row gap-3 hover:scale-110 hover:opacity-40 md:flex-col '>
-      <a
-        className=''
-        href={`/${link}`}
-        target='_blank'
-        rel='noreferrer'
-      >
-        <h1 className='text-center text-3xl font-extrabold text-white'>{value ?? 0} </h1>
-        <p className='self-end leading-normal text-white sm:text-base md:self-auto'>
-          <Localization
-            text={title}
-            language={lang}
-          />
-        </p>
-      </a>
-    </div>
+    <a
+      href={`/${link}`}
+      className={`flex items-center justify-center rounded-full px-6 py-2.5 transition-colors ${
+        active 
+          ? 'bg-[#0f2c59] text-white' 
+          : 'bg-transparent text-[#0f2c59] hover:bg-gray-100'
+      }`}
+    >
+      <span className='text-sm font-semibold'>
+        <Localization
+          text={title}
+          language={lang}
+        />
+      </span>
+    </a>
   )
 }
 

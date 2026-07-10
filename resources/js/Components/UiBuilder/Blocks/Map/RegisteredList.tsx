@@ -2,7 +2,6 @@ import React from 'react'
 import { Language } from '../../../../ui/ui_interfaces'
 import { localization } from '../../../../Localization/localization'
 import RegisteredListItem from './RegisteredListItem'
-import AppLayoutPadding from '../../../Layout/AppLayout/AppLayoutPadding'
 
 interface Properties {
   language: Language
@@ -20,13 +19,14 @@ const RegisteredList = ({
   promotersCount,
 }: Properties) => {
   return (
-    <AppLayoutPadding>
-      <div className='flex flex-col justify-around gap-5 md:flex-row'>
+    <div className='flex justify-center'>
+      <div className='flex items-center gap-2 rounded-full bg-white p-1.5 shadow-sm'>
         <RegisteredListItem
           link='explore-projects'
           value={registeredProjects}
           lang={language}
           title={localization['Registered Projects']}
+          active={true}
         />
         <RegisteredListItem
           link='agents'
@@ -41,13 +41,13 @@ const RegisteredList = ({
           title={localization['Complaints Filed']}
         />
         <RegisteredListItem
-          link='promoters'
-          value={promotersCount}
+          link='cause-list'
+          value={0}
           lang={language}
-          title={localization['Registered Promoters']}
+          title={localization['Daily Case List'] || { en: 'Daily Case List', mal: 'Daily Case List' }}
         />
       </div>
-    </AppLayoutPadding>
+    </div>
   )
 }
 

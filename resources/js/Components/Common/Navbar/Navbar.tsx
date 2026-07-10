@@ -46,105 +46,63 @@ const Navbar = () => {
     })
   }
 
+  const url = usePage().url
+  const isHome = url === '/' || url.startsWith('/?lang=')
+
   return (
     <>
-      <nav className='top-0 z-[9999] w-full bg-white shadow-lg lg:sticky lg:top-auto lg:shadow-none'>
-        {/**Header Logo bar*/}
-        <div className='flex flex-wrap justify-between px-2 py-2 lg:py-3'>
-          <div className='flex w-6/12 items-center pr-6 sm:w-4/12 md:w-3/12 lg:w-2/12 xl:w-2/12'>
-            <Link
-              as='a'
-              href='/'
-            >
-              <img
-                src={'/imge/logo.png'}
-                alt='logo'
-                className='m-auto w-80 self-center'
-              />
+      <nav className={`top-0 z-[9999] w-full px-4 py-4 md:px-8 lg:px-12 lg:py-6 ${isHome ? 'absolute bg-transparent' : 'sticky bg-[#0f2c59]'}`}>
+        <div className='flex h-[80px] items-center justify-between rounded-lg bg-white px-6 shadow-md md:px-10 lg:px-12'>
+          <div className='flex h-full items-center py-2'>
+            <Link as='a' href='/' className='flex h-full items-center'>
+              <img src={'/logov2.svg'} alt='K-RERA Logo' className='h-[50px] w-auto object-contain' />
             </Link>
           </div>
-          <div className='text-skin-inverted flex w-2/12 flex-col  justify-start border-l-2 px-2 lg:w-3/12'>
-            {lang == null ||
-              (lang == 'en' && (
-                <img
-                  src='/lang-eng.svg'
-                  alt=''
-                  className='h-12 w-16 cursor-pointer md:w-20'
-                  onClick={langToggle}
-                />
-              ))}
-            {lang == 'mal' && (
-              <img
-                src='/lang-mal.svg'
-                alt=''
-                className='h-12 w-16 cursor-pointer md:w-20'
-                onClick={langToggle}
-              />
-            )}
-            <div className='hidden flex-col lg:flex'>
-              <span className='text-[0.5rem]'>A STATUTORY AUTHORITY ESTABLISHED</span>
-              <span className='text-[0.5rem]'>BY GOVERNMENT OF KERALA</span>
+
+          {/* Mobile hamburger */}
+          <div className='flex items-center lg:hidden'>
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              onClick={() => toggleDropdown()}
+              className='h-8 w-8 cursor-pointer text-gray-800'
+              fill='none'
+              viewBox='0 0 24 24'
+              stroke='currentColor'
+            >
+              {showDropdown ? (
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M6 18L18 6M6 6l12 12' />
+              ) : (
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M4 6h16M4 12h16M4 18h7' />
+              )}
+            </svg>
+          </div>
+
+            <div className='hidden items-center lg:flex'>
+              <DesktopDropdown nav={nav} hoverDropdown={hoverDropdown} lang={lang as Language} />
+              
+              {/* Language Pill */}
+            <div
+              onClick={langToggle}
+              className='ml-6 flex cursor-pointer items-center overflow-hidden rounded-full border border-gray-200 bg-white p-1 shadow-sm md:ml-8 lg:ml-10'
+            >
+              <div
+                className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-colors ${
+                  lang == null || lang == 'en' ? 'bg-[#0f2c59] text-white' : 'bg-transparent text-gray-500 hover:text-gray-800'
+                }`}
+              >
+                E
+              </div>
+              <div
+                className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-colors ${
+                  lang == 'mal' ? 'bg-[#0f2c59] text-white' : 'bg-transparent text-gray-500 hover:text-gray-800'
+                }`}
+              >
+                മ
+              </div>
+            </div>
             </div>
           </div>
-          <form
-            onSubmit={submitSearch}
-            className='flex w-2/12 items-center  justify-end gap-x-1 lg:w-5/12 xl:w-5/12'
-          >
-            {showDropdown && (
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                onClick={() => toggleDropdown()}
-                className='text-skin-base h-8 w-8 cursor-pointer lg:hidden'
-                fill='none'
-                viewBox='0 0 24 24'
-                stroke='currentColor'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth='2'
-                  d='M6 18L18 6M6 6l12 12'
-                />
-              </svg>
-            )}
-            {!showDropdown && (
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                onClick={() => toggleDropdown()}
-                className='text-skin-base h-8 w-8 cursor-pointer lg:hidden'
-                fill='none'
-                viewBox='0 0 24 24'
-                stroke='currentColor'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth='2'
-                  d='M4 6h16M4 12h16M4 18h7'
-                />
-              </svg>
-            )}
 
-            <input
-              type='text'
-              name='search'
-              placeholder='Search'
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              autoComplete='off'
-              className=' hidden h-12 shrink rounded bg-neutral-200   px-4 py-1 text-gray-800 transition-[width]
-                                duration-[1000] ease-in focus:w-full focus:outline-none sm:w-2/3 lg:block xl:w-1/3 xl:focus:w-2/3'
-            />
-            <div className='hidden gap-2 lg:flex'>
-              <SearchButton />
-            </div>
-          </form>
-        </div>
-        <div className='flex flex-col px-2 lg:hidden'>
-          <span className='text-[0.5rem]'>
-            A STATUTORY AUTHORITY ESTABLISHED BY GOVERNMENT OF KERALA
-          </span>
-        </div>
         {/** Mobile Dropdown */}
         <MobileDropdown
           nav={nav}
@@ -158,12 +116,6 @@ const Navbar = () => {
           lang={lang}
         />
       </nav>
-      {/**Desktop dropdown*/}
-      <DesktopDropdown
-        nav={nav}
-        hoverDropdown={hoverDropdown}
-        lang={lang as Language}
-      />
     </>
   )
 }

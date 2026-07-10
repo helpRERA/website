@@ -27,7 +27,13 @@ const OutputPage = ({page, lang = 'en', dependencies, currentDate}: Properties) 
   return (
     <AppLayout>
       <div className='flex flex-col'>
-        {page.blocks.blocks.map((element) => {
+        {[...page.blocks.blocks]
+          .sort((a, b) => {
+            if (a.blockName === 'Banner Right Image' && b.blockName === 'Home Announcement Ticker') return -1;
+            if (a.blockName === 'Home Announcement Ticker' && b.blockName === 'Banner Right Image') return 1;
+            return 0;
+          })
+          .map((element) => {
           return (
             <ResolveComponent
               key={element.id}
