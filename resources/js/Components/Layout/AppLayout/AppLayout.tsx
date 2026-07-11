@@ -49,16 +49,11 @@ const AppLayout = ({ children }: Properties) => {
 
       {/* Floating Action Buttons */}
       <div className='fixed right-0 top-1/3 z-[9999] flex flex-col gap-2'>
-        <button className='flex h-12 w-12 items-center justify-center rounded-l-md bg-[#0f2c59] text-white shadow-lg transition hover:bg-[#0b1e3b]'>
-          <svg xmlns='http://www.w3.org/2000/svg' className='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
-            <path strokeLinecap='round' strokeLinejoin='round' d='M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z' />
-            <path strokeLinecap='round' strokeLinejoin='round' d='M9 14l-4-4 4-4' />
-          </svg>
+        <button className='flex h-12 w-12 items-center justify-center rounded-l-md bg-[#0f2c59] shadow-lg transition hover:bg-[#0b1e3b] p-2.5'>
+          <img src="/svg/access.svg" alt="Accessibility" className="w-full h-full object-contain" />
         </button>
-        <button className='flex h-12 w-12 items-center justify-center rounded-l-md bg-[#0f2c59] text-white shadow-lg transition hover:bg-[#0b1e3b]'>
-          <svg xmlns='http://www.w3.org/2000/svg' className='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
-            <path strokeLinecap='round' strokeLinejoin='round' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' />
-          </svg>
+        <button className='flex h-12 w-12 items-center justify-center rounded-l-md bg-[#0f2c59] shadow-lg transition hover:bg-[#0b1e3b] p-2.5'>
+          <img src="/svg/search.svg" alt="Search" className="w-full h-full object-contain" />
         </button>
       </div>
 

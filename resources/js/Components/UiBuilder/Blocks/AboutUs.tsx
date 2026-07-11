@@ -62,7 +62,7 @@ const AboutUs = ({
               <img src="/svg/project.svg" alt="Projects" className="w-7 h-7" />
             </div>
             <div className='text-[32px] leading-tight font-medium text-[#1B1B1B] mb-1'>{registeredProjects}</div>
-            <div className='text-[16px] font-medium text-[#595959]'>Registered Projects</div>
+            <div className='text-[16px] font-normal text-[#595959]'>Registered Projects</div>
           </div>
 
           {/* Stat 2 */}
@@ -71,7 +71,7 @@ const AboutUs = ({
               <img src="/svg/doc.svg" alt="Complaints" className="w-7 h-7" />
             </div>
             <div className='text-[32px] leading-tight font-medium text-[#1B1B1B] mb-1'>{complaintsCount}</div>
-            <div className='text-[16px] font-medium text-[#595959]'>Complaints Filed</div>
+            <div className='text-[16px] font-normal text-[#595959]'>Complaints Filed</div>
           </div>
 
           {/* Stat 3 */}
@@ -80,7 +80,7 @@ const AboutUs = ({
               <img src="/svg/agent.svg" alt="Agents" className="w-7 h-7" />
             </div>
             <div className='text-[32px] leading-tight font-medium text-[#1B1B1B] mb-1'>{registeredAgents}</div>
-            <div className='text-[16px] font-medium text-[#595959]'>Registered Agents</div>
+            <div className='text-[16px] font-normal text-[#595959]'>Registered Agents</div>
           </div>
 
           {/* Stat 4 */}
@@ -89,7 +89,7 @@ const AboutUs = ({
               <img src="/svg/promoter.svg" alt="Promoters" className="w-7 h-7" />
             </div>
             <div className='text-[32px] leading-tight font-medium text-[#1B1B1B] mb-1'>{promotersCount}</div>
-            <div className='text-[16px] font-medium text-[#595959]'>Registered Promoters</div>
+            <div className='text-[16px] font-normal text-[#595959]'>Registered Promoters</div>
           </div>
         </div>
 

@@ -39,7 +39,7 @@ export default function HomeGallery({
   ];
 
   return (
-    <div className={`w-full bg-white font-sans pt-12 pb-20 overflow-hidden ${blockData?.marginTop} ${blockData?.marginBottom}`}>
+    <div className={`w-full bg-white font-sans pt-12 pb-8 overflow-hidden ${blockData?.marginTop} ${blockData?.marginBottom}`}>
       <div className="cmpad">
         
         {/* Top Section: Heading & Button */}
@@ -91,7 +91,7 @@ export default function HomeGallery({
               delay: 3000,
               disableOnInteraction: false,
             }}
-            className="pb-4"
+            className="px-4 sm:px-0 pb-4"
           >
             {highlightAlbums.length > 0 ? (
               highlightAlbums.map((album, idx) => (
