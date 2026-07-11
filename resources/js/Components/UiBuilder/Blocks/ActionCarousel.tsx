@@ -14,14 +14,14 @@ const ActionCarousel = ({ editMode, language, blockData, onFieldEdit, dispatch }
 
   // Helper component for standard small cards
   const SmallCard = ({ title, desc, icon }: { title: string, desc: string, icon: React.ReactNode }) => (
-    <a href="#" className="bg-white rounded-[16px] border border-[#EEEEEE] p-5 md:p-6 flex flex-col hover:shadow-[0px_4px_24px_0px_#00000014] transition-shadow group h-full">
+    <a href="#" className="bg-white rounded-[16px] border border-[#EEEEEE] hover:border-[#86C9F4] p-5 md:p-6 flex flex-col hover:shadow-[0px_4px_24px_0px_#00000014] transition-all duration-300 group h-full">
       <div className="bg-[#095b8d] w-[42px] h-[42px] rounded-full flex items-center justify-center mb-3 text-white shrink-0">
         {icon}
       </div>
       <h3 className="text-[#333333] font-medium text-[18px] mb-1 leading-tight">{title}</h3>
       <p className="text-[#595959] font-normal text-[15px] leading-[1.6] mb-4">{desc}</p>
-      <div className="text-[#444444] group-hover:text-[#095b8d] transition-colors mt-auto pt-2">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+      <div className="text-[#444444] group-hover:text-[#095b8d] transition-colors mt-auto pt-2 flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-2">
           <path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clipRule="evenodd" />
         </svg>
       </div>

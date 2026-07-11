@@ -121,13 +121,22 @@ const ResolveComponent = ({
         />
       )}
       {blockName === 'Action Carousel' && (
-        <ActionCarousel
-          editMode={editMode}
-          onFieldEdit={onFieldEdit}
-          blockData={block as unknown as any}
-          language={language}
-          dispatch={dispatch}
-        />
+        <>
+          <AboutUs
+            language={language}
+            registeredProjects={dependencies?.registeredProjects}
+            registeredAgents={dependencies?.registeredAgents}
+            complaintsCount={dependencies?.complaintsCount}
+            promotersCount={dependencies?.promotersCount}
+          />
+          <ActionCarousel
+            editMode={editMode}
+            onFieldEdit={onFieldEdit}
+            blockData={block as unknown as any}
+            language={language}
+            dispatch={dispatch}
+          />
+        </>
       )}
       {blockName === 'Alt Action Carousel' && (
         <AltActionCarousel
@@ -159,22 +168,13 @@ const ResolveComponent = ({
         />
       )}
       {blockName === 'Home Announcement Ticker' && (
-        <>
-          <AnnouncementTicker
-            language={language}
-            editMode={editMode}
-            onFieldEdit={onFieldEdit}
-            blockData={block as unknown as BlockConfiguration}
-            announcements={dependencies?.announcementTicker}
-          />
-          <AboutUs
-            language={language}
-            registeredProjects={dependencies?.registeredProjects}
-            registeredAgents={dependencies?.registeredAgents}
-            complaintsCount={dependencies?.complaintsCount}
-            promotersCount={dependencies?.promotersCount}
-          />
-        </>
+        <AnnouncementTicker
+          language={language}
+          editMode={editMode}
+          onFieldEdit={onFieldEdit}
+          blockData={block as unknown as BlockConfiguration}
+          announcements={dependencies?.announcementTicker}
+        />
       )}
       {blockName === 'Home Latest Announcements' && (
         <LatestAnnouncements

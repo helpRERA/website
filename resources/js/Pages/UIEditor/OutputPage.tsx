@@ -29,8 +29,19 @@ const OutputPage = ({page, lang = 'en', dependencies, currentDate}: Properties) 
       <div className='flex flex-col'>
         {[...page.blocks.blocks]
           .sort((a, b) => {
-            if (a.blockName === 'Banner Right Image' && b.blockName === 'Home Announcement Ticker') return -1;
-            if (a.blockName === 'Home Announcement Ticker' && b.blockName === 'Banner Right Image') return 1;
+            const order = [
+              'Banner Right Image',
+              'Home Announcement Ticker',
+              'Action Carousel',
+              'Home Latest Announcements',
+              'Home Map Block'
+            ];
+            const indexA = order.indexOf(a.blockName);
+            const indexB = order.indexOf(b.blockName);
+            
+            if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+            if (indexA !== -1) return -1;
+            if (indexB !== -1) return 1;
             return 0;
           })
           .map((element) => {
