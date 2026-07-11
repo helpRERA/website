@@ -20,7 +20,7 @@ const RegisteredList = ({
 }: Properties) => {
   return (
     <div className='flex justify-center'>
-      <div className='flex items-center gap-2 rounded-full bg-white p-1.5 shadow-sm'>
+      <div className='flex flex-wrap items-center justify-center gap-2 rounded-xl bg-[#f0f2f5] p-2 shadow-sm'>
         <RegisteredListItem
           link='explore-projects'
           value={registeredProjects}
@@ -44,7 +44,7 @@ const RegisteredList = ({
           link='cause-list'
           value={0}
           lang={language}
-          title={localization['Daily Case List'] || { en: 'Daily Case List', mal: 'Daily Case List' }}
+          title={localization['Daily Case List'] || { english: 'Daily Case List', malayalam: 'Daily Case List' }}
         />
       </div>
     </div>

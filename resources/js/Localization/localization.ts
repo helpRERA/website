@@ -277,7 +277,7 @@ export const localization: LocalizationData = {
     malayalam: 'സ്ഥലം അല്ലെങ്കിൽ ഡെവലപ്പർ പ്രകാരം ഒരു പ്രോജക്റ്റിനായി തിരയുക',
   },
   'Complaints Filed': {
-    english: 'Complaints Filed',
+    english: 'Compalints',
     malayalam: 'പരാതികൾ',
   },
   Career: {

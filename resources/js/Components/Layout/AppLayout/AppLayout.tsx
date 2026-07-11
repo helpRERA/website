@@ -1,6 +1,7 @@
 import { usePage } from '@inertiajs/react'
 import React, { useEffect } from 'react'
 import { ToastContainer } from 'react-toastify'
+import { ReactLenis } from '@studio-freight/react-lenis'
 import { showError, showSuccess } from '../../../ui/alerts'
 import { Language, LaravelFlash } from '../../../ui/ui_interfaces'
 import { FooterDataInterface } from '../../AdminPages/FooterEditor/FooterEditor'
@@ -30,7 +31,7 @@ const AppLayout = ({ children }: Properties) => {
   }, [flash])
 
   return (
-    <>
+    <ReactLenis root>
       <ToastContainer
         position='bottom-center'
         autoClose={5000}
@@ -45,7 +46,7 @@ const AppLayout = ({ children }: Properties) => {
       />
       <MetaTags />
       <Navbar />
-      
+
       {/* Floating Action Buttons */}
       <div className='fixed right-0 top-1/3 z-[9999] flex flex-col gap-2'>
         <button className='flex h-12 w-12 items-center justify-center rounded-l-md bg-[#0f2c59] text-white shadow-lg transition hover:bg-[#0b1e3b]'>
@@ -66,7 +67,7 @@ const AppLayout = ({ children }: Properties) => {
         language={lang}
         blockData={footer}
       />
-    </>
+    </ReactLenis>
   )
 }
 

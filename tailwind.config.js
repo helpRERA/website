@@ -16,7 +16,8 @@ module.exports = {
         picture: '4 / 3',
       },
       fontFamily: {
-        sans: ['Urbanist', ...defaultTheme.fontFamily.sans],
+        sans: ['"DM Sans"', ...defaultTheme.fontFamily.sans],
+        urbanist: ['Urbanist', ...defaultTheme.fontFamily.sans],
         inter: ['Inter'],
       },
       colors: {

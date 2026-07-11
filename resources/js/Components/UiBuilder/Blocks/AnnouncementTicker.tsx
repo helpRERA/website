@@ -25,8 +25,8 @@ const AnnouncementTicker = ({ language = 'en', announcements, blockData }: Prope
   return (
     <div className='flex h-12 w-full overflow-hidden border-b border-gray-200 bg-white shadow-sm'>
       {/* Latest News Badge */}
-      <div 
-        className='z-20 flex shrink-0 items-center justify-center bg-[#0c598a] pl-6 pr-12 text-white' 
+      <div
+        className='z-20 flex shrink-0 items-center justify-center bg-[#0c598a] pl-6 pr-12 text-white'
         style={{ clipPath: 'polygon(0 0, 85% 0, 100% 100%, 0% 100%)', minWidth: '220px' }}
       >
         <svg xmlns='http://www.w3.org/2000/svg' className='mr-2 h-5 w-5' viewBox='0 0 20 20' fill='currentColor'>

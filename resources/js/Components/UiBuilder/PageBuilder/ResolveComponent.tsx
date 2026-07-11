@@ -28,6 +28,7 @@ import Footer from '../../Home/Footer/Footer'
 import { FooterDataInterface } from '../../AdminPages/FooterEditor/FooterEditor'
 import HomeGallery from '../Blocks/Gallery/HomeGallery'
 import AltActionCarousel, { AltActionCarouselBlock } from '../Blocks/AltActionCarousel'
+import AboutUs from '../Blocks/AboutUs'
 
 interface Properties {
   block?: Block
@@ -77,7 +78,7 @@ const ResolveComponent = ({
       )}
       {blockName === 'Banner Right Image' && (
         <BannerRightImage
-              promotersCount={dependencies?.promotersCount}
+          promotersCount={dependencies?.promotersCount}
           registeredAgents={dependencies?.registeredAgents}
           registeredProjects={dependencies?.registeredProjects}
           complaintsCount={dependencies?.complaintsCount}
@@ -158,13 +159,22 @@ const ResolveComponent = ({
         />
       )}
       {blockName === 'Home Announcement Ticker' && (
-        <AnnouncementTicker
-          language={language}
-          editMode={editMode}
-          onFieldEdit={onFieldEdit}
-          blockData={block as unknown as BlockConfiguration}
-          announcements={dependencies?.announcementTicker}
-        />
+        <>
+          <AnnouncementTicker
+            language={language}
+            editMode={editMode}
+            onFieldEdit={onFieldEdit}
+            blockData={block as unknown as BlockConfiguration}
+            announcements={dependencies?.announcementTicker}
+          />
+          <AboutUs
+            language={language}
+            registeredProjects={dependencies?.registeredProjects}
+            registeredAgents={dependencies?.registeredAgents}
+            complaintsCount={dependencies?.complaintsCount}
+            promotersCount={dependencies?.promotersCount}
+          />
+        </>
       )}
       {blockName === 'Home Latest Announcements' && (
         <LatestAnnouncements

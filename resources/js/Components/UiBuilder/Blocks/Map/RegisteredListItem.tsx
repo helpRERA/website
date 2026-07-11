@@ -14,10 +14,10 @@ const RegisteredListItem = ({ value, lang = 'en', title, link, active = false }:
   return (
     <a
       href={`/${link}`}
-      className={`flex items-center justify-center rounded-full px-6 py-2.5 transition-colors ${
+      className={`flex items-center justify-center rounded-lg px-6 py-3 font-medium transition-colors ${
         active 
-          ? 'bg-[#0f2c59] text-white' 
-          : 'bg-transparent text-[#0f2c59] hover:bg-gray-100'
+          ? 'bg-[#125687] text-white shadow-sm' 
+          : 'bg-white text-[#125687] hover:bg-gray-50'
       }`}
     >
       <span className='text-sm font-semibold'>
