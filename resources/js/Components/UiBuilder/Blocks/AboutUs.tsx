@@ -32,8 +32,8 @@ const AboutUs = ({
 
           {/* Heading */}
           <h2 className='tracking-tight font-urbanist'>
-            <div className='text-[#085484] font-semibold text-[45px] leading-[1.2]'>Helping you make safer &amp;</div>
-            <div className='text-[#444444] font-normal text-[45px] leading-[1.2]'>smarter property decisions.</div>
+            <div className='text-[#085484] font-semibold text-[28px] md:text-[36px] lg:text-[42px] leading-[1.2]'>Helping you make safer &amp;</div>
+            <div className='text-[#444444] font-normal text-[28px] md:text-[36px] lg:text-[42px] leading-[1.2]'>smarter property decisions.</div>
           </h2>
         </div>
 

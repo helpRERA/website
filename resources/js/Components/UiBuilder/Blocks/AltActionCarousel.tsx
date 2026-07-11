@@ -43,12 +43,12 @@ interface Properties {
 
 const AltActionCarousel = ({ editMode, language, blockData, onFieldEdit, dispatch }: Properties) => {
   const SmallCard = ({ title, desc, icon, href }: { title: string, desc: string, icon: React.ReactNode, href: string }) => (
-    <Link href={href} className="flex h-full flex-col rounded-2xl border border-blue-100 bg-white p-6 md:p-8 shadow-sm transition-all duration-300 hover:shadow-md hover:border-[#86C9F4] group">
-      <div className="mb-5 flex h-10 w-10 items-center justify-center text-[#095b8d]">
+    <Link href={href} className="flex h-full flex-col rounded-2xl border border-blue-100 bg-white p-5 md:p-6 shadow-sm transition-all duration-300 hover:shadow-md hover:border-[#86C9F4] group">
+      <div className="mb-4 flex h-10 w-10 items-center justify-center text-[#095b8d]">
         {icon}
       </div>
-      <h3 className="mb-3 text-[19px] font-semibold leading-snug text-gray-900">{title}</h3>
-      <p className="mb-6 flex-grow text-[14px] leading-relaxed text-gray-500">{desc}</p>
+      <h3 className="mb-2 text-[18px] font-semibold leading-snug text-gray-900">{title}</h3>
+      <p className="mb-4 flex-grow text-[14px] leading-relaxed text-gray-500">{desc}</p>
       <div className="mt-auto flex items-center">
         <div className="text-[#095b8d] transition-colors group-hover:text-blue-800 group-hover:translate-x-1 duration-300">
           <ArrowRightIcon className="h-5 w-5" />
@@ -58,7 +58,7 @@ const AltActionCarousel = ({ editMode, language, blockData, onFieldEdit, dispatc
   )
 
   return (
-    <div className="w-full bg-[#f4f9fd] pt-8 md:pt-10 pb-16 md:pb-24 font-sans">
+    <div className="w-full bg-[#f4f9fd] pt-8 md:pt-10 pb-8 md:pb-12 font-sans">
       <div className="cmpad">
         <div className="flex flex-col items-center justify-center text-center w-full mb-8 px-4">
           {/* Subheading */}
@@ -71,8 +71,8 @@ const AltActionCarousel = ({ editMode, language, blockData, onFieldEdit, dispatc
 
           {/* Heading */}
           <h2 className='tracking-tight font-urbanist flex flex-wrap justify-center gap-x-2'>
-            <span className='text-[#085484] font-semibold text-[32px] sm:text-[45px] leading-[1.2]'>References &amp;</span>
-            <span className='text-[#444444] font-normal text-[32px] sm:text-[45px] leading-[1.2]'>Resources</span>
+            <span className='text-[#085484] font-semibold text-[28px] md:text-[36px] lg:text-[42px] leading-[1.2]'>References &amp;</span>
+            <span className='text-[#444444] font-normal text-[28px] md:text-[36px] lg:text-[42px] leading-[1.2]'>Resources</span>
           </h2>
         </div>
 

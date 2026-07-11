@@ -113,8 +113,8 @@ const LatestAnnouncements = ({ announcements, language = 'en', blockData }: Prop
 
               {/* Heading */}
               <h2 className='tracking-tight font-urbanist flex flex-wrap gap-x-2'>
-                <span className='text-[#085484] font-semibold text-[32px] sm:text-[45px] leading-[1.2]'>Notifications &amp;</span>
-                <span className='text-[#444444] font-normal text-[32px] sm:text-[45px] leading-[1.2]'>Announcements</span>
+                <span className='text-[#085484] font-semibold text-[28px] md:text-[36px] lg:text-[42px] leading-[1.2]'>Notifications &amp;</span>
+                <span className='text-[#444444] font-normal text-[28px] md:text-[36px] lg:text-[42px] leading-[1.2]'>Announcements</span>
               </h2>
             </div>
             
