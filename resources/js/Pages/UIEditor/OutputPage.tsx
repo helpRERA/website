@@ -1,7 +1,6 @@
 import React from 'react'
 import ResolveComponent from '../../Components/UiBuilder/PageBuilder/ResolveComponent'
 import AppLayout from '../../Components/Layout/AppLayout/AppLayout'
-import BrowseProjects from '../../Components/UiBuilder/Blocks/BrowseProjects'
 import {Page} from './../../DataStructures/ui_builder_interfaces'
 import {Language} from '../../ui/ui_interfaces'
 import {Album, Announcement, GalleryVideo} from '../../DataStructures/data_interfaces'
@@ -29,22 +28,7 @@ const OutputPage = ({page, lang = 'en', dependencies, currentDate}: Properties) 
     <AppLayout>
       <div className='flex flex-col'>
         {[...page.blocks.blocks]
-          .sort((a, b) => {
-            const order = [
-              'Banner Right Image',
-              'Home Announcement Ticker',
-              'Action Carousel',
-              'Home Latest Announcements',
-              'Home Map Block'
-            ];
-            const indexA = order.indexOf(a.blockName);
-            const indexB = order.indexOf(b.blockName);
-            
-            if (indexA !== -1 && indexB !== -1) return indexA - indexB;
-            if (indexA !== -1) return -1;
-            if (indexB !== -1) return 1;
-            return 0;
-          })
+          .sort((a, b) => (a.position || 0) - (b.position || 0))
           .map((element) => {
           return (
             <React.Fragment key={element.id}>
@@ -55,7 +39,6 @@ const OutputPage = ({page, lang = 'en', dependencies, currentDate}: Properties) 
                 dependencies={dependencies}
                 currentDate={currentDate}
               />
-              {element.blockName === 'Home Latest Announcements' && <BrowseProjects />}
             </React.Fragment>
           )
         })}

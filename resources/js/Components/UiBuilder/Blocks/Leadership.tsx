@@ -62,11 +62,10 @@ const Leadership = ({
 
   return (
     <div
-      className={`bg-gray-100  ${blockData?.marginTop} ${blockData?.marginBottom}
-          ${blockData?.paddingTop} ${blockData?.paddingBottom}`}
+      className={`bg-gray-100 ${blockData?.marginTop || ''} ${blockData?.marginBottom || ''} ${blockData?.paddingTop || ''} ${blockData?.paddingBottom || ''}`.trim()}
     >
       <div className='container mx-auto px-6 md:px-12 xl:px-32'>
-        <div className='mb-16 text-center'>
+        <div className={`text-center ${blockData?.roles?.items && blockData.roles.items.length > 0 ? 'mb-16' : ''}`}>
           <h2 className='mb-4 text-center text-2xl font-bold text-gray-900 md:text-4xl'>
             <Localization
               text={blockData?.title}

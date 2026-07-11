@@ -1,28 +1,15 @@
-import {
-  BlockConfiguration,
-  ItemListField,
-  loremIpsum,
-  placeholderImage,
-  placeholderTitle,
-} from '../DefaultBlockData'
-import {
-  Block,
-  BlockImage,
-  LinkData,
-  TextData,
-} from '../../../DataStructures/ui_builder_interfaces'
-import { PageBuilderAction } from '../PageBuilder/pageBuilderService'
+import { Link } from '@inertiajs/react'
 import { Language } from '../../../ui/ui_interfaces'
-import { BlocKFieldInfo } from '../PageBuilder/BlockEditor'
-import Localization from '../../../ui/Localization'
-import { useCallback, useEffect, useState } from 'react'
-import useWindowResize from '../../../hooks/useWindowResize'
-import EditLabel from '../../../ui/button/EditLabel'
-import { Slide } from 'pure-react-carousel'
-import AddLabel from '../AddLabel'
-import InertiaLink from '../../../ui/Link/InertiaLink'
-import AppLayoutPadding from '../../Layout/AppLayout/AppLayoutPadding'
-import SlideShowTopButton from '../../../ui/SlideShow/SlideShowTopButton'
+import {
+  ClipboardDocumentListIcon,
+  ArrowDownTrayIcon,
+  DocumentTextIcon,
+  BookmarkSquareIcon,
+} from '@heroicons/react/24/solid'
+import { ArrowRightIcon } from '@heroicons/react/24/outline'
+
+import { Block, BlockImage, ItemListField, LinkData, TextData } from '../../../DataStructures/ui_builder_interfaces'
+import { BlockConfiguration } from '../DefaultBlockData'
 
 export interface ImageActionCard {
   id?: number
@@ -38,218 +25,86 @@ export interface AltActionCarouselBlock extends Block, BlockConfiguration {
 }
 
 export const defaultImageActionBlock = {
-  description: { english: placeholderTitle, malayalam: '' },
-  title: { english: loremIpsum, malayalam: '' },
+  description: { english: 'Placeholder Title', malayalam: '' },
+  title: { english: 'Lorem Ipsum', malayalam: '' },
   actions: {
     lastUUID: 0,
     items: [],
   },
 }
 
-const defaultImageActionCard: ImageActionCard = {
-  image: placeholderImage,
-  title: { english: loremIpsum, malayalam: '' },
-  link: {
-    external: false,
-    link: '',
-    name: { english: loremIpsum, malayalam: '' },
-  },
-}
-
-export interface Properties {
+interface Properties {
   editMode?: boolean
-  onFieldEdit?: (field: BlocKFieldInfo) => void
-  blockData?: AltActionCarouselBlock
+  onFieldEdit?: any
+  blockData?: any
   language?: Language
-  dispatch?: React.Dispatch<PageBuilderAction>
+  dispatch?: any
 }
 
-export default function AltActionCarousel({
-  editMode,
-  onFieldEdit,
-  blockData,
-  language = 'en',
-  dispatch,
-}: Properties) {
-  const width = useWindowResize()
-  const [visibleSlides, setVisibleSlides] = useState(3)
-
-  useEffect(() => {
-    if (width > 1024) {
-      setVisibleSlides(3)
-      return
-    }
-    if (width > 768) {
-      setVisibleSlides(2)
-      return
-    }
-    setVisibleSlides(1)
-  }, [width])
-
-  const addNewAction = useCallback(() => {
-    if (dispatch != null) {
-      dispatch({
-        action: 'INSERT_INTO_LIST',
-        blockId: blockData?.id,
-        fieldName: 'actions',
-        fieldValue: defaultImageActionCard,
-      })
-    }
-  }, [dispatch, blockData])
-
-  return (
-    <AppLayoutPadding>
-      <div className='flex flex-col items-start justify-between py-12 lg:flex-row lg:items-center'>
-        <div className='flex w-full flex-col items-start justify-start px-4 lg:w-1/3'>
-          <h1 className='text-xl font-semibold leading-6 md:text-2xl xl:text-4xl xl:leading-10'>
-            <Localization
-              text={blockData?.title}
-              language={language}
-            />
-            {editMode && onFieldEdit != null && (
-              <EditLabel
-                onClick={() =>
-                  onFieldEdit({
-                    action: 'INSERT',
-                    field: 'title',
-                    fieldType: 'text',
-                    oldValue: blockData?.title,
-                  })
-                }
-              />
-            )}
-          </h1>
-          <p className='mt-4 text-base leading-normal text-gray-600'>
-            <Localization
-              text={blockData?.description}
-              language={language}
-            />
-            {editMode && onFieldEdit != null && (
-              <EditLabel
-                onClick={() =>
-                  onFieldEdit({
-                    action: 'UPDATE',
-                    field: 'description',
-                    fieldType: 'textarea',
-                    oldValue: blockData?.description,
-                  })
-                }
-              />
-            )}
-          </p>
-        </div>
-        <div className='flex w-full flex-col px-2 lg:w-2/3'>
-          <SlideShowTopButton
-            totalSlides={blockData == null ? 0 : blockData.actions.items.length}
-            visibleSlides={visibleSlides}
-            currentSlide={0}
-        isPlaying={true}
-        infinite={true}
-        interval={3000}
-          >
-            <div className='flex h-full w-full py-5'>
-              {blockData?.actions.items.map((item, index) => {
-                return (
-                  <Slide
-                    key={item.id.toString()}
-                    index={index}
-                    className='my-10 flex h-full justify-center px-5'
-                  >
-                    <div className='flex h-full flex-col gap-3 bg-primary-100 shadow'>
-                      <div className='group relative flex cursor-pointer items-center justify-center rounded-t-xl'>
-                        <img
-                          className='aspect-square  w-full rounded-t-xl object-cover object-center'
-                          src={item.item.image.url ?? ''}
-                          alt={item.item.title.english ?? ''}
-                        />
-                      </div>
-                      <div>
-                        {editMode && onFieldEdit != null && (
-                          <EditLabel
-                            onClick={() =>
-                              onFieldEdit({
-                                field: 'actions',
-                                oldValue: null,
-                                itemField: 'image',
-                                itemIndex: item.id,
-                                fieldType: 'image',
-                                action: 'UPDATE',
-                              })
-                            }
-                          />
-                        )}
-                      </div>
-                      <div className='flex w-full flex-col items-start justify-between rounded-b-xl  bg-primary-100 px-4 py-6'>
-                        <p className='mt-3 text-base font-semibold leading-none text-gray-800'>
-                          <Localization
-                            text={item.item.title}
-                            language={language}
-                          />
-                          {editMode && onFieldEdit != null && (
-                            <EditLabel
-                              onClick={() =>
-                                onFieldEdit({
-                                  field: 'actions',
-                                  oldValue: item.item.title,
-                                  itemField: 'title',
-                                  itemIndex: item.id,
-                                  fieldType: 'text',
-                                  action: 'UPDATE',
-                                })
-                              }
-                            />
-                          )}
-                        </p>
-                        <InertiaLink
-                          className='mt-6 flex items-center justify-start space-x-3 text-sm leading-none text-blue-700
-                           transition duration-500 ease-in-out hover:-translate-y-1'
-                          link={item.item.link}
-                        />
-                        {editMode && onFieldEdit != null && (
-                          <EditLabel
-                            label='Edit Link'
-                            onClick={() =>
-                              onFieldEdit({
-                                field: 'actions',
-                                oldValue: item.item.link,
-                                itemField: 'link',
-                                itemIndex: item.id,
-                                fieldType: 'link',
-                                action: 'UPDATE',
-                              })
-                            }
-                          />
-                        )}
-                        {editMode && dispatch != null && (
-                          <EditLabel
-                            label='REMVOVE SLIDE'
-                            onClick={() => {
-                              dispatch({
-                                action: 'REMOVE_LIST_ITEM',
-                                blockId: blockData?.id,
-                                fieldName: 'actions',
-                                itemId: item.id,
-                              })
-                            }}
-                          />
-                        )}
-                      </div>
-                    </div>
-                  </Slide>
-                )
-              })}
-            </div>
-          </SlideShowTopButton>
-          {editMode && onFieldEdit != null && (
-            <div>
-              <AddLabel
-                label='ADD SLIDE'
-                onClick={addNewAction}
-              />
-            </div>
-          )}
+const AltActionCarousel = ({ editMode, language, blockData, onFieldEdit, dispatch }: Properties) => {
+  const SmallCard = ({ title, desc, icon, href }: { title: string, desc: string, icon: React.ReactNode, href: string }) => (
+    <Link href={href} className="flex h-full flex-col rounded-2xl border border-blue-100 bg-white p-6 md:p-8 shadow-sm transition-all duration-300 hover:shadow-md hover:border-[#86C9F4] group">
+      <div className="mb-5 flex h-10 w-10 items-center justify-center text-[#095b8d]">
+        {icon}
+      </div>
+      <h3 className="mb-3 text-[19px] font-semibold leading-snug text-gray-900">{title}</h3>
+      <p className="mb-6 flex-grow text-[14px] leading-relaxed text-gray-500">{desc}</p>
+      <div className="mt-auto flex items-center">
+        <div className="text-[#095b8d] transition-colors group-hover:text-blue-800 group-hover:translate-x-1 duration-300">
+          <ArrowRightIcon className="h-5 w-5" />
         </div>
       </div>
-    </AppLayoutPadding>
+    </Link>
+  )
+
+  return (
+    <div className="w-full bg-[#f4f9fd] pt-8 md:pt-10 pb-16 md:pb-24 font-sans">
+      <div className="cmpad">
+        <div className="flex flex-col items-center justify-center text-center w-full mb-8 px-4">
+          {/* Subheading */}
+          <div className='flex items-center justify-center gap-3 mb-2 lg:mb-4'>
+            <span className='text-gray-400 font-medium text-sm'>||</span>
+            <span className='text-[11px] font-semibold tracking-[0.2em] text-gray-500 uppercase'>
+              Latest Updates
+            </span>
+          </div>
+
+          {/* Heading */}
+          <h2 className='tracking-tight font-urbanist flex flex-wrap justify-center gap-x-2'>
+            <span className='text-[#085484] font-semibold text-[32px] sm:text-[45px] leading-[1.2]'>References &amp;</span>
+            <span className='text-[#444444] font-normal text-[32px] sm:text-[45px] leading-[1.2]'>Resources</span>
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <SmallCard
+            title="Annual Report"
+            desc="View Kerala RERA annual reports and official updates."
+            icon={<ClipboardDocumentListIcon className="h-8 w-8" />}
+            href="/annual-report"
+          />
+          <SmallCard
+            title="Downloads"
+            desc="Download forms, reports, and official documents."
+            icon={<ArrowDownTrayIcon className="h-8 w-8" />}
+            href="/downloads"
+          />
+          <SmallCard
+            title="Newsletters"
+            desc="Latest Kerala RERA news and updates."
+            icon={<DocumentTextIcon className="h-8 w-8" />}
+            href="/newsletter"
+          />
+          <SmallCard
+            title="Manuals & Guidelines"
+            desc="Access official manuals, guidelines, and user resources."
+            icon={<BookmarkSquareIcon className="h-8 w-8" />}
+            href="/manuals-"
+          />
+        </div>
+      </div>
+    </div>
   )
 }
+
+export default AltActionCarousel

@@ -16,6 +16,7 @@ import { Language } from '../../../ui/ui_interfaces'
 import HomeExplore from '../Blocks/HomeExplore'
 import ContactUS from '../Blocks/ContactUS'
 import ActionCarousel from '../Blocks/ActionCarousel'
+import HomeActionCarousel from '../Blocks/HomeActionCarousel'
 import PageTitle, { PageTitleData } from '../Blocks/PageTitle'
 import ProjectsMapBlock, { ProjectMapBlockInterface } from '../Blocks/Map/ProjectMapsBlock'
 import { PageDataDependencies } from '../../../Pages/UIEditor/OutputPage'
@@ -29,6 +30,7 @@ import { FooterDataInterface } from '../../AdminPages/FooterEditor/FooterEditor'
 import HomeGallery from '../Blocks/Gallery/HomeGallery'
 import AltActionCarousel, { AltActionCarouselBlock } from '../Blocks/AltActionCarousel'
 import AboutUs from '../Blocks/AboutUs'
+import BrowseProjects from '../Blocks/BrowseProjects'
 
 interface Properties {
   block?: Block
@@ -120,23 +122,35 @@ const ResolveComponent = ({
           language={language}
         />
       )}
+      {blockName === 'About Us' && (
+        <AboutUs
+          language={language}
+          registeredProjects={dependencies?.registeredProjects}
+          registeredAgents={dependencies?.registeredAgents}
+          complaintsCount={dependencies?.complaintsCount}
+          promotersCount={dependencies?.promotersCount}
+        />
+      )}
+      {blockName === 'Home Action Carousel' && (
+        <HomeActionCarousel
+          editMode={editMode}
+          onFieldEdit={onFieldEdit}
+          blockData={block as unknown as any}
+          language={language}
+          dispatch={dispatch}
+        />
+      )}
+      {blockName === 'Browse Projects' && (
+        <BrowseProjects />
+      )}
       {blockName === 'Action Carousel' && (
-        <>
-          <AboutUs
-            language={language}
-            registeredProjects={dependencies?.registeredProjects}
-            registeredAgents={dependencies?.registeredAgents}
-            complaintsCount={dependencies?.complaintsCount}
-            promotersCount={dependencies?.promotersCount}
-          />
-          <ActionCarousel
-            editMode={editMode}
-            onFieldEdit={onFieldEdit}
-            blockData={block as unknown as any}
-            language={language}
-            dispatch={dispatch}
-          />
-        </>
+        <ActionCarousel
+          editMode={editMode}
+          onFieldEdit={onFieldEdit}
+          blockData={block as unknown as any}
+          language={language}
+          dispatch={dispatch}
+        />
       )}
       {blockName === 'Alt Action Carousel' && (
         <AltActionCarousel
