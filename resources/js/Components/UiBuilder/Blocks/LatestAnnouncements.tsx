@@ -210,7 +210,7 @@ const LatestAnnouncements = ({ announcements, language = 'en', blockData }: Prop
                       </div>
 
                       <div className="flex-grow pr-4">
-                        <p className="text-gray-600 text-[15px] font-normal line-clamp-2">
+                        <p className="text-[#595959] text-[14px] font-normal line-clamp-2">
                           <Localization
                             text={{
                               english: announcement.title,

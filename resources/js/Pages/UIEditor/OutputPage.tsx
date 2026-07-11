@@ -1,6 +1,7 @@
 import React from 'react'
 import ResolveComponent from '../../Components/UiBuilder/PageBuilder/ResolveComponent'
 import AppLayout from '../../Components/Layout/AppLayout/AppLayout'
+import BrowseProjects from '../../Components/UiBuilder/Blocks/BrowseProjects'
 import {Page} from './../../DataStructures/ui_builder_interfaces'
 import {Language} from '../../ui/ui_interfaces'
 import {Album, Announcement, GalleryVideo} from '../../DataStructures/data_interfaces'
@@ -46,14 +47,16 @@ const OutputPage = ({page, lang = 'en', dependencies, currentDate}: Properties) 
           })
           .map((element) => {
           return (
-            <ResolveComponent
-              key={element.id}
-              blockName={element.blockName}
-              block={element}
-              language={lang}
-              dependencies={dependencies}
-              currentDate={currentDate}
-            />
+            <React.Fragment key={element.id}>
+              <ResolveComponent
+                blockName={element.blockName}
+                block={element}
+                language={lang}
+                dependencies={dependencies}
+                currentDate={currentDate}
+              />
+              {element.blockName === 'Home Latest Announcements' && <BrowseProjects />}
+            </React.Fragment>
           )
         })}
       </div>
