@@ -90,7 +90,7 @@ class AgreementForSaleController extends Controller
             }
         }
         
-        $agreement->update($data);
+        $agreement->update($data); 
         
         return response()->json(['success' => true]);
     }
