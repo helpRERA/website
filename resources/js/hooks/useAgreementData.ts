@@ -86,6 +86,7 @@ export interface LandJDA {
   jdaDate: string;
   regNo: string;
   subRegistrarOffice: string;
+  additionalDetails: string;
 }
 
 export interface GarageDetail {
@@ -144,6 +145,8 @@ export interface AgreementData {
   landAdmeasuring: string;
   landSituatedAt: string;
   landTehsilDistrict: string;
+  landTitleDeedDate: string;
+  landTitleDeedRegNo: string;
   landOwnershipType: 'owner' | 'developer';
   landJDA: LandJDA;
   projectType: 'apartment' | 'plotted';
@@ -152,6 +155,7 @@ export interface AgreementData {
   projectName: string;
   projectOtherComponents: string;
   plotOtherComponents: string;
+  basementLocation: string;
 
   // Approvals
   commencementAuthority: string;
@@ -160,8 +164,15 @@ export interface AgreementData {
   layoutAuthority: string;
   reraRegNo: string;
   reraRegDate: string;
+  maintenanceClauses: string;
+  facilitiesOutsideProject: string;
+  competentAuthorityForDeclaration: string;
+  relevantStateAct: string;
 
   // Unit and Pricing Details
+  applicationNo: string;
+  applicationDate: string;
+  apartmentType: string;
   unitNo: string;
   unitFloor: string;
   unitTower: string;
@@ -173,6 +184,10 @@ export interface AgreementData {
   ratePerSqFt: string;
   totalPrice: string;
   totalPriceWords: string;
+  bookingAmount: string;
+  bookingAmountWords: string;
+  paymentFavourOf: string;
+  paymentPayableAt: string;
   priceBreakdown: PriceBreakdownItem[];
 
   // Payment Plan (Schedule C)
@@ -183,7 +198,9 @@ export interface AgreementData {
   delayInterestRate: string;
   possessionTargetMonth: string;
   gracePeriodDays: string;
-  relevantStateAct: string;
+  defaultConsecutiveDemands: string;
+  defaultConsecutiveMonths: string;
+  additionalTerms: string;
   apartmentOwnershipAct: string;
 
   // Signatures & Witnesses
@@ -228,39 +245,39 @@ const initialData: AgreementData = {
 
   allotteeType: 'individual',
   allotteeCompany: {
-    name: 'XXXX',
-    cin: 'XXXX',
-    registeredOffice: 'XXXX',
-    pan: 'XXXX',
-    authorizedSignatory: 'XXXX',
-    signatoryAadhaar: 'XXXX',
-    boardResolutionDate: 'XX/XX/XXXX',
+    name: '__________',
+    cin: '__________',
+    registeredOffice: '__________',
+    pan: '__________',
+    authorizedSignatory: '__________',
+    signatoryAadhaar: '__________',
+    boardResolutionDate: '__________',
   },
   allotteePartnership: {
-    name: 'XXXX',
-    businessPlace: 'XXXX',
-    pan: 'XXXX',
-    authorizedPartner: 'XXXX',
-    partnerAadhaar: 'XXXX',
-    authorizedVide: 'XXXX',
+    name: '__________',
+    businessPlace: '__________',
+    pan: '__________',
+    authorizedPartner: '__________',
+    partnerAadhaar: '__________',
+    authorizedVide: '__________',
   },
   allotteeIndividual: {
-    name: 'XXXX',
-    aadhaar: 'XXXX',
-    parentName: 'XXXX',
+    name: '__________',
+    aadhaar: '__________',
+    parentName: '__________',
     parentType: 'son',
-    age: 'XXXX',
-    residing: 'XXXX',
-    pan: 'XXXX',
+    age: '__________',
+    residing: '__________',
+    pan: '__________',
   },
   allotteeHuf: {
-    kartaName: 'XXXX',
-    kartaAadhaar: 'XXXX',
-    parentName: 'XXXX',
-    age: 'XX',
-    familyName: 'XXXX',
-    place: 'XXXX',
-    pan: 'XXXX',
+    kartaName: '__________',
+    kartaAadhaar: '__________',
+    parentName: '__________',
+    age: '____',
+    familyName: '__________',
+    place: '__________',
+    pan: '__________',
   },
 
   jointAllottees: [],
@@ -269,12 +286,15 @@ const initialData: AgreementData = {
   landAdmeasuring: 'XXXX',
   landSituatedAt: 'XXXX',
   landTehsilDistrict: 'XXXX',
+  landTitleDeedDate: 'XX/XX/XXXX',
+  landTitleDeedRegNo: 'XXXX',
   landOwnershipType: 'owner',
   landJDA: {
     ownerName: 'XXXX',
     jdaDate: 'XX/XX/XXXX',
     regNo: 'XXXX',
     subRegistrarOffice: 'XXXX',
+    additionalDetails: 'XXXX',
   },
   projectType: 'apartment',
   projectBuildingType: 'residential',
@@ -282,6 +302,7 @@ const initialData: AgreementData = {
   projectName: 'XXXX',
   projectOtherComponents: 'XXXX',
   plotOtherComponents: 'XXXX',
+  basementLocation: 'XXXX',
 
   commencementAuthority: 'XXXX',
   commencementNo: 'XXXX',
@@ -289,11 +310,18 @@ const initialData: AgreementData = {
   layoutAuthority: 'XXXX',
   reraRegNo: 'XXXX',
   reraRegDate: 'XX/XX/XXXX',
+  maintenanceClauses: '',
+  facilitiesOutsideProject: '',
+  competentAuthorityForDeclaration: '',
+  relevantStateAct: '',
 
-  unitNo: 'XXXX',
-  unitFloor: 'XXXX',
-  unitTower: 'XXXX',
-  unitCarpetArea: 'XXXX',
+  applicationNo: '__________',
+  applicationDate: '__________',
+  apartmentType: '__________',
+  unitNo: '__________',
+  unitFloor: '__________',
+  unitTower: '__________',
+  unitCarpetArea: '__________',
   garageDetails: [],
   plotNo: 'XXXX',
   plotArea: 'XXXX',
@@ -301,18 +329,24 @@ const initialData: AgreementData = {
   ratePerSqFt: 'XXXX',
   totalPrice: 'XXXX',
   totalPriceWords: 'XXXX',
+  bookingAmount: '___',
+  bookingAmountWords: 'XXXX',
+  paymentFavourOf: 'XXXX',
+  paymentPayableAt: 'XXXX',
   priceBreakdown: [],
 
   paymentPlan: [],
 
   earlyPaymentRebate: 'XX',
-  delayInterestRate: 'XXX',
-  possessionTargetMonth: 'XX',
+  delayInterestRate: 'XX',
+  possessionTargetMonth: 'XXXX',
   gracePeriodDays: 'XX',
-  relevantStateAct: 'XXXX',
+  defaultConsecutiveDemands: 'three',
+  defaultConsecutiveMonths: 'three',
+  additionalTerms: '',
   apartmentOwnershipAct: 'XXXX',
 
-  witnesses: [], 
+  witnesses: [],
 };
 
 // ─── Hook ─────────────────────────────────────────────────────────────────────

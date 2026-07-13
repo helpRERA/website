@@ -1,6 +1,6 @@
 import React from 'react';
-import { Plus, Trash2, ChevronRight, ChevronLeft } from 'lucide-react';
-import { AgreementData, JointAllottee, GarageDetail, PriceBreakdownRow, PaymentMilestone, WitnessRow } from '../../hooks/useAgreementData';
+import { Plus, Trash2, ChevronRight, ChevronLeft, RefreshCw } from 'lucide-react';
+import { AgreementData, JointAllottee, GarageDetail, PriceBreakdownItem, PaymentPlanItem, Witness } from '../../hooks/useAgreementData';
 
 interface FormPanelProps {
   activeStep: number;
@@ -19,7 +19,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
   const steps = [
     { id: 0, label: 'Execution' },
     { id: 1, label: 'Promoter' },
-    { id: 2, label: 'Allottee' },
+    // { id: 2, label: 'Allottee' },
     { id: 3, label: 'Property & Project' },
     { id: 4, label: 'Approvals' },
     { id: 5, label: 'Unit & Pricing' },
@@ -28,11 +28,17 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
   ];
 
   const handleNext = () => {
-    if (activeStep < steps.length - 1) setActiveStep(activeStep + 1);
+    const currentIndex = steps.findIndex(s => s.id === activeStep);
+    if (currentIndex >= 0 && currentIndex < steps.length - 1) {
+      setActiveStep(steps[currentIndex + 1].id);
+    }
   };
 
   const handleBack = () => {
-    if (activeStep > 0) setActiveStep(activeStep - 1);
+    const currentIndex = steps.findIndex(s => s.id === activeStep);
+    if (currentIndex > 0) {
+      setActiveStep(steps[currentIndex - 1].id);
+    }
   };
 
   // Helper for adding to lists
@@ -60,7 +66,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
   };
 
   const addPriceBreakdown = () => {
-    const newBreakdown: PriceBreakdownRow[] = [
+    const newBreakdown: PriceBreakdownItem[] = [
       ...data.priceBreakdown,
       { id: Date.now(), description: '', amount: '' }
     ];
@@ -72,7 +78,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
     updateField('priceBreakdown', newBreakdown);
   };
 
-  const updatePriceBreakdown = (id: number, field: keyof Omit<PriceBreakdownRow, 'id'>, value: string) => {
+  const updatePriceBreakdown = (id: number, field: keyof Omit<PriceBreakdownItem, 'id'>, value: string) => {
     const newBreakdown = data.priceBreakdown.map(b => {
       if (b.id === id) {
         return { ...b, [field]: value };
@@ -83,7 +89,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
   };
 
   const addMilestone = () => {
-    const newPlan: PaymentMilestone[] = [
+    const newPlan: PaymentPlanItem[] = [
       ...data.paymentPlan,
       { id: Date.now(), description: '', percentage: '', amount: '' }
     ];
@@ -95,7 +101,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
     updateField('paymentPlan', newPlan);
   };
 
-  const updateMilestone = (id: number, field: keyof Omit<PaymentMilestone, 'id'>, value: string) => {
+  const updateMilestone = (id: number, field: keyof Omit<PaymentPlanItem, 'id'>, value: string) => {
     const newPlan = data.paymentPlan.map(m => {
       if (m.id === id) {
         return { ...m, [field]: value };
@@ -138,7 +144,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
   };
 
   const addWitness = () => {
-    const newWitnesses: WitnessRow[] = [
+    const newWitnesses: Witness[] = [
       ...data.witnesses,
       { id: Date.now(), name: '', address: '' }
     ];
@@ -150,7 +156,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
     updateField('witnesses', newWitnesses);
   };
 
-  const updateWitness = (id: number, field: keyof Omit<WitnessRow, 'id'>, value: string) => {
+  const updateWitness = (id: number, field: keyof Omit<Witness, 'id'>, value: string) => {
     const newWitnesses = data.witnesses.map(w => {
       if (w.id === id) {
         return { ...w, [field]: value };
@@ -891,6 +897,25 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               </div>
             </div>
 
+            <div className="form-group row-2">
+              <div>
+                <label>Title Deed Date</label>
+                <input 
+                  type="text" 
+                  value={data.landTitleDeedDate} 
+                  onFocus={() => setActiveField('landTitleDeedDate')} onChange={(e) => updateField('landTitleDeedDate', e.target.value)} 
+                />
+              </div>
+              <div>
+                <label>Title Deed Reg No</label>
+                <input 
+                  type="text" 
+                  value={data.landTitleDeedRegNo} 
+                  onFocus={() => setActiveField('landTitleDeedRegNo')} onChange={(e) => updateField('landTitleDeedRegNo', e.target.value)} 
+                />
+              </div>
+            </div>
+
             <div className="form-group">
               <label>Land Ownership Type</label>
               <div className="toggle-group">
@@ -946,6 +971,15 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                     onFocus={() => setActiveField('landJDA.subRegistrarOffice')} onChange={(e) => updateNestedField('landJDA', 'subRegistrarOffice', e.target.value)} 
                   />
                 </div>
+                <div className="form-group">
+                  <label>Additional Details</label>
+                  <textarea 
+                    rows={2}
+                    value={data.landJDA.additionalDetails} 
+                    onFocus={() => setActiveField('landJDA.additionalDetails')} onChange={(e) => updateNestedField('landJDA', 'additionalDetails', e.target.value)} 
+                    placeholder="Enter any additional details to appear after Sub-Registrar..."
+                  />
+                </div>
               </div>
             )}
 
@@ -955,7 +989,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 <label>Project Type</label>
                 <select 
                   value={data.projectType} 
-                  onFocus={() => setActiveField('projectType')} onFocus={() => setActiveField('projectType')} onChange={(e) => updateField('projectType', e.target.value as any)}
+                  onFocus={() => setActiveField('projectType')} onChange={(e) => updateField('projectType', e.target.value as any)}
                 >
                   <option value="apartment">Building / Apartment</option>
                   <option value="plotted">Plotted Development</option>
@@ -970,6 +1004,18 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 />
               </div>
             </div>
+            
+            <div className="form-group row-1">
+              <div>
+                <label>Basement and Service Areas Location</label>
+                <input 
+                  type="text" 
+                  value={data.basementLocation} 
+                  onFocus={() => setActiveField('basementLocation')} onChange={(e) => updateField('basementLocation', e.target.value)} 
+                  placeholder="e.g. Project Name"
+                />
+              </div>
+            </div>
 
             {data.projectType === 'apartment' ? (
               <>
@@ -978,7 +1024,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                     <label>Building Type</label>
                     <select 
                       value={data.projectBuildingType} 
-                      onFocus={() => setActiveField('projectBuildingType')} onFocus={() => setActiveField('projectBuildingType')} onChange={(e) => updateField('projectBuildingType', e.target.value as any)}
+                      onFocus={() => setActiveField('projectBuildingType')} onChange={(e) => updateField('projectBuildingType', e.target.value as any)}
                     >
                       <option value="residential">Residential</option>
                       <option value="commercial">Commercial</option>
@@ -1080,6 +1126,18 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 />
               </div>
             </div>
+
+            <h3 className="section-title" style={{ marginTop: '1rem' }}>State Legislation References</h3>
+            <div className="form-group row-1">
+              <div>
+                <label>Apartment Ownership Act (State specific)</label>
+                <input 
+                  type="text" 
+                  value={data.apartmentOwnershipAct} 
+                  onFocus={() => setActiveField('apartmentOwnershipAct')} onChange={(e) => updateField('apartmentOwnershipAct', e.target.value)} 
+                />
+              </div>
+            </div>
           </div>
         )}
 
@@ -1087,8 +1145,36 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
         {activeStep === 5 && (
           <div className="form-section">
             <h3 className="section-title">Allotted Unit details</h3>
+            <div className="form-group row-2">
+              <div>
+                <label>Application No</label>
+                <input 
+                  type="text" 
+                  value={data.applicationNo} 
+                  onFocus={() => setActiveField('applicationNo')} onChange={(e) => updateField('applicationNo', e.target.value)} 
+                />
+              </div>
+              <div>
+                <label>Application Date</label>
+                <input 
+                  type="text" 
+                  value={data.applicationDate} 
+                  onFocus={() => setActiveField('applicationDate')} onChange={(e) => updateField('applicationDate', e.target.value)} 
+                />
+              </div>
+            </div>
+
             {data.projectType === 'apartment' ? (
               <>
+                <div className="form-group">
+                  <label>Apartment Type</label>
+                  <input 
+                    type="text" 
+                    value={data.apartmentType} 
+                    onFocus={() => setActiveField('apartmentType')} onChange={(e) => updateField('apartmentType', e.target.value)} 
+                    placeholder="e.g. 2BHK, 3BHK..."
+                  />
+                </div>
                 <div className="form-group row-2">
                   <div>
                     <label>Apartment / Room No</label>
@@ -1211,6 +1297,44 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 onFocus={() => setActiveField('totalPriceWords')} onChange={(e) => updateField('totalPriceWords', e.target.value)} 
               />
             </div>
+            <div className="form-group row-2">
+              <div>
+                <label>Booking Amount (Rs)</label>
+                <input 
+                  type="text" 
+                  value={data.bookingAmount} 
+                  onFocus={() => setActiveField('bookingAmount')} onChange={(e) => updateField('bookingAmount', e.target.value)} 
+                />
+              </div>
+              <div>
+                <label>Booking Amount (In Words)</label>
+                <input 
+                  type="text" 
+                  value={data.bookingAmountWords} 
+                  onFocus={() => setActiveField('bookingAmountWords')} onChange={(e) => updateField('bookingAmountWords', e.target.value)} 
+                />
+              </div>
+            </div>
+            
+            <h3 className="section-title" style={{ marginTop: '1rem' }}>Mode of Payment</h3>
+            <div className="form-group row-2">
+              <div>
+                <label>Payment in favour of</label>
+                <input 
+                  type="text" 
+                  value={data.paymentFavourOf} 
+                  onFocus={() => setActiveField('paymentFavourOf')} onChange={(e) => updateField('paymentFavourOf', e.target.value)} 
+                />
+              </div>
+              <div>
+                <label>Payable at</label>
+                <input 
+                  type="text" 
+                  value={data.paymentPayableAt} 
+                  onFocus={() => setActiveField('paymentPayableAt')} onChange={(e) => updateField('paymentPayableAt', e.target.value)} 
+                />
+              </div>
+            </div>
 
             {/* Custom pricing breakdown list */}
             <div className="form-group" style={{ marginTop: '0.5rem' }}>
@@ -1238,6 +1362,46 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                     </button>
                   </div>
                 ))}
+              </div>
+            </div>
+            
+            <h3 className="section-title" style={{ marginTop: '1rem' }}>Maintenance Clauses</h3>
+            <div className="form-group">
+              <label>Additional Maintenance Clauses</label>
+              <textarea 
+                value={data.maintenanceClauses} 
+                onFocus={() => setActiveField('maintenanceClauses')} onChange={(e) => updateField('maintenanceClauses', e.target.value)} 
+                rows={3}
+                placeholder="(Insert any other clauses in relation to maintenance of project, infrastructure and equipment)"
+              />
+            </div>
+
+            <h3 className="section-title" style={{ marginTop: '1rem' }}>Clause 1.10 Details</h3>
+            <div className="form-group">
+              <label>Facilities outside the Project (namely...)</label>
+              <input 
+                type="text" 
+                value={data.facilitiesOutsideProject} 
+                onFocus={() => setActiveField('facilitiesOutsideProject')} onChange={(e) => updateField('facilitiesOutsideProject', e.target.value)} 
+                placeholder="e.g. Club House, Park"
+              />
+            </div>
+            <div className="form-group row-2">
+              <div>
+                <label>Competent Authority for Declaration</label>
+                <input 
+                  type="text" 
+                  value={data.competentAuthorityForDeclaration} 
+                  onFocus={() => setActiveField('competentAuthorityForDeclaration')} onChange={(e) => updateField('competentAuthorityForDeclaration', e.target.value)} 
+                />
+              </div>
+              <div>
+                <label>Relevant State Act</label>
+                <input 
+                  type="text" 
+                  value={data.relevantStateAct} 
+                  onFocus={() => setActiveField('relevantStateAct')} onChange={(e) => updateField('relevantStateAct', e.target.value)} 
+                />
               </div>
             </div>
           </div>
@@ -1316,6 +1480,39 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 />
               </div>
             </div>
+            
+            <h3 className="section-title" style={{ marginTop: '1rem' }}>Default Conditions</h3>
+            <div className="form-group row-2">
+              <div>
+                <label>Consecutive unpaid demands (Count)</label>
+                <input 
+                  type="text" 
+                  value={data.defaultConsecutiveDemands} 
+                  onFocus={() => setActiveField('defaultConsecutiveDemands')} onChange={(e) => updateField('defaultConsecutiveDemands', e.target.value)} 
+                  placeholder="e.g. three"
+                />
+              </div>
+              <div>
+                <label>Consecutive unpaid months (Count)</label>
+                <input 
+                  type="text" 
+                  value={data.defaultConsecutiveMonths} 
+                  onFocus={() => setActiveField('defaultConsecutiveMonths')} onChange={(e) => updateField('defaultConsecutiveMonths', e.target.value)} 
+                  placeholder="e.g. three"
+                />
+              </div>
+            </div>
+            
+            <h3 className="section-title" style={{ marginTop: '1rem' }}>Additional Terms</h3>
+            <div className="form-group">
+              <label>Other Terms & Conditions (Optional)</label>
+              <textarea 
+                value={data.additionalTerms} 
+                onFocus={() => setActiveField('additionalTerms')} onChange={(e) => updateField('additionalTerms', e.target.value)} 
+                rows={4}
+                placeholder="(Please insert any other terms and conditions as per the contractual understanding between the parties...)"
+              />
+            </div>
           </div>
         )}
 
@@ -1350,24 +1547,6 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                   </div>
                 </div>
               ))}
-            </div>
-
-            <h3 className="section-title" style={{ marginTop: '1rem' }}>State Legislation References</h3>
-            <div className="form-group">
-              <label>Relevant RERA State Rules Act</label>
-              <input 
-                type="text" 
-                value={data.relevantStateAct} 
-                onFocus={() => setActiveField('relevantStateAct')} onChange={(e) => updateField('relevantStateAct', e.target.value)} 
-              />
-            </div>
-            <div className="form-group">
-              <label>Apartment Ownership Act (State specific)</label>
-              <input 
-                type="text" 
-                value={data.apartmentOwnershipAct} 
-                onFocus={() => setActiveField('apartmentOwnershipAct')} onChange={(e) => updateField('apartmentOwnershipAct', e.target.value)} 
-              />
             </div>
 
             <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'center' }}>
