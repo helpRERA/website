@@ -3,6 +3,7 @@ import React from 'react'
 import { Paginator } from '../ui_interfaces'
 
 const calcUrls = (pagination: Paginator<{}>) => {
+  if (!pagination || !pagination.links) return null
   let index = 0
   const listLength = pagination.links.length
   return pagination.links.map((link) => {
@@ -73,17 +74,16 @@ const calcUrls = (pagination: Paginator<{}>) => {
 }
 
 const Pagination = ({ pagination }: { pagination: Paginator<{}> }) => {
+  if (!pagination || !pagination.links || pagination.links.length === 0) return null
   const pageList = calcUrls(pagination)
 
   return (
-    <div className='flex w-full items-center justify-center py-6'>
-      <nav
-        className='flex items-center gap-2'
-        aria-label='Pagination'
-      >
-        {pageList}
-      </nav>
-    </div>
+    <nav
+      className='flex w-full flex-wrap justify-center items-center gap-2 py-6 px-4'
+      aria-label='Pagination'
+    >
+      {pageList}
+    </nav>
   )
 }
 
