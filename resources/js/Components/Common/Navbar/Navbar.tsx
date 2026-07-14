@@ -51,7 +51,8 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className={`top-0 z-[9999] w-full px-4 py-4 md:px-8 lg:px-12 lg:py-6 font-urbanist ${isHome ? 'absolute bg-transparent' : 'sticky bg-[#0f2c59]'}`}>
+      {!isHome && <div className="h-[112px] lg:h-[128px] w-full bg-[#0f2c59]" aria-hidden="true" />}
+      <nav className={`fixed top-0 left-0 right-0 z-[9999] w-full px-4 py-4 md:px-8 lg:px-12 lg:py-6 font-urbanist transition-all duration-300 ${isHome ? 'bg-transparent' : 'bg-[#0f2c59]'}`}>
         <div className='flex h-[80px] items-center justify-between rounded-lg bg-white px-6 shadow-md md:px-10 lg:px-12'>
           <div className='flex h-full items-center py-2'>
             <Link as='a' href='/' className='flex h-full items-center'>

@@ -49,10 +49,10 @@ const AppLayout = ({ children }: Properties) => {
 
       {/* Floating Action Buttons */}
       <div className='fixed right-0 top-1/3 z-[9999] flex flex-col gap-2'>
-        <button className='flex h-12 w-12 items-center justify-center rounded-l-md bg-[#0f2c59] shadow-lg transition hover:bg-[#0b1e3b] p-2.5'>
+        <button className='flex h-12 w-12 items-center justify-center rounded-l-[16px] bg-[#085484] shadow-lg transition hover:bg-[#0b1e3b] p-2.5'>
           <img src="/svg/access.svg" alt="Accessibility" className="w-full h-full object-contain" />
         </button>
-        <button className='flex h-12 w-12 items-center justify-center rounded-l-md bg-[#0f2c59] shadow-lg transition hover:bg-[#0b1e3b] p-2.5'>
+        <button className='flex h-12 w-12 items-center justify-center rounded-l-[16px] bg-[#085484] shadow-lg transition hover:bg-[#0b1e3b] p-2.5'>
           <img src="/svg/search.svg" alt="Search" className="w-full h-full object-contain" />
         </button>
       </div>
