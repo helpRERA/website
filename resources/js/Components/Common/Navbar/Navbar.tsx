@@ -34,6 +34,9 @@ const Navbar = () => {
 
   const toggleDropdown = (): void => {
     setShowDropdown((previous) => {
+      if (!previous) {
+        setSelectedOption('ABOUT K-RERA')
+      }
       return !previous
     })
   }

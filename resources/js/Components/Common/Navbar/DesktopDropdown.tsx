@@ -35,11 +35,7 @@ const DesktopDropdown = ({ nav, hoverDropdown, lang = 'en' }: Properties) => {
               onMouseOver={() => {
                 hoverDropdown(navSection.value)
               }}
-              className={`nav-item relative hidden whitespace-nowrap px-4 lg:px-5 text-sm font-medium transition-colors
-                         ${navSection.value === 'STATISTICS'
-                  ? 'text-[#0f2c59] hover:bg-gray-100'
-                  : 'hover:text-[#0f2c59] hover:bg-gray-50'
-                } md:inline-flex md:items-center h-[80px] cursor-pointer`}
+              className={`nav-item relative hidden whitespace-nowrap px-4 lg:px-5 text-sm font-medium transition-colors hover:text-[#0f2c59] hover:bg-gray-50 md:inline-flex md:items-center h-[80px] cursor-pointer`}
               key={navSection.value}
             >
               <Link
