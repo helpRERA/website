@@ -61,14 +61,8 @@ const AmenitiesCheckList = ({ onAmenitiesChange, oldAmenities, lang = 'en' }: Pr
   }, [checkList, onAmenitiesChange])
 
   return (
-    <div className='flex flex-col gap-4'>
-      <span className='font-bold'>
-        <Localization
-          text={localization['Amenities']}
-          language={lang}
-        />{' '}
-      </span>
-      <div className='grid grid-cols-1 gap-3 rounded-lg border border-black p-2 md:grid-cols-2 lg:grid-cols-3'>
+    <div className='flex flex-col gap-4 w-full'>
+      <div className='flex flex-wrap gap-8 w-full'>
         {checkList.map((amenity) => {
           return (
             <div

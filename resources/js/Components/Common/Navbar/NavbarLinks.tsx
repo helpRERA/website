@@ -69,7 +69,7 @@ const NavbarLinks = ({ nav, section, lang = 'en' }: Properties) => {
       {/* Right pane - Explore Projects (Only shown on xl+ screens to save space) */}
       <div className='relative hidden xl:flex w-[270px] shrink-0 flex-col items-center bg-[#0d5985] text-center overflow-hidden'>
         <div className='relative z-10 flex w-full flex-col items-center pt-10 px-8'>
-          <h3 className='mb-2 text-[18px] font-medium text-white'>Find Your Project</h3>
+          <h3 className='mb-2 text-[28px] font-medium text-white'>Find Your Project</h3>
           <p className='mb-6 text-[12.5px] leading-[1.6] text-blue-100 max-w-[200px]'>
             Click Here for a reliable and comprehensive real estate search for Kerala.
           </p>

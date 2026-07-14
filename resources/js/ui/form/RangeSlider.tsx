@@ -100,7 +100,7 @@ const RangeSlider = ({
           }}
         ></div>
         <input
-          className='accent-primary absolute inset-0 w-full cursor-pointer rounded-full transition duration-300 '
+          className='accent-[#085484] absolute inset-0 w-full cursor-pointer rounded-full transition duration-300 '
           type='range'
           min={min}
           max={max}
@@ -111,7 +111,7 @@ const RangeSlider = ({
           onChange={(event) => startChange(event.target.value)}
         />
         <input
-          className='accent-primary absolute inset-0 w-full cursor-pointer rounded-full transition duration-300'
+          className='accent-[#085484] absolute inset-0 w-full cursor-pointer rounded-full transition duration-300'
           type='range'
           min={min}
           max={max}

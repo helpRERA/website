@@ -8,7 +8,6 @@ import Localization from '../../../ui/Localization'
 import { localization } from '../../../Localization/localization'
 import { Language } from '../../../ui/ui_interfaces'
 import usePromoterInfo from '../usePromoterInfo'
-import { ChevronDoubleRightIcon } from '@heroicons/react/20/solid'
 import { PROJECT_TYPE_PLOT } from '../ProjectFilterForm/ProjectFilterForm'
 import AvailabilityProgressLine from '../AvailabilityProgressLine'
 
@@ -31,122 +30,112 @@ const ProjectCard = ({ project, today, lang = 'en' }: Properties) => {
     <Link
       href={`/projects/${project.ID}?lang=${lang}`}
       as='a'
-      className='flex w-full cursor-pointer flex-wrap rounded-xl bg-primary-50 p-3 text-black shadow outline-8 hover:shadow-xl md:p-10'
+      className='flex w-full cursor-pointer flex-col md:flex-row gap-6 rounded-xl bg-white p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow'
     >
-      <div className='flex w-full flex-col gap-3 md:w-1/3 xl:w-1/3'>
-        <div className='grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-2'>
-          {images.map((image, index) => {
-            return (
-              <div
-                key={image.ID?.toString() + ' ' + index + ' ' + project.ID.toString()}
-                className={`${index === 1 ? 'hidden sm:block' : ''}`}
-              >
-                <img
-                  src={image.ID == null ? '/placeholder.png' : `/uploaded-images/${image.ID}`}
-                  alt={project.Name}
-                  className={`aspect-[4/3] h-auto w-full rounded object-cover object-center`}
-                  loading='lazy'
-                  decoding='async'
-                />
-              </div>
-            )
-          })}
-        </div>
-        {project.images != null && (
-          <>
-            <div
-              className={`hidden  ${project.images.length > 2 ? 'sm:flex' : 'hidden'} justify-end`}
-            >
-              <span className='text-xs underline'>{project.images.length - 2} more images</span>
-            </div>
-            <div
-              className={`${project.images.length > 1 ? 'flex' : 'hidden'} justify-end sm:hidden`}
-            >
-              <span className='text-xs underline'>{project.images.length - 1} more images</span>
-            </div>
-          </>
+      {/* Left Column - Image */}
+      <div className='flex w-full shrink-0 flex-col md:w-[320px]'>
+        <img
+          src={images[0]?.ID == null ? '/placeholder.png' : `/uploaded-images/${images[0]?.ID}`}
+          alt={project.Name}
+          className='aspect-[16/9] h-[180px] w-full rounded-lg object-cover object-center'
+          loading='lazy'
+          decoding='async'
+        />
+        {project.images != null && project.images.length > 1 && (
+          <div className='mt-2 flex justify-end'>
+            <span className='text-xs text-gray-500'>+{project.images.length - 1} more photos</span>
+          </div>
         )}
       </div>
-      <div className='flex w-full flex-col gap-5 pt-5 md:w-2/3 md:pt-0 md:pl-4 xl:w-2/3'>
-        <div className='md:col-span-3'>
-          <h1 className='text-xl capitalize lg:text-2xl'>{project.Name}</h1>
+
+      {/* Middle Column - Details */}
+      <div className='flex w-full flex-col md:flex-grow border-b border-gray-100 pb-4 md:border-b-0 md:border-r md:pb-0 md:pr-6'>
+        <h1 className='text-[22px] font-medium uppercase text-[#085484] tracking-wide'>
+          {project.Name}
+        </h1>
+        <div className='mt-2 flex flex-col gap-1.5 text-[13px] text-gray-600'>
+          <div className='flex items-center gap-2'>
+            <svg className='h-4 w-4 shrink-0 text-gray-700' fill='currentColor' viewBox='0 0 20 20'>
+              <path fillRule='evenodd' d='M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z' clipRule='evenodd' />
+            </svg>
+            <span className='font-medium text-gray-700 uppercase'>{promoterName}</span>
+          </div>
+          <div className='flex items-center gap-2'>
+            <svg className='h-4 w-4 shrink-0 text-[#085484]' fill='currentColor' viewBox='0 0 20 20'>
+              <path fillRule='evenodd' d='M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z' clipRule='evenodd' />
+            </svg>
+            <span className='text-gray-500'>
+              {project?.village?.Villagename == null ? '' : `${project?.village?.Villagename}, `}
+              {project?.taluk?.SubDistrictname == null ? '' : `${project?.taluk?.SubDistrictname} `}
+              {project?.district?.Districtname}
+            </span>
+          </div>
         </div>
-        <div className='grid grid-cols-1 gap-4 xl:grid-cols-3'>
-          <div className='flex flex-col gap-4'>
-            <span className='font-semibold'>{promoterName}</span>
-            <span className=''>{project.certificate_info?.CertificateNo}</span>
-            <div className='flex flex-wrap gap-3'>
+        
+        <div className='mt-6 flex flex-col gap-2 text-[13px]'>
+          <div className='flex items-center gap-6'>
+            <span className='text-gray-500 w-[150px]'>Total Area</span>
+            <span className='font-semibold text-gray-800'>{project.Area} sqm</span>
+          </div>
+          {project.PType != PROJECT_TYPE_PLOT && (
+            <div className='flex items-center gap-2'>
+              <span className='text-gray-500'>Number of Building:</span>
+              <span className='text-gray-600'>{project.buildings_count}</span>
+            </div>
+          )}
+          <div className='flex items-center gap-2'>
+            <span className='text-gray-500'>Proposed Completion On:</span>
+            <span className='text-gray-600'>{getIndianDate(project.ProposedDateOfCompletion)}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Right Column - Badges & Actions */}
+      <div className='flex w-full shrink-0 flex-col md:w-[280px]'>
+        <div className='flex flex-col h-full justify-between'>
+          {/* Top Section */}
+          <div className='flex flex-col gap-6'>
+            <div className='flex flex-wrap gap-2'>
               {project.PType != PROJECT_TYPE_PLOT && (
                 <>
-                  <span className='flex justify-center rounded-full bg-highlight-500 px-2 py-1 text-sm'>
-                    {project.NumberOfResidentialUnits}{' '}
-                    <Localization
-                      text={localization['Residential Units']}
-                      language={lang}
-                    />
+                  <span className='whitespace-nowrap rounded-full bg-[#085484] px-4 py-1.5 text-[11px] font-medium text-white'>
+                    {project.NumberOfResidentialUnits} Residential Units
                   </span>
-                  <span className='flex justify-center rounded-full bg-alert-500 px-2 py-1 text-sm'>
-                    {project.NumberOfCommercialUnits}{' '}
-                    <Localization
-                      text={localization['Commercial Units']}
-                      language={lang}
-                    />
+                  <span className='whitespace-nowrap rounded-full bg-[#f0f5fa] px-4 py-1.5 text-[11px] font-medium text-[#085484]'>
+                    {project.NumberOfCommercialUnits} Commercial Units
                   </span>
                 </>
               )}
-              <ProjectStatusPill
-                completed={completed}
-                today={today}
-                proposedDate={project.ProposedDateOfCompletion}
-              />
             </div>
-            <div className=''>
-              {project.PType != PROJECT_TYPE_PLOT && (
-                <span>
-                  <Localization
-                    text={localization['Number Of Buildings']}
-                    language={lang}
-                  />{' '}
-                  <b>{project.buildings_count}</b>
-                </span>
-              )}
-            </div>
-          </div>
-          <div className='flex flex-col gap-6'>
-            <span className=''>
-              <b>
-                {project?.district?.Districtname}{' '}
-                {project.taluk == null ? '' : `, ${project?.taluk?.SubDistrictname}`}
-              </b>
-            </span>
-            <span>
-              <Localization
-                text={localization['Proposed Completion On']}
-                language={lang}
-              />{' '}
-              <br />
-              <b>{getIndianDate(project.ProposedDateOfCompletion)}</b>
-            </span>
-          </div>
-          <div className='flex flex-col'>
-            <div className='flex flex-col gap-5'>
+
+            <div className='w-full'>
               <AvailabilityProgressLine
                 project={project}
                 lang={lang}
               />
-              <span className=''>
-                <b className=''>{project.Area}sqm</b>{' '}
-                <Localization
-                  text={localization['Total Area']}
-                  language={lang}
-                />
-              </span>
             </div>
           </div>
-        </div>
-        <div className='flex items-end justify-end text-blue-600 underline hover:text-blue-500'>
-          <span className='text-sm '>More Info &nbsp;</span>
-          <ChevronDoubleRightIcon className='h-4 w-4' />
+
+          {/* Bottom Section */}
+          <div className='mt-6 flex items-end justify-between'>
+            <div className='flex flex-col'>
+              <div className='flex items-center gap-1.5 mb-1.5 text-gray-500 text-xs'>
+                <svg className='h-4 w-4 text-[#085484]' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' />
+                </svg>
+                <span>Certificate</span>
+              </div>
+              <div className='inline-flex items-center justify-center rounded-full border border-[#085484] bg-white px-4 py-1.5 text-[11px] font-medium text-gray-600'>
+                {project.certificate_info?.CertificateNo}
+              </div>
+            </div>
+            
+            <div className='flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#085484] text-white shadow-md hover:bg-[#06426a] transition-colors'>
+              <svg className='h-5 w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />
+              </svg>
+            </div>
+          </div>
         </div>
       </div>
     </Link>

@@ -61,15 +61,17 @@ const Navbar = () => {
   }
 
   const url = usePage().url
-  const isHome = url === '/' || url.startsWith('/?lang=')
+  const isHome = url === '/' || url.startsWith('/?lang=') || url.startsWith('/explore-projects')
 
   return (
     <>
-      {!isHome && <div className="h-[112px] lg:h-[128px] w-full" style={{ backgroundImage: 'linear-gradient(to bottom, #085484 50%, #0f2c59 50%)' }} aria-hidden="true" />}
+      {!isHome && <div className="h-[112px] lg:h-[128px] w-full" aria-hidden="true" />}
       <nav 
         className={`fixed top-0 left-0 right-0 z-[9999] w-full px-4 py-4 md:px-8 lg:px-12 lg:py-6 font-urbanist transition-all duration-300`}
-        style={isHome ? { backgroundImage: 'linear-gradient(to bottom, #085484 50%, transparent 50%)' } : { backgroundImage: 'linear-gradient(to bottom, #085484 50%, #0f2c59 50%)' }}
       >
+        {/* Thin blue bar at the very top */}
+        <div className="absolute top-0 left-0 right-0 h-6 md:h-8 bg-[#085484] -z-10" />
+
         <div className='relative flex h-[80px] items-center justify-between rounded-lg bg-white px-6 shadow-md md:px-10 lg:px-12'>
           <div className='flex h-full items-center py-2'>
             <Link as='a' href='/' className='flex h-full items-center'>

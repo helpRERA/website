@@ -182,59 +182,27 @@ const ProjectFilterForm = ({
   }, [lang, setLoading])
 
   return (
-    <div className='flex flex-grow flex-col gap-5'>
-      <form
-        className={`'grid-cols-1 gap-5 p-1 first:grid md:grid-cols-2`}
-        onSubmit={submit}
-      >
-        <div className='grid-col-1 grid gap-5 md:grid-cols-2'>
-          <div className='flex flex-col md:col-span-2'>
+    <div className='flex w-full flex-col rounded-xl bg-white p-6 shadow-lg lg:p-8'>
+      <div className='mb-8'>
+        <h2 className='text-[28px] font-medium text-[#444444]' style={{ fontFamily: "'Urbanist', sans-serif" }}>
+          <span className='text-[28px] text-[#085484]'>Find Your</span> RERA Project
+        </h2>
+        <p className='mt-2 text-sm text-gray-400'>Choose one or more options above to search</p>
+      </div>
+
+      <form className='flex flex-col gap-6' onSubmit={submit}>
+        {/* Row 1 */}
+        <div className='grid grid-cols-1 gap-6 lg:grid-cols-[1.5fr_1fr_1fr]'>
+          <div className='flex flex-col'>
+            <label className='mb-1.5 text-[13px] font-normal text-[#085484]' style={{ fontFamily: "'DM Sans', sans-serif" }}>Project Name / Locality / Promoter / Registration No.</label>
             <Input
               data={form.search}
               setData={setFormValue('search')}
-              placeholder={`${displayText(
-                localization['Project Name / Locality / Promoter / Registration Number'],
-                lang
-              )}`}
+              placeholder='Enter Name / locality / Promoter/ Reg. No.'
             />
           </div>
           <div className='flex flex-col'>
-            <SelectList
-              list={districts}
-              data={form.district}
-              dataKey='Districtcode'
-              displayKey='Districtname'
-              setData={handleDistrictChange}
-              placeholder='Select District'
-              showAllOption
-              allOptionText={`${displayText(localization['All Districts'], lang)}`}
-            />
-          </div>
-          <div className='flex flex-col'>
-            <SelectList
-              list={taluks}
-              data={form.taluk}
-              dataKey='Subdistrictcode'
-              displayKey='SubDistrictname'
-              setData={handleTalukChange}
-              placeholder='Select Taluk'
-              showAllOption
-              allOptionText={`${displayText(localization['All Taluks'], lang)}`}
-            />
-          </div>
-          <div className='flex flex-col'>
-            <SelectList
-              list={villages}
-              data={form.village}
-              dataKey='Villagecode'
-              displayKey='Villagename'
-              setData={setFormValue('village')}
-              placeholder='Select Village'
-              showAllOption
-              allOptionText={`${displayText(localization['All Villages'], lang)}`}
-            />
-          </div>
-          <div className='flex flex-col'>
+            <label className='mb-1.5 text-[13px] font-normal text-[#085484]' style={{ fontFamily: "'DM Sans', sans-serif" }}>Project Type</label>
             <SelectList
               list={projectTypes}
               data={form.project_type}
@@ -243,10 +211,11 @@ const ProjectFilterForm = ({
               setData={setFormValue('project_type')}
               placeholder=''
               showAllOption
-              allOptionText={`${displayText(localization['All Project Types'], lang)}`}
+              allOptionText='Select Project Type'
             />
           </div>
           <div className='flex flex-col'>
+            <label className='mb-1.5 text-[13px] font-normal text-[#085484]' style={{ fontFamily: "'DM Sans', sans-serif" }}>Building Type</label>
             <SelectList
               list={buildingTypes}
               data={form.building_type}
@@ -255,10 +224,54 @@ const ProjectFilterForm = ({
               setData={setFormValue('building_type')}
               placeholder=''
               showAllOption
-              allOptionText={`${displayText(localization['All Building Types'], lang)}`}
+              allOptionText='Select District'
+            />
+          </div>
+        </div>
+
+        {/* Row 2 */}
+        <div className='grid grid-cols-1 gap-6 lg:grid-cols-4'>
+          <div className='flex flex-col'>
+            <label className='mb-1.5 text-[13px] font-normal text-[#085484]' style={{ fontFamily: "'DM Sans', sans-serif" }}>District</label>
+            <SelectList
+              list={districts}
+              data={form.district}
+              dataKey='Districtcode'
+              displayKey='Districtname'
+              setData={handleDistrictChange}
+              placeholder=''
+              showAllOption
+              allOptionText='Select District'
             />
           </div>
           <div className='flex flex-col'>
+            <label className='mb-1.5 text-[13px] font-normal text-[#085484]' style={{ fontFamily: "'DM Sans', sans-serif" }}>Village</label>
+            <SelectList
+              list={villages}
+              data={form.village}
+              dataKey='Villagecode'
+              displayKey='Villagename'
+              setData={setFormValue('village')}
+              placeholder=''
+              showAllOption
+              allOptionText='Select Village'
+            />
+          </div>
+          <div className='flex flex-col'>
+            <label className='mb-1.5 text-[13px] font-normal text-[#085484]' style={{ fontFamily: "'DM Sans', sans-serif" }}>District</label>
+            <SelectList
+              list={taluks}
+              data={form.taluk}
+              dataKey='Subdistrictcode'
+              displayKey='SubDistrictname'
+              setData={handleTalukChange}
+              placeholder=''
+              showAllOption
+              allOptionText='Select District'
+            />
+          </div>
+          <div className='flex flex-col'>
+            <label className='mb-1.5 text-[13px] font-normal text-[#085484]' style={{ fontFamily: "'DM Sans', sans-serif" }}>Status</label>
             <SelectList
               list={statuses}
               data={form.status}
@@ -267,14 +280,32 @@ const ProjectFilterForm = ({
               setData={setFormValue('status')}
               placeholder=''
               showAllOption
-              allOptionText={`${displayText(localization['Any Status'], lang)}`}
+              allOptionText='Select Status'
             />
           </div>
         </div>
-        <div className='grid-col-1 grid gap-5 md:grid-cols-2'>
-          <div className='flex flex-col gap-2'>
+
+        <div className='mt-2 w-full'>
+          <label className='mb-1.5 block text-[13px] font-normal text-[#085484]' style={{ fontFamily: "'DM Sans', sans-serif" }}>Amenities</label>
+          <div className='rounded-lg w-full py-2'>
+            <AmenitiesCheckList
+              onAmenitiesChange={onAmenitiesChange}
+              oldAmenities={oldAmenities}
+              lang={lang}
+            />
+          </div>
+        </div>
+
+        <div
+          className='grid grid-cols-1 gap-6 md:grid-cols-2 mt-6'
+          style={{
+            '--color-accent-dark': '#085484',
+            '--color-accent-light': '#d1d5db'
+          } as React.CSSProperties}
+        >
+          <div className='flex flex-col gap-2 text-center text-sm text-gray-600'>
             <RangeSlider
-              label={`${displayText(localization['Total Units'], lang)}`}
+              label='total units'
               min={0}
               max={300}
               step={5}
@@ -284,12 +315,12 @@ const ProjectFilterForm = ({
               setRangeStart={setFormValue('minimum_units')}
               setRangeEnd={setFormValue('maximum_units')}
               lang={lang}
-              labelPrefix={lang === 'mal' ? 'മുതൽ' : 'Having'}
+              labelPrefix='Having'
             />
           </div>
-          <div className='flex flex-col gap-2'>
+          <div className='flex flex-col gap-2 text-center text-sm text-gray-600'>
             <RangeSlider
-              label={`${displayText(localization['Available Units'], lang)}`}
+              label='total units'
               min={0}
               max={300}
               step={5}
@@ -299,25 +330,22 @@ const ProjectFilterForm = ({
               setRangeStart={setFormValue('minimum_available_units')}
               setRangeEnd={setFormValue('maximum_available_units')}
               lang={lang}
-              labelPrefix={lang === 'mal' ? 'മുതൽ' : 'Having'}
-            />
-          </div>
-          <div className='py-3 md:col-span-2'>
-            <AmenitiesCheckList
-              onAmenitiesChange={onAmenitiesChange}
-              oldAmenities={oldAmenities}
-              lang={lang}
+              labelPrefix='Having'
             />
           </div>
         </div>
-        <div className={`mx-4 flex flex-wrap gap-5 py-14 md:col-span-2`}>
-          <Button label={`${displayText(localization['Search'], lang)}`} />
-          <Button
-            label='RESET'
+
+        <div className='mt-8 flex gap-6'>
+          <button className='rounded-md bg-[#085484] px-10 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#06426a]'>
+            Search
+          </button>
+          <button
+            type='button'
             onClick={handleReset}
-            buttonType='button'
-            type='secondary'
-          />
+            className='rounded-md border border-[#085484] px-10 py-2.5 text-sm font-medium text-[#085484] transition-colors hover:bg-gray-50'
+          >
+            Reset
+          </button>
           <ProjectDisclaimer />
         </div>
       </form>

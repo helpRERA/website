@@ -1,6 +1,5 @@
 import React from 'react'
 import AppLayout from '../Components/Layout/AppLayout/AppLayout'
-import AppLayoutPadding from '../Components/Layout/AppLayout/AppLayoutPadding'
 import ExploreProject, { ProjectListItem } from '../Components/ExploreProject/ExploreProject'
 import { District, Facility } from '../DataStructures/krera_interfaces'
 import { Language, Paginator } from '../ui/ui_interfaces'
@@ -50,7 +49,7 @@ const ExploreProjectsPage = ({
 }: ExploreProjectProperties) => {
   return (
     <AppLayout>
-      <AppLayoutPadding>
+      <div className="w-full">
         <ExploreProject
           projects={projects}
           districts={districts}
@@ -72,7 +71,7 @@ const ExploreProjectsPage = ({
           lang={lang}
           today={today}
         />
-      </AppLayoutPadding>
+      </div>
     </AppLayout>
   )
 }

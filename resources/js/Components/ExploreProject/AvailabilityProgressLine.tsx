@@ -25,25 +25,22 @@ export default function AvailabilityProgressLine({ project, lang }: Props) {
     <>
       {availability.isValid() && (
         <div className='flex flex-col'>
-          <div className='gap-2'>
-            <span className=''>
+          <ProgressLine
+            progressColor='bg-[#085484]'
+            backgroundColor='bg-gray-200'
+            progress={availability.getAvailablePercentage() ?? 0}
+          />
+          <div className='mt-2 flex items-center justify-between'>
+            <span className='text-xs text-gray-500'>
               <Localization
                 text={localization['Available Units']}
                 language={lang}
               />
-              :{' '}
             </span>
-            <b className='text-xl'>
-              <span>{availability.getAvailableUnits()}</span>/
-              <span className='text-slate-700'>{availability.totalUnits}</span>
-            </b>
+            <span className='text-xs font-medium text-gray-700'>
+              {availability.getAvailableUnits()}/{availability.totalUnits}
+            </span>
           </div>
-
-          <ProgressLine
-            progressColor='bg-amber-200'
-            backgroundColor='bg-teal-500'
-            progress={availability.getBookedPercentage() ?? 0}
-          />
         </div>
       )}
     </>

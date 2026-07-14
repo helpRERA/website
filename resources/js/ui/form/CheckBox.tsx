@@ -15,7 +15,7 @@ export default function CheckBox({ label, data, toggle, disabled = false }: Chec
           disabled={disabled}
           className='checkbox absolute h-full w-full cursor-pointer opacity-0'
         />
-        <div className='check-icon hidden rounded-sm bg-primary-500 text-white'>
+        <div className='check-icon hidden h-full w-full items-center justify-center rounded-sm bg-[#22c55e] text-white'>
           <svg
             className='icon icon-tabler icon-tabler-check'
             xmlns='http://www.w3.org/2000/svg'

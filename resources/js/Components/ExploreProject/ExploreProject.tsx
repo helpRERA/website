@@ -112,15 +112,22 @@ const ExploreProject = ({
 
   return (
     <>
-      <div className='flex flex-col'>
-        <div className='my-7 flex flex-col'>
-          <h1 className='flex w-full justify-start py-3 text-lg font-extrabold md:text-xl lg:text-2xl'>
+      <div className='relative flex min-h-[475px] w-full flex-col items-center justify-center bg-[url("/imge/newhome.webp")] bg-cover bg-center'>
+        <div className='absolute inset-0 bg-black/40'></div>
+        <div className='z-10 flex flex-col items-center text-white pb-20'>
+          <h1 className='text-3xl font-bold md:text-4xl lg:text-5xl'>
             <Localization
               text={localization['Explore Projects']}
               language={lang}
             />
           </h1>
+          <div className='mt-2 text-sm font-medium'>
+            <span>Home</span> <span className='mx-2'>&gt;</span> <span>Explore Projects</span>
+          </div>
         </div>
+      </div>
+      
+      <div className='cmpad relative z-20 mx-auto -mt-36 md:-mt-40 flex w-full flex-col pb-10'>
         <div className='flex flex-col lg:flex-row'>
           {/*Form*/}
           <ProjectFilterForm
@@ -145,29 +152,37 @@ const ExploreProject = ({
             setLoading={setLoading}
           />
         </div>
-      </div>
-      <div className='flex justify-end'>
-        <div className='flex flex-col'>
-          <SelectList
-            label={`${displayText(localization['Sort By'], lang)}`}
-            list={sortBy}
-            dataKey='id'
-            displayKey='label'
-            setData={sortChange}
-            data={sort}
+
+        <div className='mt-10 flex flex-col items-center justify-between gap-4 md:flex-row'>
+          <div className='text-[15px] text-gray-500'>
+            Showing Results for {projects.total} K-rera registered projects
+          </div>
+          <div className='flex items-center gap-4'>
+            <span className='text-[14px] text-gray-600'>Sort By:</span>
+            <div className='w-[140px]'>
+              <SelectList
+                label={""}
+                list={sortBy}
+                dataKey='id'
+                displayKey='label'
+                setData={sortChange}
+                data={sort}
+                className='rounded-full'
+              />
+            </div>
+          </div>
+        </div>
+        <FullSpinnerWrapper processing={loading}>
+          <ProjectList
+            projects={projects}
+            lang={lang}
+            today={today}
           />
-        </div>
+          <div className='my-8'>
+            <Pagination pagination={projects} />
+          </div>
+        </FullSpinnerWrapper>
       </div>
-      <FullSpinnerWrapper processing={loading}>
-        <ProjectList
-          projects={projects}
-          lang={lang}
-          today={today}
-        />
-        <div className='my-8'>
-          <Pagination pagination={projects} />
-        </div>
-      </FullSpinnerWrapper>
     </>
   )
 }
