@@ -137,21 +137,23 @@ const LatestAnnouncements = ({ announcements, language = 'en', blockData }: Prop
           <div className="flex flex-col lg:flex-row gap-6">
             
             {/* Left Tabs */}
-            <div className="w-full lg:w-[22%] flex flex-col gap-[10px] shrink-0">
+            <div className="w-full lg:w-[22%] flex flex-row lg:flex-col gap-3 lg:gap-[10px] shrink-0 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
               {tabs.map((tab) => {
                 const isActive = selectedTab === tab.key;
                 return (
                   <button
                     key={tab.key}
                     onClick={() => selectTab(tab.key)}
-                    className={`flex flex-col items-center justify-center py-5 px-4 rounded-lg border transition-all duration-300 ${
+                    className={`flex flex-row items-center justify-center lg:justify-start py-1.5 lg:py-3 px-3 lg:px-4 rounded-md lg:rounded-lg border transition-all duration-300 shrink-0 gap-1.5 lg:gap-3 whitespace-nowrap ${
                       isActive 
-                        ? 'bg-white border-blue-100 text-[#085484] shadow-[0_4px_20px_rgba(0,0,0,0.05)]' 
+                        ? 'bg-white border-blue-100 text-[#085484] shadow-[0_2px_10px_rgba(0,0,0,0.05)]' 
                         : 'bg-[#085484] border-transparent text-white hover:bg-[#074b75]'
                     }`}
                   >
-                    {tab.icon}
-                    <span className="text-center text-[14px] font-normal">
+                    <div className="scale-[0.85] flex items-center justify-center shrink-0">
+                      {tab.icon}
+                    </div>
+                    <span className="text-[12.5px] lg:text-[14px] font-medium mt-0">
                       <Localization text={tab.label} language={language} />
                     </span>
                   </button>
