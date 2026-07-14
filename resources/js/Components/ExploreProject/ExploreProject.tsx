@@ -126,7 +126,7 @@ const ExploreProject = ({
           </div>
         </div>
       </div>
-      
+
       <div className='cmpad relative z-20 mx-auto -mt-36 md:-mt-40 flex w-full flex-col pb-10'>
         <div className='flex flex-col lg:flex-row'>
           {/*Form*/}
