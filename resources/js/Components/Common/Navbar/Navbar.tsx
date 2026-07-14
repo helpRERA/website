@@ -65,8 +65,11 @@ const Navbar = () => {
 
   return (
     <>
-      {!isHome && <div className="h-[112px] lg:h-[128px] w-full bg-[#0f2c59]" aria-hidden="true" />}
-      <nav className={`fixed top-0 left-0 right-0 z-[9999] w-full px-4 py-4 md:px-8 lg:px-12 lg:py-6 font-urbanist transition-all duration-300 ${isHome ? 'bg-transparent' : 'bg-[#0f2c59]'}`}>
+      {!isHome && <div className="h-[112px] lg:h-[128px] w-full" style={{ backgroundImage: 'linear-gradient(to bottom, #085484 50%, #0f2c59 50%)' }} aria-hidden="true" />}
+      <nav 
+        className={`fixed top-0 left-0 right-0 z-[9999] w-full px-4 py-4 md:px-8 lg:px-12 lg:py-6 font-urbanist transition-all duration-300`}
+        style={isHome ? { backgroundImage: 'linear-gradient(to bottom, #085484 50%, transparent 50%)' } : { backgroundImage: 'linear-gradient(to bottom, #085484 50%, #0f2c59 50%)' }}
+      >
         <div className='relative flex h-[80px] items-center justify-between rounded-lg bg-white px-6 shadow-md md:px-10 lg:px-12'>
           <div className='flex h-full items-center py-2'>
             <Link as='a' href='/' className='flex h-full items-center'>
@@ -89,16 +92,14 @@ const Navbar = () => {
               className='flex cursor-pointer items-center overflow-hidden rounded-full border border-gray-200 bg-white p-[2px] md:p-1 shadow-sm'
             >
               <div
-                className={`flex h-5 w-5 md:h-7 md:w-7 items-center justify-center rounded-full text-[10px] md:text-xs font-bold transition-colors ${
-                  lang == null || lang == 'en' ? 'bg-[#0f2c59] text-white' : 'bg-transparent text-gray-500 hover:text-gray-800'
-                }`}
+                className={`flex h-5 w-5 md:h-7 md:w-7 items-center justify-center rounded-full text-[10px] md:text-xs font-bold transition-colors ${lang == null || lang == 'en' ? 'bg-[#0f2c59] text-white' : 'bg-transparent text-gray-500 hover:text-gray-800'
+                  }`}
               >
                 E
               </div>
               <div
-                className={`flex h-5 w-5 md:h-7 md:w-7 items-center justify-center rounded-full text-[10px] md:text-xs font-bold transition-colors ${
-                  lang == 'mal' ? 'bg-[#0f2c59] text-white' : 'bg-transparent text-gray-500 hover:text-gray-800'
-                }`}
+                className={`flex h-5 w-5 md:h-7 md:w-7 items-center justify-center rounded-full text-[10px] md:text-xs font-bold transition-colors ${lang == 'mal' ? 'bg-[#0f2c59] text-white' : 'bg-transparent text-gray-500 hover:text-gray-800'
+                  }`}
               >
                 മ
               </div>
