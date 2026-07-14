@@ -1,5 +1,5 @@
 import { Link, router, usePage } from '@inertiajs/react'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { NavMenuRecords } from '../../../DataStructures/ui_builder_interfaces'
 import { Language } from '../../../ui/ui_interfaces'
 import DesktopDropdown from './DesktopDropdown'
@@ -13,7 +13,21 @@ import SearchButton from '../../../ui/button/SearchButton'
 const Navbar = () => {
   const [search, setSearch] = useState('')
   const [showDropdown, setShowDropdown] = useState(false)
-  const [selectedOption, setSelectedOption] = useState('HOME')
+  const [selectedOption, setSelectedOption] = useState('ABOUT K-RERA')
+
+  useEffect(() => {
+    if (showDropdown) {
+      document.body.style.overflow = 'hidden'
+      document.documentElement.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+      document.documentElement.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+      document.documentElement.style.overflow = ''
+    }
+  }, [showDropdown])
 
   const nav = usePage().props.nav as NavMenuRecords[]
   const lang = usePage().props.lang as Language | undefined
@@ -60,31 +74,19 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Mobile hamburger */}
-          <div className='flex items-center lg:hidden'>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              onClick={() => toggleDropdown()}
-              className='h-8 w-8 cursor-pointer text-gray-800'
-              fill='none'
-              viewBox='0 0 24 24'
-              stroke='currentColor'
-            >
-              {showDropdown ? (
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M6 18L18 6M6 6l12 12' />
-              ) : (
-                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M4 6h16M4 12h16M4 18h7' />
-              )}
-            </svg>
+          {/* MIDDLE: Desktop Links (Hidden on mobile/tablet, shown on desktop xl+) */}
+          <div className='hidden flex-1 justify-end pr-6 xl:flex'>
+            <div className='hidden items-center xl:flex'>
+              <DesktopDropdown nav={nav} hoverDropdown={hoverDropdown} lang={lang as Language} />
+            </div>
           </div>
 
-            <div className='hidden items-center lg:flex'>
-              <DesktopDropdown nav={nav} hoverDropdown={hoverDropdown} lang={lang as Language} />
-              
-              {/* Language Pill */}
+          {/* RIGHT: Language Switcher and Hamburger (Always visible) */}
+          <div className='flex items-center gap-1 md:gap-2'>
+            {/* Language Pill */}
             <div
               onClick={langToggle}
-              className='ml-6 flex cursor-pointer items-center overflow-hidden rounded-full border border-gray-200 bg-white p-1 shadow-sm md:ml-8 lg:ml-10'
+              className='flex cursor-pointer items-center overflow-hidden rounded-full border border-gray-200 bg-white p-1 shadow-sm'
             >
               <div
                 className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-colors ${
@@ -101,8 +103,24 @@ const Navbar = () => {
                 മ
               </div>
             </div>
-            </div>
+
+            {/* Mobile hamburger */}
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              onClick={() => toggleDropdown()}
+              className='h-8 w-8 cursor-pointer text-[#0f2c59] transition-transform hover:scale-105'
+              fill='none'
+              viewBox='0 0 24 24'
+              stroke='currentColor'
+            >
+              {showDropdown ? (
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M6 18L18 6M6 6l12 12' />
+              ) : (
+                <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M4 6h16M4 12h16M4 18h7' />
+              )}
+            </svg>
           </div>
+        </div>
 
         {/** Mobile Dropdown */}
         <MobileDropdown

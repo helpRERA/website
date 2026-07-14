@@ -19,9 +19,9 @@ const NavbarLinks = ({ nav, section, lang = 'en' }: Properties) => {
   }, [section, nav])
 
   return (
-    <div className='flex w-full min-h-[450px] mx-auto overflow-hidden whitespace-normal'>
+    <div className='flex flex-col md:flex-row w-full md:min-h-[450px] mx-auto overflow-hidden whitespace-normal'>
       {/* Left pane - links */}
-      <div className='flex-1 bg-[#F5F6FF] p-8 md:p-10 flex flex-col gap-7'>
+      <div className='flex-1 bg-[#F5F6FF] p-5 md:p-10 flex flex-col gap-5 md:gap-7'>
         {menuItems?.items.map((section) => {
           // Determine icon based on section title
           let Icon = LayoutList
@@ -53,7 +53,7 @@ const NavbarLinks = ({ nav, section, lang = 'en' }: Properties) => {
       </div>
 
       {/* Right pane - Explore Projects */}
-      <div className='relative flex w-[270px] shrink-0 flex-col items-center bg-[#0d5985] text-center overflow-hidden'>
+      <div className='relative hidden md:flex w-[270px] shrink-0 flex-col items-center bg-[#0d5985] text-center overflow-hidden'>
         <div className='relative z-10 flex w-full flex-col items-center pt-10 px-8'>
           <h3 className='mb-2 text-[18px] font-medium text-white'>Find Your Project</h3>
           <p className='mb-6 text-[12.5px] leading-[1.6] text-blue-100 max-w-[200px]'>

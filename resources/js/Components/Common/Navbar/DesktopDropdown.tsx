@@ -22,13 +22,15 @@ const DesktopDropdown = ({ nav, hoverDropdown, lang = 'en' }: Properties) => {
         </svg>
         <div className='h-[3px] w-6 bg-[#0f2c59] rounded-full'></div>
       </Link>
-      {navSections.map((navSection, index) => {
+      {navSections
+        .filter((navSection) => !['ABOUT K-RERA', 'CONTACT US'].includes(navSection.value))
+        .map((navSection, index, filteredNavSections) => {
         const navRecord = nav.find((record) => record.section === navSection.value)
         
         // Dynamic positioning to prevent screen overflow
         let positionClass = 'left-1/2 -translate-x-1/2'
         if (index <= 1) positionClass = 'left-0'
-        if (index >= navSections.length - 2) positionClass = 'right-0'
+        if (index >= filteredNavSections.length - 2) positionClass = 'right-0'
 
         return (
           <div
