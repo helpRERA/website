@@ -4,6 +4,7 @@ import { NavMenuRecords } from '../../../DataStructures/ui_builder_interfaces'
 import InertiaLink from '../../../ui/Link/InertiaLink'
 import Localization from '../../../ui/Localization'
 import { Language } from '../../../ui/ui_interfaces'
+import { Building, AlertCircle, Users, LayoutList } from 'lucide-react'
 
 interface Properties {
   nav: NavMenuRecords[]
@@ -18,45 +19,63 @@ const NavbarLinks = ({ nav, section, lang = 'en' }: Properties) => {
   }, [section, nav])
 
   return (
-    <>
-      {menuItems?.items.map((section) => {
-        return (
-          <div
-            className='flex flex-col p-5'
-            key={section.id.toString()}
-          >
-            <h5 className={'mb-2 break-words font-semibold text-gray-700'}>
-              <Localization
-                language={lang}
-                text={section.section}
-              />
-            </h5>
-            {section.links.map((item) => {
-              return (
-                <InertiaLink
-                  className='break-words text-xs font-normal text-gray-600 hover:text-blue-500 md:text-sm'
-                  link={item}
-                  language={lang}
-                  key={item.id.toString()}
-                />
-              )
-            })}
-          </div>
-        )
-      })}
-      <div className='flex flex-col p-5'>
-        <Link
-          as='a'
-          href={`/explore-projects?lang=${lang}`}
-        >
-          <img
-            src='/explore.svg'
-            alt='explore projects'
-            className='h-auto w-1/2'
-          />
-        </Link>
+    <div className='flex w-full min-h-[450px] mx-auto overflow-hidden whitespace-normal'>
+      {/* Left pane - links */}
+      <div className='flex-1 bg-[#f4f7fc] p-8 md:p-10 flex flex-col gap-7'>
+        {menuItems?.items.map((section) => {
+          // Determine icon based on section title
+          let Icon = LayoutList
+          const titleEn = section.section?.english?.toLowerCase() || ''
+          if (titleEn.includes('project')) Icon = Building
+          else if (titleEn.includes('complaint')) Icon = AlertCircle
+          else if (titleEn.includes('agent')) Icon = Users
+
+          return (
+            <div key={section.id.toString()} className='flex flex-col'>
+              <h5 className='mb-3 flex items-center gap-2 text-[15px] font-medium text-[#105d8c]'>
+                <Icon size={18} className='text-[#105d8c]' fill="currentColor" strokeWidth={1} />
+                <Localization language={lang} text={section.section} />
+              </h5>
+              <div className='flex flex-wrap gap-2'>
+                {section.links.map((item) => (
+                  <div key={item.id.toString()} className='flex items-center rounded bg-white px-3.5 py-2 transition hover:shadow-sm'>
+                    <InertiaLink
+                      className='text-[13px] font-normal text-gray-500 hover:text-[#105d8c]'
+                      link={item}
+                      language={lang}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )
+        })}
       </div>
-    </>
+
+      {/* Right pane - Explore Projects */}
+      <div className='relative flex w-[270px] shrink-0 flex-col items-center bg-[#0d5985] text-center overflow-hidden'>
+        <div className='relative z-10 flex w-full flex-col items-center pt-10 px-8'>
+          <h3 className='mb-2 text-[18px] font-medium text-white'>Find Your Project</h3>
+          <p className='mb-6 text-[12.5px] leading-[1.6] text-blue-100 max-w-[200px]'>
+            Click Here for a reliable and comprehensive real estate search for Kerala.
+          </p>
+          <Link
+            as='a'
+            href={`/explore-projects?lang=${lang}`}
+            className='rounded bg-white px-6 py-2 text-[13px] font-medium text-[#0d5985] transition hover:bg-gray-50'
+          >
+            Explore Projects
+          </Link>
+        </div>
+        <div className='absolute bottom-0 left-0 w-full h-[50%]'>
+          <img
+            src='/imge/megamenu_building.png'
+            alt='Explore'
+            className='w-full h-full object-cover'
+          />
+        </div>
+      </div>
+    </div>
   )
 }
 
