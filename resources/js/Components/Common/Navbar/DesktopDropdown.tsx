@@ -25,46 +25,43 @@ const DesktopDropdown = ({ nav, hoverDropdown, lang = 'en' }: Properties) => {
       {navSections
         .filter((navSection) => !['ABOUT K-RERA', 'CONTACT US'].includes(navSection.value))
         .map((navSection, index, filteredNavSections) => {
-        const navRecord = nav.find((record) => record.section === navSection.value)
-        
-        // Dynamic positioning to prevent screen overflow
-        let positionClass = 'left-1/2 -translate-x-1/2'
-        if (index <= 1) positionClass = 'left-0'
-        if (index >= filteredNavSections.length - 2) positionClass = 'right-0'
+          const navRecord = nav.find((record) => record.section === navSection.value)
 
-        return (
-          <div
-            onMouseOver={() => {
-              hoverDropdown(navSection.value)
-            }}
-            className={`nav-item relative hidden whitespace-nowrap px-4 lg:px-5 text-sm font-medium transition-colors
-                         ${
-                           navSection.value === 'STATISTICS'
-                             ? 'text-[#0f2c59] hover:bg-gray-100'
-                             : 'hover:text-[#0f2c59] hover:bg-gray-50'
-                         } md:inline-flex md:items-center h-[80px] cursor-pointer`}
-            key={navSection.value}
-          >
-            <Link
-              as='a'
-              href={`${navSection.url}`}
+          // Align the dropdown perfectly centered under the hovered nav item
+          let positionClass = 'left-1/2 -translate-x-1/2'
+
+          return (
+            <div
+              onMouseOver={() => {
+                hoverDropdown(navSection.value)
+              }}
+              className={`nav-item relative hidden whitespace-nowrap px-4 lg:px-5 text-sm font-medium transition-colors
+                         ${navSection.value === 'STATISTICS'
+                  ? 'text-[#0f2c59] hover:bg-gray-100'
+                  : 'hover:text-[#0f2c59] hover:bg-gray-50'
+                } md:inline-flex md:items-center h-[80px] cursor-pointer`}
+              key={navSection.value}
             >
-              <Localization text={localization[navSection.value]} language={lang} />
-            </Link>
-            {navRecord && navRecord.items && (
-              <div className={`nav-list absolute ${positionClass} top-[80px] z-[9999] w-max max-w-[950px] pt-1`}>
-                <div className='overflow-hidden rounded-xl border border-gray-100 shadow-xl'>
-                  <NavbarLinks
-                    nav={nav}
-                    section={navSection.value}
-                    lang={lang}
-                  />
+              <Link
+                as='a'
+                href={`${navSection.url}`}
+              >
+                <Localization text={localization[navSection.value]} language={lang} />
+              </Link>
+              {navRecord && navRecord.items && (
+                <div className={`nav-list absolute ${positionClass} top-[80px] z-[9999] w-max max-w-[950px] pt-1`}>
+                  <div className='overflow-hidden rounded-xl border border-gray-100 shadow-xl'>
+                    <NavbarLinks
+                      nav={nav}
+                      section={navSection.value}
+                      lang={lang}
+                    />
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
-        )
-      })}
+              )}
+            </div>
+          )
+        })}
     </div>
   )
 }

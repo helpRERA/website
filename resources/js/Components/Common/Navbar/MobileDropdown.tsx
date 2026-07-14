@@ -35,8 +35,8 @@ const MobileDropdown = ({
     <div className='relative z-[9999] w-full text-skin-inverted'>
       {showDropdown && (
         <div 
-          className='absolute left-0 top-[100%] z-[9999] flex w-full flex-col bg-white shadow-2xl md:flex-row border-t border-gray-100'
-          style={{ height: 'calc(100vh - 80px)' }}
+          className='absolute left-0 top-[100%] z-[9999] flex w-full flex-col bg-white shadow-2xl md:flex-row border-t border-gray-100 rounded-b-lg overflow-hidden'
+          style={{ maxHeight: 'calc(100vh - 120px)' }}
         >
           
           {/* Mobile Search Bar */}
@@ -61,7 +61,7 @@ const MobileDropdown = ({
           </div>
 
           {/* Left Column (Sections List) */}
-          <div className='flex h-full min-h-0 w-full flex-col bg-[#f8faff] md:w-[320px] md:border-r md:border-gray-100 lg:w-[380px] overflow-y-auto overscroll-contain' data-lenis-prevent='true'>
+          <div className='flex min-h-0 w-full flex-col bg-[#f8faff] md:w-[320px] md:border-r md:border-gray-100 lg:w-[380px] overflow-y-auto overscroll-contain' data-lenis-prevent='true'>
             {/* Desktop Search Bar */}
             <div className='hidden border-b border-gray-100 p-6 md:block bg-[#f8faff] shrink-0'>
               <form onSubmit={submitSearch} className='relative w-full'>
@@ -128,7 +128,7 @@ const MobileDropdown = ({
           </div>
 
           {/* Right Column (Desktop Submenu Display) */}
-          <div className='hidden h-full min-h-0 flex-1 bg-white md:block overflow-y-auto overscroll-contain' data-lenis-prevent='true'>
+          <div className='hidden min-h-0 flex-1 bg-white md:block overflow-y-auto overscroll-contain' data-lenis-prevent='true'>
             {selectedOption ? (
               <NavbarLinks nav={nav} section={selectedOption} lang={lang} />
             ) : (

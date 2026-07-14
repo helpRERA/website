@@ -26,11 +26,11 @@ const AnnouncementTicker = ({ language = 'en', announcements, blockData }: Prope
     <div className='flex h-12 w-full overflow-hidden border-b border-gray-200 bg-white shadow-sm'>
       {/* Latest News Badge */}
       <div
-        className='z-20 flex shrink-0 items-center justify-center bg-[#085484] pl-6 pr-12 text-white'
-        style={{ clipPath: 'polygon(0 0, 85% 0, 100% 100%, 0% 100%)', minWidth: '220px' }}
+        className='z-20 flex shrink-0 items-center justify-center bg-[#085484] pl-4 pr-8 text-white md:min-w-[220px] md:pl-6 md:pr-12'
+        style={{ clipPath: 'polygon(0 0, 85% 0, 100% 100%, 0% 100%)' }}
       >
-        <img src='/svg/news.svg' alt='News' className='mr-2 h-5 w-5' />
-        <span className='font-semibold text-[15px]'>Latest News</span>
+        <img src='/svg/news.svg' alt='News' className='h-5 w-5 md:mr-2' />
+        <span className='hidden font-semibold text-[15px] md:block'>Latest News</span>
       </div>
 
       {/* Ticker */}
