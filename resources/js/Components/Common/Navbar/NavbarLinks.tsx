@@ -50,10 +50,24 @@ const NavbarLinks = ({ nav, section, lang = 'en' }: Properties) => {
             </div>
           )
         })}
+
+        {/* Explore Projects Button (Hidden on xl screens where the right pane is visible) */}
+        <div className='mt-4 flex xl:hidden'>
+          <Link
+            as='a'
+            href={`/explore-projects?lang=${lang}`}
+            className='inline-flex items-center gap-2 rounded bg-[#0d5985] px-6 py-2.5 text-[14px] font-medium text-white shadow-sm transition hover:bg-[#0a486c]'
+          >
+            Explore Projects
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </Link>
+        </div>
       </div>
 
-      {/* Right pane - Explore Projects */}
-      <div className='relative hidden md:flex w-[270px] shrink-0 flex-col items-center bg-[#0d5985] text-center overflow-hidden'>
+      {/* Right pane - Explore Projects (Only shown on xl+ screens to save space) */}
+      <div className='relative hidden xl:flex w-[270px] shrink-0 flex-col items-center bg-[#0d5985] text-center overflow-hidden'>
         <div className='relative z-10 flex w-full flex-col items-center pt-10 px-8'>
           <h3 className='mb-2 text-[18px] font-medium text-white'>Find Your Project</h3>
           <p className='mb-6 text-[12.5px] leading-[1.6] text-blue-100 max-w-[200px]'>
