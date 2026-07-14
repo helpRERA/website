@@ -21,7 +21,7 @@ const NavbarLinks = ({ nav, section, lang = 'en' }: Properties) => {
   return (
     <div className='flex w-full min-h-[450px] mx-auto overflow-hidden whitespace-normal'>
       {/* Left pane - links */}
-      <div className='flex-1 bg-[#f4f7fc] p-8 md:p-10 flex flex-col gap-7'>
+      <div className='flex-1 bg-[#F5F6FF] p-8 md:p-10 flex flex-col gap-7'>
         {menuItems?.items.map((section) => {
           // Determine icon based on section title
           let Icon = LayoutList
@@ -38,9 +38,9 @@ const NavbarLinks = ({ nav, section, lang = 'en' }: Properties) => {
               </h5>
               <div className='flex flex-wrap gap-2'>
                 {section.links.map((item) => (
-                  <div key={item.id.toString()} className='flex items-center rounded bg-white px-3.5 py-2 transition hover:shadow-sm'>
+                  <div key={item.id.toString()} className='flex items-center rounded bg-[#FFFFFF] border border-transparent px-3.5 py-2 transition hover:border-[#DDDDDD] hover:shadow-sm'>
                     <InertiaLink
-                      className='text-[13px] font-normal text-gray-500 hover:text-[#105d8c]'
+                      className='text-[15px] font-normal text-[#5A5A5A] hover:text-[#105d8c]'
                       link={item}
                       language={lang}
                     />
