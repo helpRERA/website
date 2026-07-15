@@ -30,10 +30,10 @@ const ProjectCard = ({ project, today, lang = 'en' }: Properties) => {
     <Link
       href={`/projects/${project.ID}?lang=${lang}`}
       as='a'
-      className='flex w-full cursor-pointer flex-col md:flex-row gap-6 rounded-xl bg-white p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow'
+      className='flex w-full cursor-pointer flex-col lg:flex-row gap-6 rounded-xl bg-white p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow'
     >
       {/* Left Column - Image */}
-      <div className='flex w-full shrink-0 flex-col md:w-[320px]'>
+      <div className='flex w-full shrink-0 flex-col lg:w-[320px]'>
         <img
           src={images[0]?.ID == null ? '/placeholder.png' : `/uploaded-images/${images[0]?.ID}`}
           alt={project.Name}
@@ -49,7 +49,7 @@ const ProjectCard = ({ project, today, lang = 'en' }: Properties) => {
       </div>
 
       {/* Middle Column - Details */}
-      <div className='flex w-full flex-col md:flex-grow border-b border-gray-100 pb-4 md:border-b-0 md:border-r md:pb-0 md:pr-6'>
+      <div className='flex w-full flex-col lg:flex-grow border-b border-gray-100 pb-4 lg:border-b-0 lg:border-r lg:pb-0 lg:pr-6'>
         <h1 className='text-[22px] font-medium uppercase text-[#085484] tracking-wide'>
           {project.Name}
         </h1>
@@ -91,7 +91,7 @@ const ProjectCard = ({ project, today, lang = 'en' }: Properties) => {
       </div>
 
       {/* Right Column - Badges & Actions */}
-      <div className='flex w-full shrink-0 flex-col md:w-[280px]'>
+      <div className='flex w-full shrink-0 flex-col lg:w-[280px]'>
         <div className='flex flex-col h-full justify-between'>
           {/* Top Section */}
           <div className='flex flex-col gap-6'>

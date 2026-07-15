@@ -335,18 +335,18 @@ const ProjectFilterForm = ({
           </div>
         </div>
 
-        <div className='mt-8 flex gap-6'>
-          <button className='rounded-md bg-[#085484] px-10 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#06426a]'>
+        <div className='mt-8 flex flex-col gap-4 sm:flex-row sm:gap-6'>
+          <button className='w-full sm:w-auto rounded-md bg-[#085484] px-10 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#06426a]'>
             Search
           </button>
           <button
             type='button'
             onClick={handleReset}
-            className='rounded-md border border-[#085484] px-10 py-2.5 text-sm font-medium text-[#085484] transition-colors hover:bg-gray-50'
+            className='w-full sm:w-auto rounded-md border border-[#085484] px-10 py-2.5 text-sm font-medium text-[#085484] transition-colors hover:bg-gray-50'
           >
             Reset
           </button>
-          <ProjectDisclaimer />
+          <ProjectDisclaimer className='w-full sm:w-auto' />
         </div>
       </form>
       <div ref={listReference}></div>
