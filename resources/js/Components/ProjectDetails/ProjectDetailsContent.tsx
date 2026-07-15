@@ -48,7 +48,7 @@ const ProjectDetailsContent = ({
     <>
       <div className='flex flex-col lg:flex-row gap-8 w-full mt-6'>
         {/* Left: Images */}
-        <div className='w-full lg:w-1/2'>
+        <div className='w-full lg:w-1/2 flex'>
           <ProjectImagesList project={project} />
         </div>
         
