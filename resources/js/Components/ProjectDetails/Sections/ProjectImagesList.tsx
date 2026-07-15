@@ -20,7 +20,7 @@ const ProjectImagesList = ({ project }: Properties) => {
 
   return (
     <>
-      <div className='flex h-full min-h-[300px] w-full gap-4'>
+      <div className='flex h-full min-h-[300px] w-full gap-4 overflow-hidden'>
         {/* Left Large Image */}
         <div className={`h-full ${images.length > 1 ? 'w-1/2' : 'w-full'}`}>
           {images.length === 0 ? (

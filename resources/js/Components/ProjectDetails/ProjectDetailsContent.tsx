@@ -48,8 +48,10 @@ const ProjectDetailsContent = ({
     <>
       <div className='flex flex-col lg:flex-row gap-8 w-full mt-6'>
         {/* Left: Images */}
-        <div className='w-full lg:w-1/2 flex'>
-          <ProjectImagesList project={project} />
+        <div className='w-full lg:w-1/2 relative min-h-[350px]'>
+          <div className='absolute inset-0'>
+            <ProjectImagesList project={project} />
+          </div>
         </div>
         
         {/* Right: Project Info */}

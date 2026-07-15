@@ -18,7 +18,10 @@ const AccordionItem = ({ title, children }: Properties) => {
           } flex w-full cursor-pointer justify-between items-center px-5 py-4 transition-colors hover:bg-gray-50`}
           onClick={() => setOpen(!open)}
         >
-          <div className='flex items-center text-[13px] text-gray-600 font-medium'>
+          <div 
+            className='flex items-center text-[15px] text-[#595959] font-normal'
+            style={{ fontFamily: "'DM Sans', sans-serif" }}
+          >
             {title}
           </div>
           <ChevronDownIcon
