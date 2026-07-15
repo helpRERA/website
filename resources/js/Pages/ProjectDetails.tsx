@@ -1,5 +1,6 @@
 import { Link } from '@inertiajs/react'
 import React, { useEffect } from 'react'
+import AppLayout from '../Components/Layout/AppLayout/AppLayout'
 import ProjectDetailsContent from '../Components/ProjectDetails/ProjectDetailsContent'
 import {
   Company,
@@ -98,7 +99,7 @@ export default function ProjectDetails({
   projectHash,
   prevUrl,
   hasForm6,
-  today: string,
+  today,
 }: Properties) {
   useEffect(() => {
     //get last url in window history
@@ -107,26 +108,8 @@ export default function ProjectDetails({
   return (
     <>
       <MetaTags title={project.Name} />
-      <div className='flex h-screen w-screen flex-col '>
-        <div className='fixed top-0 left-0 z-[99] flex h-10 w-full items-center justify-between bg-primary-100 px-2 shadow-xl'>
-          <div className='flex items-center gap-2'>
-            <img
-              src='/logo.png'
-              alt='logo'
-              className='h-10 w-auto'
-            />
-            <h3 className='text-lg font-bold'>{project.Name}</h3>
-          </div>
-          <Link
-            as='a'
-            href={prevUrl}
-            className='cursor-pointer rounded bg-red-500 p-1
-                  text-gray-50 transition duration-150 ease-in-out hover:bg-red-400'
-          >
-            <CloseSolid />
-          </Link>
-        </div>
-        <main className='mt-[4rem] grid w-full grid-cols-1 lg:absolute lg:top-0 lg:mt-0 lg:h-screen lg:grid-cols-2 lg:pt-[2.5rem]'>
+      <AppLayout>
+        <div className='cmpad relative mx-auto w-full flex-col pb-10 mt-10'>
           <ProjectDetailsContent
             project={project}
             lang={lang}
@@ -138,10 +121,10 @@ export default function ProjectDetails({
             registrationOrder={registrationOrder}
             lastModified={lastModified}
             projectHash={projectHash}
-            today={string}
+            today={today}
           />
-        </main>
-      </div>
+        </div>
+      </AppLayout>
     </>
   )
 }

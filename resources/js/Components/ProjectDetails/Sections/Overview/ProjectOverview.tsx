@@ -3,19 +3,11 @@ import { getDisplayDate } from '../../../../libs/dates'
 import { ProjectDetailData, ProjectLastModified } from '../../../../Pages/ProjectDetails'
 import BuildingsAccordion from './BuildingsAccordion'
 import CompanyModal from '../CompanyModal'
-import ProjectStatusPill from '../../../ExploreProject/Common/ProjectStatusPill'
-import BorderedPill from '../../../../ui/Pills/BorderedPill'
 import { Language } from '../../../../ui/ui_interfaces'
-import Localization, { displayText } from '../../../../ui/Localization'
-import { localization } from '../../../../Localization/localization'
 import { ExtensionCert, OrderFile } from '../../../../DataStructures/krera_interfaces'
 import Tooltip from '../../../../ui/Tooltip/Tooltip'
-import { Link } from '@inertiajs/react'
-import usePromoterInfo from '../../../ExploreProject/usePromoterInfo'
-import ProgressLine from '../../../../ui/ProgressLine'
 import AvailabilityProgressLine from '../../../ExploreProject/AvailabilityProgressLine'
-import { PROJECT_TYPE_PLOT } from '../../../ExploreProject/ProjectFilterForm/ProjectFilterForm'
-
+import ProgressLine from '../../../../ui/ProgressLine'
 interface Properties {
   reference: RefObject<HTMLDivElement>
   project: ProjectDetailData
@@ -41,230 +33,130 @@ const ProjectOverview = ({
   today,
   hasForm6,
 }: Properties) => {
-  const residentialUnit = useMemo(() => {
-    return `${project.NumberOfResidentialUnits} ${displayText(
-      localization['Residential Units'],
-      lang
-    )} `
-  }, [project, lang])
-
-  const commercialUnit = useMemo(() => {
-    return `${project.NumberOfCommercialUnits} ${displayText(
-      localization['Commercial Units'],
-      lang
-    )} `
-  }, [project, lang])
-
-  const encodedCertificateUrl = useMemo(() => {
-    return encodeURIComponent(project.certificate_info.CertificateNo ?? '')
-  }, [project.certificate_info])
-
   const encodedProjectHash = useMemo(() => {
     return encodeURIComponent(projectHash)
   }, [projectHash])
 
-  const { promoterName } = usePromoterInfo(project.promoter ?? null)
-
-  console.log(project.FinancialProgress)
-  console.log(project.PhysicalProgress)
-
   return (
-    <div className='my-5 flex w-full flex-col gap-3'>
-      <div
-        className='absolute top-0'
-        ref={reference}
-      ></div>
-      <div className='flex flex-col gap-5'>
-      <h2>Certificates related to project:</h2>
-        <div className='flex flex-wrap items-center gap-3'>
-          <Link
-            as='a'
-            href={`/projects?registration_number=${encodedCertificateUrl}`}
-            className='text-xs font-bold text-blue-500 underline hover:text-blue-400 md:text-sm'
-          >
-            {project.certificate_info.CertificateNo}
-          </Link>
-          {project.hsm != null && (
-            <a
-              href={`/signed-certificate/${project.hsm?.DgnID}`}
-              className='tooltip-parent text-xs font-bold text-blue-500 underline hover:text-blue-400 md:text-sm'
-              target='_blank'
-              rel='noreferrer'
-            >
-              <img
-                alt='Signed Certificate'
-                src={'/svg/certificate.svg'}
-                className='h-8 w-8'
-              />
-              <Tooltip text='Certificate' />
-            </a>
-          )}
-          {extensionCertificate != null && (
-            <a
-              href={`/extension-certificate/${project.ID}`}
-              className='tooltip-parent text-xs font-bold text-blue-500 underline hover:text-blue-400 md:text-sm'
-              target='_blank'
-              rel='noreferrer'
-            >
-              <img
-                alt='Extension Certificate'
-                src={'/svg/extension.svg'}
-                className='h-8 w-8'
-              />
-              <Tooltip text='Extension Certificate' />
-            </a>
-          )}
-       
-        </div>
-        <div>
-        <h2>Orders related to project:</h2>
-          {registrationOrder != null && (
-            <a
-              href={`/registration-order/${registrationOrder?.DocID}`}
-              className='tooltip-parent text-xs font-bold text-blue-500 underline hover:text-blue-400 md:text-sm'
-              
-              target='_blank'
-              rel='noreferrer'
-         
-            >
-              <img
-                alt='Registration Order'
-                src={'/svg/order.svg'}
-                className=''
-                
-              />
-              <Tooltip text='Order' />
-            </a>
-          )}
-          {extensionOrder != null && (
-            <a
-              href={`/extension-order/${extensionOrder?.DocID}`}
-              className='tooltip-parent text-xs font-bold text-blue-500 underline hover:text-blue-400 md:text-sm'
-              target='_blank'
-              rel='noreferrer'
-              style={{ left: "76px" }}
-            >
-              <img
-                alt='Extension Order'
-                src={'/svg/order.svg'}
-                className=''
-              />
-              <Tooltip text='Order' />
-            </a>
-          )}
-        </div>
-        {lastModified != null && (
-          <p className='text-xs font-bold md:text-sm'>
-            Information As Of: {lastModified.date}
-            <br />
-            {lastModified.daysSinceLastModification > 100 && !hasForm6 && (
-              <span className='text-red-500'>
-                Information on this property has not been updated for{' '}
-                {lastModified.daysSinceLastModification} days, and the Quarterly Progress Report is
-                pending
-              </span>
-            )}
-          </p>
-        )}
-        <div className='grid grid-cols-1 gap-5 md:grid-cols-2'>
-          {project.FinancialProgress != null && (
-            <div className='flex flex-col'>
-              <span className='text-sm'>
-                Financial Progress:{' '}
-                <b className='text-base'>
-                  {Number.isNaN(Number(project.FinancialProgress))
-                    ? '0'
-                    : project.FinancialProgress}
-                </b>
-                %
-              </span>
-              <ProgressLine progress={project.FinancialProgress} />
+    <div className='flex w-full flex-col gap-8' ref={reference}>
+      {/* Top Info Row */}
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-8 items-start'>
+        {/* Left: Orders and Info */}
+        <div className='flex flex-col gap-4'>
+          <h3 className='text-lg font-medium text-[#085484]'>Overview</h3>
+          <div className='mt-2'>
+            <h4 className='text-sm font-medium text-[#085484]'>Orders related to project:</h4>
+            <div className='flex flex-wrap items-center gap-3 mt-3'>
+              {registrationOrder != null && (
+                <a
+                  href={`/registration-order/${registrationOrder?.DocID}`}
+                  className='tooltip-parent text-xs font-bold text-blue-500 hover:text-blue-400'
+                  target='_blank'
+                  rel='noreferrer'
+                >
+                  <img
+                    alt='Registration Order'
+                    src={'/svg/order.svg'}
+                    className='h-8 w-8'
+                  />
+                  <Tooltip text='Registration Order' />
+                </a>
+              )}
+              {extensionOrder != null && (
+                <a
+                  href={`/extension-order/${extensionOrder?.DocID}`}
+                  className='tooltip-parent text-xs font-bold text-blue-500 hover:text-blue-400'
+                  target='_blank'
+                  rel='noreferrer'
+                >
+                  <img
+                    alt='Extension Order'
+                    src={'/svg/order.svg'}
+                    className='h-8 w-8'
+                  />
+                  <Tooltip text='Extension Order' />
+                </a>
+              )}
+              {registrationOrder == null && extensionOrder == null && (
+                <span className='text-sm text-gray-400'>No orders available</span>
+              )}
             </div>
-          )}
-          {project.PhysicalProgress != null && (
-            <div className='flex flex-col'>
-              <span className='text-sm'>
-                Physical Progress:{' '}
-                <b className='text-base'>
-                  {Number.isNaN(Number(project.PhysicalProgress)) ? '0' : project.PhysicalProgress}
-                </b>
-                
-              </span>
-              <ProgressLine progress={project.PhysicalProgress} />
-            </div>
-          )}
-          <AvailabilityProgressLine
-            project={project}
-            lang={lang}
-          />
-        </div>
-        <span className='text-xs md:text-sm'>By {promoterName}</span>
-        <div className='flex flex-col'>
-          <span className='text-xs md:text-sm'>
-            {project.Street} {project.village != null && project.Street != null ? ', ' : ''}
-            {project.village?.Villagename}
-          </span>
-          <div className='flex flex-wrap'>
-            <span className='text-xs md:text-sm'> &nbsp;</span>
-            <span className='text-xs md:inline-block md:text-sm'>
-              {project.district?.Districtname}
-            </span>
           </div>
+
+          {lastModified != null && (
+            <p className='text-sm text-gray-600 mt-2'>
+              Information As Of: {lastModified.date}
+              {lastModified.daysSinceLastModification > 100 && !hasForm6 && (
+                <span className='text-red-500 block mt-1'>
+                  Information on this property has not been updated for{' '}
+                  {lastModified.daysSinceLastModification} days, and the Quarterly Progress Report is pending
+                </span>
+              )}
+            </p>
+          )}
+
+          <p className='text-sm text-gray-600'>
+            Proposed Completion On {getDisplayDate(project.ProposedDateOfCompletion)}
+          </p>
+        </div>
+
+        {/* Right: Availability & Progress */}
+        <div className='flex flex-col gap-6 md:border-l md:border-gray-200 md:pl-8'>
+
+          <div className='flex flex-col md:flex-row items-center gap-6'>
+            <div className='flex flex-col w-full md:w-1/2'>
+              <ProgressLine
+                progress={project.FinancialProgress ?? 0}
+                progressColor='bg-[#085484]'
+                backgroundColor='bg-yellow-200'
+              />
+              <div className='mt-2 text-xs text-gray-500'>
+                Financial Progress: <span className='font-medium text-gray-700'>{project.FinancialProgress ?? '0'}%</span>
+              </div>
+            </div>
+
+            <div className='flex flex-col w-full md:w-1/2'>
+              <ProgressLine
+                progress={project.PhysicalProgress ?? 0}
+                progressColor='bg-[#085484]'
+                backgroundColor='bg-yellow-200'
+              />
+              <div className='mt-2 text-xs text-gray-500'>
+                Physical Progress: <span className='font-medium text-gray-700'>{project.PhysicalProgress ?? '0'}</span>
+              </div>
+            </div>
+          </div>
+
+          <AvailabilityProgressLine project={project} lang={lang} />
         </div>
       </div>
-      <div className='flex flex-col gap-2 p-1 md:flex-row md:gap-6'>
-        {project.PType != PROJECT_TYPE_PLOT && (
-          <>
-            <BorderedPill value={residentialUnit} />
-            <BorderedPill value={commercialUnit} />
-          </>
-        )}
-        <ProjectStatusPill
-          completed={hasForm6}
-          proposedDate={project.ProposedDateOfCompletion}
-          today={today}
-        />
-      </div>
-      <div className='flex flex-row gap-2'>
-        <span className='text-xs md:text-sm'>
-          {' '}
-          <Localization
-            text={localization['Proposed Completion On']}
-            language={lang}
-          />
-        </span>
-        <span className='text-xs font-semibold md:text-sm'>
-          {getDisplayDate(project.ProposedDateOfCompletion)}
-        </span>
-      </div>
-      <div className='grid grid-cols-1 gap-2 md:grid-cols-3'>
-        <CompanyModal
-          project={project}
-          lang={lang}
-        />
+
+      {/* Buttons Row */}
+      <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
+        <CompanyModal project={project} lang={lang} />
 
         <a
-          className='mx-2 flex items-center justify-center rounded-lg bg-primary-700 px-10 py-6 text-center
-            text-sm uppercase tracking-wider text-white transition duration-150 ease-in-out hover:bg-primary-600
-            focus:outline-none focus:ring-1 md:py-2'
+          className='flex items-center justify-center gap-3 rounded-lg bg-[#085484] px-6 py-4 text-center text-sm font-medium text-white transition hover:bg-[#06426a] shadow-sm'
           href={`https://reraonline.kerala.gov.in/PrintPreview/PrintPreview?q=${encodedProjectHash}`}
           target='_blank'
           rel='noreferrer'
         >
-          Complete Project Details
+          <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+          <span className="text-left">Complete Project Details</span>
         </a>
         <a
-          className='mx-2 flex items-center justify-center rounded-lg bg-primary-700 px-10 py-6 text-center
-            text-sm uppercase tracking-wider text-white transition duration-150 ease-in-out hover:bg-primary-600
-            focus:outline-none focus:ring-1 md:py-2'
+          className='flex items-center justify-center gap-3 rounded-lg bg-[#085484] px-6 py-4 text-center text-sm font-medium text-white transition hover:bg-[#06426a] shadow-sm'
           href={`https://reraonline.kerala.gov.in/ProjectStatusPublic/ProjectStatusPublic?qpr=${encodedProjectHash}`}
           target='_blank'
           rel='noreferrer'
         >
-          Quarterly Progress Report (QPR)
+          <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+          <span className="text-left">Quarterly Progress Report</span>
         </a>
       </div>
-      <div className=''>
+
+      {/* Accordions */}
+      <div className='mt-4 flex flex-col gap-4'>
         {project.buildings.map((building) => {
           return (
             <BuildingsAccordion

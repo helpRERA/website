@@ -18,17 +18,17 @@ const ProjectStatusPill = ({ completed, proposedDate, today }: Properties) => {
   return (
     <>
       {!completed && !passedProposedDate && (
-        <span className='flex justify-center rounded-full bg-gray-500 px-2 py-1 text-sm text-white'>
+        <span className='inline-flex items-center justify-center rounded-full bg-blue-50 px-4 py-1.5 text-xs font-medium text-blue-600'>
           In Progress
         </span>
       )}
       {!completed && passedProposedDate && (
-        <span className='flex justify-center rounded-full bg-gray-500 px-2 py-1 text-sm text-white'>
+        <span className='inline-flex items-center justify-center rounded-full bg-red-50 px-4 py-1.5 text-xs font-medium text-red-600'>
           Schedule Expired
         </span>
       )}
       {completed && (
-        <span className='flex justify-center rounded-full bg-green-500 px-2 py-1 text-sm'>
+        <span className='inline-flex items-center justify-center rounded-full bg-green-50 px-4 py-1.5 text-xs font-medium text-green-600'>
           Completed
         </span>
       )}
