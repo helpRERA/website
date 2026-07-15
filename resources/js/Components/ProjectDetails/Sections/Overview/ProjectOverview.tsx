@@ -38,7 +38,7 @@ const ProjectOverview = ({
   }, [projectHash])
 
   return (
-    <div className='flex w-full flex-col gap-8' ref={reference}>
+    <div className='mx-auto flex w-full max-w-[1100px] flex-col gap-12 px-4' ref={reference}>
       {/* Top Info Row */}
       <div className='grid grid-cols-1 md:grid-cols-2 gap-8 items-start'>
         {/* Left: Orders and Info */}

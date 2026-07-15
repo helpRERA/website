@@ -33,9 +33,7 @@ const CompanyModal = ({ project, lang = 'en' }: Properties) => {
       <button
         type='button'
         onClick={() => setIsOpen(true)}
-        className='mx-2 flex items-center justify-center rounded-lg bg-primary-700 px-10 py-6 text-center
-          text-sm uppercase tracking-wider text-white transition duration-150 ease-in-out hover:bg-primary-600
-          focus:outline-none focus:ring-1 md:py-2'
+        className='flex w-full items-center justify-center gap-3 rounded-lg bg-[#085484] px-6 py-4 text-center text-sm uppercase tracking-wider font-medium text-white transition hover:bg-[#06426a] shadow-sm'
       >
         <Localization
           text={localization['Contact Company']}
