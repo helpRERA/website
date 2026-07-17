@@ -80,7 +80,7 @@ const ComplaintListPage = ({
         </div>
       </div>
       
-      <div className='cmpad relative z-20 mx-auto -mt-36 md:-mt-40 flex w-full max-w-[1280px] flex-col pb-10'>
+      <div className='cmpad relative z-20 mx-auto -mt-36 md:-mt-40 flex w-full flex-col pb-10'>
         <ComplaintList
           complaints={complaints}
           oldSearch={oldSearch}
