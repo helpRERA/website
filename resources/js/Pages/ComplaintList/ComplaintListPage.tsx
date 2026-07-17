@@ -66,11 +66,21 @@ const ComplaintListPage = ({
   
   return (
     <AppLayout>
-      <PageTitle
-        block={links}
-        language={lang}
-      />
-      <AppLayoutPadding>
+      <div className='relative flex min-h-[475px] w-full flex-col items-center justify-center bg-[url("/imge/newhome.webp")] bg-cover bg-center'>
+        <div className='absolute inset-0 bg-black/40'></div>
+        <div className='z-10 flex flex-col items-center text-white pb-20'>
+          <h1 className='text-3xl font-bold md:text-4xl lg:text-5xl' style={{ fontFamily: "'Urbanist', sans-serif" }}>
+            Complaint List
+          </h1>
+          <div className='mt-2 text-sm font-medium flex gap-2 items-center text-gray-200'>
+            <a href='/' className='hover:text-white transition-colors'>Home</a>
+            <span>&gt;</span>
+            <span className='text-white'>Complaint List</span>
+          </div>
+        </div>
+      </div>
+      
+      <div className='cmpad relative z-20 mx-auto -mt-36 md:-mt-40 flex w-full max-w-[1280px] flex-col pb-10'>
         <ComplaintList
           complaints={complaints}
           oldSearch={oldSearch}
@@ -78,7 +88,7 @@ const ComplaintListPage = ({
           oldSort={oldSort}
           reliefSought={reliefSought}
         />
-      </AppLayoutPadding>
+      </div>
     </AppLayout>
   )
 }
