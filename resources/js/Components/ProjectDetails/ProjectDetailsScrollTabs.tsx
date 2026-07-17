@@ -50,18 +50,17 @@ const ProjectDetailsScrollTabs = ({
   return (
     <div className='flex flex-col gap-6'>
       {/* Tab Header */}
-      <div className='flex flex-wrap items-center justify-center gap-4 md:gap-6'>
+      <div className='flex w-full items-center justify-start gap-3 overflow-x-auto px-4 py-1 sm:justify-center md:flex-wrap md:gap-6 md:overflow-visible md:px-0' style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
         {tabItems.map((tab) => {
           const isActive = activeTab === tab.id
           return (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center justify-center gap-2.5 rounded-md px-5 py-3 min-w-[140px] transition-all ${
-                isActive
+              className={`flex shrink-0 items-center justify-center gap-2.5 rounded-md px-5 py-3 min-w-[140px] transition-all ${isActive
                   ? 'bg-[#085484] text-white shadow-md'
                   : 'bg-white text-gray-500 hover:bg-gray-50 shadow-[0_2px_10px_rgba(0,0,0,0.04)]'
-              }`}
+                }`}
             >
               <svg className={`h-5 w-5 ${isActive ? 'text-white' : 'text-[#085484]'}`} fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
                 <path strokeLinecap='round' strokeLinejoin='round' d={tab.icon} />
@@ -88,7 +87,7 @@ const ProjectDetailsScrollTabs = ({
             today={today}
           />
         )}
-        
+
         {activeTab === 'quick-facts' && (
           <ProjectQuickFact
             project={projects}
@@ -96,7 +95,7 @@ const ProjectDetailsScrollTabs = ({
             lang={lang}
           />
         )}
-        
+
         {activeTab === 'documents' && (
           <ProjectDocuments
             project={projects}
@@ -108,12 +107,65 @@ const ProjectDetailsScrollTabs = ({
         )}
 
         {activeTab === 'map-view' && (
-          <div className='h-[400px] w-full rounded-xl overflow-hidden'>
-            <LatLngMap
-              lat={projects.coordinates?.Latitude ?? null}
-              long={projects.coordinates?.Longitude ?? null}
-              city={city}
-            />
+          <div className='mx-auto flex w-full max-w-[1100px] flex-col px-4 mb-10'>
+            <h3 className='text-[22px] font-semibold text-[#085484] mb-5' style={{ fontFamily: "'Urbanist', sans-serif" }}>
+              Location and Neighbourhood
+            </h3>
+            
+            <div className='flex flex-col lg:flex-row gap-8 justify-between'>
+              <div className='flex flex-col gap-6 lg:w-3/5 mt-1'>
+                <p className='text-[15px] text-[#595959] font-normal leading-relaxed' style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                  {projects.Name} is strategically located with excellent connectivity to essential services, schools, hospitals, and key city destinations.
+                </p>
+                <div className='flex items-center gap-5 mt-2'>
+                  <div className='flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-full bg-[#eef7fb] text-[#085484]'>
+                    <svg className='h-[22px] w-[22px]' fill='currentColor' viewBox='0 0 24 24'>
+                      <path d='M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.85 7h10.29l1.04 3H5.81l1.04-3zM7.5 15c-.83 0-1.5-.67-1.5-1.5S6.67 12 7.5 12s1.5.67 1.5 1.5S8.33 15 7.5 15zm9 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z'/>
+                    </svg>
+                  </div>
+                  <p className='text-[14.5px] text-[#595959] font-normal leading-relaxed' style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                    Easy access to major roads, public transport, schools, hospitals, and key city landmarks ensures a convenient and well-connected lifestyle.
+                  </p>
+                </div>
+              </div>
+              
+              <div className='lg:w-2/5 flex lg:justify-end mb-6 lg:mb-0'>
+                {/* Legend */}
+                <div className='rounded-[14px] border border-gray-200 bg-white p-[26px] shadow-[0_2px_12px_rgba(0,0,0,0.03)] w-full max-w-[270px] self-start'>
+                  <div className='flex flex-col gap-6'>
+                    <div className='flex items-center gap-4'>
+                      <div className='flex h-6 w-6 shrink-0 items-center justify-center text-[#d80b0b]'>
+                        <svg className='h-[26px] w-[26px]' fill='currentColor' viewBox='0 0 24 24'>
+                          <path d='M12 2C8.14 2 5 5.14 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.86-3.14-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z' />
+                        </svg>
+                      </div>
+                      <span className='text-[15px] text-[#222] font-normal' style={{ fontFamily: "'DM Sans', sans-serif" }}>Project Location</span>
+                    </div>
+                    <div className='flex items-center gap-4'>
+                      <div className='flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-full bg-[#d80b0b] text-white text-[14px] font-bold'>
+                        H
+                      </div>
+                      <span className='text-[15px] text-[#222] font-normal' style={{ fontFamily: "'DM Sans', sans-serif" }}>Hospital</span>
+                    </div>
+                    <div className='flex items-center gap-4'>
+                      <div className='flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-full bg-[#085484] text-white'>
+                        <svg className='h-4 w-4' fill='currentColor' viewBox='0 0 24 24'>
+                          <path d='M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2.12-1.15V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z' />
+                        </svg>
+                      </div>
+                      <span className='text-[15px] text-[#222] font-normal' style={{ fontFamily: "'DM Sans', sans-serif" }}>Schools</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className='mt-2 h-[450px] w-full rounded-2xl overflow-hidden border border-gray-200'>
+              <iframe
+                src={`https://maps.google.com/maps?q=hospitals+AND+schools%20near%20${city},kerala&z=12&output=embed`}
+                className='h-full w-full'
+              ></iframe>
+            </div>
           </div>
         )}
       </div>

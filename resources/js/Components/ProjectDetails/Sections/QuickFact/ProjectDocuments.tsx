@@ -18,30 +18,25 @@ interface Properties {
 const ProjectDocuments = ({ project, reference, lang = 'en', documents, orders }: Properties) => {
   return (
     <>
-      <div className='relative my-5 flex w-full flex-col gap-3 text-sm'>
-        <div
-          className='absolute -top-[6rem]'
-          ref={reference}
-        ></div>
-        <span className='text-sm font-bold md:text-base'>
-          <Localization
-            text={localization['Documents']}
-            language={lang}
-          />
-        </span>
+      <div className='mx-auto flex w-full max-w-[1100px] flex-col gap-6 px-4 mb-10' ref={reference}>
+        <h3 className='text-[20px] font-medium text-[#085484] mb-2' style={{ fontFamily: "'Urbanist', sans-serif" }}>
+          Project Related Important Documents
+        </h3>
         {documents.length === 0 && orders.length === 0 && (
           <div className='text-xs text-red-500'>
             * There are no documents associated with this project.
           </div>
         )}
-        {projectDocCategories.map((category) => (
-          <ProjectDocumentAccordion
-            documents={category.type === 'order' ? orders : documents}
-            projectCategory={category}
-            key={category.id}
-            project={project}
-          />
-        ))}
+        <div className='flex flex-col gap-4'>
+          {projectDocCategories.map((category) => (
+            <ProjectDocumentAccordion
+              documents={category.type === 'order' ? orders : documents}
+              projectCategory={category}
+              key={category.id}
+              project={project}
+            />
+          ))}
+        </div>
       </div>
     </>
   )

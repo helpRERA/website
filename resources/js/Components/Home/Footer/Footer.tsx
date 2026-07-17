@@ -8,9 +8,9 @@ const Footer = () => {
       <HomeVerifyProject />
       <footer aria-label='Site Footer' className='bg-white font-sans border-t border-gray-100'>
         <div className='cmpad py-8 md:py-10'>
-          <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-12'>
+          <div className='grid grid-cols-2 gap-x-4 gap-y-8 md:gap-8 lg:grid-cols-12'>
             {/* Column 1: Logo and Address */}
-            <div className='flex flex-col gap-4 lg:col-span-4'>
+            <div className='col-span-2 flex flex-col gap-4 lg:col-span-4'>
               <div className='w-full max-w-[200px]'>
                 <img
                   className='h-auto w-full object-contain'
@@ -59,7 +59,7 @@ const Footer = () => {
             </div>
 
             {/* Column 2: Quick Links */}
-            <div className='lg:col-span-2'>
+            <div className='col-span-1 lg:col-span-2'>
               <p className='font-medium text-[#085484] mb-3 md:mb-4 text-[15px] md:text-[16px]'>
                 Quick Links
               </p>
@@ -73,7 +73,7 @@ const Footer = () => {
             </div>
 
             {/* Column 3: Quick Links pt 2 */}
-            <div className='pt-0 lg:col-span-2 lg:pt-[36px]'>
+            <div className='col-span-1 pt-[28px] md:pt-[36px] lg:col-span-2 lg:pt-[40px]'>
               <ul className='space-y-2.5 text-[14px] md:text-[15px] text-[#555]'>
                 <li><a href="#" className="hover:text-[#085484] transition-colors">Appeleate Tribunal</a></li>
                 <li><a href="#" className="hover:text-[#085484] transition-colors">Notifications</a></li>
@@ -84,7 +84,7 @@ const Footer = () => {
             </div>
 
             {/* Column 4: Other Links */}
-            <div className='lg:col-span-2'>
+            <div className='col-span-1 lg:col-span-2'>
               <p className='font-medium text-[#085484] mb-3 md:mb-4 text-[15px] md:text-[16px]'>
                 Other Links
               </p>
@@ -97,7 +97,7 @@ const Footer = () => {
             </div>
 
             {/* Column 5: Contact Us */}
-            <div className='lg:col-span-2'>
+            <div className='col-span-2 sm:col-span-1 lg:col-span-2 mt-4 sm:mt-0'>
               <p className='font-medium text-[#085484] mb-3 md:mb-4 text-[15px] md:text-[16px]'>
                 Contact Us
               </p>
