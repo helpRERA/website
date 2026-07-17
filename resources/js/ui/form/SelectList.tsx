@@ -49,7 +49,7 @@ export default function SelectList<
           name='type'
           value={value}
           onChange={(e) => setData(e.target.value)}
-          className={`appearance-none w-full border border-gray-400 py-1.5 pl-4 pr-10 text-[14px] text-gray-700 focus:border-[#085484] focus:outline-none disabled:bg-gray-100 bg-white transition-colors ${className ? className : 'rounded-lg'
+          className={`appearance-none w-full border border-[#DDDDDD] py-1.5 pl-4 pr-10 text-[14px] text-gray-700 focus:border-[#085484] focus:outline-none disabled:bg-gray-100 bg-white transition-colors ${className ? className : 'rounded-lg'
             }`}
         >
           {showAllOption && <option value=''>{allOptionText}</option>}

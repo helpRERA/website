@@ -19,7 +19,7 @@ export default function Input({
         value={data}
         onChange={(e) => setData(e.target.value)}
         placeholder={placeholder}
-        className='bg-accent-light rounded-lg border border-gray-300 py-3 pl-3 text-sm text-gray-800
+        className='bg-accent-light rounded-lg border border-[#DDDDDD] py-3 pl-3 text-sm text-gray-800
             shadow-sm focus:border-indigo-700 focus:outline-none disabled:bg-gray-100'
         disabled={disabled}
         readOnly={readonly}

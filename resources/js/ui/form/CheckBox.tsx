@@ -6,7 +6,7 @@ export default function CheckBox({ label, data, toggle, disabled = false }: Chec
     <div className='flex items-center text-sm'>
       <div
         className='relative flex h-5 w-5 flex-shrink-0 items-center justify-center
-          rounded-sm border border-gray-400 bg-white'
+          rounded-sm border border-[#DDDDDD] bg-white'
       >
         <input
           type='checkbox'
