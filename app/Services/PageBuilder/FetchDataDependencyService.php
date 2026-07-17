@@ -20,38 +20,50 @@ class FetchDataDependencyService
 {
     public function registeredProjects(): int
     {
-        $result = DB::connection('k_rera')
-            ->select(ProjectListService::PROJECT_COUNT_QUERY);
+        try {
+            $result = DB::connection('k_rera')
+                ->select(ProjectListService::PROJECT_COUNT_QUERY);
 
-        if ($result == null || count($result) < 1) {
+            if ($result == null || count($result) < 1) {
+                return 0;
+            }
+
+            return $result[0]->count;
+        } catch (\Exception $e) {
             return 0;
         }
-
-        return $result[0]->count;
     }
 
     public function promotersCount(): int
     {
-        $result = DB::connection('k_rera')->select(
-            'select count(*) as count from tbl_UserMaster um
-                    where roleid=1 and  UserID IN(
-                    select distinct p.UserID from  tbl_Project p
-                    inner join tbl_CertificateP cp on p.id=cp.ProjectID
-                    inner join tbl_UserStatusSubMapping s on p.id=s.ProjectID and isnull(s.IsWithdraw,0)=0)'
-        );
+        try {
+            $result = DB::connection('k_rera')->select(
+                'select count(*) as count from tbl_UserMaster um
+                        where roleid=1 and  UserID IN(
+                        select distinct p.UserID from  tbl_Project p
+                        inner join tbl_CertificateP cp on p.id=cp.ProjectID
+                        inner join tbl_UserStatusSubMapping s on p.id=s.ProjectID and isnull(s.IsWithdraw,0)=0)'
+            );
 
-        if ($result == null || count($result) < 1) {
+            if ($result == null || count($result) < 1) {
+                return 0;
+            }
+
+            return $result[0]->count;
+        } catch (\Exception $e) {
             return 0;
         }
-
-        return $result[0]->count;
     }
 
     public function registeredAgents(): int
     {
-        $districtRepository = new DistrictRepository();
-        $repo = new UserProfileRepository($districtRepository);
-        return $repo->registeredAgents();
+        try {
+            $districtRepository = new DistrictRepository();
+            $repo = new UserProfileRepository($districtRepository);
+            return $repo->registeredAgents();
+        } catch (\Exception $e) {
+            return 0;
+        }
     }
 
     /**
@@ -96,12 +108,16 @@ class FetchDataDependencyService
 
     public function complaintsCount(): int
     {
-        $result = DB::connection('k_rera')->select(ComplaintListQuery::COMPLAINTS_COUNT_QUERY);
+        try {
+            $result = DB::connection('k_rera')->select(ComplaintListQuery::COMPLAINTS_COUNT_QUERY);
 
-        if ($result == null || count($result) < 1) {
+            if ($result == null || count($result) < 1) {
+                return 0;
+            }
+
+            return $result[0]->count;
+        } catch (\Exception $e) {
             return 0;
         }
-
-        return $result[0]->count;
     }
 }

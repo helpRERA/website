@@ -66,9 +66,9 @@ const ComplaintListPage = ({
   
   return (
     <AppLayout>
-      <div className='relative flex min-h-[475px] w-full flex-col items-center justify-center bg-[url("/imge/newhome.webp")] bg-cover bg-center'>
+      <div className='relative flex h-[320px] md:min-h-[475px] w-full flex-col items-center justify-center bg-[url("/imge/newhome.webp")] bg-cover bg-center'>
         <div className='absolute inset-0 bg-black/40'></div>
-        <div className='z-10 flex flex-col items-center text-white pb-20'>
+        <div className='z-10 flex flex-col items-center text-white pt-12 md:pt-0 pb-10 md:pb-20'>
           <h1 className='text-3xl font-bold md:text-4xl lg:text-5xl' style={{ fontFamily: "'Urbanist', sans-serif" }}>
             Complaint List
           </h1>

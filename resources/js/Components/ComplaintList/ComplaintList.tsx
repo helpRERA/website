@@ -11,6 +11,7 @@ import FullSpinnerWrapper from '../../ui/FullSpinnerWrapper'
 import ComplaintListItem from './ComplaintListItem'
 import SelectList from '../../ui/form/SelectList'
 import Modal from '../../ui/modal/Modal'
+import { createPortal } from 'react-dom'
 import ComplaintMoreInfo from './ComplaintMoreInfo'
 import { ReliefSought } from '../../DataStructures/krera_interfaces'
 
@@ -79,8 +80,9 @@ const ComplaintList = ({
         <h2 className='text-[20px] font-medium text-[#085484] mb-6' style={{ fontFamily: "'Urbanist', sans-serif" }}>
           Browse for Complaints
         </h2>
-        <form onSubmit={handleSubmit} className='flex flex-col md:flex-row gap-8 items-start w-full'>
-          <div className='flex w-full flex-col md:w-[65%] gap-2'>
+        <form onSubmit={handleSubmit} className='grid grid-cols-1 md:grid-cols-[1fr_35%] md:gap-x-8 gap-y-5 md:gap-y-0 items-start w-full'>
+          {/* Input field */}
+          <div className='flex w-full flex-col gap-2'>
             <label className='text-[#085484] text-[13px] font-medium tracking-wide'>
               Complaint No. / Respondent Name / Project Name / Year
             </label>
@@ -91,26 +93,10 @@ const ComplaintList = ({
               onChange={(e) => setFormValue('search')(e.target.value)}
               className='bg-white rounded-md border border-gray-200 py-2.5 px-4 text-[13px] text-gray-800 focus:border-[#085484] focus:ring-1 focus:ring-[#085484] outline-none w-full'
             />
-            <div className='mt-3 flex gap-3'>
-              <button type='submit' className='bg-[#085484] text-white px-10 py-2.5 rounded-md font-medium text-[13px] hover:bg-[#063e63] transition-colors'>
-                Search
-              </button>
-              <button 
-                type='button' 
-                onClick={() => {
-                  setAll({ search: '', ruling_by: 'Rulings of K-RERA Authority', sort: '' });
-                  setTimeout(() => {
-                    router.get(`/complaint-list?search=&ruling_by=Rulings of K-RERA Authority&sort=`);
-                  }, 100);
-                }} 
-                className='bg-white text-gray-600 border border-gray-300 px-10 py-2.5 rounded-md font-medium text-[13px] hover:bg-gray-50 transition-colors'
-              >
-                Reset
-              </button>
-            </div>
           </div>
           
-          <div className='flex w-full flex-col md:w-[35%] gap-2'>
+          {/* Select field */}
+          <div className='flex w-full flex-col gap-2'>
             <label className='text-[#085484] text-[13px] font-medium tracking-wide'>
               Judgement / Orders By
             </label>
@@ -125,6 +111,25 @@ const ComplaintList = ({
                 ))}
               </select>
             </div>
+          </div>
+
+          {/* Buttons */}
+          <div className='mt-1 md:mt-4 flex gap-3 md:col-start-1'>
+            <button type='submit' className='bg-[#085484] text-white px-10 py-2.5 rounded-md font-medium text-[13px] hover:bg-[#063e63] transition-colors'>
+              Search
+            </button>
+            <button 
+              type='button' 
+              onClick={() => {
+                setAll({ search: '', ruling_by: 'Rulings of K-RERA Authority', sort: '' });
+                setTimeout(() => {
+                  router.get(`/complaint-list?search=&ruling_by=Rulings of K-RERA Authority&sort=`);
+                }, 100);
+              }} 
+              className='bg-white text-gray-600 border border-gray-300 px-10 py-2.5 rounded-md font-medium text-[13px] hover:bg-gray-50 transition-colors'
+            >
+              Reset
+            </button>
           </div>
         </form>
       </div>
@@ -177,16 +182,21 @@ const ComplaintList = ({
           <Pagination pagination={complaints} />
         </div>
         
-        {selectedComplaint != null && (
-          <Modal
-            setShowModal={() => setSelectedComplaint(null)}
-            title={`Complaint No: ${selectedComplaint.ComplaintNo}`}
-          >
-            <ComplaintMoreInfo
-              complaintId={selectedComplaint.ID}
-              reliefSought={reliefSought}
-            />
-          </Modal>
+        {selectedComplaint != null && typeof document !== 'undefined' && createPortal(
+          <div className="fixed inset-0 z-[100000] pointer-events-none">
+            <div className="pointer-events-auto">
+              <Modal
+                setShowModal={() => setSelectedComplaint(null)}
+                title={`Complaint No: ${selectedComplaint.ComplaintNo}`}
+              >
+                <ComplaintMoreInfo
+                  complaintId={selectedComplaint.ID}
+                  reliefSought={reliefSought}
+                />
+              </Modal>
+            </div>
+          </div>,
+          document.body
         )}
       </FullSpinnerWrapper>
     </div>
