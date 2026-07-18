@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { Cell, Label, Pie, PieChart, ResponsiveContainer, Sector, Tooltip } from 'recharts'
 import useChartColorScheme from './useChartColorScheme'
 import { ChartTableRow } from './chart-interfaces'
@@ -327,18 +328,23 @@ const PieWrapper = ({
         </button>
       </div>
       {/* Legend modal */}
-      {isModalOpen && (
-        <Modal
-          setShowModal={setIsModalOpen}
-          title='Legend'
-        >
-          <CustomLegend
-            payload={chartValues.map((entry, index) => ({
-              value: entry.name,
-              color: solidColors[index % solidColors.length],
-            }))}
-          />
-        </Modal>
+      {isModalOpen && typeof document !== 'undefined' && createPortal(
+        <div className="fixed inset-0 z-[100000] pointer-events-none">
+          <div className="pointer-events-auto">
+            <Modal
+              setShowModal={setIsModalOpen}
+              title='Legend'
+            >
+              <CustomLegend
+                payload={chartValues.map((entry, index) => ({
+                  value: entry.name,
+                  color: solidColors[index % solidColors.length],
+                }))}
+              />
+            </Modal>
+          </div>
+        </div>,
+        document.body
       )}
     </>
   )

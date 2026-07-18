@@ -8,8 +8,8 @@ interface Properties {
 
 const ComplaintListItem = ({ complaint, setComplaint }: Properties) => {
   return (
-    <div className='flex flex-col md:flex-row bg-white rounded-[20px] shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-gray-100 overflow-hidden w-full relative pl-2 hover:shadow-md transition-shadow'>
-      <div className='absolute left-0 top-0 bottom-0 w-2.5 bg-[#085484] rounded-l-[20px]'></div>
+    <div className='flex flex-col md:flex-row bg-white rounded-[20px] shadow-[0_2px_12px_rgba(0,0,0,0.03)] border border-gray-100 overflow-hidden w-full relative pl-1.5 md:pl-2 hover:shadow-md transition-shadow'>
+      <div className='absolute left-0 top-0 bottom-0 w-1.5 md:w-2.5 bg-[#085484] rounded-l-[20px]'></div>
       <div className='flex flex-col md:flex-row w-full p-4 md:p-6 lg:p-8 items-start md:items-center gap-4 md:gap-0'>
         
         {/* Col 1: Complaint Number & Project Name */}
