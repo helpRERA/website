@@ -20,7 +20,7 @@
   --accent-blue: #1e3a8a;          /* Navy blue accent */
   
   /* Paper Preview Colors (Light theme matching physical paper) */
-  --bg-paper: #fcfbf9;
+  --bg-paper: #ffffff;
   --text-paper: #1c1917;
   --text-paper-light: #57534e;
   --border-paper: #e7e5e4;
@@ -827,6 +827,13 @@ input:focus, select:focus, textarea:focus {
   animation: none !important;
   background-color: transparent !important;
   outline: none !important;
+}
+
+.pdf-export .placeholder-field,
+.pdf-export .placeholder-field.empty,
+.pdf-export .placeholder-field-block,
+.pdf-export .placeholder-field-block.empty {
+  background-color: transparent !important;
 }
 
 .pdf-export p,
