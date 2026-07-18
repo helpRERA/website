@@ -141,7 +141,7 @@ export default function DataDashboardPage({
                 <label className='mb-2 text-sm font-medium text-[#0463A0]'>Project Name</label>
                 <input
                   type='text'
-                  className='w-full rounded-lg border border-gray-300 p-2.5 text-sm focus:border-[#0463A0] focus:outline-none focus:ring-1 focus:ring-[#0463A0]'
+                  className='w-full h-[42px] rounded-lg border border-gray-300 p-2.5 text-sm focus:border-[#0463A0] focus:outline-none focus:ring-1 focus:ring-[#0463A0]'
                   placeholder='Enter Project Name'
                   value={projectName}
                   onChange={(e) => setProjectName(e.target.value)}
@@ -157,13 +157,13 @@ export default function DataDashboardPage({
                   data={selectedProjectType}
                   showAllOption
                   allOptionText='Select Project Type'
-                  className='rounded-lg border-gray-300 py-2.5 text-sm'
+                  className='rounded-lg border-gray-300 py-2.5 text-sm h-[42px]'
                 />
               </div>
               <div className='flex flex-col'>
                 <label className='mb-2 text-sm font-medium text-[#0463A0]'>District</label>
                 <select
-                  className='w-full rounded-lg border border-gray-300 bg-white p-2.5 text-sm focus:border-[#0463A0] focus:outline-none focus:ring-1 focus:ring-[#0463A0]'
+                  className='w-full h-[42px] rounded-lg border border-gray-300 bg-white p-2.5 text-sm focus:border-[#0463A0] focus:outline-none focus:ring-1 focus:ring-[#0463A0]'
                   value={selectedDistrict?.Districtname || ''}
                   onChange={(e) => handleDistrictChange(e.target.value)}
                 >
@@ -185,7 +185,7 @@ export default function DataDashboardPage({
                   data={selectedYear}
                   showAllOption
                   allOptionText='Select Year'
-                  className='rounded-lg border-gray-300 py-2.5 text-sm'
+                  className='rounded-lg border-gray-300 py-2.5 text-sm h-[42px]'
                 />
               </div>
             </div>
