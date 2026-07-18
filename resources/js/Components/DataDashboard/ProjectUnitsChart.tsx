@@ -102,47 +102,48 @@ export default function ProjectUnitsChart({
   }, [registeredProjects, last7Years])
 
   return (
-    <div className='grid grid-cols-1 gap-5'>
-      <div className='grid grid-cols-1 gap-5 md:grid-cols-3'>
-        <div className='col-span-full'>
-          <h2 className='text-xl font-bold'>Units Registered</h2>
-          <p className='text-sm font-semibold'>
-            {selectedDistrict == null ? 'All Districts' : selectedDistrict.Districtname}
-            {selectedYear == '' ? '' : `, ${selectedYear}`}
+    <div className='flex flex-col gap-6'>
+      <div className='flex flex-col md:flex-row justify-between items-start gap-4'>
+        <div>
+          <h2 className='text-[#085484] font-semibold text-lg md:text-[22px]' style={{ fontFamily: "'Urbanist', sans-serif" }}>
+            Units Registered
+          </h2>
+        </div>
+        <div className='flex flex-col items-center justify-center rounded-[16px] border border-gray-100 bg-[#FCFCFD] px-5 py-3 shadow-sm'>
+          <h2 className='text-[20px] text-gray-700 font-medium' style={{ fontFamily: "'Urbanist', sans-serif" }}>
+            {registeredProjectsInCurrentYear} Projects
+          </h2>
+          <p className='text-sm text-gray-500' style={{ fontFamily: "'Urbanist', sans-serif" }}>
+            registered in {selectedYear == '' ? 'total' : selectedYear}
           </p>
         </div>
-        <div className='col-span-full'>
-          <VisualizationToggle
-            showChart={showChart}
-            setShowChart={setShowChart}
+      </div>
+
+      <div>
+        <VisualizationToggle
+          showChart={showChart}
+          setShowChart={setShowChart}
+        />
+      </div>
+      
+      <div className='h-80 w-full overflow-auto'>
+        {showChart && (
+          <BarWrapper
+            xLabel=''
+            yLabel=''
+            xAxisKey='year'
+            measurementUnits={areaUnits}
+            dataset={unitsPerYear}
+            stacked={true}
           />
-        </div>
-        <div className='h-96 overflow-auto md:col-span-2'>
-          {showChart && (
-            <BarWrapper
-              xLabel='Year'
-              yLabel='# Units'
-              xAxisKey='year'
-              measurementUnits={areaUnits}
-              dataset={unitsPerYear}
-              stacked={true}
-            />
-          )}
-          {!showChart && (
-            <DashboardDataTable
-              records={unitsPerYear}
-              keys={['year', 'Residential Units', 'Commercial Units']}
-              primaryKey='year'
-            />
-          )}
-        </div>
-        <div className='flex flex-col items-center justify-center'>
-          <h2 className='text-4xl font-bold'>{registeredProjectsInCurrentYear}</h2>
-          <p className='text-center text-sm font-semibold'>
-            Projects Registered
-            <br /> {selectedYear == '' ? ' ' : `In ${selectedYear}`}
-          </p>
-        </div>
+        )}
+        {!showChart && (
+          <DashboardDataTable
+            records={unitsPerYear}
+            keys={['year', 'Residential Units', 'Commercial Units']}
+            primaryKey='year'
+          />
+        )}
       </div>
     </div>
   )

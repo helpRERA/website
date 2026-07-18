@@ -49,6 +49,7 @@ class DataDashboardController extends Controller
             ->leftJoin('tbl_certificateP', 'tbl_Project.ID', '=', 'tbl_certificateP.ProjectID')
             ->selectRaw(
                 'tbl_Project.ID,
+                tbl_Project.Name,
                 District,
                 PType,
                 ProjectStartDate,
@@ -97,6 +98,7 @@ class DataDashboardController extends Controller
             'today' => now()->toDateString(),
             'promotersCount' => $dataDependencyService->promotersCount(),
             'complaintsCount' => $dataDependencyService->complaintsCount(),
+            'registeredAgents' => $dataDependencyService->registeredAgents(),
             'years' => $years,
             'projectTypes' => $projectTypes,
             'apartmentTypeSummary' => $apartmentCount,

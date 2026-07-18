@@ -147,37 +147,37 @@ export default function ProjectAreaChart({
   }, [registeredProjects, last7Years])
 
   return (
-    <div className='grid grid-cols-1 gap-5 md:grid-cols-3'>
-      <div className='col-span-full'>
-        <h2 className='text-xl font-bold'>Project Area Added</h2>
-        <p className='text-sm font-semibold'>
-          {selectedDistrict == null ? 'All Districts' : selectedDistrict.Districtname}
-          {selectedYear == '' ? '' : `, ${selectedYear}`}
-        </p>
+    <div className='flex flex-col gap-6'>
+      <div className='flex flex-col md:flex-row justify-between items-start gap-4'>
+        <div>
+          <h2 className='text-[#085484] font-semibold text-lg md:text-[22px]' style={{ fontFamily: "'Urbanist', sans-serif" }}>
+            Project Area Added
+          </h2>
+        </div>
+        <div className='flex flex-col items-center justify-center rounded-[16px] border border-gray-100 bg-[#FCFCFD] px-5 py-3 shadow-sm'>
+          <h2 className='text-[20px] text-gray-700 font-medium' style={{ fontFamily: "'Urbanist', sans-serif" }}>
+            {formatNumber(proposedAreaInCurrentYear)?.toLocaleString('en-IN', {
+              maximumFractionDigits: 1,
+            })}
+          </h2>
+          <p className='text-sm text-gray-500' style={{ fontFamily: "'Urbanist', sans-serif" }}>
+            Total Floor Area Proposed In {selectedYear == '' ? 'Total' : selectedYear}
+          </p>
+        </div>
       </div>
-      <div className='col-span-full'>
+
+      <div>
         <VisualizationToggle
           showChart={showChart}
           setShowChart={setShowChart}
         />
       </div>
-      <div className='flex flex-col items-center justify-center'>
-        <h2 className='text-4xl font-bold'>
-          {formatNumber(proposedAreaInCurrentYear)?.toLocaleString('en-IN', {
-            maximumFractionDigits: 1,
-          })}
-          {/* {proposedAreaInCurrentYear.toLocaleString('en-IN', { maximumFractionDigits: 1 })} */}
-        </h2>
-        <p className='text-center text-xl'>
-          Total Floor Area <br />
-          Proposed In {selectedYear == '' ? 'To Date' : selectedYear}
-        </p>
-      </div>
-      <div className='h-96 overflow-auto md:col-span-2'>
+      
+      <div className='h-80 w-full overflow-auto'>
         {showChart && (
           <AreaChart
-            xLabel='Year'
-            yLabel='Area'
+            xLabel=''
+            yLabel=''
             xAxisKey='year'
             measurementUnits={areaUnits}
             dataset={totalAreaYear}

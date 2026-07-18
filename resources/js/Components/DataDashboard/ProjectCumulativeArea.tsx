@@ -124,11 +124,9 @@ export default function ProjectCumulativeArea({
   return (
     <div className='grid grid-cols-1 gap-5'>
       <div className='col-span-full'>
-        <h2 className='text-xl font-bold'>Cumulative Project Area</h2>
-        <p className='text-sm font-semibold'>
-          {selectedDistrict == null ? 'All Districts' : selectedDistrict.Districtname}
-          {selectedYear == '' ? '' : `, ${selectedYear}`}
-        </p>
+        <h2 className='text-[#085484] font-semibold mb-4 text-lg md:text-[22px]' style={{ fontFamily: "'Urbanist', sans-serif" }}>
+          Cumulative Project Area
+        </h2>
       </div>
       <div className='col-span-full'>
         <VisualizationToggle

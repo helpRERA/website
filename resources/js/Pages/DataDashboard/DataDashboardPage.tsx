@@ -5,11 +5,7 @@ import React, { useCallback, useMemo, useState } from 'react'
 import ProjectAreaChart from '../../Components/DataDashboard/ProjectAreaChart'
 import MapCustomControl from '../../leaflet/MapCustomControl'
 import DashboardTopSection from '../../Components/DataDashboard/DashboardTopSection'
-import CloseSolid from '../../ui/icons/CloseSolid'
 import ProjectCumulativeArea from '../../Components/DataDashboard/ProjectCumulativeArea'
-import { Link } from '@inertiajs/react'
-import PageTitle from '../../Components/UiBuilder/Blocks/PageTitle'
-import AppLayoutPadding from '../../Components/Layout/AppLayout/AppLayoutPadding'
 import SelectList from '../../ui/form/SelectList'
 
 export interface ApartmentTypeSummary {
@@ -24,6 +20,7 @@ interface Props {
   registeredProjects: Pick<
     Project,
     | 'ID'
+    | 'Name'
     | 'District'
     | 'PType'
     | 'ProjectStartDate'
@@ -43,6 +40,7 @@ interface Props {
   today: string
   promotersCount: number
   complaintsCount: number
+  registeredAgents: number
   years: { year: string }[]
   projectTypes: ProjectStatusType[]
   apartmentTypeSummary: ApartmentTypeSummary[]
@@ -54,6 +52,7 @@ export default function DataDashboardPage({
   today,
   complaintsCount,
   promotersCount,
+  registeredAgents,
   years,
   projectTypes,
   apartmentTypeSummary,
@@ -61,15 +60,16 @@ export default function DataDashboardPage({
   const [selectedDistrict, setSelectedDistrict] = React.useState<District | null>(null)
   const [selectedYear, setSelectedYear] = useState(years.length > 0 ? years[0].year : '')
   const [selectedProjectType, setSelectedProjectType] = useState('')
+  const [projectName, setProjectName] = useState('')
 
   const handleDistrictChange = useCallback(
     (district: string | null) => {
       if (district == null || district === '') {
         setSelectedDistrict(null)
+      } else {
+        const districtRecord = districts.find((d) => d.Districtname === district)
+        setSelectedDistrict(districtRecord ?? null)
       }
-
-      const districtRecord = districts.find((d) => d.Districtname === district)
-      setSelectedDistrict(districtRecord ?? null)
     },
     [districts]
   )
@@ -99,249 +99,188 @@ export default function DataDashboardPage({
     return registeredProjects.filter((project) => {
       return (
         (selectedDistrict == null || project.District == selectedDistrict.Districtcode) &&
-        (selectedProjectType == '' || project.ProjectType == selectedProjectType)
+        (selectedProjectType == '' || project.ProjectType == selectedProjectType) &&
+        (projectName == '' || (project.Name && project.Name.toLowerCase().includes(projectName.toLowerCase())))
       )
     })
-  }, [registeredProjects, selectedDistrict, selectedProjectType])
+  }, [registeredProjects, selectedDistrict, selectedProjectType, projectName])
 
-  const links = useMemo(() => {
-    return {
-      title: { english: 'Interactive Statistics', malayalam: '' },
-      links: {
-        lastUUID: 2,
-        items: [
-          {
-            id: 1,
-            item: { name: { english: 'Home', malayalam: '' }, link: '/', external: false },
-          },
-          {
-            id: 2,
-            item: {
-              name: { english: 'Interactive Statistics', malayalam: '' },
-              link: '/data-dashboard',
-              external: false,
-            },
-          },
-        ],
-      },
-    }
-  }, [])
+  const unitsRegistered = useMemo(() => {
+    return filteredProjects.reduce((acc, p) => {
+      return acc + Number(p.NumberOfResidentialUnits || 0) + Number(p.NumberOfCommercialUnits || 0)
+    }, 0)
+  }, [filteredProjects])
 
   return (
     <AppLayout>
-      <div className='flex flex-col p-2'>
-        <PageTitle block={links} />
-        <AppLayoutPadding>
-          <div className='grid grid-cols-1 gap-6 lg:grid-cols-12'>
-            {/*Filters*/}
-            <div
-              className='mt-4 hidden grid-cols-10 justify-end gap-2 rounded-lg border-2
-             border-primary-600 pr-1 lg:col-span-6 lg:col-start-7  lg:grid xl:col-span-7 xl:col-start-6'
+      <div className='relative flex h-[320px] md:min-h-[475px] w-full flex-col items-center justify-center bg-[url("/imge/newhome.webp")] bg-cover bg-center'>
+        <div className='absolute inset-0 bg-black/40'></div>
+        <div className='z-10 flex flex-col items-center text-white pt-12 md:pt-16 pb-10 md:pb-4'>
+          <h1 className='text-3xl font-bold md:text-4xl lg:text-5xl' style={{ fontFamily: "'Urbanist', sans-serif" }}>
+            Statistics
+          </h1>
+          <div className='mt-2 text-sm font-medium flex gap-2 items-center text-gray-200'>
+            <a href='/' className='hover:text-white transition-colors'>Home</a>
+            <span>&gt;</span>
+            <span className='text-white'>Statistics</span>
+          </div>
+        </div>
+      </div>
+
+      <div className='cmpad relative z-20 mx-auto -mt-24 flex w-full flex-col pb-10 md:-mt-28'>
+        <div className='w-full'>
+          <div className='mb-8 rounded-xl bg-white p-6 shadow-[0_0_15px_rgba(0,0,0,0.1)]'>
+            <h2 
+              className='mb-6 text-[#085484] font-medium text-xl md:text-[27px]' 
+              style={{ fontFamily: "'Urbanist', sans-serif", fontWeight: 500 }}
             >
-              <div className='col-span-1 flex w-full items-center justify-center rounded-l bg-slate-400 p-4'>
-                <svg
-                  fill='#0463A0'
-                  height='30'
-                  width='30'
-                  version='1.1'
-                  id='Capa_1'
-                  xmlns='http://www.w3.org/2000/svg'
-                  viewBox='0 0 210.68 210.68'
+              Data Dashboard
+            </h2>
+            <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4'>
+              <div className='flex flex-col'>
+                <label className='mb-2 text-sm font-medium text-[#0463A0]'>Project Name</label>
+                <input
+                  type='text'
+                  className='w-full rounded-lg border border-gray-300 p-2.5 text-sm focus:border-[#0463A0] focus:outline-none focus:ring-1 focus:ring-[#0463A0]'
+                  placeholder='Enter Project Name'
+                  value={projectName}
+                  onChange={(e) => setProjectName(e.target.value)}
+                />
+              </div>
+              <div className='flex flex-col'>
+                <label className='mb-2 text-sm font-medium text-[#0463A0]'>Project Type</label>
+                <SelectList
+                  list={projectTypes}
+                  dataKey='Id'
+                  displayKey='TypeName'
+                  setData={setSelectedProjectType}
+                  data={selectedProjectType}
+                  showAllOption
+                  allOptionText='Select Project Type'
+                  className='rounded-lg border-gray-300 py-2.5 text-sm'
+                />
+              </div>
+              <div className='flex flex-col'>
+                <label className='mb-2 text-sm font-medium text-[#0463A0]'>District</label>
+                <select
+                  className='w-full rounded-lg border border-gray-300 bg-white p-2.5 text-sm focus:border-[#0463A0] focus:outline-none focus:ring-1 focus:ring-[#0463A0]'
+                  value={selectedDistrict?.Districtname || ''}
+                  onChange={(e) => handleDistrictChange(e.target.value)}
                 >
-                  <path
-                    d='M205.613,30.693c0-10.405-10.746-18.149-32.854-23.676C154.659,2.492,130.716,0,105.34,0
-	C79.965,0,56.021,2.492,37.921,7.017C15.813,12.544,5.066,20.288,5.066,30.693c0,3.85,1.476,7.335,4.45,10.479l68.245,82.777v79.23
-	c0,2.595,1.341,5.005,3.546,6.373c1.207,0.749,2.578,1.127,3.954,1.127c1.138,0,2.278-0.259,3.331-0.78l40.075-19.863
-	c2.55-1.264,4.165-3.863,4.169-6.71l0.077-59.372l68.254-82.787C204.139,38.024,205.613,34.542,205.613,30.693z M44.94,20.767
-	C61.467,17.048,82.917,15,105.34,15s43.874,2.048,60.399,5.767c18.25,4.107,23.38,8.521,24.607,9.926
-	c-1.228,1.405-6.357,5.819-24.607,9.926c-16.525,3.719-37.977,5.767-60.399,5.767S61.467,44.338,44.94,40.62
-	c-18.249-4.107-23.38-8.521-24.607-9.926C21.56,29.288,26.691,24.874,44.94,20.767z M119.631,116.486
-	c-1.105,1.341-1.711,3.023-1.713,4.761l-0.075,57.413l-25.081,12.432v-69.835c0-1.741-0.605-3.428-1.713-4.771L40.306,54.938
-	C58.1,59.1,81.058,61.387,105.34,61.387c24.283,0,47.24-2.287,65.034-6.449L119.631,116.486z'
-                  />
-                </svg>
+                  <option value=''>Select District</option>
+                  {districts.map((d) => (
+                    <option key={d.Districtcode} value={d.Districtname}>
+                      {d.Districtname}
+                    </option>
+                  ))}
+                </select>
               </div>
-              <div className='col-span-4 flex items-center gap-2 '>
-                {selectedDistrict != null && (
-                  <div className='flex items-center justify-between gap-2 rounded-full border border-gray-300  bg-[#b5e48c] px-4'>
-                    <span>{selectedDistrict?.Districtname}</span>
-                    <button
-                      className='rounded-full p-1 hover:bg-gray-200 '
-                      onClick={() => setSelectedDistrict(null)}
-                    >
-                      <CloseSolid />
-                    </button>
-                  </div>
-                )}
-                {selectedDistrict == null && (
-                  <div className='flex items-center justify-between gap-2 rounded-full border border-gray-300 bg-[#b5e48c] bg-opacity-70 px-6 py-2'>
-                    <span>All Districts</span>
-                  </div>
-                )}
-              </div>
-              <div className='col-span-2 flex flex-col justify-center'>
-                <div className='flex flex-col'>
-                  <SelectList
-                    list={years}
-                    dataKey='year'
-                    displayKey='year'
-                    setData={setSelectedYear}
-                    data={selectedYear}
-                    showAllOption
-                    allOptionText='All Years'
-                  />
-                </div>
-              </div>
-              <div className='col-span-3 flex flex-col justify-center'>
-                <div className='flex flex-col '>
-                  <SelectList
-                    list={projectTypes}
-                    dataKey='Id'
-                    displayKey='TypeName'
-                    setData={setSelectedProjectType}
-                    data={selectedProjectType}
-                    showAllOption
-                    allOptionText='All Project Types'
-                  />
-                </div>
+              <div className='flex flex-col'>
+                <label className='mb-2 text-sm font-medium text-[#0463A0]'>Year</label>
+                <SelectList
+                  list={years}
+                  dataKey='year'
+                  displayKey='year'
+                  setData={setSelectedYear}
+                  data={selectedYear}
+                  showAllOption
+                  allOptionText='Select Year'
+                  className='rounded-lg border-gray-300 py-2.5 text-sm'
+                />
               </div>
             </div>
-            <div className='col-span-full hidden justify-end lg:flex '>
-              <span className='text-xs'>Please select distrct from the map below</span>
+            <div className='mt-6 flex gap-4'>
+              <button
+                className='rounded-md bg-[#0463A0] px-8 py-2 text-sm font-semibold text-white hover:bg-blue-800'
+                onClick={() => {}}
+              >
+                Search
+              </button>
+              <button
+                className='rounded-md border border-[#0463A0] bg-white px-8 py-2 text-sm font-semibold text-[#0463A0] hover:bg-gray-50'
+                onClick={() => {
+                  setProjectName('')
+                  setSelectedProjectType('')
+                  handleDistrictChange(null)
+                  setSelectedYear('')
+                }}
+              >
+                Reset
+              </button>
             </div>
+          </div>
 
-            <div className='flex flex-col gap-2 lg:col-span-5'>
-              {/*Card*/}
-              <div className='grid grid-cols-1 gap-5 pt-4 md:grid-cols-3 lg:pt-2'>
-                <div className='col-span-full'>
-                  <h2 className='text-xl font-bold'>Summary Stats</h2>
-                  <p className='text-sm'>
-                    Cumulative registrations in KRERA: Projects, promoters and complaint counts.
-                  </p>
+          <div className='mb-8'>
+            <h2 
+              className='mb-4 text-[#085484] font-medium text-lg md:text-[22px]' 
+              style={{ fontFamily: "'Urbanist', sans-serif", fontWeight: 500 }}
+            >
+              Summary Stats
+            </h2>
+            <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4'>
+              <div className='flex flex-col justify-center rounded-xl bg-white p-6 shadow-[0_0_15px_rgba(0,0,0,0.1)]'>
+                <div className='mb-4'>
+                  <img src='/svg/rgagent.svg' alt='Registered Agents' className='h-7 w-7 object-contain' />
                 </div>
-                <Link
-                  as='div'
-                  href='/explore-projects'
-                  className='flex cursor-pointer flex-col items-center justify-center gap-2 rounded bg-primary-50 py-10 shadow-lg hover:bg-primary-100'
-                >
-                  <h2 className='text-2xl font-bold'>{registeredProjects.length}</h2>
-                  <p className='text-center text-sm font-normal leading-6 text-gray-600 md:text-base'>
-                    Registered Projects
-                  </p>
-                </Link>
-                <Link
-                  as='div'
-                  href='/promoters'
-                  className='flex cursor-pointer flex-col items-center justify-center gap-2 rounded bg-primary-50 py-10 shadow-lg hover:bg-primary-100'
-                >
-                  <h2 className='text-2xl font-bold'>{promotersCount}</h2>
-                  <p className='text-center text-sm font-normal leading-6 text-gray-600 md:text-base'>
-                    Registered Promoters
-                  </p>
-                </Link>
-                <Link
-                  as='div'
-                  href='/complaint-list'
-                  className=' flex cursor-pointer flex-col items-center justify-center gap-2 rounded bg-primary-50 py-10 shadow-lg hover:bg-primary-100'
-                >
-                  <h2 className='text-2xl font-bold'>{complaintsCount}</h2>
-                  <p className='text-center text-sm font-normal leading-6 text-gray-600 md:text-base'>
-                    Registered Complaints
-                  </p>
-                </Link>
+                <h3 className='text-3xl font-bold text-gray-800'>{registeredAgents}</h3>
+                <p className='text-sm text-gray-500'>Registered Agents</p>
               </div>
+              <div className='flex flex-col justify-center rounded-xl bg-white p-6 shadow-[0_0_15px_rgba(0,0,0,0.1)]'>
+                <div className='mb-4'>
+                  <img src='/svg/rgprojects.svg' alt='Registered Projects' className='h-7 w-7 object-contain' />
+                </div>
+                <h3 className='text-3xl font-bold text-gray-800'>{registeredProjects.length}</h3>
+                <p className='text-sm text-gray-500'>Registered Projects</p>
+              </div>
+              <div className='flex flex-col justify-center rounded-xl bg-white p-6 shadow-[0_0_15px_rgba(0,0,0,0.1)]'>
+                <div className='mb-4'>
+                  <img src='/svg/rgpromoter.svg' alt='Registered Promoters' className='h-7 w-7 object-contain' />
+                </div>
+                <h3 className='text-3xl font-bold text-gray-800'>{promotersCount}</h3>
+                <p className='text-sm text-gray-500'>Registered Promoters</p>
+              </div>
+              <div className='flex flex-col justify-center rounded-xl bg-white p-6 shadow-[0_0_15px_rgba(0,0,0,0.1)]'>
+                <div className='mb-4'>
+                  <img src='/svg/complaintsfiled.svg' alt='Complaints Filed' className='h-7 w-7 object-contain' />
+                </div>
+                <h3 className='text-3xl font-bold text-gray-800'>{complaintsCount}</h3>
+                <p className='text-sm text-gray-500'>Complaints Filed</p>
+              </div>
+            </div>
+          </div>
 
-              {/* filter for medium and small screens */}
-              <div className='mt-4 grid md:grid-cols-5 lg:hidden'>
-                <div
-                  className='col-span-4 col-start-2 mt-2 grid grid-cols-7 justify-end gap-2 rounded-lg
-                  border-2 border-primary-600 pr-1 lg:col-span-7 lg:col-start-9'
-                >
-                  <div className='col-span-1 flex w-full items-center justify-center rounded-l bg-slate-400 p-4'>
-                    <svg
-                      fill='#0463A0'
-                      height='30'
-                      width='30'
-                      version='1.1'
-                      id='Capa_1'
-                      xmlns='http://www.w3.org/2000/svg'
-                      viewBox='0 0 210.68 210.68'
-                    >
-                      <path
-                        d='M205.613,30.693c0-10.405-10.746-18.149-32.854-23.676C154.659,2.492,130.716,0,105.34,0
-	C79.965,0,56.021,2.492,37.921,7.017C15.813,12.544,5.066,20.288,5.066,30.693c0,3.85,1.476,7.335,4.45,10.479l68.245,82.777v79.23
-	c0,2.595,1.341,5.005,3.546,6.373c1.207,0.749,2.578,1.127,3.954,1.127c1.138,0,2.278-0.259,3.331-0.78l40.075-19.863
-	c2.55-1.264,4.165-3.863,4.169-6.71l0.077-59.372l68.254-82.787C204.139,38.024,205.613,34.542,205.613,30.693z M44.94,20.767
-	C61.467,17.048,82.917,15,105.34,15s43.874,2.048,60.399,5.767c18.25,4.107,23.38,8.521,24.607,9.926
-	c-1.228,1.405-6.357,5.819-24.607,9.926c-16.525,3.719-37.977,5.767-60.399,5.767S61.467,44.338,44.94,40.62
-	c-18.249-4.107-23.38-8.521-24.607-9.926C21.56,29.288,26.691,24.874,44.94,20.767z M119.631,116.486
-	c-1.105,1.341-1.711,3.023-1.713,4.761l-0.075,57.413l-25.081,12.432v-69.835c0-1.741-0.605-3.428-1.713-4.771L40.306,54.938
-	C58.1,59.1,81.058,61.387,105.34,61.387c24.283,0,47.24-2.287,65.034-6.449L119.631,116.486z'
-                      />
-                    </svg>
-                  </div>
-                  <div className='col-span-2 flex items-center gap-2 '>
-                    {selectedDistrict != null && (
-                      <div className='flex items-center justify-between gap-2 rounded-full border border-gray-300 bg-[#b5e48c] px-4'>
-                        <span>{selectedDistrict?.Districtname}</span>
-                        <button
-                          className='rounded-full p-1 hover:bg-gray-200 '
-                          onClick={() => setSelectedDistrict(null)}
-                        >
-                          <CloseSolid />
-                        </button>
-                      </div>
-                    )}
-                    {selectedDistrict == null && (
-                      <div className='flex items-center justify-between gap-2 rounded-full border border-gray-300 bg-[#b5e48c] px-6 py-2'>
-                        <span>All Districts</span>
-                      </div>
-                    )}
-                  </div>
-                  <div className='col-span-2 flex flex-col  justify-center'>
-                    <div className='flex flex-col'>
-                      <SelectList
-                        list={years}
-                        dataKey='year'
-                        displayKey='year'
-                        setData={setSelectedYear}
-                        data={selectedYear}
-                        showAllOption
-                        allOptionText='All Years'
-                      />
-                    </div>
-                  </div>
-                  <div className='col-span-2 flex flex-col justify-center'>
-                    <div className='flex flex-col '>
-                      <SelectList
-                        list={projectTypes}
-                        dataKey='Id'
-                        displayKey='TypeName'
-                        setData={setSelectedProjectType}
-                        data={selectedProjectType}
-                        showAllOption
-                        allOptionText='All Project Types'
-                      />
-                    </div>
-                  </div>
+          <div className='grid grid-cols-1 gap-6 lg:grid-cols-12'>
+            <div className='flex flex-col gap-6 lg:col-span-4'>
+              <div className='rounded-[20px] bg-white p-6 border border-[#E5E7EB]'>
+                <MapCustomControl
+                  features={districtChoropleth}
+                  title='Select a District'
+                  handleDistrictChange={handleDistrictChange}
+                />
+              </div>
+            </div>
+            <div className='flex flex-col gap-6 lg:col-span-8'>
+              <div className='flex flex-col md:flex-row md:items-center justify-between rounded-[20px] md:rounded-l-[12px] border-l-[6px] border-[#085484] bg-[#F9FAFB] p-6 gap-4 md:gap-0'>
+                <div className='flex-1'>
+                  <p className='text-sm text-gray-500'>Selected District</p>
+                  <h3 className='text-xl font-bold text-[#0463A0]'>
+                    {selectedDistrict?.Districtname || 'All Districts'}
+                  </h3>
+                </div>
+                <div className='hidden md:block h-10 w-px bg-gray-200'></div>
+                <div className='flex-1 md:px-6'>
+                  <p className='text-sm text-gray-500'>Projects Registered</p>
+                  <h3 className='text-xl font-bold text-[#0463A0]'>{filteredProjects.length}</h3>
+                </div>
+                <div className='hidden md:block h-10 w-px bg-gray-200'></div>
+                <div className='flex-1 md:px-6'>
+                  <p className='text-sm text-gray-500'>Units Registered</p>
+                  <h3 className='text-xl font-bold text-[#0463A0]'>{unitsRegistered.toLocaleString()}</h3>
                 </div>
               </div>
-              <div className='col-span-full  flex justify-end lg:hidden '>
-                <span className='text-xs'>Please select distrct from the map below</span>
-              </div>
 
-              {/* Pie chart */}
-              <div className='col-span-full pt-4'>
-                <h2 className='text-xl font-bold'>Project Categorization, Counts</h2>
-                <p className='text-sm font-semibold'>
-                  {selectedDistrict == null ? 'All Districts' : selectedDistrict.Districtname}
-                  {selectedYear == '' ? '' : `, ${selectedYear} `}
-                </p>
-                <p className='py-1 text-sm'>
-                  This visualization shows counts of new project registrations by unit types. The
-                  second chart indicates the distribution of floor area in sqm among residential
-                  projects registered in the selected year.{' '}
-                </p>
+              <div className='rounded-[20px] bg-white p-6 border border-[#E5E7EB]'>
+                <h2 className='mb-4 text-[#085484] font-semibold text-lg md:text-[22px]' style={{ fontFamily: "'Urbanist', sans-serif" }}>Project Categorization Count</h2>
                 <DashboardTopSection
                   registeredProjects={filteredProjects}
                   selectedYear={selectedYear}
@@ -350,17 +289,8 @@ export default function DataDashboardPage({
                   selectedProjectType={selectedProjectType}
                 />
               </div>
-            </div>
-            <div className='flex flex-col gap-2 lg:col-span-7'>
-              {/*Map*/}
-              <MapCustomControl
-                features={districtChoropleth}
-                title='Registered Projects'
-                handleDistrictChange={handleDistrictChange}
-              />
-            </div>
-            <div className='flex flex-col lg:col-span-full'>
-              <div className='mt-8 w-full'>
+
+              <div className='rounded-[20px] bg-white p-6 border border-[#E5E7EB]'>
                 <ProjectUnitsChart
                   registeredProjects={filteredProjects}
                   selectedYear={selectedYear}
@@ -368,28 +298,29 @@ export default function DataDashboardPage({
                   today={today}
                 />
               </div>
-              <ProjectAreaChart
-                registeredProjects={filteredProjects}
-                districts={districts}
-                today={today}
-                selectedYear={selectedYear}
-                selectedDistrict={selectedDistrict}
-              />
-              <ProjectCumulativeArea
-                registeredProjects={filteredProjects}
-                districts={districts}
-                today={today}
-                selectedYear={selectedYear}
-                selectedDistrict={selectedDistrict}
-              />
-              {/*<TreeMap*/}
-              {/*  registeredProjects={filteredProjects}*/}
-              {/*  selectedYear={Number(selectedYear)}*/}
-              {/*  selectedDistrict={selectedDistrict}*/}
-              {/*/>*/}
+
+              <div className='rounded-[20px] bg-white p-6 border border-[#E5E7EB]'>
+                <ProjectAreaChart
+                  registeredProjects={filteredProjects}
+                  districts={districts}
+                  today={today}
+                  selectedYear={selectedYear}
+                  selectedDistrict={selectedDistrict}
+                />
+              </div>
+
+              <div className='rounded-[20px] bg-white p-6 border border-[#E5E7EB]'>
+                <ProjectCumulativeArea
+                  registeredProjects={filteredProjects}
+                  districts={districts}
+                  today={today}
+                  selectedYear={selectedYear}
+                  selectedDistrict={selectedDistrict}
+                />
+              </div>
             </div>
           </div>
-        </AppLayoutPadding>
+        </div>
       </div>
     </AppLayout>
   )

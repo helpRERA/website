@@ -41,6 +41,7 @@ const NavbarLinks = ({ nav, section, lang = 'en' }: Properties) => {
                   <div key={item.id.toString()} className='flex items-center rounded bg-[#FFFFFF] border border-transparent px-3.5 py-2 transition hover:border-[#DDDDDD] hover:shadow-sm'>
                     <InertiaLink
                       className='text-[15px] font-normal text-[#5A5A5A] hover:text-[#105d8c]'
+                      style={{ fontFamily: "'DM Sans', sans-serif" }}
                       link={item}
                       language={lang}
                     />

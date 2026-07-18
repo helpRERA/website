@@ -64,7 +64,7 @@ const Navbar = () => {
   }
 
   const url = usePage().url
-  const isHome = url === '/' || url.startsWith('/?lang=') || url.startsWith('/explore-projects') || url.startsWith('/complaint-list')
+  const isHome = url === '/' || url.startsWith('/?lang=') || url.startsWith('/explore-projects') || url.startsWith('/complaint-list') || url.startsWith('/data-dashboard')
 
   return (
     <>
