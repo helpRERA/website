@@ -51,8 +51,8 @@ function BannerRightImage({
     }
   }
 
-  const activeTabClass = 'w-full sm:w-auto rounded-xl md:rounded-full bg-[#0b4b7a] px-6 py-2.5 text-sm font-medium text-white transition-colors'
-  const inactiveTabClass = 'w-full sm:w-auto rounded-xl md:rounded-full px-6 py-2.5 text-sm font-medium text-[#246b9a] transition-colors hover:bg-gray-100 bg-white'
+  const activeTabClass = 'w-full sm:w-auto whitespace-nowrap rounded-lg md:rounded-full bg-[#0b4b7a] px-2 sm:px-6 py-2 sm:py-2.5 text-[12px] sm:text-sm font-medium text-white transition-colors'
+  const inactiveTabClass = 'w-full sm:w-auto whitespace-nowrap rounded-lg md:rounded-full px-2 sm:px-6 py-2 sm:py-2.5 text-[12px] sm:text-sm font-medium text-[#246b9a] transition-colors hover:bg-gray-100 bg-white'
 
   const onEdit = (
 
@@ -96,7 +96,7 @@ function BannerRightImage({
           <div className='mx-auto mt-12 w-full max-w-5xl px-4 md:mt-16 lg:max-w-[1000px]'>
             {/* Filter Tabs */}
             <div className='mb-6 flex justify-center'>
-              <div className='flex w-full flex-col sm:w-auto sm:flex-row items-center justify-center gap-2 rounded-2xl bg-white p-2 shadow-md md:rounded-full'>
+              <div className='grid grid-cols-2 gap-2 sm:flex sm:flex-row sm:flex-wrap items-center justify-center rounded-2xl bg-white p-2 shadow-md md:rounded-full w-full sm:w-auto'>
                 <button onClick={() => setActiveTab('projects')} className={activeTab === 'projects' ? activeTabClass : inactiveTabClass}>
                   Registered Projects
                 </button>
