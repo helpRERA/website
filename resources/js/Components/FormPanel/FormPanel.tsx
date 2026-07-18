@@ -19,7 +19,6 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
   const steps = [
     { id: 0, label: 'Execution' },
     { id: 1, label: 'Promoter' },
-    // { id: 2, label: 'Allottee' },
     { id: 3, label: 'Property & Project' },
     { id: 4, label: 'Approvals' },
     { id: 5, label: 'Unit & Pricing' },
@@ -88,28 +87,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
     updateField('priceBreakdown', newBreakdown);
   };
 
-  const addMilestone = () => {
-    const newPlan: PaymentPlanItem[] = [
-      ...data.paymentPlan,
-      { id: Date.now(), description: '', percentage: '', amount: '' }
-    ];
-    updateField('paymentPlan', newPlan);
-  };
 
-  const removeMilestone = (id: number) => {
-    const newPlan = data.paymentPlan.filter(m => m.id !== id);
-    updateField('paymentPlan', newPlan);
-  };
-
-  const updateMilestone = (id: number, field: keyof Omit<PaymentPlanItem, 'id'>, value: string) => {
-    const newPlan = data.paymentPlan.map(m => {
-      if (m.id === id) {
-        return { ...m, [field]: value };
-      }
-      return m;
-    });
-    updateField('paymentPlan', newPlan);
-  };
 
   const addJointAllottee = () => {
     const newAllottees: JointAllottee[] = [
@@ -170,7 +148,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
     <div className="form-panel">
       <div className="form-header">
         <div className="logo-container">
-           <img src="/imge/logonew.svg" alt="K-RERA Logo" style={{ width: '345px', height: 'auto', objectFit: 'contain' }} />
+           <img src={`${document.querySelector('meta[name="base-url"]')?.getAttribute('content') || ''}/imge/logonew.svg`} alt="K-RERA Logo" style={{ width: '345px', height: 'auto', objectFit: 'contain' }} />
         </div>
       </div>
 
@@ -210,7 +188,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 <input 
                   type="text" 
                   value={data.dateDay} 
-                  onFocus={() => setActiveField('dateDay')} onChange={(e) => updateField('dateDay', e.target.value)} 
+                  onFocus={() => setActiveField('dateDay')} onChange={(e) => updateField('dateDay', e.target.value.replace(/[^a-zA-Z0-9]/g, ''))} 
                   placeholder="e.g. 23rd"
                 />
               </div>
@@ -219,7 +197,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 <input 
                   type="text" 
                   value={data.dateMonth} 
-                  onFocus={() => setActiveField('dateMonth')} onChange={(e) => updateField('dateMonth', e.target.value)} 
+                  onFocus={() => setActiveField('dateMonth')} onChange={(e) => updateField('dateMonth', e.target.value.replace(/[^a-zA-Z0-9]/g, ''))} 
                   placeholder="e.g. June"
                 />
               </div>
@@ -228,7 +206,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 <input 
                   type="text" 
                   value={data.dateYear} 
-                  onFocus={() => setActiveField('dateYear')} onChange={(e) => updateField('dateYear', e.target.value)} 
+                  onFocus={() => setActiveField('dateYear')} onChange={(e) => updateField('dateYear', e.target.value.replace(/[^a-zA-Z0-9]/g, ''))} 
                   placeholder="e.g. 2026"
                 />
               </div>
@@ -281,7 +259,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                     <input 
                       type="text" 
                       value={data.promoterCompany.cin} 
-                      onFocus={() => setActiveField('promoterCompany.cin')} onChange={(e) => updateNestedField('promoterCompany', 'cin', e.target.value)}
+                      onFocus={() => setActiveField('promoterCompany.cin')} onChange={(e) => updateNestedField('promoterCompany', 'cin', e.target.value.replace(/[^a-zA-Z0-9]/g, ''))}
                     />
                   </div>
                   <div>
@@ -289,7 +267,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                     <input 
                       type="text" 
                       value={data.promoterCompany.pan} 
-                      onFocus={() => setActiveField('promoterCompany.pan')} onChange={(e) => updateNestedField('promoterCompany', 'pan', e.target.value)}
+                      onFocus={() => setActiveField('promoterCompany.pan')} onChange={(e) => updateNestedField('promoterCompany', 'pan', e.target.value.replace(/[^a-zA-Z0-9]/g, ''))}
                     />
                   </div>
                 </div>
@@ -299,6 +277,14 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                     rows={2}
                     value={data.promoterCompany.registeredOffice} 
                     onFocus={() => setActiveField('promoterCompany.registeredOffice')} onChange={(e) => updateNestedField('promoterCompany', 'registeredOffice', e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Corporate Office Address</label>
+                  <textarea 
+                    rows={2}
+                    value={data.promoterCompany.corporateOffice} 
+                    onFocus={() => setActiveField('promoterCompany.corporateOffice')} onChange={(e) => updateNestedField('promoterCompany', 'corporateOffice', e.target.value)}
                   />
                 </div>
                 <div className="form-group row-2">
@@ -315,17 +301,16 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                     <input 
                       type="text" 
                       value={data.promoterCompany.signatoryAadhaar} 
-                      onFocus={() => setActiveField('promoterCompany.signatoryAadhaar')} onChange={(e) => updateNestedField('promoterCompany', 'signatoryAadhaar', e.target.value)}
+                      onFocus={() => setActiveField('promoterCompany.signatoryAadhaar')} onChange={(e) => updateNestedField('promoterCompany', 'signatoryAadhaar', e.target.value.replace(/[^0-9]/g, ''))}
                     />
                   </div>
                 </div>
                 <div className="form-group">
                   <label>Board Resolution Date</label>
                   <input 
-                    type="text" 
+                    type="date" 
                     value={data.promoterCompany.boardResolutionDate} 
                     onFocus={() => setActiveField('promoterCompany.boardResolutionDate')} onChange={(e) => updateNestedField('promoterCompany', 'boardResolutionDate', e.target.value)}
-                    placeholder="DD/MM/YYYY"
                   />
                 </div>
               </>
@@ -355,7 +340,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                   <input 
                     type="text" 
                     value={data.promoterPartnership.pan} 
-                    onFocus={() => setActiveField('promoterPartnership.pan')} onChange={(e) => updateNestedField('promoterPartnership', 'pan', e.target.value)}
+                    onFocus={() => setActiveField('promoterPartnership.pan')} onChange={(e) => updateNestedField('promoterPartnership', 'pan', e.target.value.replace(/[^a-zA-Z0-9]/g, ''))}
                   />
                 </div>
                 <div className="form-group row-2">
@@ -372,7 +357,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                     <input 
                       type="text" 
                       value={data.promoterPartnership.partnerAadhaar} 
-                      onFocus={() => setActiveField('promoterPartnership.partnerAadhaar')} onChange={(e) => updateNestedField('promoterPartnership', 'partnerAadhaar', e.target.value)}
+                      onFocus={() => setActiveField('promoterPartnership.partnerAadhaar')} onChange={(e) => updateNestedField('promoterPartnership', 'partnerAadhaar', e.target.value.replace(/[^0-9]/g, ''))}
                     />
                   </div>
                 </div>
@@ -405,7 +390,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                     <input 
                       type="text" 
                       value={data.promoterIndividual.aadhaar} 
-                      onFocus={() => setActiveField('promoterIndividual.aadhaar')} onChange={(e) => updateNestedField('promoterIndividual', 'aadhaar', e.target.value)}
+                      onFocus={() => setActiveField('promoterIndividual.aadhaar')} onChange={(e) => updateNestedField('promoterIndividual', 'aadhaar', e.target.value.replace(/[^0-9]/g, ''))}
                     />
                   </div>
                   <div>
@@ -413,7 +398,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                     <input 
                       type="text" 
                       value={data.promoterIndividual.pan} 
-                      onFocus={() => setActiveField('promoterIndividual.pan')} onChange={(e) => updateNestedField('promoterIndividual', 'pan', e.target.value)}
+                      onFocus={() => setActiveField('promoterIndividual.pan')} onChange={(e) => updateNestedField('promoterIndividual', 'pan', e.target.value.replace(/[^a-zA-Z0-9]/g, ''))}
                     />
                   </div>
                 </div>
@@ -458,399 +443,6 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
           </div>
         )}
 
-        {/* STEP 2: ALLOTTEE DETAILS */}
-        {activeStep === 2 && (
-          <div className="form-section">
-            <h3 className="section-title">Allottee Details</h3>
-            <div className="form-group">
-              <label>Allottee Type</label>
-              <div className="toggle-group">
-                <button 
-                  className={`toggle-btn ${data.allotteeType === 'individual' ? 'active' : ''}`}
-                  onClick={() => updateField('allotteeType', 'individual')}
-                >
-                  Individual
-                </button>
-                <button 
-                  className={`toggle-btn ${data.allotteeType === 'company' ? 'active' : ''}`}
-                  onClick={() => updateField('allotteeType', 'company')}
-                >
-                  Company
-                </button>
-                <button 
-                  className={`toggle-btn ${data.allotteeType === 'partnership' ? 'active' : ''}`}
-                  onClick={() => updateField('allotteeType', 'partnership')}
-                >
-                  Partnership
-                </button>
-                <button 
-                  className={`toggle-btn ${data.allotteeType === 'huf' ? 'active' : ''}`}
-                  onClick={() => updateField('allotteeType', 'huf')}
-                >
-                  HUF
-                </button>
-              </div>
-            </div>
-
-            {/* Individual Allottee */}
-            {data.allotteeType === 'individual' && (
-              <>
-                <div className="form-group">
-                  <label>Allottee Name</label>
-                  <input 
-                    type="text" 
-                    value={data.allotteeIndividual.name} 
-                    onFocus={() => setActiveField('allotteeIndividual.name')} onChange={(e) => updateNestedField('allotteeIndividual', 'name', e.target.value)}
-                  />
-                </div>
-                <div className="form-group row-2">
-                  <div>
-                    <label>Aadhaar No</label>
-                    <input 
-                      type="text" 
-                      value={data.allotteeIndividual.aadhaar} 
-                      onFocus={() => setActiveField('allotteeIndividual.aadhaar')} onChange={(e) => updateNestedField('allotteeIndividual', 'aadhaar', e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <label>PAN</label>
-                    <input 
-                      type="text" 
-                      value={data.allotteeIndividual.pan} 
-                      onFocus={() => setActiveField('allotteeIndividual.pan')} onChange={(e) => updateNestedField('allotteeIndividual', 'pan', e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="form-group row-3">
-                  <div>
-                    <label>Relationship</label>
-                    <select 
-                      value={data.allotteeIndividual.parentType} 
-                      onFocus={() => setActiveField('allotteeIndividual.parentType')} onChange={(e) => updateNestedField('allotteeIndividual', 'parentType', e.target.value)}
-                    >
-                      <option value="son">Son of</option>
-                      <option value="daughter">Daughter of</option>
-                      <option value="wife">Wife of</option>
-                    </select>
-                  </div>
-                  <div style={{ gridColumn: 'span 2' }}>
-                    <label>Parent/Spouse Name</label>
-                    <input 
-                      type="text" 
-                      value={data.allotteeIndividual.parentName} 
-                      onFocus={() => setActiveField('allotteeIndividual.parentName')} onChange={(e) => updateNestedField('allotteeIndividual', 'parentName', e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="form-group row-2">
-                  <div>
-                    <label>Age (Years)</label>
-                    <input 
-                      type="number" 
-                      value={data.allotteeIndividual.age} 
-                      onFocus={() => setActiveField('allotteeIndividual.age')} onChange={(e) => updateNestedField('allotteeIndividual', 'age', e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label>Residential Address</label>
-                  <textarea 
-                    rows={2}
-                    value={data.allotteeIndividual.residing} 
-                    onFocus={() => setActiveField('allotteeIndividual.residing')} onChange={(e) => updateNestedField('allotteeIndividual', 'residing', e.target.value)}
-                  />
-                </div>
-              </>
-            )}
-
-            {/* Company Allottee */}
-            {data.allotteeType === 'company' && (
-              <>
-                <div className="form-group">
-                  <label>Company Name</label>
-                  <input 
-                    type="text" 
-                    value={data.allotteeCompany.name} 
-                    onFocus={() => setActiveField('allotteeCompany.name')} onChange={(e) => updateNestedField('allotteeCompany', 'name', e.target.value)}
-                  />
-                </div>
-                <div className="form-group row-2">
-                  <div>
-                    <label>CIN</label>
-                    <input 
-                      type="text" 
-                      value={data.allotteeCompany.cin} 
-                      onFocus={() => setActiveField('allotteeCompany.cin')} onChange={(e) => updateNestedField('allotteeCompany', 'cin', e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <label>PAN</label>
-                    <input 
-                      type="text" 
-                      value={data.allotteeCompany.pan} 
-                      onFocus={() => setActiveField('allotteeCompany.pan')} onChange={(e) => updateNestedField('allotteeCompany', 'pan', e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label>Registered Office Address</label>
-                  <textarea 
-                    rows={2}
-                    value={data.allotteeCompany.registeredOffice} 
-                    onFocus={() => setActiveField('allotteeCompany.registeredOffice')} onChange={(e) => updateNestedField('allotteeCompany', 'registeredOffice', e.target.value)}
-                  />
-                </div>
-                <div className="form-group row-2">
-                  <div>
-                    <label>Authorized Signatory</label>
-                    <input 
-                      type="text" 
-                      value={data.allotteeCompany.authorizedSignatory} 
-                      onFocus={() => setActiveField('allotteeCompany.authorizedSignatory')} onChange={(e) => updateNestedField('allotteeCompany', 'authorizedSignatory', e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <label>Aadhaar No</label>
-                    <input 
-                      type="text" 
-                      value={data.allotteeCompany.signatoryAadhaar} 
-                      onFocus={() => setActiveField('allotteeCompany.signatoryAadhaar')} onChange={(e) => updateNestedField('allotteeCompany', 'signatoryAadhaar', e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label>Board Resolution Date</label>
-                  <input 
-                    type="text" 
-                    value={data.allotteeCompany.boardResolutionDate} 
-                    onFocus={() => setActiveField('allotteeCompany.boardResolutionDate')} onChange={(e) => updateNestedField('allotteeCompany', 'boardResolutionDate', e.target.value)}
-                    placeholder="DD/MM/YYYY"
-                  />
-                </div>
-              </>
-            )}
-
-            {/* Partnership Allottee */}
-            {data.allotteeType === 'partnership' && (
-              <>
-                <div className="form-group">
-                  <label>Partnership Firm Name</label>
-                  <input 
-                    type="text" 
-                    value={data.allotteePartnership.name} 
-                    onFocus={() => setActiveField('allotteePartnership.name')} onChange={(e) => updateNestedField('allotteePartnership', 'name', e.target.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Principal Place of Business</label>
-                  <textarea 
-                    rows={2}
-                    value={data.allotteePartnership.businessPlace} 
-                    onFocus={() => setActiveField('allotteePartnership.businessPlace')} onChange={(e) => updateNestedField('allotteePartnership', 'businessPlace', e.target.value)}
-                  />
-                </div>
-                <div className="form-group row-2">
-                  <div>
-                    <label>PAN</label>
-                    <input 
-                      type="text" 
-                      value={data.allotteePartnership.pan} 
-                      onFocus={() => setActiveField('allotteePartnership.pan')} onChange={(e) => updateNestedField('allotteePartnership', 'pan', e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="form-group row-2">
-                  <div>
-                    <label>Represented by Partner</label>
-                    <input 
-                      type="text" 
-                      value={data.allotteePartnership.authorizedPartner} 
-                      onFocus={() => setActiveField('allotteePartnership.authorizedPartner')} onChange={(e) => updateNestedField('allotteePartnership', 'authorizedPartner', e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <label>Partner Aadhaar No</label>
-                    <input 
-                      type="text" 
-                      value={data.allotteePartnership.partnerAadhaar} 
-                      onFocus={() => setActiveField('allotteePartnership.partnerAadhaar')} onChange={(e) => updateNestedField('allotteePartnership', 'partnerAadhaar', e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label>Authorized Vide</label>
-                  <input 
-                    type="text" 
-                    value={data.allotteePartnership.authorizedVide} 
-                    onFocus={() => setActiveField('allotteePartnership.authorizedVide')} onChange={(e) => updateNestedField('allotteePartnership', 'authorizedVide', e.target.value)}
-                  />
-                </div>
-              </>
-            )}
-
-            {/* HUF Allottee */}
-            {data.allotteeType === 'huf' && (
-              <>
-                <div className="form-group row-2">
-                  <div>
-                    <label>Karta Name</label>
-                    <input 
-                      type="text" 
-                      value={data.allotteeHuf.kartaName} 
-                      onFocus={() => setActiveField('allotteeHuf.kartaName')} onChange={(e) => updateNestedField('allotteeHuf', 'kartaName', e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <label>Karta Aadhaar No</label>
-                    <input 
-                      type="text" 
-                      value={data.allotteeHuf.kartaAadhaar} 
-                      onFocus={() => setActiveField('allotteeHuf.kartaAadhaar')} onChange={(e) => updateNestedField('allotteeHuf', 'kartaAadhaar', e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="form-group row-2">
-                  <div>
-                    <label>Son of</label>
-                    <input 
-                      type="text" 
-                      value={data.allotteeHuf.parentName} 
-                      onFocus={() => setActiveField('allotteeHuf.parentName')} onChange={(e) => updateNestedField('allotteeHuf', 'parentName', e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <label>Age</label>
-                    <input 
-                      type="number" 
-                      value={data.allotteeHuf.age} 
-                      onFocus={() => setActiveField('allotteeHuf.age')} onChange={(e) => updateNestedField('allotteeHuf', 'age', e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="form-group row-2">
-                  <div>
-                    <label>HUF Family Name</label>
-                    <input 
-                      type="text" 
-                      value={data.allotteeHuf.familyName} 
-                      onFocus={() => setActiveField('allotteeHuf.familyName')} onChange={(e) => updateNestedField('allotteeHuf', 'familyName', e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <label>HUF PAN</label>
-                    <input 
-                      type="text" 
-                      value={data.allotteeHuf.pan} 
-                      onFocus={() => setActiveField('allotteeHuf.pan')} onChange={(e) => updateNestedField('allotteeHuf', 'pan', e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label>HUF Place of Business/Residence</label>
-                  <textarea 
-                    rows={2}
-                    value={data.allotteeHuf.place} 
-                    onFocus={() => setActiveField('allotteeHuf.place')} onChange={(e) => updateNestedField('allotteeHuf', 'place', e.target.value)}
-                  />
-                </div>
-              </>
-            )}
-
-            {/* Joint/Additional Allottees Section */}
-            <div className="form-group" style={{ marginTop: '1.5rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                <label style={{ fontWeight: 'bold' }}>Joint/Additional Allottees</label>
-                <button className="btn-secondary" onClick={addJointAllottee} style={{ padding: '0.35rem 0.6rem', fontSize: '0.75rem' }}>
-                  <Plus size={14} /> Add Joint Allottee
-                </button>
-              </div>
-
-              {data.jointAllottees.length === 0 ? (
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', textAlign: 'center', padding: '1rem', border: '1px dashed var(--border-ui)', borderRadius: '6px' }}>
-                  No joint allottees added. Suitable for single buyer.
-                </div>
-              ) : (
-                <div className="list-container">
-                  {data.jointAllottees.map((ja, index) => (
-                    <div key={ja.id} className="list-item" style={{ flexDirection: 'column', alignItems: 'stretch', gap: '0.8rem' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-ui)', paddingBottom: '0.25rem' }}>
-                        <span style={{ fontSize: '0.8rem', fontWeight: 'bold', color: 'var(--accent-gold)' }}>Allottee #{index + 2}</span>
-                        <button className="btn-danger" onClick={() => removeJointAllottee(ja.id)} style={{ padding: '2px 6px' }}>
-                          <Trash2 size={12} />
-                        </button>
-                      </div>
-                      <div className="form-group row-2">
-                        <div>
-                          <label>Full Name</label>
-                          <input 
-                            type="text" 
-                            value={ja.name} 
-                            onFocus={() => setActiveField('jointAllottees')} onChange={(e) => updateJointAllottee(ja.id, 'name', e.target.value)} 
-                          />
-                        </div>
-                        <div>
-                          <label>Aadhaar</label>
-                          <input 
-                            type="text" 
-                            value={ja.aadhaar} 
-                            onFocus={() => setActiveField('jointAllottees')} onChange={(e) => updateJointAllottee(ja.id, 'aadhaar', e.target.value)} 
-                          />
-                        </div>
-                      </div>
-                      <div className="form-group row-3">
-                        <div>
-                          <label>Relationship</label>
-                          <select 
-                            value={ja.parentType} 
-                            onFocus={() => setActiveField('jointAllottees')} onChange={(e) => updateJointAllottee(ja.id, 'parentType', e.target.value as any)}
-                          >
-                            <option value="son">Son of</option>
-                            <option value="daughter">Daughter of</option>
-                            <option value="wife">Wife of</option>
-                          </select>
-                        </div>
-                        <div style={{ gridColumn: 'span 2' }}>
-                          <label>Parent Name</label>
-                          <input 
-                            type="text" 
-                            value={ja.parentName} 
-                            onFocus={() => setActiveField('jointAllottees')} onChange={(e) => updateJointAllottee(ja.id, 'parentName', e.target.value)} 
-                          />
-                        </div>
-                      </div>
-                      <div className="form-group row-2">
-                        <div>
-                          <label>Age</label>
-                          <input 
-                            type="number" 
-                            value={ja.age} 
-                            onFocus={() => setActiveField('jointAllottees')} onChange={(e) => updateJointAllottee(ja.id, 'age', e.target.value)} 
-                          />
-                        </div>
-                        <div>
-                          <label>PAN</label>
-                          <input 
-                            type="text" 
-                            value={ja.pan} 
-                            onFocus={() => setActiveField('jointAllottees')} onChange={(e) => updateJointAllottee(ja.id, 'pan', e.target.value)} 
-                          />
-                        </div>
-                      </div>
-                      <div className="form-group">
-                        <label>Residential Address</label>
-                        <textarea 
-                          rows={2} 
-                          value={ja.residing} 
-                          onFocus={() => setActiveField('jointAllottees')} onChange={(e) => updateJointAllottee(ja.id, 'residing', e.target.value)} 
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
 
         {/* STEP 3: PROPERTY & RECITALS */}
         {activeStep === 3 && (
@@ -1138,6 +730,17 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 />
               </div>
             </div>
+            
+            <h3 className="section-title" style={{ marginTop: '1rem' }}>Disclosures (Clause I)</h3>
+            <div className="form-group">
+              <label>Additional Disclosures/Details</label>
+              <textarea 
+                value={data.additionalDisclosures} 
+                onFocus={() => setActiveField('additionalDisclosures')} onChange={(e) => updateField('additionalDisclosures', e.target.value)} 
+                rows={3}
+                placeholder="(Please enter any additional disclosures/details)"
+              />
+            </div>
           </div>
         )}
 
@@ -1410,39 +1013,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
         {/* STEP 6: PAYMENT PLAN & TERMS */}
         {activeStep === 6 && (
           <div className="form-section">
-            <h3 className="section-title">Schedule 'C': Payment Plan</h3>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
-              <label>Milestones</label>
-              <button className="btn-secondary" onClick={addMilestone} style={{ padding: '0.25rem 0.5rem', fontSize: '0.7rem' }}>
-                <Plus size={12} /> Add Milestone
-              </button>
-            </div>
-            
-            <div className="list-container" style={{ padding: '0.5rem' }}>
-              {data.paymentPlan.map((m) => (
-                <div key={m.id} className="list-item" style={{ padding: '0.5rem', gap: '0.4rem', border: '1px solid var(--border-ui)' }}>
-                  <div style={{ display: 'flex', flex: 1, gap: '0.4rem', flexWrap: 'wrap' }}>
-                    <div style={{ flex: '2 1 120px' }}>
-                      <label style={{ fontSize: '0.7rem' }}>Milestone description</label>
-                      <input style={{ padding: '0.35rem' }} type="text" value={m.description} onFocus={() => setActiveField('paymentPlan')} onChange={(e) => updateMilestone(m.id, 'description', e.target.value)} />
-                    </div>
-                    <div style={{ flex: '1 1 50px' }}>
-                      <label style={{ fontSize: '0.7rem' }}>%</label>
-                      <input style={{ padding: '0.35rem' }} type="text" value={m.percentage} onFocus={() => setActiveField('paymentPlan')} onChange={(e) => updateMilestone(m.id, 'percentage', e.target.value)} />
-                    </div>
-                    <div style={{ flex: '1 1 80px' }}>
-                      <label style={{ fontSize: '0.7rem' }}>Amount (Rs)</label>
-                      <input style={{ padding: '0.35rem' }} type="text" value={m.amount} onFocus={() => setActiveField('paymentPlan')} onChange={(e) => updateMilestone(m.id, 'amount', e.target.value)} />
-                    </div>
-                  </div>
-                  <button className="btn-danger" onClick={() => removeMilestone(m.id)} style={{ padding: '0.4rem' }}>
-                    <Trash2 size={12} />
-                  </button>
-                </div>
-              ))}
-            </div>
-
-            <h3 className="section-title" style={{ marginTop: '1rem' }}>Terms & Rates</h3>
+            <h3 className="section-title">Terms & Rates</h3>
             <div className="form-group row-2">
               <div>
                 <label>Early Payment Rebate (% p.a.)</label>
@@ -1505,6 +1076,15 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             
             <h3 className="section-title" style={{ marginTop: '1rem' }}>Additional Terms</h3>
             <div className="form-group">
+              <label>Laws Prescribing Norms (Clause 6)</label>
+              <input 
+                type="text" 
+                value={data.prescribedByLaws} 
+                onFocus={() => setActiveField('prescribedByLaws')} onChange={(e) => updateField('prescribedByLaws', e.target.value)} 
+                placeholder="e.g. State Government"
+              />
+            </div>
+            <div className="form-group" style={{ marginTop: '0.5rem' }}>
               <label>Other Terms & Conditions (Optional)</label>
               <textarea 
                 value={data.additionalTerms} 
@@ -1562,8 +1142,8 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
         <button 
           className="btn-secondary" 
           onClick={handleBack} 
-          disabled={activeStep === 0}
-          style={{ opacity: activeStep === 0 ? 0.4 : 1 }}
+          disabled={activeStep === steps[0].id}
+          style={{ opacity: activeStep === steps[0].id ? 0.4 : 1 }}
         >
           <ChevronLeft size={16} /> Back
         </button>
@@ -1579,8 +1159,8 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
         <button 
           className="btn-secondary" 
           onClick={handleNext} 
-          disabled={activeStep === steps.length - 1}
-          style={{ opacity: activeStep === steps.length - 1 ? 0.4 : 1 }}
+          disabled={activeStep === steps[steps.length - 1].id}
+          style={{ opacity: activeStep === steps[steps.length - 1].id ? 0.4 : 1 }}
         >
           Next <ChevronRight size={16} />
         </button>

@@ -8,7 +8,7 @@ interface SpanValProps {
   fieldKey?: string;
 }
 
-const SpanVal: React.FC<SpanValProps> = ({ val, fallback = '____________________', fieldKey }) => {
+const SpanVal: React.FC<SpanValProps> = ({ val, fallback = '', fieldKey }) => {
   const displayVal = val && val.trim() !== '' ? val : fallback;
   const isEmpty = !val || val.trim() === '';
   return (
@@ -45,7 +45,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
     bookingAmount, bookingAmountWords, paymentFavourOf, paymentPayableAt,
     maintenanceClauses,
     defaultConsecutiveDemands, defaultConsecutiveMonths,
-    additionalTerms,
+    prescribedByLaws, additionalDisclosures, additionalTerms,
     facilitiesOutsideProject, competentAuthorityForDeclaration
   } = data;
 
@@ -73,7 +73,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
             <div className="placeholder-block active">
               <p style={{ fontStyle: 'italic', fontWeight: 'bold', margin: '0 0 0.5rem 0' }}>[If the promoter is a company]</p>
               <p>
-                <SpanVal val={promoterCompany.name} fieldKey="promoterCompany.name" /> (CIN No. <SpanVal val={promoterCompany.cin} fieldKey="promoterCompany.cin" />), a company incorporated under the provisions of the Companies Act, (Central Act 18 of 2015, 1956 or 2013, as the case may be), having its registered office at <SpanVal val={promoterCompany.registeredOffice} fieldKey="promoterCompany.registeredOffice" /> and its corporate office at <SpanVal val={promoterCompany.registeredOffice} fieldKey="promoterCompany.registeredOffice" /> (PAN <SpanVal val={promoterCompany.pan} fieldKey="promoterCompany.pan" />), represented by its authorized signatory <SpanVal val={promoterCompany.authorizedSignatory} fieldKey="promoterCompany.authorizedSignatory" /> (Aadhaar No. <SpanVal val={promoterCompany.signatoryAadhaar} fieldKey="promoterCompany.signatoryAadhaar" />) authorized <i>vide</i> board resolution dated <SpanVal val={promoterCompany.boardResolutionDate} fieldKey="promoterCompany.boardResolutionDate" /> hereinafter referred to as the <b>"Promoter"</b> (which expression shall unless repugnant to the context or meaning thereof be deemed to mean and include its successor-in-interest, executors, administrators and permitted assignees);
+                <SpanVal val={promoterCompany.name} fieldKey="promoterCompany.name" /> (CIN No. <SpanVal val={promoterCompany.cin} fieldKey="promoterCompany.cin" />), a company incorporated under the provisions of the Companies Act, (Central Act 18 of 2015, 1956 or 2013, as the case may be), having its registered office at <SpanVal val={promoterCompany.registeredOffice} fieldKey="promoterCompany.registeredOffice" /> and its corporate office at <SpanVal val={promoterCompany.corporateOffice} fieldKey="promoterCompany.corporateOffice" /> (PAN <SpanVal val={promoterCompany.pan} fieldKey="promoterCompany.pan" />), represented by its authorized signatory <SpanVal val={promoterCompany.authorizedSignatory} fieldKey="promoterCompany.authorizedSignatory" /> (Aadhaar No. <SpanVal val={promoterCompany.signatoryAadhaar} fieldKey="promoterCompany.signatoryAadhaar" />) authorized <i>vide</i> board resolution dated <SpanVal val={promoterCompany.boardResolutionDate} fieldKey="promoterCompany.boardResolutionDate" /> hereinafter referred to as the <b>"Promoter"</b> (which expression shall unless repugnant to the context or meaning thereof be deemed to mean and include its successor-in-interest, executors, administrators and permitted assignees);
               </p>
             </div>
           )}
@@ -100,45 +100,43 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p style={{ textAlign: 'center', fontWeight: 'bold', margin: '1rem 0' }}>AND</p>
 
+          {/* ALLOTTEE INDIVIDUAL */}
+          <div className="placeholder-block active">
+            <p style={{ fontStyle: 'italic', fontWeight: 'bold', margin: '0 0 0.5rem 0' }}>[If the Allottee is an Individual]</p>
+            <p>
+              Mr./Ms. <SpanVal val={allotteeIndividual.name} fieldKey="allotteeIndividual.name" />, (Aadhaar No. <SpanVal val={allotteeIndividual.aadhaar} fieldKey="allotteeIndividual.aadhaar" />) {allotteeIndividual.parentType === 'son' ? 'son' : allotteeIndividual.parentType === 'daughter' ? 'daughter' : 'wife'} of <SpanVal val={allotteeIndividual.parentName} fieldKey="allotteeIndividual.parentName" />, aged about <SpanVal val={allotteeIndividual.age} fieldKey="allotteeIndividual.age" />, residing at <SpanVal val={allotteeIndividual.residing} fieldKey="allotteeIndividual.residing" />, (PAN <SpanVal val={allotteeIndividual.pan} fieldKey="allotteeIndividual.pan" />), hereinafter called the <b>"Allottee"</b> (which expression shall unless repugnant to the context or meaning thereof be deemed to mean and include his/her heirs, executors, administrators, successors-in-interest and permitted assignees).
+            </p>
+          </div>
+
+          <p style={{ textAlign: 'center', fontWeight: 'bold', margin: '1rem 0' }}>OR</p>
+
           {/* ALLOTTEE COMPANY */}
-          {allotteeType === 'company' && (
-            <div className="placeholder-block active">
-              <p style={{ fontStyle: 'italic', fontWeight: 'bold', margin: '0 0 0.5rem 0' }}>[If the Allottee is a company]</p>
-              <p>
-                <SpanVal val={allotteeCompany.name} fieldKey="allotteeCompany.name" /> (CIN No. <SpanVal val={allotteeCompany.cin} fieldKey="allotteeCompany.cin" />) a company incorporated under the provisions of the Companies Act, Central Act 1 of 1956, (1956 or 2013, as the case may be), having its registered office at <SpanVal val={allotteeCompany.registeredOffice} fieldKey="allotteeCompany.registeredOffice" /> (PAN <SpanVal val={allotteeCompany.pan} fieldKey="allotteeCompany.pan" />), represented by its authorized signatory, <SpanVal val={allotteeCompany.authorizedSignatory} fieldKey="allotteeCompany.authorizedSignatory" />, (Aadhaar No. <SpanVal val={allotteeCompany.signatoryAadhaar} fieldKey="allotteeCompany.signatoryAadhaar" />) duly authorized <i>vide</i> board resolution dated <SpanVal val={allotteeCompany.boardResolutionDate} fieldKey="allotteeCompany.boardResolutionDate" />, hereinafter referred to as the <b>"Allottee"</b> (which expression shall unless repugnant to the context or meaning thereof be deemed to mean and include its successor-in-interest, executors, administrators and permitted assignees).
-              </p>
-            </div>
-          )}
+          <div className="placeholder-block active">
+            <p style={{ fontStyle: 'italic', fontWeight: 'bold', margin: '0 0 0.5rem 0' }}>[If the Allottee is a company]</p>
+            <p>
+              <SpanVal val={allotteeCompany.name} fieldKey="allotteeCompany.name" /> (CIN No. <SpanVal val={allotteeCompany.cin} fieldKey="allotteeCompany.cin" />) a company incorporated under the provisions of the Companies Act, Central Act 1 of 1956, (1956 or 2013, as the case may be), having its registered office at <SpanVal val={allotteeCompany.registeredOffice} fieldKey="allotteeCompany.registeredOffice" /> (PAN <SpanVal val={allotteeCompany.pan} fieldKey="allotteeCompany.pan" />), represented by its authorized signatory, <SpanVal val={allotteeCompany.authorizedSignatory} fieldKey="allotteeCompany.authorizedSignatory" />, (Aadhaar No. <SpanVal val={allotteeCompany.signatoryAadhaar} fieldKey="allotteeCompany.signatoryAadhaar" />) duly authorized <i>vide</i> board resolution dated <SpanVal val={allotteeCompany.boardResolutionDate} fieldKey="allotteeCompany.boardResolutionDate" />, hereinafter referred to as the <b>"Allottee"</b> (which expression shall unless repugnant to the context or meaning thereof be deemed to mean and include its successor-in-interest, executors, administrators and permitted assignees).
+            </p>
+          </div>
+
+          <p style={{ textAlign: 'center', fontWeight: 'bold', margin: '1rem 0' }}>OR</p>
 
           {/* ALLOTTEE PARTNERSHIP */}
-          {allotteeType === 'partnership' && (
-            <div className="placeholder-block active">
-              <p style={{ fontStyle: 'italic', fontWeight: 'bold', margin: '0 0 0.5rem 0' }}>[If the Allottee is a Partnership]</p>
-              <p>
-                <SpanVal val={allotteePartnership.name} fieldKey="allotteePartnership.name" />, a partnership firm registered under the Indian Partnership Act, 1932 (Central Act 12 of 1932) having its principal place of business at <SpanVal val={allotteePartnership.businessPlace} fieldKey="allotteePartnership.businessPlace" /> (PAN <SpanVal val={allotteePartnership.pan} fieldKey="allotteePartnership.pan" />), represented by its authorized partner, <SpanVal val={allotteePartnership.authorizedPartner} fieldKey="allotteePartnership.authorizedPartner" /> (Aadhaar No. <SpanVal val={allotteePartnership.partnerAadhaar} fieldKey="allotteePartnership.partnerAadhaar" />) authorized <i>vide</i> <SpanVal val={allotteePartnership.authorizedVide} fieldKey="allotteePartnership.authorizedVide" />, hereinafter referred to as the <b>"Allottee"</b> (which expression shall unless repugnant to the context or meaning thereof be deemed to mean and include its successors-in-interest, executors, administrators and permitted assignees, including those of the respective partners).
-              </p>
-            </div>
-          )}
+          <div className="placeholder-block active">
+            <p style={{ fontStyle: 'italic', fontWeight: 'bold', margin: '0 0 0.5rem 0' }}>[If the Allottee is a Partnership]</p>
+            <p>
+              <SpanVal val={allotteePartnership.name} fieldKey="allotteePartnership.name" />, a partnership firm registered under the Indian Partnership Act, 1932 (Central Act 12 of 1932) having its principal place of business at <SpanVal val={allotteePartnership.businessPlace} fieldKey="allotteePartnership.businessPlace" /> (PAN <SpanVal val={allotteePartnership.pan} fieldKey="allotteePartnership.pan" />), represented by its authorized partner, <SpanVal val={allotteePartnership.authorizedPartner} fieldKey="allotteePartnership.authorizedPartner" /> (Aadhaar No. <SpanVal val={allotteePartnership.partnerAadhaar} fieldKey="allotteePartnership.partnerAadhaar" />) authorized <i>vide</i> <SpanVal val={allotteePartnership.authorizedVide} fieldKey="allotteePartnership.authorizedVide" />, hereinafter referred to as the <b>"Allottee"</b> (which expression shall unless repugnant to the context or meaning thereof be deemed to mean and include its successors-in-interest, executors, administrators and permitted assignees, including those of the respective partners).
+            </p>
+          </div>
 
-          {/* ALLOTTEE INDIVIDUAL */}
-          {allotteeType === 'individual' && (
-            <div className="placeholder-block active">
-              <p style={{ fontStyle: 'italic', fontWeight: 'bold', margin: '0 0 0.5rem 0' }}>[If the Allottee is an Individual]</p>
-              <p>
-                Mr./Ms. <SpanVal val={allotteeIndividual.name} fieldKey="allotteeIndividual.name" />, (Aadhaar No. <SpanVal val={allotteeIndividual.aadhaar} fieldKey="allotteeIndividual.aadhaar" />) {allotteeIndividual.parentType === 'son' ? 'son' : allotteeIndividual.parentType === 'daughter' ? 'daughter' : 'wife'} of <SpanVal val={allotteeIndividual.parentName} fieldKey="allotteeIndividual.parentName" />, aged about <SpanVal val={allotteeIndividual.age} fieldKey="allotteeIndividual.age" />, residing at <SpanVal val={allotteeIndividual.residing} fieldKey="allotteeIndividual.residing" />, (PAN <SpanVal val={allotteeIndividual.pan} fieldKey="allotteeIndividual.pan" />), hereinafter called the <b>"Allottee"</b> (which expression shall unless repugnant to the context or meaning thereof be deemed to mean and include his/her heirs, executors, administrators, successors-in-interest and permitted assignees).
-              </p>
-            </div>
-          )}
+          <p style={{ textAlign: 'center', fontWeight: 'bold', margin: '1rem 0' }}>OR</p>
 
           {/* ALLOTTEE HUF */}
-          {allotteeType === 'huf' && (
-            <div className="placeholder-block active">
-              <p style={{ fontStyle: 'italic', fontWeight: 'bold', margin: '0 0 0.5rem 0' }}>[If the Allottee is a HUF]</p>
-              <p>
-                Mr. <SpanVal val={allotteeHuf.kartaName} fieldKey="allotteeHuf.kartaName" />, (Aadhaar No. <SpanVal val={allotteeHuf.kartaAadhaar} fieldKey="allotteeHuf.kartaAadhaar" />) son of <SpanVal val={allotteeHuf.parentName} fieldKey="allotteeHuf.parentName" /> aged about <SpanVal val={allotteeHuf.age} fieldKey="allotteeHuf.age" /> for self and as the Karta of the Hindu Joint Mitakshara Family known as <SpanVal val={allotteeHuf.familyName} fieldKey="allotteeHuf.familyName" /> HUF, having its place of business/residence at <SpanVal val={allotteeHuf.place} fieldKey="allotteeHuf.place" />, (PAN <SpanVal val={allotteeHuf.pan} fieldKey="allotteeHuf.pan" />), hereinafter referred to as the <b>"Allottee"</b> (which expression shall unless repugnant to the context or meaning thereof be deemed to include his heirs, representatives, executors, administrators, successors-in-interest and permitted assigns as well as the members of the said HUF, their heirs, executors, administrators, successors-in-interest and permitted assignees).
-              </p>
-            </div>
-          )}
+          <div className="placeholder-block active">
+            <p style={{ fontStyle: 'italic', fontWeight: 'bold', margin: '0 0 0.5rem 0' }}>[If the Allottee is a HUF]</p>
+            <p>
+              Mr. <SpanVal val={allotteeHuf.kartaName} fieldKey="allotteeHuf.kartaName" />, (Aadhaar No. <SpanVal val={allotteeHuf.kartaAadhaar} fieldKey="allotteeHuf.kartaAadhaar" />) son of <SpanVal val={allotteeHuf.parentName} fieldKey="allotteeHuf.parentName" /> aged about <SpanVal val={allotteeHuf.age} fieldKey="allotteeHuf.age" /> for self and as the Karta of the Hindu Joint Mitakshara Family known as <SpanVal val={allotteeHuf.familyName} fieldKey="allotteeHuf.familyName" /> HUF, having its place of business/residence at <SpanVal val={allotteeHuf.place} fieldKey="allotteeHuf.place" />, (PAN <SpanVal val={allotteeHuf.pan} fieldKey="allotteeHuf.pan" />), hereinafter referred to as the <b>"Allottee"</b> (which expression shall unless repugnant to the context or meaning thereof be deemed to include his heirs, representatives, executors, administrators, successors-in-interest and permitted assigns as well as the members of the said HUF, their heirs, executors, administrators, successors-in-interest and permitted assignees).
+            </p>
+          </div>
 
           {/* JOINT ALLOTTEES */}
           {jointAllottees.length > 0 && (
@@ -160,7 +158,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title" style={{ marginTop: '1rem' }}>WHEREAS:</p>
           <div className="indent-1">
-            A. The Promoter is the absolute and lawful owner of (survey Nos.) <SpanVal val={landSurveyNos} fieldKey="landSurveyNos" /> totally admeasuring <SpanVal val={landAdmeasuring} fieldKey="landAdmeasuring" /> square meters situated at <SpanVal val={landSituatedAt} fieldKey="landSituatedAt" /> in Tehsil & District <SpanVal val={landTehsilDistrict} fieldKey="landTehsilDistrict" /> ("Said Land") vide sale deed(s) dated <SpanVal val={landTitleDeedDate} fieldKey="landTitleDeedDate" /> registered as documents No. <SpanVal val={landTitleDeedRegNo} fieldKey="landTitleDeedRegNo" /> at the office of the Sub-Registrar;
+            A. The Promoter is the absolute and lawful owner of (survey Nos.) (Please insert land details as per local laws). <SpanVal val={landSurveyNos} fieldKey="landSurveyNos" /> totally admeasuring <SpanVal val={landAdmeasuring} fieldKey="landAdmeasuring" /> square meters situated at <SpanVal val={landSituatedAt} fieldKey="landSituatedAt" /> in Tehsil & District <SpanVal val={landTehsilDistrict} fieldKey="landTehsilDistrict" /> ("Said Land") vide sale deed(s) dated <SpanVal val={landTitleDeedDate} fieldKey="landTitleDeedDate" /> registered as documents No. <SpanVal val={landTitleDeedRegNo} fieldKey="landTitleDeedRegNo" /> at the office of the Sub-Registrar;
           </div>
 
           {landOwnershipType === 'developer' && (
@@ -170,7 +168,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           {landOwnershipType === 'developer' && (
             <div style={{ border: '1.5px dashed var(--accent-gold)', padding: '0.5rem', borderRadius: '4px', marginBottom: '0.75rem' }}>
               <div className="indent-1" style={{ marginBottom: 0 }}>
-                <SpanVal val={landJDA.ownerName} fieldKey="landJDA.ownerName" /> ("Owner") is the absolute and lawful owner of (khasra Nos./survey Nos.) <SpanVal val={landSurveyNos} fieldKey="landSurveyNos" /> totally admeasuring <SpanVal val={landAdmeasuring} fieldKey="landAdmeasuring" /> square meters situated at <SpanVal val={landSituatedAt} fieldKey="landSituatedAt" /> in Tehsil & District <SpanVal val={landTehsilDistrict} fieldKey="landTehsilDistrict" /> vide sale deed(s) dated <SpanVal val={landTitleDeedDate} fieldKey="landTitleDeedDate" /> registered as documents No. <SpanVal val={landTitleDeedRegNo} fieldKey="landTitleDeedRegNo" /> at the office of the Sub-Registrar. The Owner and the Promoter have entered into a (collaboration/development/joint development) agreement dated <SpanVal val={landJDA.jdaDate} fieldKey="landJDA.jdaDate" /> registered as document No. <SpanVal val={landJDA.regNo} fieldKey="landJDA.regNo" /> at the office of the <SpanVal val={landJDA.subRegistrarOffice} fallback="Sub-Registrar" fieldKey="landJDA.subRegistrarOffice" />{landJDA.additionalDetails ? ` ` : ''}{landJDA.additionalDetails ? <SpanVal val={landJDA.additionalDetails} fieldKey="landJDA.additionalDetails" /> : ''};
+                <SpanVal val={landJDA.ownerName} fieldKey="landJDA.ownerName" /> ("Owner") is the absolute and lawful owner of (khasra Nos./survey Nos.) <SpanVal val={landSurveyNos} fieldKey="landSurveyNos" /> totally admeasuring <SpanVal val={landAdmeasuring} fieldKey="landAdmeasuring" /> square meters situated at <SpanVal val={landSituatedAt} fieldKey="landSituatedAt" /> in Tehsil & District <SpanVal val={landTehsilDistrict} fieldKey="landTehsilDistrict" /> vide sale deed(s) dated <SpanVal val={landTitleDeedDate} fieldKey="landTitleDeedDate" /> registered as documents No. <SpanVal val={landTitleDeedRegNo} fieldKey="landTitleDeedRegNo" /> at the office of the Sub-Registrar. The Owner and the Promoter have entered into a (collaboration/development/joint development) agreement dated <SpanVal val={landJDA.jdaDate} fieldKey="landJDA.jdaDate" /> registered as document No. <SpanVal val={landJDA.regNo} fieldKey="landJDA.regNo" /> at the office of the Sub-Registrar <SpanVal val={landJDA.subRegistrarOffice} fieldKey="landJDA.subRegistrarOffice" />{landJDA.additionalDetails ? ` ` : ''}{landJDA.additionalDetails ? <SpanVal val={landJDA.additionalDetails} fieldKey="landJDA.additionalDetails" /> : ''};
               </div>
             </div>
           )}
@@ -210,7 +208,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           {projectType === 'apartment' ? (
             <div className="indent-1">
-              G. The Allottee had applied for an apartment in the Project vide application No. <SpanVal val={applicationNo} fieldKey="applicationNo" /> dated <SpanVal val={applicationDate} fieldKey="applicationDate" /> and has been allotted apartment No. <SpanVal val={unitNo} fieldKey="unitNo" /> having carpet area of <SpanVal val={unitCarpetArea} fieldKey="unitCarpetArea" /> square feet, type <SpanVal val={apartmentType} fieldKey="apartmentType" /> on <SpanVal val={unitFloor} fieldKey="unitFloor" /> floor in <SpanVal val={unitTower} fieldKey="unitTower" /> ("Building") along with garage/closed parking No. <SpanVal val={garageDetails[0]?.no || 'Nil'} fieldKey="garageDetails" /> admeasuring <SpanVal val={garageDetails[0]?.area || '0'} fieldKey="garageDetails" /> square feet in the <SpanVal val={projectName} fieldKey="projectName" /> as permissible under the applicable law and of <i>pro rata</i> share in the common areas ("Common Areas") as defined under clause (n) of Section 2 of the Act (hereinafter referred to as the "Apartment" more particularly described in Schedule A and the floor plan of the apartment is annexed hereto and marked as Schedule B);
+              G. The Allottee had applied for an apartment in the Project vide application No. <SpanVal val={applicationNo} fieldKey="applicationNo" /> dated <SpanVal val={applicationDate} fieldKey="applicationDate" /> and has been allotted apartment No. <SpanVal val={unitNo} fieldKey="unitNo" /> having carpet area of <SpanVal val={unitCarpetArea} fieldKey="unitCarpetArea" /> square feet, type <SpanVal val={apartmentType} fieldKey="apartmentType" /> on <SpanVal val={unitFloor} fieldKey="unitFloor" /> floor in <SpanVal val={unitTower} fieldKey="unitTower" /> ("Building") along with garage/closed parking No. <SpanVal val={garageDetails[0]?.no || ''} fieldKey="garageDetails" /> admeasuring <SpanVal val={garageDetails[0]?.area || ''} fieldKey="garageDetails" /> square feet in the <SpanVal val={projectName} fieldKey="projectName" /> as permissible under the applicable law and of <i>pro rata</i> share in the common areas ("Common Areas") as defined under clause (n) of Section 2 of the Act (hereinafter referred to as the "Apartment" more particularly described in Schedule A and the floor plan of the apartment is annexed hereto and marked as Schedule B);
             </div>
           ) : (
             <div style={{ border: '1.5px dashed var(--accent-gold)', padding: '0.5rem', borderRadius: '4px', marginBottom: '0.75rem' }}>
@@ -225,7 +223,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           </div>
 
           <div className="indent-1" style={{ marginTop: '1.5rem' }}>
-            I. The Promoter has made disclosures regarding the land title, title insurance, approvals, layouts, and other relevant files in accordance with the Act.
+            I. <SpanVal val={additionalDisclosures} fallback="(Please enter any additional disclosures/details)" fieldKey="additionalDisclosures" />
           </div>
 
           <div className="indent-1" style={{ marginTop: '1.5rem' }}>
@@ -391,15 +389,11 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
               (i) The Allottee shall have exclusive ownership of the (Apartment/Plot);
             </div>
             <div className="indent-2">
-              (ii) The Allottee shall also have undivided proportionate share in the Common Areas. Since the share/interest of Allottee in the Common Areas is undivided and cannot be divided or separated, the Allottee shall use the Common Areas along with other occupants, maintenance staff etc., without causing any inconvenience or hindrance to them. Further, the right of the Allottee to use the
+              (ii) The Allottee shall also have undivided proportionate share in the Common Areas. Since the share/interest of Allottee in the Common Areas is undivided and cannot be divided or separated, the Allottee shall use the Common Areas along with other occupants, maintenance staff etc., without causing any inconvenience or hindrance to them. Further, the right of the Allottee to use the Common Areas shall always be subject to the timely payment of maintenance charges and other charges as applicable. It is clarified that the promoter shall convey undivided proportionate title in the common areas to the association of allottees as provided in the Act;
             </div>
-          </div>
-
-          <p style={{ textIndent: '2rem' }}>
-            Common Areas shall always be subject to the timely payment of maintenance charges and other charges as applicable. It is clarified that the promoter shall convey undivided proportionate title in the common areas to the association of allottees as provided in the Act;
-          </p>
-          <div className="indent-2">
-            (iii) That the computation of the price of the (Apartment/Plot) includes recovery of price of land, construction of (not only the Apartment but also) the Common Areas, internal development charges, external development charges, taxes, cost of providing electric wiring, fire detection and firefighting equipment in the common areas etc. and includes cost for providing all other facilities as provided within the Project.
+            <div className="indent-2">
+              (iii) That the computation of the price of the (Apartment/Plot) includes recovery of price of land, construction of (not only the Apartment but also) the Common Areas, internal development charges, external development charges, taxes, cost of providing electric wiring, fire detection and firefighting equipment in the common areas etc. and includes cost for providing all other facilities as provided within the Project.
+            </div>
           </div>
 
           <div className="indent-1" style={{ marginTop: '1.5rem' }}>
@@ -447,17 +441,13 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title">6. Construction of the Project/Apartment:</p>
           <p style={{ textIndent: '2rem' }}>
-            The Allottee has seen the specifications of the (Apartment/Plot) and accepted the Payment Plan, floor plans, layout plans (annexured along with this Agreement) which has been approved by the competent authority, as represented by the Promoter. The Promoter shall develop the Project in accordance with the said layout plans, floor plans and specifications. Subject to the terms in this Agreement, the Promoter undertakes to strictly abide by the bye-laws, FAR and density norms and provisions prescribed by the laws and shall not have an option to make any variation/modification in such plans, other than in the manner provided under the Act, and breach of this term by the Promoter shall constitute a material breach of the Agreement.
+            The Allottee has seen the specifications of the (Apartment/Plot) and accepted the Payment Plan, floor plans, layout plans (annexured along with this Agreement) which has been approved by the competent authority, as represented by the Promoter. The Promoter shall develop the Project in accordance with the said layout plans, floor plans and specifications. Subject to the terms in this Agreement, the Promoter undertakes to strictly abide by the bye-laws, FAR and density norms and provisions prescribed by the <SpanVal val={prescribedByLaws} fieldKey="prescribedByLaws" /> laws and shall not have an option to make any variation/modification in such plans, other than in the manner provided under the Act, and breach of this term by the Promoter shall constitute a material breach of the Agreement.
           </p>
 
           <p className="legal-section-title">7. Possession of the Apartment/Plot:</p>
           <div className="indent-1">
-            7.1 <i>Schedule for possession of the said (Apartment/Plot):</i> The Promoter agrees and understands that timely delivery of possession of the (Apartment/Plot) is the essence of the Agreement. The Promoter, based on the approved plans and specifications, assures to hand over possession of the (Apartment/Plot) on <SpanVal val={possessionTargetMonth} fieldKey="possessionTargetMonth" />
+            7.1 <i>Schedule for possession of the said (Apartment/Plot):</i> The Promoter agrees and understands that timely delivery of possession of the (Apartment/Plot) is the essence of the Agreement. The Promoter, based on the approved plans and specifications, assures to hand over possession of the (Apartment/Plot) on <SpanVal val={possessionTargetMonth} fieldKey="possessionTargetMonth" /> unless there is delay or failure due to war, flood, drought, fire, cyclone, earthquake or any other calamity caused by nature affecting the regular development of the real estate project (<b>"Force Majeure"</b>). If, however, the completion of the Project is delayed due to the Force Majeure conditions then the Allottee agrees that the Promoter shall be entitled to the extension of time for delivery of possession of the (Apartment/Plot), provided that such Force Majeure conditions are not of a nature which make it impossible for the contract to be implemented. The Allottee agrees and confirms that, in the event it becomes impossible for the Promoter to implement the project due to Force Majeure conditions, then this allotment shall stand terminated and the Promoter shall refund to the Allottee the entire amount received by the Promoter from the allotment within 45 days from that date. After refund of the money paid by the Allottee, Allottee agrees that he/she shall not have any rights, claims etc. against the Promoter and that the Promoter shall be released and discharged from all its obligations and liabilities under this Agreement.
           </div>
-
-          <p style={{ textIndent: '2rem' }}>
-            unless there is delay or failure due to war, flood, drought, fire, cyclone, earthquake or any other calamity caused by nature affecting the regular development of the real estate project (<b>"Force Majeure"</b>). If, however, the completion of the Project is delayed due to the Force Majeure conditions then the Allottee agrees that the Promoter shall be entitled to the extension of time for delivery of possession of the (Apartment/Plot), provided that such Force Majeure conditions are not of a nature which make it impossible for the contract to be implemented. The Allottee agrees and confirms that, in the event it becomes impossible for the Promoter to implement the project due to Force Majeure conditions, then this allotment shall stand terminated and the Promoter shall refund to the Allottee the entire amount received by the Promoter from the allotment within 45 days from that date. After refund of the money paid by the Allottee, Allottee agrees that he/she shall not have any rights, claims etc. against the Promoter and that the Promoter shall be released and discharged from all its obligations and liabilities under this Agreement.
-          </p>
 
           <div className="indent-1" style={{ marginTop: '1rem' }}>
             7.2 <i>Procedure for taking possession:</i> The Promoter, upon obtaining the occupancy certificate* from the competent authority shall offer in writing the possession of the (Apartment/Plot), to the Allottee in terms of this Agreement to be taken within 3 (three) months from the date of issue of such notice and the Promoter shall give possession of the (Apartment/Plot) to the Allottee. The Promoter agrees and undertakes to indemnify the Allottee in case of failure of fulfillment of any of the provisions, formalities, documentation on part of the Promoter. The Allottee agree(s) to pay the maintenance charges as determined by the Promoter/association of allottees, as the case may be. The Promoter on its behalf shall offer the possession to the Allottee in writing within <SpanVal val={gracePeriodDays} fieldKey="gracePeriodDays" /> days of receiving the occupancy certificate* of the Project.
@@ -468,18 +458,14 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           </div>
 
           <div className="indent-1" style={{ marginTop: '1rem' }}>
-            7.4 <i>Possession by the Allottee:</i> After obtaining the occupancy certificate* and handing over physical possession of the (Apartment/Plot) to the Allottees, it shall be the responsibility of the Promoter to hand over the necessary documents and plans,
+            7.4 <i>Possession by the Allottee:</i> After obtaining the occupancy certificate* and handing over physical possession of the (Apartment/Plot) to the Allottees, it shall be the responsibility of the Promoter to hand over the necessary documents and plans, including common areas, to the association of the Allottees or the competent authority, as the case may be, as per the local laws.
           </div>
-
-          <p style={{ textIndent: '2rem' }}>
-            including common areas, to the association of the Allottees or the competent authority, as the case may be, as per the local laws.
-          </p>
 
           <div className="indent-1" style={{ marginTop: '1.5rem' }}>
             7.5 <i>Cancellation by Allottee:</i> The Allottee shall have the right to cancel/withdraw his allotment in the Project as provided in the Act:
-            <p style={{ fontStyle: 'italic', margin: '0.25rem 0 0.25rem 2rem', fontSize: '9.5pt' }}>
+            <div style={{ fontStyle: 'italic', marginTop: '0.25rem', fontSize: '9.5pt', textIndent: '2rem' }}>
               Provided that where the allottee proposes to cancel/withdraw from the project without any fault of the promoter, the promoter herein is entitled to forfeit the booking amount paid for the allotment. The balance amount of money paid by the allottee shall be returned by the promoter to the allottee within 45 days of such cancellation.
-            </p>
+            </div>
           </div>
 
           <div className="indent-1" style={{ marginTop: '1.5rem' }}>
@@ -580,8 +566,13 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           <p style={{ textIndent: '2rem' }}>
             The Promoter shall be responsible to provide and maintain essential services in the Project till the taking over of the maintenance of the project by the association of the allottees. The cost of such maintenance has been included in the Total Price of the (Apartment/Plot).
           </p>
-          <div className="indent-1">
-            <SpanVal val={maintenanceClauses} fallback="(Insert any other clauses in relation to maintenance of project, infrastructure and equipment)" fieldKey="maintenanceClauses" />
+          <div style={{ paddingLeft: '2rem' }}>
+            <div
+              className={`placeholder-field-block ${!maintenanceClauses || maintenanceClauses.trim() === '' ? 'empty' : ''}`}
+              data-field="maintenanceClauses"
+            >
+              {maintenanceClauses && maintenanceClauses.trim() !== '' ? maintenanceClauses : "(Insert any other clauses in relation to maintenance of project, infrastructure and equipment)"}
+            </div>
           </div>
 
           <p className="legal-section-title">12. Defect liability:</p>
@@ -591,11 +582,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title">13. Right of allottee to use common areas and facilities subject to payment of total maintenance charges:</p>
           <p style={{ textIndent: '2rem' }}>
-            The Allottee hereby agrees to purchase the (Apartment/Plot) on the specific understanding that his/her right to the use of Common Areas shall be subject to timely payment of total maintenance charges, as determined and thereafter billed by the maintenance agency appointed or the association of allottees (or the maintenance
-          </p>
-
-          <p>
-            agency appointed by it) and performance by the Allottee of all his/her obligations in respect of the terms and conditions specified by the maintenance agency or the association of allottees from time to time.
+            The Allottee hereby agrees to purchase the (Apartment/Plot) on the specific understanding that his/her right to the use of Common Areas shall be subject to timely payment of total maintenance charges, as determined and thereafter billed by the maintenance agency appointed or the association of allottees (or the maintenance agency appointed by it) and performance by the Allottee of all his/her obligations in respect of the terms and conditions specified by the maintenance agency or the association of allottees from time to time.
           </p>
 
           <p className="legal-section-title">14. Right to enter the apartment for repairs:</p>
@@ -610,11 +597,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title">16. General compliance with respect to the apartment:</p>
           <p style={{ textIndent: '2rem' }}>
-            Subject to Clause 12 above, the Allottee shall, after taking possession, be solely responsible to maintain the (Apartment/Plot) at his/her own cost, in good repair and condition and shall not do or suffer to be done anything in or to the Building, or the (Apartment/Plot), or the staircases, lifts, common passages, corridors, circulation areas, atrium or the compound which may be in violation of any laws or rules of any authority or change or alter or make additions to the (Apartment/Plot) and keep the (Apartment/Plot), its walls and partitions, sewers, drains, pipe and appurtenances thereto or belonging thereto, in good and tenantable repair and maintain the same in a fit and proper condition and ensure that the support, shelter etc. of the Building is not in any way damaged or jeopardized. The Allottee further undertakes, assures and guarantees that he/she will not put any sign-board/name-plate, neon light, publicity material or advertisement material etc. on the face/facade of the Building or anywhere on the exterior of the Project, buildings therein or Common Areas. The Allottees shall
-          </p>
-
-          <p>
-            also not change the colour scheme of the outer walls or painting of the exterior side of the windows or carry out any change in the exterior elevation or design. Further the Allottee shall not store any hazardous or combustible goods in the (Apartment/Plot) or place any heavy material in the common passages or staircase of the Building. The Allottee shall also not remove any wall, including the outer and load bearing wall of the (Apartment/Plot). The Allottee shall plan and distribute its electrical load in conformity with the electrical systems installed by the Promoter and thereafter the association of allottees and/or maintenance agency appointed by association of allottees. The Allottee shall be responsible for any loss or damages arising out of breach of any of the aforesaid conditions.
+            Subject to Clause 12 above, the Allottee shall, after taking possession, be solely responsible to maintain the (Apartment/Plot) at his/her own cost, in good repair and condition and shall not do or suffer to be done anything in or to the Building, or the (Apartment/Plot), or the staircases, lifts, common passages, corridors, circulation areas, atrium or the compound which may be in violation of any laws or rules of any authority or change or alter or make additions to the (Apartment/Plot) and keep the (Apartment/Plot), its walls and partitions, sewers, drains, pipe and appurtenances thereto or belonging thereto, in good and tenantable repair and maintain the same in a fit and proper condition and ensure that the support, shelter etc. of the Building is not in any way damaged or jeopardized. The Allottee further undertakes, assures and guarantees that he/she will not put any sign-board/name-plate, neon light, publicity material or advertisement material etc. on the face/facade of the Building or anywhere on the exterior of the Project, buildings therein or Common Areas. The Allottees shall also not change the colour scheme of the outer walls or painting of the exterior side of the windows or carry out any change in the exterior elevation or design. Further the Allottee shall not store any hazardous or combustible goods in the (Apartment/Plot) or place any heavy material in the common passages or staircase of the Building. The Allottee shall also not remove any wall, including the outer and load bearing wall of the (Apartment/Plot). The Allottee shall plan and distribute its electrical load in conformity with the electrical systems installed by the Promoter and thereafter the association of allottees and/or maintenance agency appointed by association of allottees. The Allottee shall be responsible for any loss or damages arising out of breach of any of the aforesaid conditions.
           </p>
 
           <p className="legal-section-title">17. Compliance of laws, notifications etc. by Allottee:</p>
@@ -691,7 +674,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title">30. Notices:</p>
           <p style={{ textIndent: '2rem' }}>
-            That all notices to be served on the Allottee and the Promoter as contemplated by this Agreement shall be deemed to have been duly served if sent to the Allottee or the Promoter by Registered Post failing which all communications and letters posted at the above address shall be deemed to have been received by the promoter or the Allottee, as the case may be.
+            That all notices to be served on the Allottee and the Promoter as contemplated by this Agreement shall be deemed to have been duly served if sent to the Allottee or the Promoter by Registered Post at their respective addresses specified below:
           </p>
 
           <div style={{ paddingLeft: '2rem', marginTop: '1rem' }}>
@@ -720,8 +703,13 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           <p style={{ textIndent: '2rem' }}>
             All or any disputes arising out of or touching upon or in relation to the terms and conditions of this Agreement, including the interpretation and validity of the terms thereof and the respective rights and obligations of the Parties, shall be settled amicably by mutual discussion, failing which the same shall be settled through the adjudicating officer appointed under the Act.
           </p>
-          <div className="indent-1">
-            <SpanVal val={additionalTerms} fallback="(Please insert any other terms and conditions as per the contractual understanding between the parties, however, please ensure that such additional terms and conditions are not in derogation of or inconsistent with the terms and conditions set out above or the Act and the Rules and Regulations made thereunder.)" fieldKey="additionalTerms" />
+          <div style={{ paddingLeft: '2rem' }}>
+            <div
+              className={`placeholder-field-block ${!additionalTerms || additionalTerms.trim() === '' ? 'empty' : ''}`}
+              data-field="additionalTerms"
+            >
+              {additionalTerms && additionalTerms.trim() !== '' ? additionalTerms : "(Please insert any other terms and conditions as per the contractual understanding between the parties, however, please ensure that such additional terms and conditions are not in derogation of or inconsistent with the terms and conditions set out above or the Act and the Rules and Regulations made thereunder.)"}
+            </div>
           </div>
 
           <p style={{ marginTop: '0.5rem' }}>
@@ -800,7 +788,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
             <div><b>Schedule 'C'</b> - Payment plan by the Allottee.</div>
           </div>
 
-          <p style={{ fontSize: '8pt', borderTop: '0.5px solid #000', marginTop: '0.5rem', paddingTop: '0.25rem' }}>
+          <p style={{ fontSize: '8pt', borderTop: '0.5px solid #000', marginTop: '0.5rem', paddingTop: '0.25rem', paddingBottom: '2rem' }}>
             * or such other certificate by whatever name called issued by the competent authority.
           </p>
         </div>
