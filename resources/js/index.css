@@ -549,7 +549,6 @@ input:focus, select:focus, textarea:focus {
 
 /* Dynamic Placeholder styling */
 .placeholder-field {
-  border-bottom: 1.5px dotted #6b7280;
   padding: 0 2px;
   font-weight: 600;
   color: var(--text-paper);
@@ -562,12 +561,12 @@ input:focus, select:focus, textarea:focus {
   background-color: transparent;
   display: inline;
   padding: 0 40px; /* Provides default width for empty placeholders */
+  border-bottom: 1.5px dotted #6b7280;
 }
 
 /* Highlight Mode */
 .highlight-fillable .placeholder-field {
   background-color: transparent;
-  border-bottom: 1.5px solid var(--highlight-border);
 }
 
 .highlight-fillable .placeholder-field.empty {
@@ -836,9 +835,11 @@ input:focus, select:focus, textarea:focus {
   background-color: transparent !important;
 }
 
-.pdf-export p,
-.pdf-export .legal-section-title,
-.pdf-export .indent-1,
-.pdf-export .indent-2 {
-  page-break-inside: avoid !important;
+.pdf-export .placeholder-field.empty,
+.pdf-export .placeholder-field-block.empty {
+  color: transparent !important;
+}
+
+.pdf-export .legal-section-title {
+  page-break-after: avoid !important;
 }

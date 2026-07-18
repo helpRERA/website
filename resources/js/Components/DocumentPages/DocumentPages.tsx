@@ -166,8 +166,8 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           )}
 
           {landOwnershipType === 'developer' && (
-            <div style={{ border: '1.5px dashed var(--accent-gold)', padding: '0.5rem', borderRadius: '4px', marginBottom: '0.75rem' }}>
-              <div className="indent-1" style={{ marginBottom: 0 }}>
+            <div style={{ padding: '0.5rem', marginBottom: '0.75rem' }}>
+              <div style={{ paddingLeft: '2rem', marginBottom: 0 }}>
                 <SpanVal val={landJDA.ownerName} fieldKey="landJDA.ownerName" /> ("Owner") is the absolute and lawful owner of (khasra Nos./survey Nos.) <SpanVal val={landSurveyNos} fieldKey="landSurveyNos" /> totally admeasuring <SpanVal val={landAdmeasuring} fieldKey="landAdmeasuring" /> square meters situated at <SpanVal val={landSituatedAt} fieldKey="landSituatedAt" /> in Tehsil & District <SpanVal val={landTehsilDistrict} fieldKey="landTehsilDistrict" /> vide sale deed(s) dated <SpanVal val={landTitleDeedDate} fieldKey="landTitleDeedDate" /> registered as documents No. <SpanVal val={landTitleDeedRegNo} fieldKey="landTitleDeedRegNo" /> at the office of the Sub-Registrar. The Owner and the Promoter have entered into a (collaboration/development/joint development) agreement dated <SpanVal val={landJDA.jdaDate} fieldKey="landJDA.jdaDate" /> registered as document No. <SpanVal val={landJDA.regNo} fieldKey="landJDA.regNo" /> at the office of the Sub-Registrar <SpanVal val={landJDA.subRegistrarOffice} fieldKey="landJDA.subRegistrarOffice" />{landJDA.additionalDetails ? ` ` : ''}{landJDA.additionalDetails ? <SpanVal val={landJDA.additionalDetails} fieldKey="landJDA.additionalDetails" /> : ''};
               </div>
             </div>
@@ -591,9 +591,9 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           </p>
 
           <p className="legal-section-title">15. Usage:</p>
-          <div className="indent-1">
+          <p style={{ textIndent: '2rem' }}>
             Use of Basement and Service Areas.— The basement(s) and service areas, if any, as located within the <SpanVal val={basementLocation} fieldKey="basementLocation" /> shall be earmarked for purposes such as parking spaces and services including but not limited to electric sub-station, transformer, DG set rooms, underground water tanks, pump rooms, maintenance and service rooms, fire fighting pumps and equipment's etc. and other permitted uses as per sanctioned plans. The Allottee shall not be permitted to use the services areas and the basements in any manner whatsoever, other than those earmarked as parking spaces, and the same shall be reserved for use by the association of allottees formed by the Allottees for rendering maintenance services.
-          </div>
+          </p>
 
           <p className="legal-section-title">16. General compliance with respect to the apartment:</p>
           <p style={{ textIndent: '2rem' }}>
@@ -645,9 +645,9 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
             25.1 The Promoter may, at its sole option and discretion, without prejudice to its rights as set out in this Agreement, waive the breach by the Allottee in not making payments as per the Payment Plan including waiving the payment of interest for delayed payment.
           </div>
 
-          <p style={{ textIndent: '2rem' }}>
+          <div style={{ paddingLeft: '2rem', marginBottom: '1rem' }}>
             It is made clear and so agreed by the Allottee that exercise of discretion by the Promoter in the case of one Allottee shall not be construed to be a precedent and/or binding on the Promoter to exercise such discretion in the case of other Allottees.
-          </p>
+          </div>
           <div className="indent-1">
             25.2 Failure on the part of the Promoter to enforce at any time or for any period of time the provisions hereof shall not be construed to be a waiver of any provisions or of the right thereafter to enforce each and every provision.
           </div>

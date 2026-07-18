@@ -1,6 +1,7 @@
 import React from 'react';
 import { Plus, Trash2, ChevronRight, ChevronLeft, RefreshCw } from 'lucide-react';
 import { AgreementData, JointAllottee, GarageDetail, PriceBreakdownItem, PaymentPlanItem, Witness } from '../../hooks/useAgreementData';
+import logoUrl from '../../../../public/imge/logonew.svg';
 
 interface FormPanelProps {
   activeStep: number;
@@ -15,7 +16,7 @@ interface FormPanelProps {
   isSaved: boolean;
 }
 
-export default function FormPanel({ activeStep, setActiveStep, data, updateField, updateNestedField, resetData, setActiveField, onSave, isSaving, isSaved  }: FormPanelProps) {
+export default function FormPanel({ activeStep, setActiveStep, data, updateField, updateNestedField, resetData, setActiveField, onSave, isSaving, isSaved }: FormPanelProps) {
   const steps = [
     { id: 0, label: 'Execution' },
     { id: 1, label: 'Promoter' },
@@ -92,15 +93,15 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
   const addJointAllottee = () => {
     const newAllottees: JointAllottee[] = [
       ...data.jointAllottees,
-      { 
-        id: Date.now(), 
-        name: '', 
-        aadhaar: '', 
-        parentType: 'son', 
-        parentName: '', 
-        age: '', 
-        residing: '', 
-        pan: '' 
+      {
+        id: Date.now(),
+        name: '',
+        aadhaar: '',
+        parentType: 'son',
+        parentName: '',
+        age: '',
+        residing: '',
+        pan: ''
       }
     ];
     updateField('jointAllottees', newAllottees);
@@ -148,7 +149,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
     <div className="form-panel">
       <div className="form-header">
         <div className="logo-container">
-           <img src={`${document.querySelector('meta[name="base-url"]')?.getAttribute('content') || ''}/imge/logonew.svg`} alt="K-RERA Logo" style={{ width: '345px', height: 'auto', objectFit: 'contain' }} />
+          <img src={logoUrl} alt="K-RERA Logo" style={{ width: '345px', height: 'auto', objectFit: 'contain' }} />
         </div>
       </div>
 
@@ -175,38 +176,38 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             <h3 className="section-title">Agreement Execution</h3>
             <div className="form-group">
               <label>Execution Place / City</label>
-              <input 
-                type="text" 
-                value={data.executionPlace} 
-                onFocus={() => setActiveField('executionPlace')} onChange={(e) => updateField('executionPlace', e.target.value)} 
+              <input
+                type="text"
+                value={data.executionPlace}
+                onFocus={() => setActiveField('executionPlace')} onChange={(e) => updateField('executionPlace', e.target.value)}
                 placeholder="e.g. Thiruvananthapuram"
               />
             </div>
             <div className="form-group row-3">
               <div>
                 <label>Day of Month</label>
-                <input 
-                  type="text" 
-                  value={data.dateDay} 
-                  onFocus={() => setActiveField('dateDay')} onChange={(e) => updateField('dateDay', e.target.value.replace(/[^a-zA-Z0-9]/g, ''))} 
+                <input
+                  type="text"
+                  value={data.dateDay}
+                  onFocus={() => setActiveField('dateDay')} onChange={(e) => updateField('dateDay', e.target.value.replace(/[^a-zA-Z0-9]/g, ''))}
                   placeholder="e.g. 23rd"
                 />
               </div>
               <div>
                 <label>Month</label>
-                <input 
-                  type="text" 
-                  value={data.dateMonth} 
-                  onFocus={() => setActiveField('dateMonth')} onChange={(e) => updateField('dateMonth', e.target.value.replace(/[^a-zA-Z0-9]/g, ''))} 
+                <input
+                  type="text"
+                  value={data.dateMonth}
+                  onFocus={() => setActiveField('dateMonth')} onChange={(e) => updateField('dateMonth', e.target.value.replace(/[^a-zA-Z0-9]/g, ''))}
                   placeholder="e.g. June"
                 />
               </div>
               <div>
                 <label>Year</label>
-                <input 
-                  type="text" 
-                  value={data.dateYear} 
-                  onFocus={() => setActiveField('dateYear')} onChange={(e) => updateField('dateYear', e.target.value.replace(/[^a-zA-Z0-9]/g, ''))} 
+                <input
+                  type="text"
+                  value={data.dateYear}
+                  onFocus={() => setActiveField('dateYear')} onChange={(e) => updateField('dateYear', e.target.value.replace(/[^a-zA-Z0-9]/g, ''))}
                   placeholder="e.g. 2026"
                 />
               </div>
@@ -221,19 +222,19 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             <div className="form-group">
               <label>Promoter Entity Type</label>
               <div className="toggle-group">
-                <button 
+                <button
                   className={`toggle-btn ${data.promoterType === 'company' ? 'active' : ''}`}
                   onClick={() => updateField('promoterType', 'company')}
                 >
                   Company
                 </button>
-                <button 
+                <button
                   className={`toggle-btn ${data.promoterType === 'partnership' ? 'active' : ''}`}
                   onClick={() => updateField('promoterType', 'partnership')}
                 >
                   Partnership
                 </button>
-                <button 
+                <button
                   className={`toggle-btn ${data.promoterType === 'individual' ? 'active' : ''}`}
                   onClick={() => updateField('promoterType', 'individual')}
                 >
@@ -247,69 +248,69 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               <>
                 <div className="form-group">
                   <label>Company Name</label>
-                  <input 
-                    type="text" 
-                    value={data.promoterCompany.name} 
+                  <input
+                    type="text"
+                    value={data.promoterCompany.name}
                     onFocus={() => setActiveField('promoterCompany.name')} onChange={(e) => updateNestedField('promoterCompany', 'name', e.target.value)}
                   />
                 </div>
                 <div className="form-group row-2">
                   <div>
                     <label>CIN</label>
-                    <input 
-                      type="text" 
-                      value={data.promoterCompany.cin} 
+                    <input
+                      type="text"
+                      value={data.promoterCompany.cin}
                       onFocus={() => setActiveField('promoterCompany.cin')} onChange={(e) => updateNestedField('promoterCompany', 'cin', e.target.value.replace(/[^a-zA-Z0-9]/g, ''))}
                     />
                   </div>
                   <div>
                     <label>PAN</label>
-                    <input 
-                      type="text" 
-                      value={data.promoterCompany.pan} 
+                    <input
+                      type="text"
+                      value={data.promoterCompany.pan}
                       onFocus={() => setActiveField('promoterCompany.pan')} onChange={(e) => updateNestedField('promoterCompany', 'pan', e.target.value.replace(/[^a-zA-Z0-9]/g, ''))}
                     />
                   </div>
                 </div>
                 <div className="form-group">
                   <label>Registered Office Address</label>
-                  <textarea 
+                  <textarea
                     rows={2}
-                    value={data.promoterCompany.registeredOffice} 
+                    value={data.promoterCompany.registeredOffice}
                     onFocus={() => setActiveField('promoterCompany.registeredOffice')} onChange={(e) => updateNestedField('promoterCompany', 'registeredOffice', e.target.value)}
                   />
                 </div>
                 <div className="form-group">
                   <label>Corporate Office Address</label>
-                  <textarea 
+                  <textarea
                     rows={2}
-                    value={data.promoterCompany.corporateOffice} 
+                    value={data.promoterCompany.corporateOffice}
                     onFocus={() => setActiveField('promoterCompany.corporateOffice')} onChange={(e) => updateNestedField('promoterCompany', 'corporateOffice', e.target.value)}
                   />
                 </div>
                 <div className="form-group row-2">
                   <div>
                     <label>Authorized Signatory</label>
-                    <input 
-                      type="text" 
-                      value={data.promoterCompany.authorizedSignatory} 
+                    <input
+                      type="text"
+                      value={data.promoterCompany.authorizedSignatory}
                       onFocus={() => setActiveField('promoterCompany.authorizedSignatory')} onChange={(e) => updateNestedField('promoterCompany', 'authorizedSignatory', e.target.value)}
                     />
                   </div>
                   <div>
                     <label>Aadhaar No</label>
-                    <input 
-                      type="text" 
-                      value={data.promoterCompany.signatoryAadhaar} 
+                    <input
+                      type="text"
+                      value={data.promoterCompany.signatoryAadhaar}
                       onFocus={() => setActiveField('promoterCompany.signatoryAadhaar')} onChange={(e) => updateNestedField('promoterCompany', 'signatoryAadhaar', e.target.value.replace(/[^0-9]/g, ''))}
                     />
                   </div>
                 </div>
                 <div className="form-group">
                   <label>Board Resolution Date</label>
-                  <input 
-                    type="date" 
-                    value={data.promoterCompany.boardResolutionDate} 
+                  <input
+                    type="date"
+                    value={data.promoterCompany.boardResolutionDate}
                     onFocus={() => setActiveField('promoterCompany.boardResolutionDate')} onChange={(e) => updateNestedField('promoterCompany', 'boardResolutionDate', e.target.value)}
                   />
                 </div>
@@ -321,51 +322,51 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               <>
                 <div className="form-group">
                   <label>Partnership Firm Name</label>
-                  <input 
-                    type="text" 
-                    value={data.promoterPartnership.name} 
+                  <input
+                    type="text"
+                    value={data.promoterPartnership.name}
                     onFocus={() => setActiveField('promoterPartnership.name')} onChange={(e) => updateNestedField('promoterPartnership', 'name', e.target.value)}
                   />
                 </div>
                 <div className="form-group">
                   <label>Principal Place of Business</label>
-                  <textarea 
+                  <textarea
                     rows={2}
-                    value={data.promoterPartnership.businessPlace} 
+                    value={data.promoterPartnership.businessPlace}
                     onFocus={() => setActiveField('promoterPartnership.businessPlace')} onChange={(e) => updateNestedField('promoterPartnership', 'businessPlace', e.target.value)}
                   />
                 </div>
                 <div className="form-group">
                   <label>PAN</label>
-                  <input 
-                    type="text" 
-                    value={data.promoterPartnership.pan} 
+                  <input
+                    type="text"
+                    value={data.promoterPartnership.pan}
                     onFocus={() => setActiveField('promoterPartnership.pan')} onChange={(e) => updateNestedField('promoterPartnership', 'pan', e.target.value.replace(/[^a-zA-Z0-9]/g, ''))}
                   />
                 </div>
                 <div className="form-group row-2">
                   <div>
                     <label>Represented by Partner</label>
-                    <input 
-                      type="text" 
-                      value={data.promoterPartnership.authorizedPartner} 
+                    <input
+                      type="text"
+                      value={data.promoterPartnership.authorizedPartner}
                       onFocus={() => setActiveField('promoterPartnership.authorizedPartner')} onChange={(e) => updateNestedField('promoterPartnership', 'authorizedPartner', e.target.value)}
                     />
                   </div>
                   <div>
                     <label>Partner Aadhaar No</label>
-                    <input 
-                      type="text" 
-                      value={data.promoterPartnership.partnerAadhaar} 
+                    <input
+                      type="text"
+                      value={data.promoterPartnership.partnerAadhaar}
                       onFocus={() => setActiveField('promoterPartnership.partnerAadhaar')} onChange={(e) => updateNestedField('promoterPartnership', 'partnerAadhaar', e.target.value.replace(/[^0-9]/g, ''))}
                     />
                   </div>
                 </div>
                 <div className="form-group">
                   <label>Authorized Vide (Document details)</label>
-                  <input 
-                    type="text" 
-                    value={data.promoterPartnership.authorizedVide} 
+                  <input
+                    type="text"
+                    value={data.promoterPartnership.authorizedVide}
                     onFocus={() => setActiveField('promoterPartnership.authorizedVide')} onChange={(e) => updateNestedField('promoterPartnership', 'authorizedVide', e.target.value)}
                     placeholder="e.g. resolution dated 10/12/2025"
                   />
@@ -378,26 +379,26 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               <>
                 <div className="form-group">
                   <label>Promoter Name (Mr/Ms)</label>
-                  <input 
-                    type="text" 
-                    value={data.promoterIndividual.name} 
+                  <input
+                    type="text"
+                    value={data.promoterIndividual.name}
                     onFocus={() => setActiveField('promoterIndividual.name')} onChange={(e) => updateNestedField('promoterIndividual', 'name', e.target.value)}
                   />
                 </div>
                 <div className="form-group row-2">
                   <div>
                     <label>Aadhaar No</label>
-                    <input 
-                      type="text" 
-                      value={data.promoterIndividual.aadhaar} 
+                    <input
+                      type="text"
+                      value={data.promoterIndividual.aadhaar}
                       onFocus={() => setActiveField('promoterIndividual.aadhaar')} onChange={(e) => updateNestedField('promoterIndividual', 'aadhaar', e.target.value.replace(/[^0-9]/g, ''))}
                     />
                   </div>
                   <div>
                     <label>PAN</label>
-                    <input 
-                      type="text" 
-                      value={data.promoterIndividual.pan} 
+                    <input
+                      type="text"
+                      value={data.promoterIndividual.pan}
                       onFocus={() => setActiveField('promoterIndividual.pan')} onChange={(e) => updateNestedField('promoterIndividual', 'pan', e.target.value.replace(/[^a-zA-Z0-9]/g, ''))}
                     />
                   </div>
@@ -405,8 +406,8 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 <div className="form-group row-3">
                   <div>
                     <label>Parent Relationship</label>
-                    <select 
-                      value={data.promoterIndividual.parentType} 
+                    <select
+                      value={data.promoterIndividual.parentType}
                       onFocus={() => setActiveField('promoterIndividual.parentType')} onChange={(e) => updateNestedField('promoterIndividual', 'parentType', e.target.value)}
                     >
                       <option value="son">Son of</option>
@@ -415,26 +416,26 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                   </div>
                   <div style={{ gridColumn: 'span 2' }}>
                     <label>Parent Name</label>
-                    <input 
-                      type="text" 
-                      value={data.promoterIndividual.parentName} 
+                    <input
+                      type="text"
+                      value={data.promoterIndividual.parentName}
                       onFocus={() => setActiveField('promoterIndividual.parentName')} onChange={(e) => updateNestedField('promoterIndividual', 'parentName', e.target.value)}
                     />
                   </div>
                 </div>
                 <div className="form-group">
                   <label>Age (Years)</label>
-                  <input 
-                    type="number" 
-                    value={data.promoterIndividual.age} 
+                  <input
+                    type="number"
+                    value={data.promoterIndividual.age}
                     onFocus={() => setActiveField('promoterIndividual.age')} onChange={(e) => updateNestedField('promoterIndividual', 'age', e.target.value)}
                   />
                 </div>
                 <div className="form-group">
                   <label>Residential Address</label>
-                  <textarea 
+                  <textarea
                     rows={2}
-                    value={data.promoterIndividual.residing} 
+                    value={data.promoterIndividual.residing}
                     onFocus={() => setActiveField('promoterIndividual.residing')} onChange={(e) => updateNestedField('promoterIndividual', 'residing', e.target.value)}
                   />
                 </div>
@@ -451,19 +452,19 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             <div className="form-group row-2">
               <div>
                 <label>Survey Numbers</label>
-                <input 
-                  type="text" 
-                  value={data.landSurveyNos} 
-                  onFocus={() => setActiveField('landSurveyNos')} onChange={(e) => updateField('landSurveyNos', e.target.value)} 
+                <input
+                  type="text"
+                  value={data.landSurveyNos}
+                  onFocus={() => setActiveField('landSurveyNos')} onChange={(e) => updateField('landSurveyNos', e.target.value)}
                   placeholder="e.g. 101/2, 101/3"
                 />
               </div>
               <div>
                 <label>Land Area (Sq. Meters)</label>
-                <input 
-                  type="text" 
-                  value={data.landAdmeasuring} 
-                  onFocus={() => setActiveField('landAdmeasuring')} onChange={(e) => updateField('landAdmeasuring', e.target.value)} 
+                <input
+                  type="text"
+                  value={data.landAdmeasuring}
+                  onFocus={() => setActiveField('landAdmeasuring')} onChange={(e) => updateField('landAdmeasuring', e.target.value)}
                   placeholder="e.g. 4,050"
                 />
               </div>
@@ -471,19 +472,19 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             <div className="form-group row-2">
               <div>
                 <label>Situated at (Location)</label>
-                <input 
-                  type="text" 
-                  value={data.landSituatedAt} 
-                  onFocus={() => setActiveField('landSituatedAt')} onChange={(e) => updateField('landSituatedAt', e.target.value)} 
+                <input
+                  type="text"
+                  value={data.landSituatedAt}
+                  onFocus={() => setActiveField('landSituatedAt')} onChange={(e) => updateField('landSituatedAt', e.target.value)}
                   placeholder="e.g. Pattom"
                 />
               </div>
               <div>
                 <label>Tehsil & District</label>
-                <input 
-                  type="text" 
-                  value={data.landTehsilDistrict} 
-                  onFocus={() => setActiveField('landTehsilDistrict')} onChange={(e) => updateField('landTehsilDistrict', e.target.value)} 
+                <input
+                  type="text"
+                  value={data.landTehsilDistrict}
+                  onFocus={() => setActiveField('landTehsilDistrict')} onChange={(e) => updateField('landTehsilDistrict', e.target.value)}
                   placeholder="e.g. Thiruvananthapuram"
                 />
               </div>
@@ -492,18 +493,18 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             <div className="form-group row-2">
               <div>
                 <label>Title Deed Date</label>
-                <input 
-                  type="text" 
-                  value={data.landTitleDeedDate} 
-                  onFocus={() => setActiveField('landTitleDeedDate')} onChange={(e) => updateField('landTitleDeedDate', e.target.value)} 
+                <input
+                  type="date"
+                  value={data.landTitleDeedDate}
+                  onFocus={() => setActiveField('landTitleDeedDate')} onChange={(e) => updateField('landTitleDeedDate', e.target.value)}
                 />
               </div>
               <div>
                 <label>Title Deed Reg No</label>
-                <input 
-                  type="text" 
-                  value={data.landTitleDeedRegNo} 
-                  onFocus={() => setActiveField('landTitleDeedRegNo')} onChange={(e) => updateField('landTitleDeedRegNo', e.target.value)} 
+                <input
+                  type="text"
+                  value={data.landTitleDeedRegNo}
+                  onFocus={() => setActiveField('landTitleDeedRegNo')} onChange={(e) => updateField('landTitleDeedRegNo', e.target.value)}
                 />
               </div>
             </div>
@@ -511,13 +512,13 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             <div className="form-group">
               <label>Land Ownership Type</label>
               <div className="toggle-group">
-                <button 
+                <button
                   className={`toggle-btn ${data.landOwnershipType === 'owner' ? 'active' : ''}`}
                   onClick={() => updateField('landOwnershipType', 'owner')}
                 >
                   Promoter is Owner
                 </button>
-                <button 
+                <button
                   className={`toggle-btn ${data.landOwnershipType === 'developer' ? 'active' : ''}`}
                   onClick={() => updateField('landOwnershipType', 'developer')}
                 >
@@ -531,44 +532,44 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 <label style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>Joint Development Agreement Details</label>
                 <div className="form-group">
                   <label>Absolute Owner Name</label>
-                  <input 
-                    type="text" 
-                    value={data.landJDA.ownerName} 
-                    onFocus={() => setActiveField('landJDA.ownerName')} onChange={(e) => updateNestedField('landJDA', 'ownerName', e.target.value)} 
+                  <input
+                    type="text"
+                    value={data.landJDA.ownerName}
+                    onFocus={() => setActiveField('landJDA.ownerName')} onChange={(e) => updateNestedField('landJDA', 'ownerName', e.target.value)}
                   />
                 </div>
                 <div className="form-group row-2">
                   <div>
                     <label>JDA Execution Date</label>
-                    <input 
-                      type="text" 
-                      value={data.landJDA.jdaDate} 
-                      onFocus={() => setActiveField('landJDA.jdaDate')} onChange={(e) => updateNestedField('landJDA', 'jdaDate', e.target.value)} 
-                  />
+                    <input
+                      type="date"
+                      value={data.landJDA.jdaDate}
+                      onFocus={() => setActiveField('landJDA.jdaDate')} onChange={(e) => updateNestedField('landJDA', 'jdaDate', e.target.value)}
+                    />
                   </div>
                   <div>
                     <label>JDA Registered Doc No</label>
-                    <input 
-                      type="text" 
-                      value={data.landJDA.regNo} 
-                      onFocus={() => setActiveField('landJDA.regNo')} onChange={(e) => updateNestedField('landJDA', 'regNo', e.target.value)} 
+                    <input
+                      type="text"
+                      value={data.landJDA.regNo}
+                      onFocus={() => setActiveField('landJDA.regNo')} onChange={(e) => updateNestedField('landJDA', 'regNo', e.target.value)}
                     />
                   </div>
                 </div>
                 <div className="form-group">
                   <label>Sub-Registrar Office where registered</label>
-                  <input 
-                    type="text" 
-                    value={data.landJDA.subRegistrarOffice} 
-                    onFocus={() => setActiveField('landJDA.subRegistrarOffice')} onChange={(e) => updateNestedField('landJDA', 'subRegistrarOffice', e.target.value)} 
+                  <input
+                    type="text"
+                    value={data.landJDA.subRegistrarOffice}
+                    onFocus={() => setActiveField('landJDA.subRegistrarOffice')} onChange={(e) => updateNestedField('landJDA', 'subRegistrarOffice', e.target.value)}
                   />
                 </div>
                 <div className="form-group">
                   <label>Additional Details</label>
-                  <textarea 
+                  <textarea
                     rows={2}
-                    value={data.landJDA.additionalDetails} 
-                    onFocus={() => setActiveField('landJDA.additionalDetails')} onChange={(e) => updateNestedField('landJDA', 'additionalDetails', e.target.value)} 
+                    value={data.landJDA.additionalDetails}
+                    onFocus={() => setActiveField('landJDA.additionalDetails')} onChange={(e) => updateNestedField('landJDA', 'additionalDetails', e.target.value)}
                     placeholder="Enter any additional details to appear after Sub-Registrar..."
                   />
                 </div>
@@ -579,8 +580,8 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             <div className="form-group row-2">
               <div>
                 <label>Project Type</label>
-                <select 
-                  value={data.projectType} 
+                <select
+                  value={data.projectType}
                   onFocus={() => setActiveField('projectType')} onChange={(e) => updateField('projectType', e.target.value as any)}
                 >
                   <option value="apartment">Building / Apartment</option>
@@ -589,21 +590,21 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               </div>
               <div>
                 <label>Project Name</label>
-                <input 
-                  type="text" 
-                  value={data.projectName} 
-                  onFocus={() => setActiveField('projectName')} onChange={(e) => updateField('projectName', e.target.value)} 
+                <input
+                  type="text"
+                  value={data.projectName}
+                  onFocus={() => setActiveField('projectName')} onChange={(e) => updateField('projectName', e.target.value)}
                 />
               </div>
             </div>
-            
+
             <div className="form-group row-1">
               <div>
                 <label>Basement and Service Areas Location</label>
-                <input 
-                  type="text" 
-                  value={data.basementLocation} 
-                  onFocus={() => setActiveField('basementLocation')} onChange={(e) => updateField('basementLocation', e.target.value)} 
+                <input
+                  type="text"
+                  value={data.basementLocation}
+                  onFocus={() => setActiveField('basementLocation')} onChange={(e) => updateField('basementLocation', e.target.value)}
                   placeholder="e.g. Project Name"
                 />
               </div>
@@ -614,8 +615,8 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 <div className="form-group row-2">
                   <div>
                     <label>Building Type</label>
-                    <select 
-                      value={data.projectBuildingType} 
+                    <select
+                      value={data.projectBuildingType}
                       onFocus={() => setActiveField('projectBuildingType')} onChange={(e) => updateField('projectBuildingType', e.target.value as any)}
                     >
                       <option value="residential">Residential</option>
@@ -625,20 +626,20 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                   </div>
                   <div>
                     <label>Project Comprising (Details)</label>
-                    <input 
-                      type="text" 
-                      value={data.projectComprising} 
-                      onFocus={() => setActiveField('projectComprising')} onChange={(e) => updateField('projectComprising', e.target.value)} 
+                    <input
+                      type="text"
+                      value={data.projectComprising}
+                      onFocus={() => setActiveField('projectComprising')} onChange={(e) => updateField('projectComprising', e.target.value)}
                       placeholder="e.g. multistoried apartment building..."
                     />
                   </div>
                 </div>
                 <div className="form-group">
                   <label>Other Components (Amenities)</label>
-                  <input 
-                    type="text" 
-                    value={data.projectOtherComponents} 
-                    onFocus={() => setActiveField('projectOtherComponents')} onChange={(e) => updateField('projectOtherComponents', e.target.value)} 
+                  <input
+                    type="text"
+                    value={data.projectOtherComponents}
+                    onFocus={() => setActiveField('projectOtherComponents')} onChange={(e) => updateField('projectOtherComponents', e.target.value)}
                     placeholder="e.g. club house, swimming pool..."
                   />
                 </div>
@@ -646,10 +647,10 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             ) : (
               <div className="form-group">
                 <label>Other Components of Plotted Development</label>
-                <input 
-                  type="text" 
-                  value={data.plotOtherComponents} 
-                  onFocus={() => setActiveField('plotOtherComponents')} onChange={(e) => updateField('plotOtherComponents', e.target.value)} 
+                <input
+                  type="text"
+                  value={data.plotOtherComponents}
+                  onFocus={() => setActiveField('plotOtherComponents')} onChange={(e) => updateField('plotOtherComponents', e.target.value)}
                   placeholder="e.g. roads, lighting, open space..."
                 />
               </div>
@@ -663,37 +664,37 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             <h3 className="section-title">Regulatory Approvals</h3>
             <div className="form-group">
               <label>Commencement Competent Authority</label>
-              <input 
-                type="text" 
-                value={data.commencementAuthority} 
-                onFocus={() => setActiveField('commencementAuthority')} onChange={(e) => updateField('commencementAuthority', e.target.value)} 
+              <input
+                type="text"
+                value={data.commencementAuthority}
+                onFocus={() => setActiveField('commencementAuthority')} onChange={(e) => updateField('commencementAuthority', e.target.value)}
                 placeholder="e.g. Municipal Corporation..."
               />
             </div>
             <div className="form-group row-2">
               <div>
                 <label>Commencement Certificate No</label>
-                <input 
-                  type="text" 
-                  value={data.commencementNo} 
-                  onFocus={() => setActiveField('commencementNo')} onChange={(e) => updateField('commencementNo', e.target.value)} 
+                <input
+                  type="text"
+                  value={data.commencementNo}
+                  onFocus={() => setActiveField('commencementNo')} onChange={(e) => updateField('commencementNo', e.target.value)}
                 />
               </div>
               <div>
                 <label>Approval Date</label>
-                <input 
-                  type="text" 
-                  value={data.commencementDate} 
-                  onFocus={() => setActiveField('commencementDate')} onChange={(e) => updateField('commencementDate', e.target.value)} 
+                <input
+                  type="date"
+                  value={data.commencementDate}
+                  onFocus={() => setActiveField('commencementDate')} onChange={(e) => updateField('commencementDate', e.target.value)}
                 />
               </div>
             </div>
             <div className="form-group">
               <label>Layout Plan Approvals Authority</label>
-              <input 
-                type="text" 
-                value={data.layoutAuthority} 
-                onFocus={() => setActiveField('layoutAuthority')} onChange={(e) => updateField('layoutAuthority', e.target.value)} 
+              <input
+                type="text"
+                value={data.layoutAuthority}
+                onFocus={() => setActiveField('layoutAuthority')} onChange={(e) => updateField('layoutAuthority', e.target.value)}
                 placeholder="e.g. TRIDA, Town Planner..."
               />
             </div>
@@ -702,19 +703,19 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             <div className="form-group row-2">
               <div>
                 <label>RERA Registration Number</label>
-                <input 
-                  type="text" 
-                  value={data.reraRegNo} 
-                  onFocus={() => setActiveField('reraRegNo')} onChange={(e) => updateField('reraRegNo', e.target.value)} 
+                <input
+                  type="text"
+                  value={data.reraRegNo}
+                  onFocus={() => setActiveField('reraRegNo')} onChange={(e) => updateField('reraRegNo', e.target.value)}
                   placeholder="e.g. K-RERA/PRJ/..."
                 />
               </div>
               <div>
                 <label>Registration Date</label>
-                <input 
-                  type="text" 
-                  value={data.reraRegDate} 
-                  onFocus={() => setActiveField('reraRegDate')} onChange={(e) => updateField('reraRegDate', e.target.value)} 
+                <input
+                  type="date"
+                  value={data.reraRegDate}
+                  onFocus={() => setActiveField('reraRegDate')} onChange={(e) => updateField('reraRegDate', e.target.value)}
                 />
               </div>
             </div>
@@ -723,20 +724,20 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             <div className="form-group row-1">
               <div>
                 <label>Apartment Ownership Act (State specific)</label>
-                <input 
-                  type="text" 
-                  value={data.apartmentOwnershipAct} 
-                  onFocus={() => setActiveField('apartmentOwnershipAct')} onChange={(e) => updateField('apartmentOwnershipAct', e.target.value)} 
+                <input
+                  type="text"
+                  value={data.apartmentOwnershipAct}
+                  onFocus={() => setActiveField('apartmentOwnershipAct')} onChange={(e) => updateField('apartmentOwnershipAct', e.target.value)}
                 />
               </div>
             </div>
-            
+
             <h3 className="section-title" style={{ marginTop: '1rem' }}>Disclosures (Clause I)</h3>
             <div className="form-group">
               <label>Additional Disclosures/Details</label>
-              <textarea 
-                value={data.additionalDisclosures} 
-                onFocus={() => setActiveField('additionalDisclosures')} onChange={(e) => updateField('additionalDisclosures', e.target.value)} 
+              <textarea
+                value={data.additionalDisclosures}
+                onFocus={() => setActiveField('additionalDisclosures')} onChange={(e) => updateField('additionalDisclosures', e.target.value)}
                 rows={3}
                 placeholder="(Please enter any additional disclosures/details)"
               />
@@ -751,18 +752,18 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             <div className="form-group row-2">
               <div>
                 <label>Application No</label>
-                <input 
-                  type="text" 
-                  value={data.applicationNo} 
-                  onFocus={() => setActiveField('applicationNo')} onChange={(e) => updateField('applicationNo', e.target.value)} 
+                <input
+                  type="text"
+                  value={data.applicationNo}
+                  onFocus={() => setActiveField('applicationNo')} onChange={(e) => updateField('applicationNo', e.target.value)}
                 />
               </div>
               <div>
                 <label>Application Date</label>
-                <input 
-                  type="text" 
-                  value={data.applicationDate} 
-                  onFocus={() => setActiveField('applicationDate')} onChange={(e) => updateField('applicationDate', e.target.value)} 
+                <input
+                  type="date"
+                  value={data.applicationDate}
+                  onFocus={() => setActiveField('applicationDate')} onChange={(e) => updateField('applicationDate', e.target.value)}
                 />
               </div>
             </div>
@@ -771,46 +772,46 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               <>
                 <div className="form-group">
                   <label>Apartment Type</label>
-                  <input 
-                    type="text" 
-                    value={data.apartmentType} 
-                    onFocus={() => setActiveField('apartmentType')} onChange={(e) => updateField('apartmentType', e.target.value)} 
+                  <input
+                    type="text"
+                    value={data.apartmentType}
+                    onFocus={() => setActiveField('apartmentType')} onChange={(e) => updateField('apartmentType', e.target.value)}
                     placeholder="e.g. 2BHK, 3BHK..."
                   />
                 </div>
                 <div className="form-group row-2">
                   <div>
                     <label>Apartment / Room No</label>
-                    <input 
-                      type="text" 
-                      value={data.unitNo} 
-                      onFocus={() => setActiveField('unitNo')} onChange={(e) => updateField('unitNo', e.target.value)} 
+                    <input
+                      type="text"
+                      value={data.unitNo}
+                      onFocus={() => setActiveField('unitNo')} onChange={(e) => updateField('unitNo', e.target.value)}
                     />
                   </div>
                   <div>
                     <label>Floor No</label>
-                    <input 
-                      type="text" 
-                      value={data.unitFloor} 
-                      onFocus={() => setActiveField('unitFloor')} onChange={(e) => updateField('unitFloor', e.target.value)} 
+                    <input
+                      type="text"
+                      value={data.unitFloor}
+                      onFocus={() => setActiveField('unitFloor')} onChange={(e) => updateField('unitFloor', e.target.value)}
                     />
                   </div>
                 </div>
                 <div className="form-group row-2">
                   <div>
                     <label>Tower / Block / Building</label>
-                    <input 
-                      type="text" 
-                      value={data.unitTower} 
-                      onFocus={() => setActiveField('unitTower')} onChange={(e) => updateField('unitTower', e.target.value)} 
+                    <input
+                      type="text"
+                      value={data.unitTower}
+                      onFocus={() => setActiveField('unitTower')} onChange={(e) => updateField('unitTower', e.target.value)}
                     />
                   </div>
                   <div>
                     <label>Carpet Area (Sq. Feet)</label>
-                    <input 
-                      type="text" 
-                      value={data.unitCarpetArea} 
-                      onFocus={() => setActiveField('unitCarpetArea')} onChange={(e) => updateField('unitCarpetArea', e.target.value)} 
+                    <input
+                      type="text"
+                      value={data.unitCarpetArea}
+                      onFocus={() => setActiveField('unitCarpetArea')} onChange={(e) => updateField('unitCarpetArea', e.target.value)}
                     />
                   </div>
                 </div>
@@ -819,18 +820,18 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               <div className="form-group row-2">
                 <div>
                   <label>Plot Number</label>
-                  <input 
-                    type="text" 
-                    value={data.plotNo} 
-                    onFocus={() => setActiveField('plotNo')} onChange={(e) => updateField('plotNo', e.target.value)} 
+                  <input
+                    type="text"
+                    value={data.plotNo}
+                    onFocus={() => setActiveField('plotNo')} onChange={(e) => updateField('plotNo', e.target.value)}
                   />
                 </div>
                 <div>
                   <label>Plot Area (Sq. Feet)</label>
-                  <input 
-                    type="text" 
-                    value={data.plotArea} 
-                    onFocus={() => setActiveField('plotArea')} onChange={(e) => updateField('plotArea', e.target.value)} 
+                  <input
+                    type="text"
+                    value={data.plotArea}
+                    onFocus={() => setActiveField('plotArea')} onChange={(e) => updateField('plotArea', e.target.value)}
                   />
                 </div>
               </div>
@@ -877,64 +878,64 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             <div className="form-group row-2">
               <div>
                 <label>Rate Per Sq. Foot (Rs)</label>
-                <input 
-                  type="text" 
-                  value={data.ratePerSqFt} 
-                  onFocus={() => setActiveField('ratePerSqFt')} onChange={(e) => updateField('ratePerSqFt', e.target.value)} 
+                <input
+                  type="text"
+                  value={data.ratePerSqFt}
+                  onFocus={() => setActiveField('ratePerSqFt')} onChange={(e) => updateField('ratePerSqFt', e.target.value)}
                 />
               </div>
               <div>
                 <label>Total Price (Rs)</label>
-                <input 
-                  type="text" 
-                  value={data.totalPrice} 
-                  onFocus={() => setActiveField('totalPrice')} onChange={(e) => updateField('totalPrice', e.target.value)} 
+                <input
+                  type="text"
+                  value={data.totalPrice}
+                  onFocus={() => setActiveField('totalPrice')} onChange={(e) => updateField('totalPrice', e.target.value)}
                 />
               </div>
             </div>
             <div className="form-group">
               <label>Total Price (In Words)</label>
-              <input 
-                type="text" 
-                value={data.totalPriceWords} 
-                onFocus={() => setActiveField('totalPriceWords')} onChange={(e) => updateField('totalPriceWords', e.target.value)} 
+              <input
+                type="text"
+                value={data.totalPriceWords}
+                onFocus={() => setActiveField('totalPriceWords')} onChange={(e) => updateField('totalPriceWords', e.target.value)}
               />
             </div>
             <div className="form-group row-2">
               <div>
                 <label>Booking Amount (Rs)</label>
-                <input 
-                  type="text" 
-                  value={data.bookingAmount} 
-                  onFocus={() => setActiveField('bookingAmount')} onChange={(e) => updateField('bookingAmount', e.target.value)} 
+                <input
+                  type="text"
+                  value={data.bookingAmount}
+                  onFocus={() => setActiveField('bookingAmount')} onChange={(e) => updateField('bookingAmount', e.target.value)}
                 />
               </div>
               <div>
                 <label>Booking Amount (In Words)</label>
-                <input 
-                  type="text" 
-                  value={data.bookingAmountWords} 
-                  onFocus={() => setActiveField('bookingAmountWords')} onChange={(e) => updateField('bookingAmountWords', e.target.value)} 
+                <input
+                  type="text"
+                  value={data.bookingAmountWords}
+                  onFocus={() => setActiveField('bookingAmountWords')} onChange={(e) => updateField('bookingAmountWords', e.target.value)}
                 />
               </div>
             </div>
-            
+
             <h3 className="section-title" style={{ marginTop: '1rem' }}>Mode of Payment</h3>
             <div className="form-group row-2">
               <div>
                 <label>Payment in favour of</label>
-                <input 
-                  type="text" 
-                  value={data.paymentFavourOf} 
-                  onFocus={() => setActiveField('paymentFavourOf')} onChange={(e) => updateField('paymentFavourOf', e.target.value)} 
+                <input
+                  type="text"
+                  value={data.paymentFavourOf}
+                  onFocus={() => setActiveField('paymentFavourOf')} onChange={(e) => updateField('paymentFavourOf', e.target.value)}
                 />
               </div>
               <div>
                 <label>Payable at</label>
-                <input 
-                  type="text" 
-                  value={data.paymentPayableAt} 
-                  onFocus={() => setActiveField('paymentPayableAt')} onChange={(e) => updateField('paymentPayableAt', e.target.value)} 
+                <input
+                  type="text"
+                  value={data.paymentPayableAt}
+                  onFocus={() => setActiveField('paymentPayableAt')} onChange={(e) => updateField('paymentPayableAt', e.target.value)}
                 />
               </div>
             </div>
@@ -967,13 +968,13 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 ))}
               </div>
             </div>
-            
+
             <h3 className="section-title" style={{ marginTop: '1rem' }}>Maintenance Clauses</h3>
             <div className="form-group">
               <label>Additional Maintenance Clauses</label>
-              <textarea 
-                value={data.maintenanceClauses} 
-                onFocus={() => setActiveField('maintenanceClauses')} onChange={(e) => updateField('maintenanceClauses', e.target.value)} 
+              <textarea
+                value={data.maintenanceClauses}
+                onFocus={() => setActiveField('maintenanceClauses')} onChange={(e) => updateField('maintenanceClauses', e.target.value)}
                 rows={3}
                 placeholder="(Insert any other clauses in relation to maintenance of project, infrastructure and equipment)"
               />
@@ -982,28 +983,28 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             <h3 className="section-title" style={{ marginTop: '1rem' }}>Clause 1.10 Details</h3>
             <div className="form-group">
               <label>Facilities outside the Project (namely...)</label>
-              <input 
-                type="text" 
-                value={data.facilitiesOutsideProject} 
-                onFocus={() => setActiveField('facilitiesOutsideProject')} onChange={(e) => updateField('facilitiesOutsideProject', e.target.value)} 
+              <input
+                type="text"
+                value={data.facilitiesOutsideProject}
+                onFocus={() => setActiveField('facilitiesOutsideProject')} onChange={(e) => updateField('facilitiesOutsideProject', e.target.value)}
                 placeholder="e.g. Club House, Park"
               />
             </div>
             <div className="form-group row-2">
               <div>
                 <label>Competent Authority for Declaration</label>
-                <input 
-                  type="text" 
-                  value={data.competentAuthorityForDeclaration} 
-                  onFocus={() => setActiveField('competentAuthorityForDeclaration')} onChange={(e) => updateField('competentAuthorityForDeclaration', e.target.value)} 
+                <input
+                  type="text"
+                  value={data.competentAuthorityForDeclaration}
+                  onFocus={() => setActiveField('competentAuthorityForDeclaration')} onChange={(e) => updateField('competentAuthorityForDeclaration', e.target.value)}
                 />
               </div>
               <div>
                 <label>Relevant State Act</label>
-                <input 
-                  type="text" 
-                  value={data.relevantStateAct} 
-                  onFocus={() => setActiveField('relevantStateAct')} onChange={(e) => updateField('relevantStateAct', e.target.value)} 
+                <input
+                  type="text"
+                  value={data.relevantStateAct}
+                  onFocus={() => setActiveField('relevantStateAct')} onChange={(e) => updateField('relevantStateAct', e.target.value)}
                 />
               </div>
             </div>
@@ -1017,78 +1018,78 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             <div className="form-group row-2">
               <div>
                 <label>Early Payment Rebate (% p.a.)</label>
-                <input 
-                  type="text" 
-                  value={data.earlyPaymentRebate} 
-                  onFocus={() => setActiveField('earlyPaymentRebate')} onChange={(e) => updateField('earlyPaymentRebate', e.target.value)} 
+                <input
+                  type="text"
+                  value={data.earlyPaymentRebate}
+                  onFocus={() => setActiveField('earlyPaymentRebate')} onChange={(e) => updateField('earlyPaymentRebate', e.target.value)}
                 />
               </div>
               <div>
                 <label>Delay Interest Rate (% p.a.)</label>
-                <input 
-                  type="text" 
-                  value={data.delayInterestRate} 
-                  onFocus={() => setActiveField('delayInterestRate')} onChange={(e) => updateField('delayInterestRate', e.target.value)} 
+                <input
+                  type="text"
+                  value={data.delayInterestRate}
+                  onFocus={() => setActiveField('delayInterestRate')} onChange={(e) => updateField('delayInterestRate', e.target.value)}
                 />
               </div>
             </div>
             <div className="form-group row-2">
               <div>
                 <label>Target Possession Month</label>
-                <input 
-                  type="text" 
-                  value={data.possessionTargetMonth} 
-                  onFocus={() => setActiveField('possessionTargetMonth')} onChange={(e) => updateField('possessionTargetMonth', e.target.value)} 
+                <input
+                  type="text"
+                  value={data.possessionTargetMonth}
+                  onFocus={() => setActiveField('possessionTargetMonth')} onChange={(e) => updateField('possessionTargetMonth', e.target.value)}
                   placeholder="e.g. December 2027"
                 />
               </div>
               <div>
                 <label>Grace Period (Days)</label>
-                <input 
-                  type="number" 
-                  value={data.gracePeriodDays} 
-                  onFocus={() => setActiveField('gracePeriodDays')} onChange={(e) => updateField('gracePeriodDays', e.target.value)} 
+                <input
+                  type="number"
+                  value={data.gracePeriodDays}
+                  onFocus={() => setActiveField('gracePeriodDays')} onChange={(e) => updateField('gracePeriodDays', e.target.value)}
                 />
               </div>
             </div>
-            
+
             <h3 className="section-title" style={{ marginTop: '1rem' }}>Default Conditions</h3>
             <div className="form-group row-2">
               <div>
                 <label>Consecutive unpaid demands (Count)</label>
-                <input 
-                  type="text" 
-                  value={data.defaultConsecutiveDemands} 
-                  onFocus={() => setActiveField('defaultConsecutiveDemands')} onChange={(e) => updateField('defaultConsecutiveDemands', e.target.value)} 
+                <input
+                  type="text"
+                  value={data.defaultConsecutiveDemands}
+                  onFocus={() => setActiveField('defaultConsecutiveDemands')} onChange={(e) => updateField('defaultConsecutiveDemands', e.target.value)}
                   placeholder="e.g. three"
                 />
               </div>
               <div>
                 <label>Consecutive unpaid months (Count)</label>
-                <input 
-                  type="text" 
-                  value={data.defaultConsecutiveMonths} 
-                  onFocus={() => setActiveField('defaultConsecutiveMonths')} onChange={(e) => updateField('defaultConsecutiveMonths', e.target.value)} 
+                <input
+                  type="text"
+                  value={data.defaultConsecutiveMonths}
+                  onFocus={() => setActiveField('defaultConsecutiveMonths')} onChange={(e) => updateField('defaultConsecutiveMonths', e.target.value)}
                   placeholder="e.g. three"
                 />
               </div>
             </div>
-            
+
             <h3 className="section-title" style={{ marginTop: '1rem' }}>Additional Terms</h3>
             <div className="form-group">
               <label>Laws Prescribing Norms (Clause 6)</label>
-              <input 
-                type="text" 
-                value={data.prescribedByLaws} 
-                onFocus={() => setActiveField('prescribedByLaws')} onChange={(e) => updateField('prescribedByLaws', e.target.value)} 
+              <input
+                type="text"
+                value={data.prescribedByLaws}
+                onFocus={() => setActiveField('prescribedByLaws')} onChange={(e) => updateField('prescribedByLaws', e.target.value)}
                 placeholder="e.g. State Government"
               />
             </div>
             <div className="form-group" style={{ marginTop: '0.5rem' }}>
               <label>Other Terms & Conditions (Optional)</label>
-              <textarea 
-                value={data.additionalTerms} 
-                onFocus={() => setActiveField('additionalTerms')} onChange={(e) => updateField('additionalTerms', e.target.value)} 
+              <textarea
+                value={data.additionalTerms}
+                onFocus={() => setActiveField('additionalTerms')} onChange={(e) => updateField('additionalTerms', e.target.value)}
                 rows={4}
                 placeholder="(Please insert any other terms and conditions as per the contractual understanding between the parties...)"
               />
@@ -1100,7 +1101,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
         {activeStep === 7 && (
           <div className="form-section">
             <h3 className="section-title">Witnesses Details</h3>
-            
+
             <div className="list-container" style={{ padding: '0.5rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
                 <label>Witness List</label>
@@ -1139,9 +1140,9 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
       </div>
 
       <div className="form-footer">
-        <button 
-          className="btn-secondary" 
-          onClick={handleBack} 
+        <button
+          className="btn-secondary"
+          onClick={handleBack}
           disabled={activeStep === steps[0].id}
           style={{ opacity: activeStep === steps[0].id ? 0.4 : 1 }}
         >
@@ -1150,15 +1151,15 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
 
         <button className="btn-primary" onClick={onSave} disabled={isSaving} style={{ opacity: isSaving ? 0.7 : 1 }}>
           {
-          isSaving ? ( <><RefreshCw size={16} /> Saving...</>) : isSaved ? (
-            <> Saved</> ) : (
-            <> Save Agreement</>
-          )}
+            isSaving ? (<><RefreshCw size={16} /> Saving...</>) : isSaved ? (
+              <> Saved</>) : (
+              <> Save Agreement</>
+            )}
         </button>
 
-        <button 
-          className="btn-secondary" 
-          onClick={handleNext} 
+        <button
+          className="btn-secondary"
+          onClick={handleNext}
           disabled={activeStep === steps[steps.length - 1].id}
           style={{ opacity: activeStep === steps[steps.length - 1].id ? 0.4 : 1 }}
         >

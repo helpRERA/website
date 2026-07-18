@@ -191,7 +191,7 @@ input[type='range']:active::-webkit-slider-thumb {
   .parallax {
     /* The image used */
     background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-      url('/imge/homebar_background.jpg');
+      url('../../public/imge/homebar_background.jpg');
 
     /* Full height */
     height: 100%;
@@ -204,11 +204,11 @@ input[type='range']:active::-webkit-slider-thumb {
   }
 
   .login_background {
-    background-image: url('/imge/bg2.jpeg');
+    background-image: url('../../public/imge/bg2.jpeg');
   }
 
   .dreg_background {
-    background-image: url('/imge/DeregisteredBackground.png');
+    background-image: url('../../public/imge/DeregisteredBackground.png');
   }
 
   .standard-label {
@@ -248,7 +248,7 @@ input[type='range']:active::-webkit-slider-thumb {
   }
 
   .login-background {
-    background: url('/login_background.jpg');
+    background: url('../../public/login_background.jpg');
   }
 
   .spinner_svg {
@@ -402,13 +402,13 @@ input[type='range']:active::-webkit-slider-thumb {
 
   @font-face {
     font-family: 'GeneralSans';
-    src: url('/fonts/GeneralSans-Regular.woff2');
+    src: url('../../public/fonts/GeneralSans-Regular.woff2');
     font-style: normal;
     font-weight: 400;
   }
   @font-face {
     font-family: 'malayalam';
-    src: url('/fonts/malayalam.woff2');
+    src: url('../../public/fonts/malayalam.woff2');
     font-style: normal;
     font-weight: 400;
   }
