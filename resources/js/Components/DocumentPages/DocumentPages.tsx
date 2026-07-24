@@ -10,13 +10,14 @@ interface SpanValProps {
 
 const SpanVal: React.FC<SpanValProps> = ({ val, fallback = '', fieldKey }) => {
   const displayVal = val && val.trim() !== '' ? val : fallback;
-  const isEmpty = !val || val.trim() === '';
+  const isTrulyEmpty = !displayVal || displayVal.trim() === '';
+  const isEmpty = (!val || val.trim() === '') && !fallback.includes('______');
   return (
     <span
-      className={`placeholder-field ${isEmpty ? 'empty' : ''}`}
+      className={`placeholder-field ${isEmpty ? 'empty' : ''} ${isTrulyEmpty ? 'truly-empty' : ''}`}
       data-field={fieldKey}
     >
-      {displayVal}
+      {isTrulyEmpty ? '\u00A0' : displayVal}
     </span>
   );
 };
@@ -208,12 +209,12 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           {projectType === 'apartment' ? (
             <div className="indent-1">
-              G. The Allottee had applied for an apartment in the Project vide application No. <SpanVal val={applicationNo} fieldKey="applicationNo" /> dated <SpanVal val={applicationDate} fieldKey="applicationDate" /> and has been allotted apartment No. <SpanVal val={unitNo} fieldKey="unitNo" /> having carpet area of <SpanVal val={unitCarpetArea} fieldKey="unitCarpetArea" /> square feet, type <SpanVal val={apartmentType} fieldKey="apartmentType" /> on <SpanVal val={unitFloor} fieldKey="unitFloor" /> floor in <SpanVal val={unitTower} fieldKey="unitTower" /> ("Building") along with garage/closed parking No. <SpanVal val={garageDetails[0]?.no || ''} fieldKey="garageDetails" /> admeasuring <SpanVal val={garageDetails[0]?.area || ''} fieldKey="garageDetails" /> square feet in the <SpanVal val={projectName} fieldKey="projectName" /> as permissible under the applicable law and of <i>pro rata</i> share in the common areas ("Common Areas") as defined under clause (n) of Section 2 of the Act (hereinafter referred to as the "Apartment" more particularly described in Schedule A and the floor plan of the apartment is annexed hereto and marked as Schedule B);
+              G. The Allottee had applied for an apartment in the Project vide application No. <SpanVal val={applicationNo} fieldKey="applicationNo" /> dated <SpanVal val={applicationDate} fieldKey="applicationDate" /> and has been allotted apartment No. <SpanVal val={unitNo} fieldKey="unitNo" /> having carpet area of <SpanVal val={unitCarpetArea} fieldKey="unitCarpetArea" /> square feet, type <SpanVal val={apartmentType} fieldKey="apartmentType" /> on <SpanVal val={unitFloor} fieldKey="unitFloor" /> floor in <SpanVal val={unitTower} fieldKey="unitTower" /> ("Building") along with garage/closed parking No. <SpanVal val={garageDetails[0]?.no || ''} fieldKey="garageNo" /> admeasuring <SpanVal val={garageDetails[0]?.area || ''} fieldKey="garageArea" /> square feet in the <SpanVal val={projectName} fieldKey="projectName" /> as permissible under the applicable law and of <i>pro rata</i> share in the common areas ("Common Areas") as defined under clause (n) of Section 2 of the Act (hereinafter referred to as the "Apartment" more particularly described in Schedule A and the floor plan of the apartment is annexed hereto and marked as Schedule B);
             </div>
           ) : (
             <div style={{ border: '1.5px dashed var(--accent-gold)', padding: '0.5rem', borderRadius: '4px', marginBottom: '0.75rem' }}>
               <div className="indent-1" style={{ marginBottom: 0 }}>
-                G. The Allottee had applied for a plot in the Project vide application No. <SpanVal val={applicationNo} fieldKey="applicationNo" /> dated <SpanVal val={applicationDate} fieldKey="applicationDate" /> and has been allotted plot No. <SpanVal val={plotNo} fieldKey="plotNo" /> having area of <SpanVal val={plotArea} fieldKey="plotArea" /> square feet and plot for garage/closed parking admeasuring <SpanVal val={garageDetails[0]?.area || '0'} fallback="__________" fieldKey="garageDetails" /> square feet (if applicable) in the <SpanVal val={projectName} fieldKey="projectName" />, as permissible under the applicable law and of <i>pro rata</i> share in the common areas (hereinafter referred to as the "Plot" more particularly described in Schedule A);
+                G. The Allottee had applied for a plot in the Project vide application No. <SpanVal val={applicationNo} fieldKey="applicationNo" /> dated <SpanVal val={applicationDate} fieldKey="applicationDate" /> and has been allotted plot No. <SpanVal val={plotNo} fieldKey="plotNo" /> having area of <SpanVal val={plotArea} fieldKey="plotArea" /> square feet and plot for garage/closed parking admeasuring <SpanVal val={garageDetails[0]?.area || '0'} fallback="" fieldKey="garageArea" /> square feet (if applicable) in the <SpanVal val={projectName} fieldKey="projectName" />, as permissible under the applicable law and of <i>pro rata</i> share in the common areas (hereinafter referred to as the "Plot" more particularly described in Schedule A);
               </div>
             </div>
           )}
@@ -265,7 +266,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
               </tr>
               {/* Dynamic breakdown inside the same table */}
               {priceBreakdown.map((row) => (
-                <tr key={row.id}>
+                <tr key={row.id} data-field="priceBreakdown">
                   <td>{row.description || 'Description'}</td>
                   <td style={{ textAlign: 'center' }}>Rs. {row.amount || '0'}</td>
                 </tr>
@@ -273,8 +274,8 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
               {/* Empty rows to match official format if no breakdown is provided */}
               {priceBreakdown.length === 0 && (
                 <>
-                  <tr><td style={{ height: '24px' }}></td><td></td></tr>
-                  <tr><td style={{ height: '24px' }}></td><td></td></tr>
+                  <tr data-field="priceBreakdown"><td style={{ height: '24px' }}></td><td></td></tr>
+                  <tr data-field="priceBreakdown"><td style={{ height: '24px' }}></td><td></td></tr>
                 </>
               )}
             </tbody>
@@ -291,23 +292,23 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
               <tbody>
                 {garageDetails.length > 0 ? (
                   garageDetails.map((g, idx) => (
-                    <tr key={g.id}>
+                    <tr key={g.id} data-field="garagePrice">
                       <td style={{ textAlign: 'center' }}>Garage/Closed parking - {idx + 1}</td>
-                      <td style={{ textAlign: 'center' }}>Price for {idx + 1}: Rs. <SpanVal val={g.price || '0'} fieldKey="garageDetails" /></td>
+                      <td style={{ textAlign: 'center' }}>Price for {idx + 1}: Rs. <SpanVal val={g.price || '0'} fieldKey="garagePrice" /></td>
                     </tr>
                   ))
                 ) : (
                   <>
-                    <tr>
+                    <tr data-field="garagePrice">
                       <td style={{ textAlign: 'center' }}>Garage/Closed parking - 1</td>
                       <td style={{ textAlign: 'center' }}>Price for 1</td>
                     </tr>
-                    <tr>
+                    <tr data-field="garagePrice">
                       <td style={{ textAlign: 'center' }}>Garage/Closed parking - 2</td>
                       <td style={{ textAlign: 'center' }}>Price for 2</td>
                     </tr>
-                    <tr><td style={{ height: '24px' }}></td><td></td></tr>
-                    <tr><td style={{ height: '24px' }}></td><td></td></tr>
+                    <tr data-field="garagePrice"><td style={{ height: '24px' }}></td><td></td></tr>
+                    <tr data-field="garagePrice"><td style={{ height: '24px' }}></td><td></td></tr>
                   </>
                 )}
               </tbody>
@@ -330,7 +331,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
                 </tr>
                 {/* Dynamic breakdown inside the same table */}
                 {priceBreakdown.map((row) => (
-                  <tr key={row.id}>
+                  <tr key={row.id} data-field="priceBreakdown">
                     <td>{row.description || 'Description'}</td>
                     <td style={{ textAlign: 'center' }}>Rs. {row.amount || '0'}</td>
                   </tr>
@@ -338,8 +339,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
                 {/* Empty rows to match official format if no breakdown is provided */}
                 {priceBreakdown.length === 0 && (
                   <>
-                    <tr><td style={{ height: '24px' }}></td><td></td></tr>
-
+                    <tr data-field="priceBreakdown"><td style={{ height: '24px' }}></td><td></td></tr>
                   </>
                 )}
               </tbody>
@@ -401,7 +401,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           </div>
 
           <div className="indent-1" style={{ marginTop: '1.5rem', textAlign: 'left' }}>
-            1.10 It is understood by the Allottee that all other areas and i.e. areas and facilities falling outside the Project, namely <SpanVal val={facilitiesOutsideProject} fallback=".............................................." fieldKey="facilitiesOutsideProject" /> shall not form a part of the declaration to be filed with <SpanVal val={competentAuthorityForDeclaration} fallback="..........................................(Please insert the name of the concerned competent authority)" fieldKey="competentAuthorityForDeclaration" /> to be filed in accordance with the <SpanVal val={relevantStateAct} fallback="............................................................(Please insert the name of the relevant State act, if any)" fieldKey="relevantStateAct" />.
+            1.10 It is understood by the Allottee that all other areas and i.e. areas and facilities falling outside the Project, namely <SpanVal val={facilitiesOutsideProject} fallback="" fieldKey="facilitiesOutsideProject" /> shall not form a part of the declaration to be filed with <SpanVal val={competentAuthorityForDeclaration} fallback="(Please insert the name of the concerned competent authority)" fieldKey="competentAuthorityForDeclaration" /> to be filed in accordance with the <SpanVal val={relevantStateAct} fallback="(Please insert the name of the relevant State act, if any)" fieldKey="relevantStateAct" />.
           </div>
 
           <div className="indent-1" style={{ marginTop: '1.5rem' }}>
@@ -550,10 +550,10 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           <div className="indent-1" style={{ marginTop: '1rem' }}>
             9.3 The Allottee shall be considered under a condition of Default, on the occurrence of the following events:
             <div className="indent-2" style={{ marginTop: '0.25rem' }}>
-              (i) In case the Allottee fails to make payments for <SpanVal val={defaultConsecutiveDemands} fallback="three" fieldKey="defaultConsecutiveDemands" /> consecutive demands made by the Promoter as per the Payment Plan annexed hereto, despite having been issued notice in that regard the allottee shall be liable to pay interest to the promoter on the unpaid amount at the rate of <SpanVal val={delayInterestRate} fieldKey="delayInterestRate" />% p.a..
+              (i) In case the Allottee fails to make payments for <SpanVal val={defaultConsecutiveDemands} fieldKey="defaultConsecutiveDemands" /> consecutive demands made by the Promoter as per the Payment Plan annexed hereto, despite having been issued notice in that regard the allottee shall be liable to pay interest to the promoter on the unpaid amount at the rate of <SpanVal val={delayInterestRate} fieldKey="delayInterestRate" />% p.a..
             </div>
             <div className="indent-2">
-              (ii) In case of Default by Allottee under the condition listed above continues for a period beyond <SpanVal val={defaultConsecutiveMonths} fallback="three" fieldKey="defaultConsecutiveMonths" /> consecutive months after notice from the Promoter in this regard, the Promoter shall cancel the allotment of the (Apartment/Plot) in favour of the Allottee and refund the amount money paid by him to the allottee by deducting the booking amount and the interest liabilities and this Agreement shall thereupon stand terminated.
+              (ii) In case of Default by Allottee under the condition listed above continues for a period beyond <SpanVal val={defaultConsecutiveMonths} fieldKey="defaultConsecutiveMonths" /> consecutive months after notice from the Promoter in this regard, the Promoter shall cancel the allotment of the (Apartment/Plot) in favour of the Allottee and refund the amount money paid by him to the allottee by deducting the booking amount and the interest liabilities and this Agreement shall thereupon stand terminated.
             </div>
           </div>
 
@@ -730,14 +730,14 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
               <div className="signature-row" style={{ marginTop: '2.5rem' }}>
                 (1) Signature: __________________
                 <br />
-                Name: <SpanVal val={allotteeType === 'individual' ? allotteeIndividual.name : allotteeType === 'company' ? allotteeCompany.name : allotteeType === 'partnership' ? allotteePartnership.name : allotteeHuf.kartaName} />
+                Name: <SpanVal val={allotteeType === 'individual' ? allotteeIndividual.name : allotteeType === 'company' ? allotteeCompany.name : allotteeType === 'partnership' ? allotteePartnership.name : allotteeHuf.kartaName} fallback="__________________" />
               </div>
 
               {jointAllottees.map((ja, idx) => (
                 <div className="signature-row" style={{ marginTop: '1.5rem' }} key={ja.id}>
                   ({idx + 2}) Signature: __________________
                   <br />
-                  Name: <SpanVal val={ja.name} fieldKey="jointAllottees" />
+                  Name: <SpanVal val={ja.name} fieldKey="jointAllottees" fallback="__________________" />
                 </div>
               ))}
 
@@ -755,9 +755,9 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
               <div className="signature-row" style={{ marginTop: '2.5rem' }}>
                 Signature: __________________
                 <br />
-                Name: <SpanVal val={promoterType === 'company' ? promoterCompany.authorizedSignatory : promoterType === 'partnership' ? promoterPartnership.authorizedPartner : promoterIndividual.name} />
+                Name: <SpanVal val={promoterType === 'company' ? promoterCompany.authorizedSignatory : promoterType === 'partnership' ? promoterPartnership.authorizedPartner : promoterIndividual.name} fallback="__________________" />
                 <br />
-                Designation: <SpanVal val={promoterType === 'company' ? 'Authorized Signatory' : promoterType === 'partnership' ? 'Authorized Partner' : 'Individual'} />
+                Designation: <SpanVal val={promoterType === 'company' ? 'Authorized Signatory' : promoterType === 'partnership' ? 'Authorized Partner' : 'Individual'} fallback="__________________" />
               </div>
             </div>
           </div>
@@ -769,9 +769,9 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
                 <div key={w.id || idx} style={{ fontSize: '9.5pt' }}>
                   <b>{idx + 1}. Signature:</b> ___________________
                   <br />
-                  <b>Name:</b> <SpanVal val={w.name} fieldKey="witnesses" />
+                  <b>Name:</b> <SpanVal val={w.name} fieldKey="witnesses" fallback="__________________" />
                   <br />
-                  <b>Address:</b> <SpanVal val={w.address} fieldKey="witnesses" />
+                  <b>Address:</b> <SpanVal val={w.address} fieldKey="witnesses" fallback="__________________" />
                 </div>
               ))}
               {witnesses.length === 0 && (

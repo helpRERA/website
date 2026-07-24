@@ -413,7 +413,7 @@ input[type='range']:active::-webkit-slider-thumb {
     font-weight: 400;
   }
   body {
-    font-family: 'GeneralSans', 'malayalam';
+    font-family: 'GeneralSans', 'malayalam', 'Inter', sans-serif;
   }
 
   body {

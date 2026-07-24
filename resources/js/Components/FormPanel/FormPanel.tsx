@@ -10,13 +10,14 @@ interface FormPanelProps {
   updateField: (field: keyof AgreementData, value: any) => void;
   updateNestedField: (parentField: keyof AgreementData, field: string, value: any) => void;
   resetData: () => void;
+  resetFields?: (fields: (keyof AgreementData)[]) => void;
   setActiveField: (field: string | null) => void;
   onSave: () => Promise<void>;
   isSaving: boolean;
   isSaved: boolean;
 }
 
-export default function FormPanel({ activeStep, setActiveStep, data, updateField, updateNestedField, resetData, setActiveField, onSave, isSaving, isSaved }: FormPanelProps) {
+export default function FormPanel({ activeStep, setActiveStep, data, updateField, updateNestedField, resetData, resetFields, setActiveField, onSave, isSaving, isSaved }: FormPanelProps) {
   const steps = [
     { id: 0, label: 'Execution' },
     { id: 1, label: 'Promoter' },
@@ -38,6 +39,26 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
     const currentIndex = steps.findIndex(s => s.id === activeStep);
     if (currentIndex > 0) {
       setActiveStep(steps[currentIndex - 1].id);
+    }
+  };
+
+  const stepFieldsMap: Record<number, (keyof AgreementData)[]> = {
+    0: ['dateDay', 'dateMonth', 'dateYear', 'executionPlace'],
+    1: ['promoterType', 'promoterCompany', 'promoterPartnership', 'promoterIndividual'],
+    2: ['allotteeType', 'allotteeCompany', 'allotteePartnership', 'allotteeIndividual', 'allotteeHuf', 'jointAllottees'],
+    3: ['landSurveyNos', 'landAdmeasuring', 'landSituatedAt', 'landTehsilDistrict', 'landTitleDeedDate', 'landTitleDeedRegNo', 'landOwnershipType', 'landJDA', 'projectType', 'projectBuildingType', 'projectComprising', 'projectName', 'projectOtherComponents', 'plotOtherComponents', 'basementLocation'],
+    4: ['commencementAuthority', 'commencementNo', 'commencementDate', 'layoutAuthority', 'reraRegNo', 'reraRegDate', 'maintenanceClauses', 'facilitiesOutsideProject', 'competentAuthorityForDeclaration', 'relevantStateAct'],
+    5: ['applicationNo', 'applicationDate', 'apartmentType', 'unitNo', 'unitFloor', 'unitTower', 'unitCarpetArea', 'plotNo', 'plotArea', 'garageDetails', 'ratePerSqFt', 'totalPrice', 'totalPriceWords', 'bookingAmount', 'bookingAmountWords', 'paymentFavourOf', 'paymentPayableAt', 'priceBreakdown'],
+    6: ['earlyPaymentRebate', 'delayInterestRate', 'possessionTargetMonth', 'gracePeriodDays', 'defaultConsecutiveDemands', 'defaultConsecutiveMonths', 'prescribedByLaws', 'additionalTerms', 'additionalDisclosures', 'paymentPlan'],
+    7: ['witnesses', 'apartmentOwnershipAct']
+  };
+
+  const resetCurrentStep = () => {
+    if (window.confirm("Are you sure you want to reset all fields on this page? Your progress on this specific page will be lost.")) {
+      const fields = stepFieldsMap[activeStep] || [];
+      if (resetFields && fields.length > 0) {
+        resetFields(fields);
+      }
     }
   };
 
@@ -854,15 +875,15 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                       <div className="form-group row-3" style={{ flex: 1, gap: '0.4rem' }}>
                         <div>
                           <label style={{ fontSize: '0.7rem' }}>Slot No</label>
-                          <input style={{ padding: '0.35rem' }} type="text" value={g.no} onFocus={() => setActiveField('garageDetails')} onChange={(e) => updateGarage(g.id, 'no', e.target.value)} />
+                          <input style={{ padding: '0.35rem' }} type="text" value={g.no} onFocus={() => setActiveField('garageNo')} onChange={(e) => updateGarage(g.id, 'no', e.target.value)} />
                         </div>
                         <div>
                           <label style={{ fontSize: '0.7rem' }}>Area (Sq Ft)</label>
-                          <input style={{ padding: '0.35rem' }} type="text" value={g.area} onFocus={() => setActiveField('garageDetails')} onChange={(e) => updateGarage(g.id, 'area', e.target.value)} />
+                          <input style={{ padding: '0.35rem' }} type="text" value={g.area} onFocus={() => setActiveField('garageArea')} onChange={(e) => updateGarage(g.id, 'area', e.target.value)} />
                         </div>
                         <div>
                           <label style={{ fontSize: '0.7rem' }}>Price (Rs)</label>
-                          <input style={{ padding: '0.35rem' }} type="text" value={g.price} onFocus={() => setActiveField('garageDetails')} onChange={(e) => updateGarage(g.id, 'price', e.target.value)} />
+                          <input style={{ padding: '0.35rem' }} type="text" value={g.price} onFocus={() => setActiveField('garagePrice')} onChange={(e) => updateGarage(g.id, 'price', e.target.value)} />
                         </div>
                       </div>
                       <button className="btn-danger" onClick={() => removeGarage(g.id)} style={{ padding: '0.4rem' }}>
@@ -1130,11 +1151,6 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               ))}
             </div>
 
-            <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'center' }}>
-              <button className="btn-secondary" onClick={resetData} style={{ borderColor: '#ef4444', color: '#ef4444', backgroundColor: 'transparent' }}>
-                Reset All Fields to Default
-              </button>
-            </div>
           </div>
         )}
       </div>
@@ -1149,13 +1165,23 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
           <ChevronLeft size={16} /> Back
         </button>
 
-        <button className="btn-primary" onClick={onSave} disabled={isSaving} style={{ opacity: isSaving ? 0.7 : 1 }}>
-          {
-            isSaving ? (<><RefreshCw size={16} /> Saving...</>) : isSaved ? (
-              <> Saved</>) : (
-              <> Save Agreement</>
-            )}
-        </button>
+        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+          <button 
+            className="btn-secondary" 
+            onClick={resetCurrentStep} 
+            style={{ borderColor: '#ef4444', color: '#ef4444', backgroundColor: 'transparent' }}
+          >
+            Reset Page
+          </button>
+
+          <button className="btn-primary" onClick={onSave} disabled={isSaving} style={{ opacity: isSaving ? 0.7 : 1 }}>
+            {
+              isSaving ? (<><RefreshCw size={16} /> Saving...</>) : isSaved ? (
+                <> Saved</>) : (
+                <> Save Agreement</>
+              )}
+          </button>
+        </div>
 
         <button
           className="btn-secondary"
