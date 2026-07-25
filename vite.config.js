@@ -3,7 +3,7 @@ import laravel from 'laravel-vite-plugin';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
-    base: 'https://rera.mycad.in/',
+    base: 'https://rera.mycad.in/build/',
     plugins: [
         laravel({
             input: 'resources/js/app.jsx',
