@@ -74,6 +74,8 @@ Route::get('/export-projects', [ProjectListController::class, 'exportExcel']);
 //agreement-for-sale
 
 Route::get('agreement-for-sale', [AgreementForSaleController::class, 'index']);
+Route::post('agreements', [AgreementForSaleController::class, 'store']);
+Route::put('agreements/{id}', [AgreementForSaleController::class, 'update']);
 
 //global-search
 Route::get('/search', [GlobalSearchController::class, 'index']);

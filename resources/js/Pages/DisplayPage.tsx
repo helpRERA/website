@@ -1,7 +1,11 @@
 import React, { lazy, useEffect, useMemo, useState } from 'react'
 
+const componentMap: Record<string, React.LazyExoticComponent<any>> = {
+  'DeregistedProjects': lazy(() => import('./DeregistedProjects.tsx'))
+}
+
 const importView = (subreddit: string) => {
-  return lazy(() => import(`./${subreddit}`))
+  return componentMap[subreddit] || lazy(() => import('./Error.tsx'))
 }
 
 const subredditsToShow = ['DeregistedProjects']

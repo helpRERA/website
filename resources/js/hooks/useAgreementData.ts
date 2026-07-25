@@ -6,6 +6,7 @@ export interface PromoterCompany {
   name: string;
   cin: string;
   registeredOffice: string;
+  corporateOffice: string;
   pan: string;
   authorizedSignatory: string;
   signatoryAadhaar: string;
@@ -86,6 +87,7 @@ export interface LandJDA {
   jdaDate: string;
   regNo: string;
   subRegistrarOffice: string;
+  additionalDetails: string;
 }
 
 export interface GarageDetail {
@@ -144,6 +146,8 @@ export interface AgreementData {
   landAdmeasuring: string;
   landSituatedAt: string;
   landTehsilDistrict: string;
+  landTitleDeedDate: string;
+  landTitleDeedRegNo: string;
   landOwnershipType: 'owner' | 'developer';
   landJDA: LandJDA;
   projectType: 'apartment' | 'plotted';
@@ -152,6 +156,7 @@ export interface AgreementData {
   projectName: string;
   projectOtherComponents: string;
   plotOtherComponents: string;
+  basementLocation: string;
 
   // Approvals
   commencementAuthority: string;
@@ -160,8 +165,15 @@ export interface AgreementData {
   layoutAuthority: string;
   reraRegNo: string;
   reraRegDate: string;
+  maintenanceClauses: string;
+  facilitiesOutsideProject: string;
+  competentAuthorityForDeclaration: string;
+  relevantStateAct: string;
 
   // Unit and Pricing Details
+  applicationNo: string;
+  applicationDate: string;
+  apartmentType: string;
   unitNo: string;
   unitFloor: string;
   unitTower: string;
@@ -173,6 +185,10 @@ export interface AgreementData {
   ratePerSqFt: string;
   totalPrice: string;
   totalPriceWords: string;
+  bookingAmount: string;
+  bookingAmountWords: string;
+  paymentFavourOf: string;
+  paymentPayableAt: string;
   priceBreakdown: PriceBreakdownItem[];
 
   // Payment Plan (Schedule C)
@@ -183,7 +199,11 @@ export interface AgreementData {
   delayInterestRate: string;
   possessionTargetMonth: string;
   gracePeriodDays: string;
-  relevantStateAct: string;
+  defaultConsecutiveDemands: string;
+  defaultConsecutiveMonths: string;
+  prescribedByLaws: string;
+  additionalDisclosures: string;
+  additionalTerms: string;
   apartmentOwnershipAct: string;
 
   // Signatures & Witnesses
@@ -193,126 +213,146 @@ export interface AgreementData {
 // ─── Initial Data ─────────────────────────────────────────────────────────────
 
 const initialData: AgreementData = {
-  dateDay: 'XXXX',
-  dateMonth: 'XXXX',
-  dateYear: 'XXXX',
-  executionPlace: 'XXXX',
+  dateDay: '',
+  dateMonth: '',
+  dateYear: '',
+  executionPlace: '',
 
   promoterType: 'company',
   promoterCompany: {
-    name: 'XXXX',
-    cin: 'XXXX',
-    registeredOffice: 'XXXX',
-    pan: 'XXXX',
-    authorizedSignatory: 'XXXX',
-    signatoryAadhaar: 'XXXX',
-    boardResolutionDate: 'XX/XX/XXXX',
+    name: '',
+    cin: '',
+    registeredOffice: '',
+    corporateOffice: '',
+    pan: '',
+    authorizedSignatory: '',
+    signatoryAadhaar: '',
+    boardResolutionDate: '',
   },
   promoterPartnership: {
-    name: 'XXXX',
-    businessPlace: 'XXXX',
-    pan: 'XXXX',
-    authorizedPartner: 'XXXX',
-    partnerAadhaar: 'XXXX',
-    authorizedVide: 'XXXX',
+    name: '',
+    businessPlace: '',
+    pan: '',
+    authorizedPartner: '',
+    partnerAadhaar: '',
+    authorizedVide: '',
   },
   promoterIndividual: {
-    name: 'XXXX',
-    aadhaar: 'XXXX',
-    parentName: 'XXXX',
+    name: '',
+    aadhaar: '',
+    parentName: '',
     parentType: 'son',
-    age: 'XXXX',
-    residing: 'XXXX',
-    pan: 'XXXX',
+    age: '',
+    residing: '',
+    pan: '',
   },
 
   allotteeType: 'individual',
   allotteeCompany: {
-    name: 'XXXX',
-    cin: 'XXXX',
-    registeredOffice: 'XXXX',
-    pan: 'XXXX',
-    authorizedSignatory: 'XXXX',
-    signatoryAadhaar: 'XXXX',
-    boardResolutionDate: 'XX/XX/XXXX',
+    name: '',
+    cin: '',
+    registeredOffice: '',
+    pan: '',
+    authorizedSignatory: '',
+    signatoryAadhaar: '',
+    boardResolutionDate: '',
   },
   allotteePartnership: {
-    name: 'XXXX',
-    businessPlace: 'XXXX',
-    pan: 'XXXX',
-    authorizedPartner: 'XXXX',
-    partnerAadhaar: 'XXXX',
-    authorizedVide: 'XXXX',
+    name: '',
+    businessPlace: '',
+    pan: '',
+    authorizedPartner: '',
+    partnerAadhaar: '',
+    authorizedVide: '',
   },
   allotteeIndividual: {
-    name: 'XXXX',
-    aadhaar: 'XXXX',
-    parentName: 'XXXX',
+    name: '',
+    aadhaar: '',
+    parentName: '',
     parentType: 'son',
-    age: 'XXXX',
-    residing: 'XXXX',
-    pan: 'XXXX',
+    age: '',
+    residing: '',
+    pan: '',
   },
   allotteeHuf: {
-    kartaName: 'XXXX',
-    kartaAadhaar: 'XXXX',
-    parentName: 'XXXX',
-    age: 'XX',
-    familyName: 'XXXX',
-    place: 'XXXX',
-    pan: 'XXXX',
+    kartaName: '',
+    kartaAadhaar: '',
+    parentName: '',
+    age: '',
+    familyName: '',
+    place: '',
+    pan: '',
   },
 
   jointAllottees: [],
 
-  landSurveyNos: 'XXXX',
-  landAdmeasuring: 'XXXX',
-  landSituatedAt: 'XXXX',
-  landTehsilDistrict: 'XXXX',
+  landSurveyNos: '',
+  landAdmeasuring: '',
+  landSituatedAt: '',
+  landTehsilDistrict: '',
+  landTitleDeedDate: '',
+  landTitleDeedRegNo: '',
   landOwnershipType: 'owner',
   landJDA: {
-    ownerName: 'XXXX',
-    jdaDate: 'XX/XX/XXXX',
-    regNo: 'XXXX',
-    subRegistrarOffice: 'XXXX',
+    ownerName: '',
+    jdaDate: '',
+    regNo: '',
+    subRegistrarOffice: '',
+    additionalDetails: '',
   },
   projectType: 'apartment',
   projectBuildingType: 'residential',
-  projectComprising: 'XXXX',
-  projectName: 'XXXX',
-  projectOtherComponents: 'XXXX',
-  plotOtherComponents: 'XXXX',
+  projectComprising: '',
+  projectName: '',
+  projectOtherComponents: '',
+  plotOtherComponents: '',
+  basementLocation: '',
 
-  commencementAuthority: 'XXXX',
-  commencementNo: 'XXXX',
-  commencementDate: 'XX/XX/XXXX',
-  layoutAuthority: 'XXXX',
-  reraRegNo: 'XXXX',
-  reraRegDate: 'XX/XX/XXXX',
+  commencementAuthority: '',
+  commencementNo: '',
+  commencementDate: '',
+  layoutAuthority: '',
+  reraRegNo: '',
+  reraRegDate: '',
+  maintenanceClauses: '',
+  facilitiesOutsideProject: '',
+  competentAuthorityForDeclaration: '',
+  relevantStateAct: '',
 
-  unitNo: 'XXXX',
-  unitFloor: 'XXXX',
-  unitTower: 'XXXX',
-  unitCarpetArea: 'XXXX',
+  applicationNo: '',
+  applicationDate: '',
+  apartmentType: '',
+  unitNo: '',
+  unitFloor: '',
+  unitTower: '',
+  unitCarpetArea: '',
   garageDetails: [],
-  plotNo: 'XXXX',
-  plotArea: 'XXXX',
+  plotNo: '',
+  plotArea: '',
 
-  ratePerSqFt: 'XXXX',
-  totalPrice: 'XXXX',
-  totalPriceWords: 'XXXX',
+  ratePerSqFt: '',
+  totalPrice: '',
+  totalPriceWords: '',
+  bookingAmount: '',
+  bookingAmountWords: '',
+  paymentFavourOf: '',
+  paymentPayableAt: '',
   priceBreakdown: [],
 
   paymentPlan: [],
 
-  earlyPaymentRebate: 'XX',
-  delayInterestRate: 'XXX',
-  possessionTargetMonth: 'XX',
-  gracePeriodDays: 'XX',
-  relevantStateAct: 'XXXX',
-  apartmentOwnershipAct: 'XXXX',
+  earlyPaymentRebate: '',
+  delayInterestRate: '',
+  possessionTargetMonth: '',
+  gracePeriodDays: '',
+  defaultConsecutiveDemands: '',
+  defaultConsecutiveMonths: '',
+  prescribedByLaws: '',
+  additionalDisclosures: '',
+  additionalTerms: '',
+  apartmentOwnershipAct: '',
 
-  witnesses: [], 
+  witnesses: [],
 };
 
 // ─── Hook ─────────────────────────────────────────────────────────────────────
