@@ -77,6 +77,9 @@ Route::get('agreement-for-sale', [AgreementForSaleController::class, 'index']);
 Route::post('agreements', [AgreementForSaleController::class, 'store']);
 Route::put('agreements/{id}', [AgreementForSaleController::class, 'update']);
 
+Route::post('agreements', [AgreementForSaleController::class, 'store']);
+Route::post('/schedules/upload', [AgreementForSaleController::class, 'uploadSchedule']);
+
 //global-search
 Route::get('/search', [GlobalSearchController::class, 'index']);
 

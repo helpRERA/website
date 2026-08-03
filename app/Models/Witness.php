@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Witness extends Model
 {
-    use HasFactory;
+    protected $guarded = [];
 }

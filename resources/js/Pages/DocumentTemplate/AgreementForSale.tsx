@@ -5,9 +5,11 @@ import PreviewPanel from '../../Components/PreviewPanel/PreviewPanel';
 import { useAgreementData } from '../../hooks/useAgreementData';
 import '../../index.css';
 import { Edit, FileText } from 'lucide-react';
+import { ToastContainer, toast } from 'react-toastify';
 
-class ErrorBoundary extends React.Component<{children: React.ReactNode}, {hasError: boolean, error: any, errorInfo: any}> {
-  constructor(props: {children: React.ReactNode}) {
+
+class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean, error: any, errorInfo: any }> {
+  constructor(props: { children: React.ReactNode }) {
     super(props);
     this.state = { hasError: false, error: null, errorInfo: null };
   }
@@ -40,10 +42,12 @@ function MainApp(): React.ReactElement {
   const [activeStep, setActiveStep] = useState<number>(0);
   const [activeView, setActiveView] = useState<'form' | 'preview'>('form');
   const [activeField, setActiveField] = useState<string | null>(null);
-  const { data, updateField, updateNestedField, resetData } = useAgreementData();
+  const { data, updateField, updateNestedField, resetData, resetFields } = useAgreementData();
   const [agreementId, setAgreementId] = useState<number | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  // const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  // const [saveStatus, setSaveStatus] = useState<string | null>(null);
 
 
   // Reset saved state whenever user edits any field
@@ -61,21 +65,26 @@ function MainApp(): React.ReactElement {
     setIsSaving(true);
     try {
       if (agreementId) {
-        await axios.put(`/agreements/${agreementId}`, data);
+        const response = await axios.put(`/agreements/${agreementId}`, data);
+        toast.success(response.data.message || "Agreement updated successfully", { autoClose: 3000 });
       } else {
         const response = await axios.post('/agreements', data);
-        setAgreementId(response.data.id);
+        if (response.data.success) {
+          setAgreementId(response.data.id);
+          toast.success(response.data.message || "Agreement saved successfully", { autoClose: 3000 });
+          setIsSaved(true);
+        }
       }
       setIsSaved(true);
-    } catch (err) {
-      alert('Failed to save. Please try again.');
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || "Failed to save agreement", { autoClose: 5000 });
     } finally {
       setIsSaving(false);
     }
   };
-
   return (
     <div className={`app-container view-${activeView}`}>
+      <ToastContainer position="top-center" autoClose={false} closeOnClick={false} />
       {/* Mobile View Toggle Bar */}
       <div className="view-toggle-bar">
         <button
@@ -92,18 +101,20 @@ function MainApp(): React.ReactElement {
         </button>
       </div>
 
-         <FormPanel
-          activeStep={activeStep}
-          setActiveStep={setActiveStep}
-          data={data}
-          updateField={handleUpdateField}
-          updateNestedField={handleUpdateNestedField}
-          resetData={resetData}
-          setActiveField={setActiveField}
-          onSave={handleSave}
-          isSaving={isSaving}
-          isSaved={isSaved}
-        />
+
+      <FormPanel
+        activeStep={activeStep}
+        setActiveStep={setActiveStep}
+        data={data}
+        updateField={handleUpdateField}
+        updateNestedField={handleUpdateNestedField}
+        resetData={resetData}
+        resetFields={resetFields}
+        setActiveField={setActiveField}
+        onSave={handleSave}
+        isSaving={isSaving}
+        isSaved={isSaved}
+      />
       <PreviewPanel
         data={data}
         resetData={resetData}

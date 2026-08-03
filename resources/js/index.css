@@ -918,3 +918,8 @@ input:focus, select:focus, textarea:focus {
 .pdf-export .legal-section-title {
   page-break-after: avoid !important;
 }
+
+.paper-page{
+    position:relative;
+}
+

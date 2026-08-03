@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class LandJda extends Model
 {
-    use HasFactory;
+    protected $guarded = [];
 }

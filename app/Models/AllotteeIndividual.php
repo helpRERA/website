@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class AllotteeIndividual extends Model
 {
-    use HasFactory;
+    protected $guarded = [];
 }

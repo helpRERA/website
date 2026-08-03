@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Agreement;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 
 class AgreementForSaleController extends Controller
 {
     public function index()
     {
-       
+
         return Inertia::render('DocumentTemplate/AgreementForSale', [
             'title' => 'Agreement for Sale - Document Generator',
         ]);
@@ -54,6 +57,10 @@ class AgreementForSaleController extends Controller
             'grace_period_days' => is_numeric($request->input('gracePeriodDays')) ? $request->input('gracePeriodDays') : null,
             'relevant_state_act' => $request->input('relevantStateAct'),
             'apartment_ownership_act' => $request->input('apartmentOwnershipAct'),
+            'schedule_a' => $request->input('scheduleA'),
+            'schedule_b' => $request->input('scheduleB'),
+            'schedule_c' => $request->input('scheduleC'),
+            'schedule_d' => $request->input('scheduleD'),
         ];
     }
 
@@ -61,7 +68,7 @@ class AgreementForSaleController extends Controller
     {
         $data = $this->mapData($request);
         
-        // Date mapping logic since frontend uses executionDate (e.g. YYYY-MM-DD)
+
         if ($request->filled('executionDate')) {
             $dateParts = explode('-', $request->input('executionDate'));
             if (count($dateParts) == 3) {
@@ -93,5 +100,19 @@ class AgreementForSaleController extends Controller
         $agreement->update($data);  
         
         return response()->json(['success' => true]);
+    }
+
+    public function uploadSchedule(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:pdf|max:5240', 
+        ]);
+
+        $path = $request->file('file')->store('schedules', 'public');
+
+        return response()->json([
+            'success' => true,
+            'url' => Storage::url($path),
+        ]);
     }
 }

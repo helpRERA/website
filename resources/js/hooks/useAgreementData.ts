@@ -83,7 +83,14 @@ export interface JointAllottee {
 }
 
 export interface LandJDA {
+  id: number;
   ownerName: string;
+  surveyNos: string;
+  admeasuring: string;
+  situatedAt: string;
+  tehsilDistrict: string;
+  titleDeedDate: string;
+  titleDeedRegNo: string;
   jdaDate: string;
   regNo: string;
   subRegistrarOffice: string;
@@ -95,6 +102,12 @@ export interface GarageDetail {
   no: string;
   area: string;
   price: string;
+}
+
+export interface PlotPriceItem {
+  id: number;
+  plotNoType: string;
+  ratePerSqFt: string;
 }
 
 export interface PriceBreakdownItem {
@@ -115,6 +128,13 @@ export interface Witness {
   name: string;
   address: string;
 }
+
+export interface DisclosureItem {
+  id: number;
+  text: string;
+}
+
+
 
 // ─── Main Data Type ───────────────────────────────────────────────────────────
 
@@ -149,7 +169,7 @@ export interface AgreementData {
   landTitleDeedDate: string;
   landTitleDeedRegNo: string;
   landOwnershipType: 'owner' | 'developer';
-  landJDA: LandJDA;
+  landJDA: LandJDA[];
   projectType: 'apartment' | 'plotted';
   projectBuildingType: 'residential' | 'commercial' | 'mixed';
   projectComprising: string;
@@ -179,6 +199,7 @@ export interface AgreementData {
   unitTower: string;
   unitCarpetArea: string;
   garageDetails: GarageDetail[];
+  plotPricing: PlotPriceItem[];
   plotNo: string;
   plotArea: string;
 
@@ -202,12 +223,17 @@ export interface AgreementData {
   defaultConsecutiveDemands: string;
   defaultConsecutiveMonths: string;
   prescribedByLaws: string;
-  additionalDisclosures: string;
+  additionalDisclosures: DisclosureItem[];
   additionalTerms: string;
   apartmentOwnershipAct: string;
 
   // Signatures & Witnesses
   witnesses: Witness[];
+
+  scheduleA: string;
+  scheduleB: string;
+  scheduleC: string;
+  scheduleD: string;
 }
 
 // ─── Initial Data ─────────────────────────────────────────────────────────────
@@ -293,13 +319,7 @@ const initialData: AgreementData = {
   landTitleDeedDate: '',
   landTitleDeedRegNo: '',
   landOwnershipType: 'owner',
-  landJDA: {
-    ownerName: '',
-    jdaDate: '',
-    regNo: '',
-    subRegistrarOffice: '',
-    additionalDetails: '',
-  },
+  landJDA: [],
   projectType: 'apartment',
   projectBuildingType: 'residential',
   projectComprising: '',
@@ -327,6 +347,7 @@ const initialData: AgreementData = {
   unitTower: '',
   unitCarpetArea: '',
   garageDetails: [],
+  plotPricing: [],
   plotNo: '',
   plotArea: '',
 
@@ -339,7 +360,16 @@ const initialData: AgreementData = {
   paymentPayableAt: '',
   priceBreakdown: [],
 
-  paymentPlan: [],
+  paymentPlan: [
+    { id: 1, description: 'Booking amount (paid at time of application)', percentage: '10', amount: '6,60,000' },
+    { id: 2, description: 'On execution of Agreement for Sale', percentage: '10', amount: '6,60,000' },
+    { id: 3, description: 'On completion of Foundation', percentage: '15', amount: '9,90,000' },
+    { id: 4, description: 'On completion of Plinth', percentage: '10', amount: '6,60,000' },
+    { id: 5, description: 'On completion of Slabs (proportionate per slab)', percentage: '30', amount: '19,80,000' },
+    { id: 6, description: 'On completion of Internal Plastering', percentage: '10', amount: '6,60,000' },
+    { id: 7, description: 'On completion of Flooring and Sanitary fittings', percentage: '10', amount: '6,60,000' },
+    { id: 8, description: 'On Handover of Possession', percentage: '5', amount: '3,30,000' },
+  ],
 
   earlyPaymentRebate: '',
   delayInterestRate: '',
@@ -348,11 +378,18 @@ const initialData: AgreementData = {
   defaultConsecutiveDemands: '',
   defaultConsecutiveMonths: '',
   prescribedByLaws: '',
-  additionalDisclosures: '',
+  additionalDisclosures: [],
   additionalTerms: '',
   apartmentOwnershipAct: '',
 
   witnesses: [],
+
+  scheduleA: '',
+  scheduleB: '',
+  scheduleC: '',
+  scheduleD: '',
+ 
+
 };
 
 // ─── Hook ─────────────────────────────────────────────────────────────────────
@@ -385,5 +422,15 @@ export function useAgreementData() {
     setData(initialData);
   };
 
-  return { data, updateField, updateNestedField, setData, resetData };
+  const resetFields = (fields: (keyof AgreementData)[]): void => {
+    setData((prev) => {
+      const updated = { ...prev };
+      fields.forEach((field) => {
+        updated[field] = initialData[field] as any;
+      });
+      return updated;
+    });
+  };
+
+  return { data, updateField, updateNestedField, setData, resetData, resetFields  };
 }

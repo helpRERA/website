@@ -8,10 +8,10 @@ interface PreviewPanelProps {
   data: AgreementData;
   resetData: () => void;
   activeField?: string | null;
-  isSaved: boolean;    
+  isSaved: boolean;
 }
 
-export default function PreviewPanel({ data, activeField,isSaved  }: PreviewPanelProps) {
+export default function PreviewPanel({ data, activeField, isSaved }: PreviewPanelProps) {
   const [zoom, setZoom] = useState<number>(0.85);
   const [highlightMode, setHighlightMode] = useState<boolean>(true);
   const [isExporting, setIsExporting] = useState<boolean>(false);
@@ -21,20 +21,24 @@ export default function PreviewPanel({ data, activeField,isSaved  }: PreviewPane
   const handleZoomIn = () => setZoom(prev => Math.min(prev + 0.05, 1.3));
   const handleZoomOut = () => setZoom(prev => Math.max(prev - 0.05, 0.55));
   const handlePrint = () => window.print();
-  
+
 
   const handleDownload = () => {
     setIsExporting(true);
     const unitTag = data.unitNo ? `_Apt_${data.unitNo}` : data.plotNo ? `_Plot_${data.plotNo}` : '';
     const filename = `Agreement_for_Sale${unitTag}.pdf`;
     const prevHighlight = highlightMode;
+    const prevZoom = zoom;
+
     setHighlightMode(false);
+    setZoom(1);
 
     setTimeout(() => {
-      generatePDF('preview-content', filename)
+      generatePDF('preview-content', filename, [data.scheduleA, data.scheduleB, data.scheduleC, data.scheduleD])
         .catch((err: Error) => alert('Error generating PDF: ' + err.message))
         .finally(() => {
           setHighlightMode(prevHighlight);
+          setZoom(prevZoom);
           setIsExporting(false);
         });
     }, 400);
@@ -105,28 +109,28 @@ export default function PreviewPanel({ data, activeField,isSaved  }: PreviewPane
         </div> */}
 
         {isSaved ? (
-            <button
-                className="btn-primary"
-                onClick={handleDownload}
-                disabled={isExporting}
-                style={{ opacity: isExporting ? 0.7 : 1 }}
-            >
-                {isExporting ? (
-                <><RefreshCw size={16} /> Generating...</>
-                ) : (
-                <><Download size={16} /> Download PDF</>
-                )}
-            </button>
+          <button
+            className="btn-primary"
+            onClick={handleDownload}
+            disabled={isExporting}
+            style={{ opacity: isExporting ? 0.7 : 1 }}
+          >
+            {isExporting ? (
+              <><RefreshCw size={16} /> Generating...</>
             ) : (
-            <button
-                className="btn-primary"
-                disabled
-                title="Save the agreement first"
-                style={{ opacity: 0.4, cursor: 'not-allowed' }}
-            >
-                <Download size={16} /> Download PDF
-            </button>
+              <><Download size={16} /> Download PDF</>
             )}
+          </button>
+        ) : (
+          <button
+            className="btn-primary"
+            disabled
+            title="Save the agreement first"
+            style={{ opacity: 0.4, cursor: 'not-allowed' }}
+          >
+            <Download size={16} /> Download PDF
+          </button>
+        )}
       </div>
 
       <div
