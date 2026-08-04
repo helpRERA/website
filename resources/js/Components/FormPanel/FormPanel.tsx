@@ -1399,7 +1399,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             </div>
 
 
-            <h3 className="section-title" style={{ marginTop: '1rem' }}>Clause 1.10 Details</h3>
+            <h3 className="section-title" style={{ marginTop: '1rem' }}>Terms 1.10</h3>
             <div className="form-group">
               <label>Facilities outside the Project (namely...)</label>
               <input
@@ -1411,7 +1411,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             </div>
             <div className="form-group row-2">
               <div>
-                <label>Competent Authority for Declaration</label>
+                <label>Competent Authority </label>
                 <input
                   type="text"
                   value={data.competentAuthorityForDeclaration}

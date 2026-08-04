@@ -69,11 +69,11 @@ export async function generatePDF(
       unit: 'mm' as const,
       format: 'a4' as const,
       orientation: 'portrait' as const,
-      encryption: {
-        userPassword: '',
-        ownerPassword: 'krera-secret',
-        userPermissions: []
-      }
+      // encryption: {
+      //   userPassword: '',
+      //   ownerPassword: 'krera-secret',
+      //   userPermissions: []
+      // }
     },
     pagebreak: {
       mode: ['css', 'legacy'],
