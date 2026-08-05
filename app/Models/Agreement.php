@@ -41,7 +41,14 @@ class Agreement extends Model
     {
         return $this->hasMany(PriceBreakdown::class);
     }
-
-    
+    public function plotPricings()
+    {
+        return $this->hasMany(PlotPricing::class);
+    }
+    public function witnesses()
+    {
+        return $this->hasMany(Witness::class);
+    }
+        
 }
  

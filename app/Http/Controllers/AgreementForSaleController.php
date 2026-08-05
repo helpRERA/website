@@ -65,6 +65,12 @@ class AgreementForSaleController extends Controller
             'grace_period_days' => is_numeric($request->input('gracePeriodDays')) ? $request->input('gracePeriodDays') : null,
             'relevant_state_act' => $request->input('relevantStateAct'),
             'apartment_ownership_act' => $request->input('apartmentOwnershipAct'),
+            'facilities_outside_project' => $request->input('facilitiesOutsideProject'),
+            'competent_authority' => $request->input('competentAuthorityForDeclaration'),
+            'prescribed_by_laws' => $request->input('prescribedByLaws'),
+            'maintenance_clauses' => $request->input('maintenanceClauses'),
+            'basement_location' => $request->input('basementLocation'),
+            'additional_terms' => $request->input('additionalTerms'),
             'schedule_a' => $request->input('scheduleA'),
             'schedule_b' => $request->input('scheduleB'),
             'schedule_c' => $request->input('scheduleC'),
@@ -74,6 +80,7 @@ class AgreementForSaleController extends Controller
 
     public function store(Request $request)
     {
+
 
         DB::beginTransaction();
 
@@ -173,11 +180,11 @@ class AgreementForSaleController extends Controller
             }
 
 
-                /*
-                |--------------------------------------------------------------------------
-                | Save Additional Disclosures
-                |--------------------------------------------------------------------------
-                */
+            /*
+            |--------------------------------------------------------------------------
+            | Save Additional Disclosures
+            |--------------------------------------------------------------------------
+            */
 
             foreach ($request->additionalDisclosures ?? [] as $disclosure) {
 
@@ -201,53 +208,65 @@ class AgreementForSaleController extends Controller
                 $agreement->PriceBreakdown()->create([
 
                     'description' => $row['description'] ?? null,
-                    'amount'      => $row['amount'] ?? null,
+                    'amount' => $row['amount'] ?? null,
                 ]);
 
             }
 
 
 
-             /*
-                |--------------------------------------------------------------------------
-                | Save Garage Details
-                |--------------------------------------------------------------------------
-                */
+            /*
+               |--------------------------------------------------------------------------
+               | Save Garage Details
+               |--------------------------------------------------------------------------
+               */
 
-                if (!empty($request->garageDetails)) {
+            if (!empty($request->garageDetails)) {
 
-                    foreach ($request->garageDetails as $garage) {
+                foreach ($request->garageDetails as $garage) {
 
-                        $agreement->garageDetails()->create([
+                    $agreement->garageDetails()->create([
 
-                            'slot_no' => $garage['slotNo'] ?? null,
-                            'area'    => $garage['area'] ?? null,
-                            'price'   => $garage['price'] ?? null,
+                        'slot_no' => $garage['slotNo'] ?? null,
+                        'area' => $garage['area'] ?? null,
+                        'price' => $garage['price'] ?? null,
 
-                        ]);
-
-                    }
+                    ]);
 
                 }
 
+            }
 
 
             /*
             |--------------------------------------------------------------------------
-            | Save Garage Details
+            | Save Plot Pricing
             |--------------------------------------------------------------------------
             */
 
-            foreach ($request->garageDetails ?? [] as $garage) {
+            if (!empty($request->plotPricing)) {
+                foreach ($request->plotPricing as $plot) {
+                    $agreement->plotPricings()->create([
+                        'plot_no_type' => $plot['plotNoType'] ?? null,
+                        'rate_per_sqft' => $plot['ratePerSqFt'] ?? null,
 
-                $agreement->garageDetails()->create([
+                    ]);
+                }
+            }
 
-                    'slot_no' => $garage['slotNo'] ?? null,
-                    'area' => $garage['area'] ?? null,
-                    'price' => $garage['price'] ?? null,
+            /*
+            |--------------------------------------------------------------------------
+            | Save Witnesses
+            |--------------------------------------------------------------------------
+            */
 
-                ]);
-
+            if (!empty($request->witnesses)) {
+                foreach ($request->witnesses as $witness) {
+                    $agreement->witnesses()->create([
+                        'name' => $witness['name'] ?? null,
+                        'address' => $witness['address'] ?? null,
+                    ]);
+                }
             }
 
             DB::commit();
