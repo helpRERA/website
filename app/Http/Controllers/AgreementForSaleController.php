@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Agreement;
 use Illuminate\Support\Facades\DB;
+use App\Models\PromoterCompany;
+use App\Models\PromoterIndividual;
+use App\Models\promoterPartnership;
+use App\Models\PriceBreakdown;
+use App\Models\GarageDetail;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -23,6 +28,9 @@ class AgreementForSaleController extends Controller
     {
         return [
             'execution_place' => $request->input('executionPlace'),
+            'date_day' => $request->input('dateDay'),
+            'date_month' => $request->input('dateMonth'),
+            'date_year' => $request->input('dateYear'),
             'promoter_type' => $request->input('promoterType'),
             'allottee_type' => $request->input('allotteeType'),
             'land_survey_nos' => $request->input('landSurveyNos'),
@@ -66,46 +74,225 @@ class AgreementForSaleController extends Controller
 
     public function store(Request $request)
     {
-        $data = $this->mapData($request);
-        
 
-        if ($request->filled('executionDate')) {
-            $dateParts = explode('-', $request->input('executionDate'));
-            if (count($dateParts) == 3) {
-                $data['date_year'] = $dateParts[0];
-                $data['date_month'] = $dateParts[1];
-                $data['date_day'] = $dateParts[2];
+        DB::beginTransaction();
+
+        try {
+
+            $data = $this->mapData($request);
+            $agreement = Agreement::create($data);
+
+            /*
+            |--------------------------------------------------------------------------
+            | Save Promoter Company
+            |--------------------------------------------------------------------------
+            */
+
+
+            if ($request->filled('promoterCompany')) {
+
+
+                $agreement->promoterCompany()->create([
+
+                    'name' => $request->promoterCompany['name'] ?? null,
+                    'cin' => $request->promoterCompany['cin'] ?? null,
+                    'pan' => $request->promoterCompany['pan'] ?? null,
+                    'registered_office' => $request->promoterCompany['registeredOffice'] ?? null,
+                    'corporate_office' => $request->promoterCompany['corporateOffice'] ?? null,
+                    'authorized_signatory' => $request->promoterCompany['authorizedSignatory'] ?? null,
+                    'signatory_aadhaar' => $request->promoterCompany['signatoryAadhaar'] ?? null,
+                    'board_resolution_date' => $request->promoterCompany['boardResolutionDate'] ?? null,
+
+                ]);
+
             }
+
+            /*
+            |--------------------------------------------------------------------------
+            | Save Promoter Individual
+            |--------------------------------------------------------------------------
+            */
+
+            if ($request->filled('promoterIndividual')) {
+
+                $agreement->promoterIndividual()->create([
+
+                    'name' => $request->promoterIndividual['name'] ?? null,
+                    'aadhaar' => $request->promoterIndividual['aadhaar'] ?? null,
+                    'pan' => $request->promoterIndividual['pan'] ?? null,
+                    'parent_type' => $request->promoterIndividual['parentType'] ?? null,
+                    'parent_name' => $request->promoterIndividual['parentName'] ?? null,
+                    'age' => $request->promoterIndividual['age'] ?? null,
+                    'residing' => $request->promoterIndividual['residing'] ?? null,
+
+                ]);
+
+            }
+
+            if ($request->filled('promoterPartnership')) {
+
+                $agreement->promoterPartnership()->create([
+
+                    'name' => $request->promoterPartnership['name'] ?? null,
+                    'business_place' => $request->promoterPartnership['businessPlace'] ?? null,
+                    'pan' => $request->promoterPartnership['pan'] ?? null,
+                    'authorized_partner' => $request->promoterPartnership['authorizedPartner'] ?? null,
+                    'partner_aadhaar' => $request->promoterPartnership['partnerAadhaar'] ?? null,
+                    'authorized_vide' => $request->promoterPartnership['authorizedVide'] ?? null,
+
+                ]);
+
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | Save Land JDA Details
+            |--------------------------------------------------------------------------
+            */
+
+            if (!empty($request->landJDA)) {
+
+                foreach ($request->landJDA as $jda) {
+
+                    $agreement->landJdas()->create([
+
+                        'owner_name' => $jda['ownerName'] ?? null,
+                        'jda_date' => $jda['jdaDate'] ?? null,
+                        'reg_no' => $jda['regNo'] ?? null,
+                        'sub_registrar_office' => $jda['subRegistrarOffice'] ?? null,
+                        'survey_nos' => $jda['surveyNos'] ?? null,
+                        'area' => $jda['admeasuring'] ?? null,
+                        'location' => $jda['situatedAt'] ?? null,
+                        'district' => $jda['tehsilDistrict'] ?? null,
+                        'title_deed_date' => $jda['titleDeedDate'] ?? null,
+                        'additional_details' => $jda['additionalDetails'] ?? null,
+
+                    ]);
+
+                }
+            }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Save Additional Disclosures
+                |--------------------------------------------------------------------------
+                */
+
+            foreach ($request->additionalDisclosures ?? [] as $disclosure) {
+
+                $agreement->additionalDisclosures()->create([
+
+                    'disclosure' => $disclosure['text'] ?? null,
+
+                ]);
+
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Save Payment Milestones
+            |--------------------------------------------------------------------------
+            */
+
+            foreach ($request->priceBreakdown ?? [] as $row) {
+
+                $agreement->PriceBreakdown()->create([
+
+                    'description' => $row['description'] ?? null,
+                    'amount'      => $row['amount'] ?? null,
+                ]);
+
+            }
+
+
+
+             /*
+                |--------------------------------------------------------------------------
+                | Save Garage Details
+                |--------------------------------------------------------------------------
+                */
+
+                if (!empty($request->garageDetails)) {
+
+                    foreach ($request->garageDetails as $garage) {
+
+                        $agreement->garageDetails()->create([
+
+                            'slot_no' => $garage['slotNo'] ?? null,
+                            'area'    => $garage['area'] ?? null,
+                            'price'   => $garage['price'] ?? null,
+
+                        ]);
+
+                    }
+
+                }
+
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Save Garage Details
+            |--------------------------------------------------------------------------
+            */
+
+            foreach ($request->garageDetails ?? [] as $garage) {
+
+                $agreement->garageDetails()->create([
+
+                    'slot_no' => $garage['slotNo'] ?? null,
+                    'area' => $garage['area'] ?? null,
+                    'price' => $garage['price'] ?? null,
+
+                ]);
+
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'id' => $agreement->id,
+                'message' => 'Agreement saved successfully.'
+            ]);
+
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+
         }
-        
-        $agreement = \App\Models\Agreement::create($data);
-        
-        return response()->json(['success' => true, 'id' => $agreement->id]);
     }
 
     public function update(Request $request, $id)
     {
-        $agreement = \App\Models\Agreement::findOrFail($id);
+        $agreement = Agreement::findOrFail($id);
         $data = $this->mapData($request);
-        
-        if ($request->filled('executionDate')) {
-            $dateParts = explode('-', $request->input('executionDate'));
-            if (count($dateParts) == 3) {
-                $data['date_year'] = $dateParts[0];
-                $data['date_month'] = $dateParts[1];
-                $data['date_day'] = $dateParts[2];
-            }
-        }
-        
-        $agreement->update($data);  
-        
+
+        // if ($request->filled('executionDate')) {
+        //     $dateParts = explode('-', $request->input('executionDate'));
+        //     if (count($dateParts) == 3) {
+        //         $data['date_year'] = $dateParts[0];
+        //         $data['date_month'] = $dateParts[1];
+        //         $data['date_day'] = $dateParts[2];
+        //     }
+        // }
+
+        $agreement->update($data);
+
         return response()->json(['success' => true]);
     }
 
     public function uploadSchedule(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|mimes:pdf|max:5240', 
+            'file' => 'required|file|mimes:pdf|max:5240',
         ]);
 
         $path = $request->file('file')->store('schedules', 'public');

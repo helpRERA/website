@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class PromoterPartnership extends Model
 {
          protected $guarded = [];
+
+    public function agreement()
+    {
+        return $this->belongsTo(Agreement::class);
+    }
 }

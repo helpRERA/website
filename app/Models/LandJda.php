@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class LandJda extends Model
 {
     protected $guarded = [];
+    public function agreement()
+    {
+        return $this->belongsTo(Agreement::class);
+    }
 }

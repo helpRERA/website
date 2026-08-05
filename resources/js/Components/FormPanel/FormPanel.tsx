@@ -5,7 +5,63 @@ import logoUrl from '../../../../public/imge/logonew.svg';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
+// ---- Added: dd-mm-yyyy display wrapper around native <input type="date"> ----
+function DateFieldDDMMYYYY({
+  value,
+  onChange,
+  onFocus,
+}: {
+  value: string; // stored as yyyy-mm-dd
+  onChange: (v: string) => void;
+  onFocus?: () => void;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
 
+  const formatDisplay = (iso: string) => {
+    if (!iso) return '';
+    const [y, m, d] = iso.split('-');
+    if (!y || !m || !d) return '';
+    return `${d}-${m}-${y}`;
+  };
+
+  return (
+    <div style={{ position: 'relative', width: '100%' }}>
+      <span
+        style={{
+          display: 'block',
+          width: '100%',
+          padding: '0.5rem',
+          border: '1px solid var(--border-ui, #ccc)',
+          borderRadius: '4px',
+          pointerEvents: 'none',
+          background: '#fff',
+          fontSize: 'inherit',
+          color: value ? 'inherit' : '#888',
+          boxSizing: 'border-box',
+        }}
+      >
+        {formatDisplay(value) || 'dd-mm-yyyy'}
+      </span>
+      <input
+        ref={inputRef}
+        type="date"
+        value={value}
+        onFocus={onFocus}
+        onChange={(e) => onChange(e.target.value)}
+        onClick={() => inputRef.current?.showPicker?.()}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          opacity: 0,
+          cursor: 'pointer',
+          width: '100%',
+          height: '100%',
+        }}
+      />
+    </div>
+  );
+}
+// ---- End added component ----
 
 interface FormPanelProps {
   activeStep: number;
@@ -543,10 +599,10 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 </div>
                 <div className="form-group">
                   <label>Board Resolution Date</label>
-                  <input
-                    type="date"
+                  <DateFieldDDMMYYYY
                     value={data.promoterCompany.boardResolutionDate}
-                    onFocus={() => setActiveField('promoterCompany.boardResolutionDate')} onChange={(e) => updateNestedField('promoterCompany', 'boardResolutionDate', e.target.value)}
+                    onFocus={() => setActiveField('promoterCompany.boardResolutionDate')}
+                    onChange={(v) => updateNestedField('promoterCompany', 'boardResolutionDate', v)}
                   />
                 </div>
               </>
@@ -730,7 +786,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             {/* TAB PANEL: Promoter is Owner → Land & Project Details fields */}
             {data.landOwnershipType === 'owner' && (
               <>
-                <h3 className="section-title">Land & Project Details</h3>
+                <h3 className="section-title">Land & Project Details (Clause A)</h3>
                 <div className="form-group row-2">
                   <div>
                     <label>Survey Numbers</label>
@@ -774,10 +830,10 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 <div className="form-group row-2">
                   <div>
                     <label>Title Deed Date</label>
-                    <input
-                      type="date"
+                    <DateFieldDDMMYYYY
                       value={data.landTitleDeedDate}
-                      onFocus={() => setActiveField('landTitleDeedDate')} onChange={(e) => updateField('landTitleDeedDate', e.target.value)}
+                      onFocus={() => setActiveField('landTitleDeedDate')}
+                      onChange={(v) => updateField('landTitleDeedDate', v)}
                     />
                   </div>
                   <div>
@@ -876,11 +932,10 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                         <div className="form-group row-2">
                           <div>
                             <label style={{ fontSize: '0.7rem' }}>Title Deed Date</label>
-                            <input
-                              style={{ padding: '0.35rem' }}
-                              type="date"
+                            <DateFieldDDMMYYYY
                               value={jda.titleDeedDate}
-                              onFocus={() => setActiveField('landJDA')} onChange={(e) => updateJDA(jda.id, 'titleDeedDate', e.target.value)}
+                              onFocus={() => setActiveField('landJDA')}
+                              onChange={(v) => updateJDA(jda.id, 'titleDeedDate', v)}
                             />
                           </div>
                           <div>
@@ -897,11 +952,10 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                         <div className="form-group row-2">
                           <div>
                             <label style={{ fontSize: '0.7rem' }}>JDA Execution Date</label>
-                            <input
-                              style={{ padding: '0.35rem' }}
-                              type="date"
+                            <DateFieldDDMMYYYY
                               value={jda.jdaDate}
-                              onFocus={() => setActiveField('landJDA')} onChange={(e) => updateJDA(jda.id, 'jdaDate', e.target.value)}
+                              onFocus={() => setActiveField('landJDA')}
+                              onChange={(v) => updateJDA(jda.id, 'jdaDate', v)}
                             />
                           </div>
                           <div>
@@ -942,7 +996,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               </div>
             )}
 
-            <h3 className="section-title" style={{ marginTop: '1rem' }}>Project Details</h3>
+            <h3 className="section-title" style={{ marginTop: '1rem' }}>Project Details (Clause B)</h3>
             <div className="form-group row-2">
               <div>
                 <label>Project Type</label>
@@ -1022,7 +1076,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
         {/* STEP 4: APPROVALS & REGISTRATION */}
         {activeStep === 4 && (
           <div className="form-section">
-            <h3 className="section-title">Regulatory Approvals</h3>
+            <h3 className="section-title">Regulatory Approvals (Clause D)</h3>
             <div className="form-group">
               <label>Local body</label>
               <input
@@ -1036,10 +1090,10 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
 
               <div>
                 <label>Approval Date</label>
-                <input
-                  type="date"
+                <DateFieldDDMMYYYY
                   value={data.commencementDate}
-                  onFocus={() => setActiveField('commencementDate')} onChange={(e) => updateField('commencementDate', e.target.value)}
+                  onFocus={() => setActiveField('commencementDate')}
+                  onChange={(v) => updateField('commencementDate', v)}
                 />
               </div>
               <div>
@@ -1051,6 +1105,8 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 />
               </div>
             </div>
+
+             <h3 className="section-title">Clause E</h3>
             <div className="form-group">
               <label>Layout Plan Approvals Authority</label>
               <input
@@ -1379,7 +1435,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               </div>
             )}
 
-            <div className="form-group row-2">
+            {/* <div className="form-group row-2">
               <div>
                 <label>Early Payment Rebate (% p.a.)</label>
                 <input
@@ -1396,7 +1452,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                   onFocus={() => setActiveField('delayInterestRate')} onChange={(e) => updateField('delayInterestRate', formatDecimalNumber(e.target.value))}
                 />
               </div>
-            </div>
+            </div> */}
 
 
             <h3 className="section-title" style={{ marginTop: '1rem' }}>Terms 1.10</h3>
@@ -1494,7 +1550,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               />
             </div>
 
-            <div className="form-group row-2">
+            {/* <div className="form-group row-2">
               <div>
                 <label>Target Possession Month</label>
                 <input
@@ -1511,10 +1567,10 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                   value={data.gracePeriodDays}
                   onFocus={() => setActiveField('gracePeriodDays')} onChange={(e) => updateField('gracePeriodDays', e.target.value)}
                 />
-              </div>
-            </div>
+              </div> 
+            </div> */}
 
-            <h3 className="section-title" style={{ marginTop: '1rem' }}>Default Conditions</h3>
+            {/* <h3 className="section-title" style={{ marginTop: '1rem' }}>Default Conditions</h3>
             <div className="form-group row-2">
               <div>
                 <label>Consecutive unpaid demands (Count)</label>
@@ -1534,7 +1590,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                   placeholder="e.g. three"
                 />
               </div>
-            </div>
+            </div> */}
 
 
             <h3 className="section-title" style={{ marginTop: '1rem' }}>Maintenance Clauses</h3>
@@ -1624,54 +1680,62 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
         )}
 
         {/* STEP 8: SCHEDULES */}
-          {activeStep === 8 && (
-            <div className="form-section">
-              <h3 className="section-title">Schedule Attachments</h3>
-              <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-                Upload PDF files for each schedule. These will be appended to the end of the final agreement PDF.
-              </p>
+        {activeStep === 8 && (
+          <div className="form-section">
+            <h3 className="section-title">Schedule Attachments</h3>
+            <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
+              Upload PDF files for each schedule. These will be appended to the end of the final agreement PDF.
+            </p>
 
-              {(['scheduleA', 'scheduleB', 'scheduleC', 'scheduleD'] as const).map((slot, idx) => {
-                const label = `Schedule ${String.fromCharCode(65 + idx)}`; 
-                const currentUrl = data[slot];
-                const isUploading = uploadingSchedule[slot];
+            {(['scheduleA', 'scheduleB', 'scheduleC', 'scheduleD'] as const).map((slot, idx) => {
+              const label = `Schedule ${String.fromCharCode(65 + idx)}`;
+              const descriptions: Record<typeof slot, string> = {
+                scheduleA: 'Please insert description of the (Apartment/Plot) and the garage/closed parking (if applicable) along with boundaries in all four directions.',
+                scheduleB: 'Floor plan of the apartment.',
+                scheduleC: 'Payment plan by the Allottee.',
+                scheduleD: 'Details of Common Areas and Facilities.',
+              };
+              const currentUrl = data[slot];
+              const isUploading = uploadingSchedule[slot];
 
-                return (
-                  <div key={slot} className="form-group" style={{ marginBottom: '1rem' }}>
-                    <label>{label}</label>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                      <input
-                        type="file"
-                        accept="application/pdf,.pdf"
-                        disabled={isUploading}
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (file) uploadScheduleFile(slot, file);
-                          e.target.value = ''; 
-                        }}
-                      />
-                      {isUploading && <RefreshCw size={16} className="spin" />}
-                    </div>
-                    {currentUrl && !isUploading && (
-                      <div style={{ marginTop: '0.4rem', fontSize: '0.8rem' }}>
-                        <a href={currentUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-gold)' }}>
-                          View uploaded PDF
-                        </a>
-                        <button
-                          onClick={() => updateField(slot, '')}
-                          className="btn-danger"
-                          style={{ marginLeft: '0.75rem', padding: '2px 8px', fontSize: '0.7rem' }}
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    )}
+              return (
+                <div key={slot} className="form-group" style={{ marginBottom: '1rem' }}>
+                  <label>{label}</label>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', margin: '0.15rem 0 0.5rem' }}>
+                    {descriptions[slot]}
+                  </p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <input
+                      type="file"
+                      accept="application/pdf,.pdf"
+                      disabled={isUploading}
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) uploadScheduleFile(slot, file);
+                        e.target.value = '';
+                      }}
+                    />
+                    {isUploading && <RefreshCw size={16} className="spin" />}
                   </div>
-                );
-              })}
-            </div>
-          )}
-
+                  {currentUrl && !isUploading && (
+                    <div style={{ marginTop: '0.4rem', fontSize: '0.8rem' }}>
+                      <a href={currentUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-gold)' }}>
+                        View uploaded PDF
+                      </a>
+                      <button
+                        onClick={() => updateField(slot, '')}
+                        className="btn-danger"
+                        style={{ marginLeft: '0.75rem', padding: '2px 8px', fontSize: '0.7rem' }}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
 
       </div>
 

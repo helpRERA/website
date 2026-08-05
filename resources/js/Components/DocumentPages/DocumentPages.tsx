@@ -399,7 +399,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           </div>
 
           <div className="indent-1" style={{ marginTop: '1rem' }}>
-            1.7 <i>(Applicable in case of an apartment)</i> The Promoter shall confirm the final carpet area that has been allotted to the Allottee after the construction of the Building is complete and the occupancy certificate* is granted by the competent authority, by furnishing details of the changes, if any, in the carpet area. The total price payable for the carpet area shall be recalculated upon confirmation by the Promoter. If there is any reduction in the carpet area within the defined limit then Promoter shall refund the excess money paid by Allottee within forty-five days with annual interest at the rate of <SpanVal val={delayInterestRate} fieldKey="delayInterestRate" />% p.a., from the date when such an excess amount was paid by the Allottee. If there is any increase in the carpet area allotted to Allottee, the Promoter shall demand that from the Allottee as per the next milestone of the Payment Plan. All these monetary adjustments shall be made at the same rate per square feet as agreed in Clause 1.2 of this Agreement.
+            1.7 <i>(Applicable in case of an apartment)</i> The Promoter shall confirm the final carpet area that has been allotted to the Allottee after the construction of the Building is complete and the occupancy certificate* is granted by the competent authority, by furnishing details of the changes, if any, in the carpet area. The total price payable for the carpet area shall be recalculated upon confirmation by the Promoter. If there is any reduction in the carpet area within the defined limit then Promoter shall refund the excess money paid by Allottee within forty-five days with annual interest at the rate specified in the Rules, from the date when such an excess amount was paid by the Allottee. If there is any increase in the carpet area allotted to Allottee, the Promoter shall demand that from the Allottee as per the next milestone of the Payment Plan. All these monetary adjustments shall be made at the same rate per square feet as agreed in Clause 1.2 of this Agreement.
           </div>
 
           <div className="indent-1" style={{ marginTop: '1rem' }}>
@@ -490,10 +490,10 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           <div className="indent-1" style={{ marginTop: '1.5rem' }}>
             7.6 <i>Compensation:</i> The Promoter shall compensate the Allottee in case of any loss caused to him due to defective title of the land, on which the project is being developed or has been developed, in the manner as provided under the Act and the claim for compensation under this section shall not be barred by limitation provided under any law for the time being in force.
             <p style={{ textIndent: '2rem', marginTop: '0.25rem' }}>
-              Except for occurrence of a Force Majeure event, if the promoter fails to complete or is unable to give possession of the (Apartment/Plot) (i) in accordance with the terms of this Agreement, duly completed by the date specified herein; or (ii) due to discontinuance of his business as a developer on account of suspension or revocation of the registration under the Act; or for any other reason; the Promoter shall be liable, on demand to the Allottee, in case the Allottee wishes to withdraw from the Project, without prejudice to any other remedy available, to return the total amount received by him in respect of the (Apartment/Plot), with interest at the rate of <SpanVal val={delayInterestRate} fieldKey="delayInterestRate" />% p.a. within 45 days including compensation in the manner as provided under the Act.
+              Except for occurrence of a Force Majeure event, if the promoter fails to complete or is unable to give possession of the (Apartment/Plot) (i) in accordance with the terms of this Agreement, duly completed by the date specified herein; or (ii) due to discontinuance of his business as a developer on account of suspension or revocation of the registration under the Act; or for any other reason; the Promoter shall be liable, on demand to the Allottee, in case the Allottee wishes to withdraw from the Project, without prejudice to any other remedy available, to return the total amount received by him in respect of the (Apartment/Plot), with interest at the rate specified in the Rules within 45 days including compensation in the manner as provided under the Act.
             </p>
             <p style={{ textIndent: '2rem', marginTop: '0.25rem' }}>
-              Provided that where if the Allottee does not intend to withdraw from the Project, the Promoter shall pay the Allottee interest at the rate of <SpanVal val={delayInterestRate} fieldKey="delayInterestRate" />% p.a. for every month of delay, till the handing over of the possession of the (Apartment/Plot).
+              Provided that where if the Allottee does not intend to withdraw from the Project, the Promoter shall pay the Allottee interest  at the rate specified in the Rules  for every month of delay, till the handing over of the possession of the (Apartment/Plot).
             </p>
           </div>
 
@@ -559,17 +559,17 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
               (i) Stop making further payments to Promoter as demanded by the Promoter. If the Allottee stops making payments, the Promoter shall correct the situation by completing the construction milestones and only thereafter the Allottee be required to make the next payment without any penal interest; or
             </div>
             <div className="indent-2">
-              (ii) The Allottee shall have the option of terminating the Agreement in which case the Promoter shall be liable to refund the entire money paid by the Allottee under any head whatsoever towards the purchase of the apartment, along with interest at the rate of <SpanVal val={delayInterestRate} fieldKey="delayInterestRate" />% p.a. within forty-five days of receiving the termination notice:
+              (ii) The Allottee shall have the option of terminating the Agreement in which case the Promoter shall be liable to refund the entire money paid by the Allottee under any head whatsoever towards the purchase of the apartment, along with interest at the rate specified in the Rules within forty-five days of receiving the termination notice:
             </div>
             <p style={{ textIndent: '2rem', marginTop: '0.25rem', fontSize: '9.5pt', fontStyle: 'italic' }}>
-              Provided that where an Allottee does not intend to withdraw from the project or terminate the Agreement, he shall be paid, by the promoter, interest at the rate of <SpanVal val={delayInterestRate} fieldKey="delayInterestRate" />% p.a., for every month of delay till the handing over of the possession of the (Apartment/Plot).
+              Provided that where an Allottee does not intend to withdraw from the project or terminate the Agreement, he shall be paid, by the promoter,  interest at the rate specified in the Rules, for every month of delay till the handing over of the possession of the (Apartment/Plot).
             </p>
           </div>
 
           <div className="indent-1" style={{ marginTop: '1rem' }}>
             9.3 The Allottee shall be considered under a condition of Default, on the occurrence of the following events:
             <div className="indent-2" style={{ marginTop: '0.25rem' }}>
-              (i) In case the Allottee fails to make payments for <SpanVal val={defaultConsecutiveDemands} fieldKey="defaultConsecutiveDemands" /> consecutive demands made by the Promoter as per the Payment Plan annexed hereto, despite having been issued notice in that regard the allottee shall be liable to pay interest to the promoter on the unpaid amount at the rate of <SpanVal val={delayInterestRate} fieldKey="delayInterestRate" />% p.a..
+              (i) In case the Allottee fails to make payments for <SpanVal val={defaultConsecutiveDemands} fieldKey="defaultConsecutiveDemands" /> consecutive demands made by the Promoter as per the Payment Plan annexed hereto, despite having been issued notice in that regard the allottee shall be liable to pay interest to the promoter on the unpaid amount at the rate specified in the Rules.
             </div>
             <div className="indent-2">
               (ii) In case of Default by Allottee under the condition listed above continues for a period beyond <SpanVal val={defaultConsecutiveMonths} fieldKey="defaultConsecutiveMonths" /> consecutive months after notice from the Promoter in this regard, the Promoter shall cancel the allotment of the (Apartment/Plot) in favour of the Allottee and refund the amount money paid by him to the allottee by deducting the booking amount and the interest liabilities and this Agreement shall thereupon stand terminated.
@@ -636,7 +636,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title">20. Apartment ownership Act:</p>
           <p style={{ textIndent: '2rem' }}>
-            The Promoter has assured the Allottees that the project in its entirety is in accordance with the provisions of the <SpanVal val={apartmentOwnershipAct} fieldKey="apartmentOwnershipAct" />. The Promoter showing compliance of various laws/regulations as applicable in the State.
+            The Promoter has assured the Allottees that the project in its entirety is in accordance with the provisions of the Kerala Apartment Owners Act, 1983 (5 of 1984) (Please insert the name of the state Apartment Ownership Act). The Promoter showing compliance of various laws/regulations as applicable in the State.
           </p>
 
           <p className="legal-section-title">21. Binding effect:</p>
@@ -688,7 +688,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title">29. Place of execution:</p>
           <p style={{ textIndent: '2rem' }}>
-            The execution of this Agreement shall be complete only upon its execution by the Promoter through its authorized signatory at the Promoter's Office, or at some other place, which may be mutually agreed between the Promoter and the Allottee, in <SpanVal val={executionPlace} fieldKey="executionPlace" /> after the Agreement is duly executed by the Allottee and the Promoter or simultaneously with the execution the said Agreement shall be registered at the office of the Sub-Registrar. Hence this Agreement shall be deemed to have been executed at <SpanVal val={executionPlace} fieldKey="executionPlace" />.
+            The execution of this Agreement shall be complete only upon its execution by the Promoter through its authorized signatory at the Promoter's Office, or at some other place, which may be mutually agreed between the Promoter and the Allottee, in ------------- after the Agreement is duly executed by the Allottee and the Promoter or simultaneously with the execution the said Agreement shall be registered at the office of the Sub-Registrar. Hence this Agreement shall be deemed to have been executed at ------------.
           </p>
 
           <p className="legal-section-title">30. Notices:</p>

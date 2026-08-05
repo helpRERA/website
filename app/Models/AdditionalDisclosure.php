@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PromoterCompany extends Model
+class AdditionalDisclosure extends Model
 {
-     protected $guarded = [];
+    use HasFactory;
+    protected $guarded = [];
+
     public function agreement()
     {
         return $this->belongsTo(Agreement::class);
