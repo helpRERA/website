@@ -770,13 +770,28 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               <div className="toggle-group">
                 <button
                   className={`toggle-btn ${data.landOwnershipType === 'owner' ? 'active' : ''}`}
-                  onClick={() => updateField('landOwnershipType', 'owner')}
+                  onClick={() => {
+                    if (data.landOwnershipType !== 'owner') {
+                      updateField('landJDA', []);
+                      updateField('landOwnershipType', 'owner');
+                    }
+                  }}
                 >
                   Promoter is Owner
                 </button>
                 <button
                   className={`toggle-btn ${data.landOwnershipType === 'developer' ? 'active' : ''}`}
-                  onClick={() => updateField('landOwnershipType', 'developer')}
+                  onClick={() => {
+                    if (data.landOwnershipType !== 'developer') {
+                      updateField('landSurveyNos', '');
+                      updateField('landAdmeasuring', '');
+                      updateField('landSituatedAt', '');
+                      updateField('landTehsilDistrict', '');
+                      updateField('landTitleDeedDate', '');
+                      updateField('landTitleDeedRegNo', '');
+                      updateField('landOwnershipType', 'developer');
+                    }
+                  }}
                 >
                   JDA (Developer)
                 </button>
@@ -1106,7 +1121,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               </div>
             </div>
 
-             <h3 className="section-title">Clause E</h3>
+            <h3 className="section-title">Clause E</h3>
             <div className="form-group">
               <label>Layout Plan Approvals Authority</label>
               <input
@@ -1275,11 +1290,11 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             )} */}
 
 
-            <h3 className="section-title" style={{ marginTop: '1rem' }}>Pricing Breakdown</h3>
+            <h3 className="section-title" style={{ marginTop: '1rem' }}>Pricing Breakdown (Term 1)</h3>
             <div className="form-group row-2">
 
               <div>
-                <label>Total Price (Rs)</label>
+                <label>Total Price (Rs)</label> 
                 <input
                   type="text"
                   value={data.totalPrice}
@@ -1484,7 +1499,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               </div>
             </div>
 
-            <div className="form-group row-2">
+            {/* <div className="form-group row-2">
               <div>
                 <label>Booking Amount (Rs)</label>
                 <input
@@ -1501,13 +1516,13 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                   onFocus={() => setActiveField('bookingAmountWords')} onChange={(e) => updateField('bookingAmountWords', e.target.value)}
                 />
               </div>
-            </div>
+            </div> */}
 
 
 
 
 
-            <h3 className="section-title" style={{ marginTop: '1rem' }}>Mode of Payment</h3>
+            {/* <h3 className="section-title" style={{ marginTop: '1rem' }}>Mode of Payment</h3>
             <div className="form-group row-2">
               <div>
                 <label>Payment in favour of</label>
@@ -1525,7 +1540,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                   onFocus={() => setActiveField('paymentPayableAt')} onChange={(e) => updateField('paymentPayableAt', e.target.value)}
                 />
               </div>
-            </div>
+            </div> */}
 
 
 
@@ -1538,7 +1553,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
         {/* STEP 6: PAYMENT PLAN & TERMS */}
         {activeStep === 6 && (
           <div className="form-section">
-            <h3 className="section-title">Terms & Rates</h3>
+            <h3 className="section-title">Terms & Rates (Term 6)</h3>
 
             <div className="form-group">
               <label>Laws Prescribing Norms (Clause 6)</label>
@@ -1593,7 +1608,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             </div> */}
 
 
-            <h3 className="section-title" style={{ marginTop: '1rem' }}>Maintenance Clauses</h3>
+            <h3 className="section-title" style={{ marginTop: '1rem' }}>Maintenance Clauses (Term 11)</h3>
             <div className="form-group">
               <label>Additional Maintenance Clauses</label>
               <textarea
@@ -1605,7 +1620,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             </div>
 
 
-            <h3 className="section-title" style={{ marginTop: '1rem' }}>State Legislation References</h3>
+            <h3 className="section-title" style={{ marginTop: '1rem' }}>State Legislation References (Term 15)</h3>
 
             <div className="form-group row-1">
               <div>
@@ -1618,7 +1633,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               </div>
             </div>
 
-            <div className="form-group row-1">
+            {/* <div className="form-group row-1">
               <div>
                 <label>Apartment Ownership Act (State specific)</label>
                 <input
@@ -1627,9 +1642,9 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                   onFocus={() => setActiveField('apartmentOwnershipAct')} onChange={(e) => updateField('apartmentOwnershipAct', e.target.value)}
                 />
               </div>
-            </div>
+            </div> */}
 
-            <h3 className="section-title" style={{ marginTop: '1rem' }}>Additional Terms</h3>
+            <h3 className="section-title" style={{ marginTop: '1rem' }}>Additional Terms (Term 33)</h3>
 
             <div className="form-group" style={{ marginTop: '0.5rem' }}>
               <label>Other Terms & Conditions (Optional)</label>
