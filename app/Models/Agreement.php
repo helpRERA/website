@@ -22,7 +22,7 @@ class Agreement extends Model
     }
     public function promoterPartnership()
     {
-        return $this->hasOne(promoterPartnership::class);
+        return $this->hasOne(PromoterPartnership::class);
     }
 
     public function garageDetails()
