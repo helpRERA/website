@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import axios from 'axios';
 import FormPanel from '../../Components/FormPanel/FormPanel';
 import PreviewPanel from '../../Components/PreviewPanel/PreviewPanel';
@@ -6,6 +6,8 @@ import { useAgreementData } from '../../hooks/useAgreementData';
 import '../../index.css';
 import { Edit, FileText } from 'lucide-react';
 import { ToastContainer, toast } from 'react-toastify';
+import { mapAgreementFromServer } from '../../utils/mapAgreementFromServer';
+
 
 
 class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean, error: any, errorInfo: any }> {
@@ -38,17 +40,21 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
   }
 }
 
-function MainApp(): React.ReactElement {
+function MainApp({ projectId, userId, agreement }: {
+  projectId: string | null;
+  userId: string | null;
+  agreement: any | null;
+}): React.ReactElement {
+  
   const [activeStep, setActiveStep] = useState<number>(0);
   const [activeView, setActiveView] = useState<'form' | 'preview'>('form');
   const [activeField, setActiveField] = useState<string | null>(null);
-  const { data, updateField, updateNestedField, resetData, resetFields } = useAgreementData();
-  const [agreementId, setAgreementId] = useState<number | null>(null);
+  const initialFormData = useMemo(() => mapAgreementFromServer(agreement), [agreement]);
+  const { data, updateField, updateNestedField, resetData, resetFields } = useAgreementData(initialFormData);
+  const [agreementId, setAgreementId] = useState<number | null>(agreement?.id ?? null);
+
   const [isSaving, setIsSaving] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  // const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  // const [saveStatus, setSaveStatus] = useState<string | null>(null);
-
 
   // Reset saved state whenever user edits any field
   const handleUpdateField = (field: keyof typeof data, value: any) => {
@@ -61,14 +67,17 @@ function MainApp(): React.ReactElement {
     updateNestedField(parentField, field, value);
   };
 
+
   const handleSave = async () => {
     setIsSaving(true);
     try {
+      const payload = { ...data, projectId, userId };
+
       if (agreementId) {
-        const response = await axios.put(`/agreements/${agreementId}`, data);
+        const response = await axios.put(`/agreements/${agreementId}`, payload);
         toast.success(response.data.message || "Agreement updated successfully", { autoClose: 3000 });
       } else {
-        const response = await axios.post('/agreements', data);
+        const response = await axios.post('/agreements', payload);
         if (response.data.success) {
           setAgreementId(response.data.id);
           toast.success(response.data.message || "Agreement saved successfully", { autoClose: 3000 });
@@ -82,6 +91,7 @@ function MainApp(): React.ReactElement {
       setIsSaving(false);
     }
   };
+
   return (
     <div className={`app-container view-${activeView}`}>
       <ToastContainer position="top-center" autoClose={false} closeOnClick={false} />
@@ -125,10 +135,14 @@ function MainApp(): React.ReactElement {
   );
 }
 
-export default function App() {
+export default function App({ projectId, userId, agreement }: {
+  projectId: string | null;
+  userId: string | null;
+  agreement: any | null;
+}) {
   return (
     <ErrorBoundary>
-      <MainApp />
+      <MainApp projectId={projectId} userId={userId} agreement={agreement} />
     </ErrorBoundary>
   );
 }

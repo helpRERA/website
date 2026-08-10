@@ -394,8 +394,15 @@ const initialData: AgreementData = {
 
 // ─── Hook ─────────────────────────────────────────────────────────────────────
 
-export function useAgreementData() {
-  const [data, setData] = useState<AgreementData>(initialData);
+export function useAgreementData(initialOverride?: Partial<AgreementData>) {
+  const mergedInitial: AgreementData = {
+    ...initialData,
+    ...initialOverride,
+    promoterCompany: { ...initialData.promoterCompany, ...(initialOverride?.promoterCompany ?? {}) },
+    promoterIndividual: { ...initialData.promoterIndividual, ...(initialOverride?.promoterIndividual ?? {}) },
+    promoterPartnership: { ...initialData.promoterPartnership, ...(initialOverride?.promoterPartnership ?? {}) },
+  };
+  const [data, setData] = useState<AgreementData>(mergedInitial);
 
   const updateField = <K extends keyof AgreementData>(field: K, value: AgreementData[K]): void => {
     setData((prev) => ({ ...prev, [field]: value }));

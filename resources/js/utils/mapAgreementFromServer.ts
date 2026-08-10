@@ -1,0 +1,133 @@
+import { AgreementData } from '../hooks/useAgreementData';
+
+export function mapAgreementFromServer(agreement: any): Partial<AgreementData> {
+  if (!agreement) return {};
+
+  return {
+    executionPlace: agreement.execution_place ?? '',
+    dateDay: agreement.date_day ?? '',
+    dateMonth: agreement.date_month ?? '',
+    dateYear: agreement.date_year ?? '',
+    promoterType: agreement.promoter_type ?? 'company',
+    allotteeType: agreement.allottee_type ?? 'individual',
+    landSurveyNos: agreement.land_survey_nos ?? '',
+    landAdmeasuring: agreement.land_admeasuring ?? '',
+    landSituatedAt: agreement.land_situated_at ?? '',
+    landTehsilDistrict: agreement.land_tehsil_district ?? '',
+    landTitleDeedDate: agreement.land_title_deed_date ?? '',
+    landTitleDeedRegNo: agreement.land_title_deed_regno ?? '',
+    landOwnershipType: agreement.land_ownership_type ?? 'owner',
+    projectType: agreement.project_type ?? 'commercial',
+    projectName: agreement.project_name ?? '',
+    projectBuildingType: agreement.project_building_type ?? 'residential',
+    projectComprising: agreement.project_comprising ?? '',
+    projectOtherComponents: agreement.project_other_components ?? '',
+    plotOtherComponents: agreement.plot_other_components ?? '',
+    basementLocation: agreement.basement_location ?? '',
+    commencementAuthority: agreement.commencement_authority ?? '',
+    commencementNo: agreement.commencement_no ?? '',
+    commencementDate: agreement.commencement_date ?? '',
+    layoutAuthority: agreement.layout_authority ?? '',
+    reraRegNo: agreement.rera_reg_no ?? '',
+    reraRegDate: agreement.rera_reg_date ?? '',
+    unitNo: agreement.unit_no ?? '',
+    unitFloor: agreement.unit_floor ?? '',
+    unitTower: agreement.unit_tower ?? '',
+    unitCarpetArea: agreement.unit_carpet_area ?? '',
+    plotNo: agreement.plot_no ?? '',
+    plotArea: agreement.plot_area ?? '',
+    ratePerSqFt: agreement.rate_per_sqft?.toString() ?? '',
+    totalPrice: agreement.total_price?.toString() ?? '',
+    totalPriceWords: agreement.total_price_words ?? '',
+    earlyPaymentRebate: agreement.early_payment_rebate ?? '',
+    delayInterestRate: agreement.delay_interest_rate ?? '',
+    possessionTargetMonth: agreement.possession_target_month ?? '',
+    gracePeriodDays: agreement.grace_period_days?.toString() ?? '',
+    relevantStateAct: agreement.relevant_state_act ?? '',
+    apartmentOwnershipAct: agreement.apartment_ownership_act ?? '',
+    facilitiesOutsideProject: agreement.facilities_outside_project ?? '',
+    competentAuthorityForDeclaration: agreement.competent_authority ?? '',
+    prescribedByLaws: agreement.prescribed_by_laws ?? '',
+    maintenanceClauses: agreement.maintenance_clauses ?? '',
+    additionalTerms: agreement.additional_terms ?? '',
+    scheduleA: agreement.schedule_a ?? '',
+    scheduleB: agreement.schedule_b ?? '',
+    scheduleC: agreement.schedule_c ?? '',
+    scheduleD: agreement.schedule_d ?? '',
+
+    promoterCompany: agreement.promoter_company ? {
+      name: agreement.promoter_company.name ?? '',
+      cin: agreement.promoter_company.cin ?? '',
+      pan: agreement.promoter_company.pan ?? '',
+      registeredOffice: agreement.promoter_company.registered_office ?? '',
+      corporateOffice: agreement.promoter_company.corporate_office ?? '',
+      authorizedSignatory: agreement.promoter_company.authorized_signatory ?? '',
+      signatoryAadhaar: agreement.promoter_company.signatory_aadhaar ?? '',
+      boardResolutionDate: agreement.promoter_company.board_resolution_date ?? '',
+    } : undefined,
+
+    promoterIndividual: agreement.promoter_individual ? {
+      name: agreement.promoter_individual.name ?? '',
+      aadhaar: agreement.promoter_individual.aadhaar ?? '',
+      pan: agreement.promoter_individual.pan ?? '',
+      parentType: agreement.promoter_individual.parent_type ?? 'son',
+      parentName: agreement.promoter_individual.parent_name ?? '',
+      age: agreement.promoter_individual.age ?? '',
+      residing: agreement.promoter_individual.residing ?? '',
+    } : undefined,
+
+    promoterPartnership: agreement.promoter_partnership ? {
+      name: agreement.promoter_partnership.name ?? '',
+      businessPlace: agreement.promoter_partnership.business_place ?? '',
+      pan: agreement.promoter_partnership.pan ?? '',
+      authorizedPartner: agreement.promoter_partnership.authorized_partner ?? '',
+      partnerAadhaar: agreement.promoter_partnership.partner_aadhaar ?? '',
+      authorizedVide: agreement.promoter_partnership.authorized_vide ?? '',
+    } : undefined,
+
+    landJDA: (agreement.land_jdas ?? []).map((j: any, i: number) => ({
+      id: j.id ?? i + 1,
+      ownerName: j.owner_name ?? '',
+      surveyNos: j.survey_nos ?? '',
+      admeasuring: j.area ?? '',
+      situatedAt: j.location ?? '',
+      tehsilDistrict: j.district ?? '',
+      titleDeedDate: j.title_deed_date ?? '',
+      titleDeedRegNo: '',
+      jdaDate: j.jda_date ?? '',
+      regNo: j.reg_no ?? '',
+      subRegistrarOffice: j.sub_registrar_office ?? '',
+      additionalDetails: j.additional_details ?? '',
+    })),
+
+    additionalDisclosures: (agreement.additional_disclosures ?? []).map((d: any, i: number) => ({
+      id: d.id ?? i + 1,
+      text: d.disclosure ?? '',
+    })),
+
+    priceBreakdown: (agreement.price_breakdown ?? []).map((p: any, i: number) => ({
+      id: p.id ?? i + 1,
+      description: p.description ?? '',
+      amount: p.amount ?? '',
+    })),
+
+    garageDetails: (agreement.garage_details ?? []).map((g: any, i: number) => ({
+      id: g.id ?? i + 1,
+      no: g.slot_no ?? '',
+      area: g.area ?? '',
+      price: g.price ?? '',
+    })),
+
+    plotPricing: (agreement.plot_pricings ?? []).map((p: any, i: number) => ({
+      id: p.id ?? i + 1,
+      plotNoType: p.plot_no_type ?? '',
+      ratePerSqFt: p.rate_per_sqft ?? '',
+    })),
+
+    witnesses: (agreement.witnesses ?? []).map((w: any, i: number) => ({
+      id: w.id ?? i + 1,
+      name: w.name ?? '',
+      address: w.address ?? '',
+    })),
+  };
+}

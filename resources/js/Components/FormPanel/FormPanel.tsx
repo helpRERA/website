@@ -78,6 +78,7 @@ interface FormPanelProps {
 }
 
 export default function FormPanel({ activeStep, setActiveStep, data, updateField, updateNestedField, resetData, resetFields, setActiveField, onSave, isSaving, isSaved }: FormPanelProps) {
+ console.log('FormPanel received data.landSurveyNos:', data.landSurveyNos);
   const steps = [
     { id: 0, label: 'Execution' },
     { id: 1, label: 'Promoter' },
