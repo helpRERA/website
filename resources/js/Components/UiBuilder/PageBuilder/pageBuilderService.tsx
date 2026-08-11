@@ -91,6 +91,14 @@ const getBlockDefaultData = (blockName: string) => {
         },
       }
     }
+    case 'Home Action Carousel': {
+      return {
+        actions: {
+          lastUUID: 0,
+          items: [],
+        },
+      }
+    }
     case 'Home Gallery': {
       return {
         ...defaultGalleryBlock,

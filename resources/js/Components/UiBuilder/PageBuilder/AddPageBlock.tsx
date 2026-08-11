@@ -49,6 +49,9 @@ const blockNames = [
   { name: 'FAQ' },
   { name: 'Home Leadership' },
   { name: 'Home Gallery' },
+  { name: 'About Us' },       
+  { name: 'Browse Projects' },
+  {name: 'Home Action Carousel'}
 ]
 
 interface Properties {

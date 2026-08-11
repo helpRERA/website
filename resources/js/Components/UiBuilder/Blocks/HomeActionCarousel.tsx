@@ -1,6 +1,8 @@
 import React from 'react'
 import { Language } from '../../../ui/ui_interfaces'
 import AppLayoutPadding from '../../Layout/AppLayout/AppLayoutPadding'
+import EditLabel from '../../../ui/button/EditLabel'
+
 
 interface Properties {
   editMode?: boolean
@@ -11,6 +13,8 @@ interface Properties {
 }
 
 const ActionCarousel = ({ editMode, language, blockData, onFieldEdit, dispatch }: Properties) => {
+  console.log(blockData);
+  
 
   // Helper component for standard small cards
   const SmallCard = ({ title, desc, icon }: { title: string, desc: string, icon: React.ReactNode }) => (
@@ -24,6 +28,9 @@ const ActionCarousel = ({ editMode, language, blockData, onFieldEdit, dispatch }
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-2">
           <path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clipRule="evenodd" />
         </svg>
+      </div>
+      <div>
+        <EditLabel onClick={onFieldEdit}/>
       </div>
     </a>
   );

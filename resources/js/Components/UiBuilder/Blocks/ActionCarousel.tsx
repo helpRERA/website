@@ -50,6 +50,8 @@ const ActionCarousel = ({ editMode, language, blockData, onFieldEdit, dispatch }
     }
   }, [dispatch, blockData])
 
+   
+
   return (
     <AppLayoutPadding>
       <div
@@ -76,8 +78,9 @@ const ActionCarousel = ({ editMode, language, blockData, onFieldEdit, dispatch }
                     {editMode && onFieldEdit != null && (
                       <div>
                         <EditLabel
-                          onClick={() =>
+                          onClick={() => 
                             onFieldEdit({
+                             
                               field: 'actions',
                               oldValue: item.item.svg,
                               itemField: 'svg',
@@ -86,7 +89,9 @@ const ActionCarousel = ({ editMode, language, blockData, onFieldEdit, dispatch }
                               action: 'UPDATE',
                             })
                           }
+                          
                         />
+                       
                       </div>
                     )}
                     <p className=' mt-3  text-lg font-semibold leading-5 text-gray-800 md:text-xl'>

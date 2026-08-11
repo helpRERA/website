@@ -10,11 +10,11 @@ interface Properties {
 }
 
 const AboutUs = ({
-  registeredProjects = 1591,
-  registeredAgents = 1008,
-  complaintsCount = 2294,
-  promotersCount = 647,
   language = 'en',
+  registeredProjects,
+  registeredAgents,
+  complaintsCount,
+  promotersCount,
 }: Properties) => {
   return (
     <div className='cmpad pt-10 lg:pt-16 pb-12 w-full bg-white font-sans'>

@@ -14,9 +14,14 @@ class ResolvePageService
 
     public function getPage(string $url): Page
     {
-        return $this->pageRepository
+
+        $page = $this->pageRepository
             ->searchUrl($url)
             ->published()
             ->firstOrFail();
+
+       
+
+        return $page;
     }
 }
