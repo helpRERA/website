@@ -5,13 +5,35 @@ import logoUrl from '../../../../public/imge/logonew.svg';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
-// ---- Added: dd-mm-yyyy display wrapper around native <input type="date"> ----
+
+
+const MONTH_NAMES = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
+];
+
+function ordinalDay(n: number): string {
+  const s = ['th', 'st', 'nd', 'rd'];
+  const v = n % 100;
+  return `${n}${s[(v - 20) % 10] || s[v] || s[0]}`;
+}
+
+
+function buildIsoFromParts(day: string, month: string, year: string): string {
+  const dayNum = parseInt(day, 10);
+  const monthIndex = MONTH_NAMES.findIndex(
+    (m) => m.toLowerCase() === month.trim().toLowerCase()
+  );
+  if (isNaN(dayNum) || monthIndex === -1 || !year.trim()) return '';
+  return `${year}-${String(monthIndex + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
+}
+
 function DateFieldDDMMYYYY({
   value,
   onChange,
   onFocus,
 }: {
-  value: string; // stored as yyyy-mm-dd
+  value: string;
   onChange: (v: string) => void;
   onFocus?: () => void;
 }) {
@@ -78,7 +100,7 @@ interface FormPanelProps {
 }
 
 export default function FormPanel({ activeStep, setActiveStep, data, updateField, updateNestedField, resetData, resetFields, setActiveField, onSave, isSaving, isSaved }: FormPanelProps) {
- console.log('FormPanel received data.landSurveyNos:', data.landSurveyNos);
+  console.log('FormPanel received data.landSurveyNos:', data.landSurveyNos);
   const steps = [
     { id: 0, label: 'Execution' },
     { id: 1, label: 'Promoter' },
@@ -150,10 +172,10 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
     0: ['dateDay', 'dateMonth', 'dateYear', 'executionPlace'],
     1: ['promoterType', 'promoterCompany', 'promoterPartnership', 'promoterIndividual'],
     2: ['allotteeType', 'allotteeCompany', 'allotteePartnership', 'allotteeIndividual', 'allotteeHuf', 'jointAllottees'],
-    3: ['landSurveyNos', 'landAdmeasuring', 'landSituatedAt', 'landTehsilDistrict', 'landTitleDeedDate', 'landTitleDeedRegNo', 'landOwnershipType', 'landJDA', 'projectType', 'projectBuildingType', 'projectComprising', 'projectName', 'projectOtherComponents', 'plotOtherComponents', 'basementLocation'],
+    3: ['landSurveyNos', 'landAdmeasuring', 'landSituatedAt', 'landTehsilDistrict', 'landTitleDeedDate', 'landTitleDeedRegNo', 'landDeedType', 'landDeedSubRegistrarOffice', 'landOwnershipType', 'landJDA', 'projectType', 'projectBuildingType', 'projectComprising', 'projectName', 'projectOtherComponents', 'plotOtherComponents', 'basementLocation'],
     4: ['commencementAuthority', 'commencementNo', 'commencementDate', 'layoutAuthority', 'reraRegNo', 'reraRegDate', 'maintenanceClauses', 'facilitiesOutsideProject', 'competentAuthorityForDeclaration', 'relevantStateAct'],
     5: ['applicationNo', 'applicationDate', 'apartmentType', 'unitNo', 'unitFloor', 'unitTower', 'unitCarpetArea', 'plotNo', 'plotArea', 'garageDetails', 'ratePerSqFt', 'totalPrice', 'totalPriceWords', 'bookingAmount', 'bookingAmountWords', 'paymentFavourOf', 'paymentPayableAt', 'priceBreakdown', 'plotPricing'],
-    6: ['earlyPaymentRebate', 'delayInterestRate', 'possessionTargetMonth', 'gracePeriodDays', 'defaultConsecutiveDemands', 'defaultConsecutiveMonths', 'prescribedByLaws', 'additionalTerms', 'additionalDisclosures', 'paymentPlan'],
+    6: ['earlyPaymentRebate', 'delayInterestRate', 'possessionTargetMonth', 'gracePeriodDays', 'defaultConsecutiveDemands', 'defaultConsecutiveMonths', 'prescribedByLaws', 'additionalTerms', 'additionalDisclosures', 'paymentPlan', 'placeOfExecution', 'placeOfDeemedExecution'],
     7: ['witnesses', 'apartmentOwnershipAct'],
     8: ['scheduleA', 'scheduleB', 'scheduleC', 'scheduleD'],
   };
@@ -335,6 +357,8 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
         tehsilDistrict: '',
         titleDeedDate: '',
         titleDeedRegNo: '',
+        deedType: '',
+        deedSubRegistrarOffice: '',
         jdaDate: '',
         regNo: '',
         subRegistrarOffice: '',
@@ -454,34 +478,26 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 placeholder="e.g. Thiruvananthapuram"
               />
             </div>
-            <div className="form-group row-3">
-              <div>
-                <label>Day of Month</label>
-                <input
-                  type="text"
-                  value={data.dateDay}
-                  onFocus={() => setActiveField('dateDay')} onChange={(e) => updateField('dateDay', e.target.value.replace(/[^a-zA-Z0-9]/g, ''))}
-                  placeholder="e.g. 23rd"
-                />
-              </div>
-              <div>
-                <label>Month</label>
-                <input
-                  type="text"
-                  value={data.dateMonth}
-                  onFocus={() => setActiveField('dateMonth')} onChange={(e) => updateField('dateMonth', e.target.value.replace(/[^a-zA-Z0-9]/g, ''))}
-                  placeholder="e.g. June"
-                />
-              </div>
-              <div>
-                <label>Year</label>
-                <input
-                  type="text"
-                  value={data.dateYear}
-                  onFocus={() => setActiveField('dateYear')} onChange={(e) => updateField('dateYear', e.target.value.replace(/[^a-zA-Z0-9]/g, ''))}
-                  placeholder="e.g. 2026"
-                />
-              </div>
+            <div className="form-group">
+              <label>Execution Date</label>
+              <DateFieldDDMMYYYY
+                value={buildIsoFromParts(data.dateDay, data.dateMonth, data.dateYear)}
+                onFocus={() => setActiveField('dateDay')}
+                onChange={(v) => {
+                  if (!v) {
+                    updateField('dateDay', '');
+                    updateField('dateMonth', '');
+                    updateField('dateYear', '');
+                    return;
+                  }
+                  const [y, m, d] = v.split('-');
+                  const dayNum = parseInt(d, 10);
+                  const monthIndex = parseInt(m, 10) - 1;
+                  updateField('dateDay', ordinalDay(dayNum));
+                  updateField('dateMonth', MONTH_NAMES[monthIndex]);
+                  updateField('dateYear', y);
+                }}
+              />
             </div>
           </div>
         )}
@@ -790,6 +806,8 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                       updateField('landTehsilDistrict', '');
                       updateField('landTitleDeedDate', '');
                       updateField('landTitleDeedRegNo', '');
+                      updateField('landDeedType', '');
+                      updateField('landDeedSubRegistrarOffice', '');
                       updateField('landOwnershipType', 'developer');
                     }
                   }}
@@ -845,13 +863,33 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 </div>
                 <div className="form-group row-2">
                   <div>
-                    <label>Title Deed Date</label>
+                    <label>Type of Deed</label>
+                    <select
+                      value={data.landDeedType}
+                      onFocus={() => setActiveField('landDeedType')}
+                      onChange={(e) => updateField('landDeedType', e.target.value)}
+                    >
+                      <option value="">Select type</option>
+                      <option value="Sale Deed">Sale Deed</option>
+                      <option value="Gift Deed">Gift Deed</option>
+                      <option value="Lease Deed">Lease Deed</option>
+                      <option value="Settlement Deed">Settlement Deed</option>
+                      <option value="Partition Deed">Partition Deed</option>
+                      <option value="Exchange Deed">Exchange Deed</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label> Deed Date</label>
                     <DateFieldDDMMYYYY
                       value={data.landTitleDeedDate}
                       onFocus={() => setActiveField('landTitleDeedDate')}
                       onChange={(v) => updateField('landTitleDeedDate', v)}
                     />
                   </div>
+                </div>
+
+                <div className="form-group row-2">
+
                   <div>
                     <label>Document No.</label>
                     <input
@@ -860,6 +898,15 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                       onFocus={() => setActiveField('landTitleDeedRegNo')} onChange={(e) => updateField('landTitleDeedRegNo', e.target.value)}
                     />
                   </div>
+                </div>
+                <div className="form-group">
+                  <label>Sub-Registrar Office where registered</label>
+                  <input
+                    type="text"
+                    value={data.landDeedSubRegistrarOffice}
+                    onFocus={() => setActiveField('landDeedSubRegistrarOffice')}
+                    onChange={(e) => updateField('landDeedSubRegistrarOffice', e.target.value)}
+                  />
                 </div>
               </>
             )}
@@ -945,9 +992,27 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                           </div>
                         </div>
 
+                        <div className="form-group">
+                          <label style={{ fontSize: '0.7rem' }}>Type of Deed</label>
+                          <select
+                            style={{ padding: '0.35rem' }}
+                            value={jda.deedType}
+                            onFocus={() => setActiveField('landJDA')}
+                            onChange={(e) => updateJDA(jda.id, 'deedType', e.target.value)}
+                          >
+                            <option value="">Select type</option>
+                            <option value="Sale Deed">Sale Deed</option>
+                            <option value="Gift Deed">Gift Deed</option>
+                            <option value="Lease Deed">Lease Deed</option>
+                            <option value="Settlement Deed">Settlement Deed</option>
+                            <option value="Partition Deed">Partition Deed</option>
+                            <option value="Exchange Deed">Exchange Deed</option>
+                          </select>
+                        </div>
+
                         <div className="form-group row-2">
                           <div>
-                            <label style={{ fontSize: '0.7rem' }}>Title Deed Date</label>
+                            <label style={{ fontSize: '0.7rem' }}> Deed Date</label>
                             <DateFieldDDMMYYYY
                               value={jda.titleDeedDate}
                               onFocus={() => setActiveField('landJDA')}
@@ -963,6 +1028,18 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                               onFocus={() => setActiveField('landJDA')} onChange={(e) => updateJDA(jda.id, 'titleDeedRegNo', e.target.value)}
                             />
                           </div>
+                        </div>
+
+
+                        <div className="form-group">
+                          <label style={{ fontSize: '0.7rem' }}>Sub-Registrar Office where deed registered</label>
+                          <input
+                            style={{ padding: '0.35rem' }}
+                            type="text"
+                            value={jda.deedSubRegistrarOffice}
+                            onFocus={() => setActiveField('landJDA')}
+                            onChange={(e) => updateJDA(jda.id, 'deedSubRegistrarOffice', e.target.value)}
+                          />
                         </div>
 
                         <div className="form-group row-2">
@@ -984,6 +1061,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                             />
                           </div>
                         </div>
+
 
 
                         <div className="form-group">
@@ -1295,7 +1373,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             <div className="form-group row-2">
 
               <div>
-                <label>Total Price (Rs)</label> 
+                <label>Total Price (Rs)</label>
                 <input
                   type="text"
                   value={data.totalPrice}
@@ -1565,31 +1643,43 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 placeholder="e.g. State Government"
               />
             </div>
-
-            {/* <div className="form-group row-2">
+            <h3 className="section-title">Possession of the Apartment/Plot(Term 7)</h3>
+            <div className="form-group row-2">
               <div>
-                <label>Target Possession Month</label>
-                <input
-                  type="text"
+                <label>Target Possession Date</label>
+                <DateFieldDDMMYYYY
                   value={data.possessionTargetMonth}
-                  onFocus={() => setActiveField('possessionTargetMonth')} onChange={(e) => updateField('possessionTargetMonth', e.target.value)}
-                  placeholder="e.g. December 2027"
+                  onFocus={() => setActiveField('possessionTargetMonth')}
+                  onChange={(v) => updateField('possessionTargetMonth', v)}
                 />
               </div>
               <div>
                 <label>Grace Period (Days)</label>
                 <input
                   type="number"
+                  min={1}
+                  max={90}
                   value={data.gracePeriodDays}
-                  onFocus={() => setActiveField('gracePeriodDays')} onChange={(e) => updateField('gracePeriodDays', e.target.value)}
+                  onFocus={() => setActiveField('gracePeriodDays')}
+                  onChange={(e) => {
+                    const raw = e.target.value;
+                    if (raw === '') {
+                      updateField('gracePeriodDays', '');
+                      return;
+                    }
+                    const num = parseInt(raw, 10);
+                    if (isNaN(num)) return;
+                    const clamped = Math.min(90, Math.max(1, num));
+                    updateField('gracePeriodDays', clamped.toString());
+                  }}
                 />
-              </div> 
-            </div> */}
+              </div>
+            </div>
 
-            {/* <h3 className="section-title" style={{ marginTop: '1rem' }}>Default Conditions</h3>
+            <h3 className="section-title" style={{ marginTop: '1rem' }}>Default Conditions (Term 9)</h3>
             <div className="form-group row-2">
               <div>
-                <label>Consecutive unpaid demands (Count)</label>
+                <label>Number of Consecutive Payment Defaults</label>
                 <input
                   type="text"
                   value={data.defaultConsecutiveDemands}
@@ -1598,7 +1688,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 />
               </div>
               <div>
-                <label>Consecutive unpaid months (Count)</label>
+                <label>Number of Consecutive Months of Continuing Default</label>
                 <input
                   type="text"
                   value={data.defaultConsecutiveMonths}
@@ -1606,7 +1696,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                   placeholder="e.g. three"
                 />
               </div>
-            </div> */}
+            </div>
 
 
             <h3 className="section-title" style={{ marginTop: '1rem' }}>Maintenance Clauses (Term 11)</h3>
@@ -1621,11 +1711,11 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             </div>
 
 
-            <h3 className="section-title" style={{ marginTop: '1rem' }}>State Legislation References (Term 15)</h3>
+            <h3 className="section-title" style={{ marginTop: '1rem' }}>Term 15</h3>
 
             <div className="form-group row-1">
               <div>
-                <label>Basement and Service Areas Location</label>
+                <label>Project name</label>
                 <input
                   type="text"
                   value={data.basementLocation}
@@ -1644,6 +1734,32 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 />
               </div>
             </div> */}
+
+
+            <h3 className="section-title" style={{ marginTop: '1rem' }}>Term 29</h3>
+
+            <div className="form-group row-2" style={{ marginTop: '0.5rem' }}>
+              <div>
+                <label>Place of Execution</label>
+                <input
+                  type="text"
+                  value={data.placeOfExecution}
+                  onFocus={() => setActiveField('placeOfExecution')}
+                  onChange={(e) => updateField('placeOfExecution', e.target.value)}
+                  placeholder="e.g. Thiruvananthapuram"
+                />
+              </div>
+              <div>
+                <label>Place of Deemed Execution</label>
+                <input
+                  type="text"
+                  value={data.placeOfDeemedExecution}
+                  onFocus={() => setActiveField('placeOfDeemedExecution')}
+                  onChange={(e) => updateField('placeOfDeemedExecution', e.target.value)}
+                  placeholder="e.g. Thiruvananthapuram"
+                />
+              </div>
+            </div>
 
             <h3 className="section-title" style={{ marginTop: '1rem' }}>Additional Terms (Term 33)</h3>
 

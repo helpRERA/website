@@ -66,6 +66,8 @@ class AgreementForSaleController extends Controller
             'land_admeasuring' => $request->input('landAdmeasuring'),
             'land_situated_at' => $request->input('landSituatedAt'),
             'land_tehsil_district' => $request->input('landTehsilDistrict'),
+            'land_deed_type' => $request->input('landDeedType'),
+            'land_deed_sub_registrar_office' => $request->input('landDeedSubRegistrarOffice'),
             'land_title_deed_regno' => $request->input('landTitleDeedRegNo'),
             'land_title_deed_date' => $request->input('landTitleDeedDate'),
             'land_ownership_type' => $request->input('landOwnershipType'),
@@ -102,6 +104,10 @@ class AgreementForSaleController extends Controller
             'maintenance_clauses' => $request->input('maintenanceClauses'),
             'basement_location' => $request->input('basementLocation'),
             'additional_terms' => $request->input('additionalTerms'),
+            'default_consecutive_demands' => $request->input('defaultConsecutiveDemands'),
+            'default_consecutive_months' => $request->input('defaultConsecutiveMonths'),
+            'place_of_execution' => $request->input('placeOfExecution'),              
+            'place_of_deemed_execution' => $request->input('placeOfDeemedExecution'), 
             'schedule_a' => $request->input('scheduleA'),
             'schedule_b' => $request->input('scheduleB'),
             'schedule_c' => $request->input('scheduleC'),
@@ -205,6 +211,8 @@ class AgreementForSaleController extends Controller
                         'location' => $jda['situatedAt'] ?? null,
                         'district' => $jda['tehsilDistrict'] ?? null,
                         'title_deed_date' => $jda['titleDeedDate'] ?? null,
+                        'deed_type' => $jda['deedType'] ?? null,
+                        'deed_sub_registrar_office' => $jda['deedSubRegistrarOffice'] ?? null,
                         'additional_details' => $jda['additionalDetails'] ?? null,
 
                     ]);
@@ -408,6 +416,8 @@ class AgreementForSaleController extends Controller
                     'location' => $jda['situatedAt'] ?? null,
                     'district' => $jda['tehsilDistrict'] ?? null,
                     'title_deed_date' => $jda['titleDeedDate'] ?? null,
+                    'deed_type' => $jda['deedType'] ?? null,   
+                    'deed_sub_registrar_office' => $jda['deedSubRegistrarOffice'] ?? null,
                     'additional_details' => $jda['additionalDetails'] ?? null,
                 ]);
             }

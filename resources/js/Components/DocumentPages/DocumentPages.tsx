@@ -23,6 +23,19 @@ const SpanVal: React.FC<SpanValProps> = ({ val, fallback = '', fieldKey }) => {
   );
 };
 
+const BlankLine: React.FC<{ width?: string }> = ({ width = '110px' }) => (
+  <span
+    style={{
+       display: 'inline-block',
+      width,
+      borderBottom: '1px dashed #c2952b',
+      height: '1em',
+      verticalAlign: 'middle',
+      margin: '0 2px',
+    }}
+  />
+);
+
 interface DocumentPagesProps {
   data: AgreementData;
   activeField?: string | null;
@@ -35,14 +48,14 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
     promoterType, promoterCompany, promoterPartnership, promoterIndividual,
     allotteeType, allotteeCompany, allotteePartnership, allotteeIndividual, allotteeHuf,
     jointAllottees,
-    landSurveyNos, landAdmeasuring, landSituatedAt, landTehsilDistrict, landOwnershipType, landJDA,
+    landSurveyNos, landAdmeasuring, landSituatedAt, landTehsilDistrict,landDeedType, landDeedSubRegistrarOffice, landOwnershipType, landJDA,
     projectType, projectBuildingType, projectComprising, projectName, projectOtherComponents, plotOtherComponents,
     commencementAuthority, commencementNo, commencementDate, layoutAuthority, reraRegNo, reraRegDate,
     unitNo, unitFloor, unitTower, unitCarpetArea, garageDetails, plotNo, plotArea,
     ratePerSqFt, totalPrice, totalPriceWords, priceBreakdown, paymentPlan,
     earlyPaymentRebate, delayInterestRate, possessionTargetMonth, gracePeriodDays,
     relevantStateAct, apartmentOwnershipAct, witnesses,
-    landTitleDeedDate, landTitleDeedRegNo, basementLocation,
+    landTitleDeedDate, landTitleDeedRegNo, basementLocation, placeOfExecution, placeOfDeemedExecution,
     applicationNo, applicationDate, apartmentType,
     bookingAmount, bookingAmountWords, paymentFavourOf, paymentPayableAt,
     maintenanceClauses,
@@ -163,7 +176,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title" style={{ marginTop: '1rem' }}>WHEREAS:</p>
           <div className="indent-1">
-            A. The Promoter is the absolute and lawful owner of (survey Nos.) (Please insert land details as per local laws). <SpanVal val={landSurveyNos} fieldKey="landSurveyNos" /> totally admeasuring <SpanVal val={landAdmeasuring} fieldKey="landAdmeasuring" /> square meters situated at <SpanVal val={landSituatedAt} fieldKey="landSituatedAt" /> in Tehsil & District <SpanVal val={landTehsilDistrict} fieldKey="landTehsilDistrict" /> ("Said Land") vide sale deed(s) dated <SpanVal val={formatDateDMY(landTitleDeedDate)} fieldKey="landTitleDeedDate" /> registered as documents No. <SpanVal val={landTitleDeedRegNo} fieldKey="landTitleDeedRegNo" /> at the office of the Sub-Registrar;
+           A. The Promoter is the absolute and lawful owner of (survey Nos.) (Please insert land details as per local laws). <SpanVal val={landSurveyNos} fieldKey="landSurveyNos" /> totally admeasuring <SpanVal val={landAdmeasuring} fieldKey="landAdmeasuring" /> square meters situated at <SpanVal val={landSituatedAt} fieldKey="landSituatedAt" /> in Tehsil & District <SpanVal val={landTehsilDistrict} fieldKey="landTehsilDistrict" /> ("Said Land") vide <SpanVal val={landDeedType ? landDeedType.toLowerCase() + '(s)' : ''} fallback="sale deed(s)" fieldKey="landDeedType" /> dated <SpanVal val={formatDateDMY(landTitleDeedDate)} fieldKey="landTitleDeedDate" /> registered as documents No. <SpanVal val={landTitleDeedRegNo} fieldKey="landTitleDeedRegNo" /> at the office of the Sub-Registrar<SpanVal val={landDeedSubRegistrarOffice ? ` ${landDeedSubRegistrarOffice}` : ''} fieldKey="landDeedSubRegistrarOffice" />;
           </div>
 
           {landOwnershipType === 'developer' && landJDA.length > 0 && (
@@ -178,7 +191,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
                 </p>
               )}
               <div style={{ paddingLeft: '2rem', marginBottom: 0 }}>
-                <SpanVal val={jda.ownerName} fieldKey="landJDA" /> ("Owner") is the absolute and lawful owner of (khasra Nos./survey Nos.) <SpanVal val={jda.surveyNos} fieldKey="landJDA" /> totally admeasuring <SpanVal val={jda.admeasuring} fieldKey="landJDA" /> square meters situated at <SpanVal val={jda.situatedAt} fieldKey="landJDA" /> in Tehsil & District <SpanVal val={jda.tehsilDistrict} fieldKey="landJDA" /> vide sale deed(s) dated <SpanVal val={formatDateDMY(jda.titleDeedDate)} fieldKey="landJDA" /> registered as documents No. <SpanVal val={jda.titleDeedRegNo} fieldKey="landJDA" /> at the office of the Sub-Registrar. The Owner and the Promoter have entered into a (collaboration/development/joint development) agreement dated <SpanVal val={formatDateDMY(jda.jdaDate)} fieldKey="landJDA" /> registered as document No. <SpanVal val={jda.regNo} fieldKey="landJDA" /> at the office of the Sub-Registrar <SpanVal val={jda.subRegistrarOffice} fieldKey="landJDA" />{jda.additionalDetails ? ` ` : ''}{jda.additionalDetails ? <SpanVal val={jda.additionalDetails} fieldKey="landJDA" /> : ''};
+                <SpanVal val={jda.ownerName} fieldKey="landJDA" /> ("Owner") is the absolute and lawful owner of (khasra Nos./survey Nos.) <SpanVal val={jda.surveyNos} fieldKey="landJDA" /> totally admeasuring <SpanVal val={jda.admeasuring} fieldKey="landJDA" /> square meters situated at <SpanVal val={jda.situatedAt} fieldKey="landJDA" /> in Tehsil & District <SpanVal val={jda.tehsilDistrict} fieldKey="landJDA" /> vide <SpanVal val={jda.deedType ? jda.deedType.toLowerCase() + '(s)' : ''} fallback="sale deed(s)" fieldKey="landJDA" /> dated <SpanVal val={formatDateDMY(jda.titleDeedDate)} fieldKey="landJDA" /> registered as documents No. <SpanVal val={jda.titleDeedRegNo} fieldKey="landJDA" /> at the office of the Sub-Registrar<SpanVal val={jda.deedSubRegistrarOffice ? `, ${jda.deedSubRegistrarOffice}` : ''} fieldKey="landJDA" />. The Owner and the Promoter have entered into a (collaboration/development/joint development) agreement dated <SpanVal val={formatDateDMY(jda.jdaDate)} fieldKey="landJDA" /> registered as document No. <SpanVal val={jda.regNo} fieldKey="landJDA" /> at the office of the Sub-Registrar <SpanVal val={jda.subRegistrarOffice} fieldKey="landJDA" />{jda.additionalDetails ? ` ` : ''}{jda.additionalDetails ? <SpanVal val={jda.additionalDetails} fieldKey="landJDA" /> : ''};
               </div>
             </div>
           ))}
@@ -212,13 +225,12 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
             E. The Promoter has obtained the final layout plan approvals for the Project from <SpanVal val={layoutAuthority} fieldKey="layoutAuthority" />. The Promoter agrees and undertakes that it shall not make any changes to these layout plans except in strict compliance with section 14 of the Act and other laws as applicable;
           </div>
 
-          <div className="indent-1" style={{ marginTop: '1rem' }}>
-            F. The Promoter has registered the Project under the provisions of the Act with the Real Estate Regulatory Authority at <SpanVal val={executionPlace} fieldKey="executionPlace" /> on <SpanVal val={reraRegDate} fieldKey="reraRegDate" /> under the registration No. <SpanVal val={reraRegNo} fieldKey="reraRegNo" />;
+         <div className="indent-1" style={{ marginTop: '1rem' }}>
+            F. The Promoter has registered the Project under the provisions of the Act with the Real Estate Regulatory Authority at <BlankLine /> on <SpanVal val={reraRegDate} fieldKey="reraRegDate" /> under the registration No. <SpanVal val={reraRegNo} fieldKey="reraRegNo" />;
           </div>
-
           {projectType !== 'plotted' ? (
             <div className="indent-1">
-              G. The Allottee had applied for an apartment in the Project vide application No. <SpanVal val={applicationNo} fieldKey="applicationNo" /> dated <SpanVal val={applicationDate} fieldKey="applicationDate" /> and has been allotted apartment No. <SpanVal val={unitNo} fieldKey="unitNo" /> having carpet area of <SpanVal val={unitCarpetArea} fieldKey="unitCarpetArea" /> square feet, type <SpanVal val={apartmentType} fieldKey="apartmentType" /> on <SpanVal val={unitFloor} fieldKey="unitFloor" /> floor in <SpanVal val={unitTower} fieldKey="unitTower" /> ("Building") along with garage/closed parking No. <SpanVal val={garageDetails[0]?.no || ''} fieldKey="garageNo" /> admeasuring <SpanVal val={garageDetails[0]?.area || ''} fieldKey="garageArea" /> square feet in the <SpanVal val={projectName} fieldKey="projectName" /> as permissible under the applicable law and of <i>pro rata</i> share in the common areas ("Common Areas") as defined under clause (n) of Section 2 of the Act (hereinafter referred to as the "Apartment" more particularly described in Schedule A and the floor plan of the apartment is annexed hereto and marked as Schedule B);
+              G. The Allottee had applied for an apartment in the Project vide application No. <SpanVal val={applicationNo} fieldKey="applicationNo" /> dated <SpanVal val={applicationDate} fieldKey="applicationDate" /> and has been allotted apartment No. <SpanVal val={unitNo} fieldKey="unitNo" /> having carpet area of <SpanVal val={unitCarpetArea} fieldKey="unitCarpetArea" /> square feet, type <SpanVal val={apartmentType} fieldKey="apartmentType" /> on <SpanVal val={unitFloor} fieldKey="unitFloor" /> floor in <SpanVal val={unitTower} fieldKey="unitTower" /> ("Building") along with garage/closed parking No. <SpanVal val={garageDetails[0]?.no || ''} fieldKey="garageNo" /> admeasuring <SpanVal val={garageDetails[0]?.area || ''} fieldKey="garageArea" /> square feet in the <BlankLine /> as permissible under the applicable law and of <i>pro rata</i> share in the common areas ("Common Areas") as defined under clause (n) of Section 2 of the Act (hereinafter referred to as the "Apartment" more particularly described in Schedule A and the floor plan of the apartment is annexed hereto and marked as Schedule B);
             </div>
           ) : (
             <div style={{ border: '1.5px dashed var(--accent-gold)', padding: '0.5rem', borderRadius: '4px', marginBottom: '0.75rem' }}>
@@ -611,7 +623,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title">15. Usage:</p>
           <p style={{ textIndent: '2rem' }}>
-            Use of Basement and Service Areas.— The basement(s) and service areas, if any, as located within the <SpanVal val={basementLocation} fieldKey="basementLocation" /> shall be earmarked for purposes such as parking spaces and services including but not limited to electric sub-station, transformer, DG set rooms, underground water tanks, pump rooms, maintenance and service rooms, fire fighting pumps and equipment's etc. and other permitted uses as per sanctioned plans. The Allottee shall not be permitted to use the services areas and the basements in any manner whatsoever, other than those earmarked as parking spaces, and the same shall be reserved for use by the association of allottees formed by the Allottees for rendering maintenance services.
+            Use of Basement and Service Areas.— The basement(s) and service areas, if any, as located within the <SpanVal val={basementLocation} fieldKey="basementLocation" /> (Project name) shall be earmarked for purposes such as parking spaces and services including but not limited to electric sub-station, transformer, DG set rooms, underground water tanks, pump rooms, maintenance and service rooms, fire fighting pumps and equipment's etc. and other permitted uses as per sanctioned plans. The Allottee shall not be permitted to use the services areas and the basements in any manner whatsoever, other than those earmarked as parking spaces, and the same shall be reserved for use by the association of allottees formed by the Allottees for rendering maintenance services.
           </p>
 
           <p className="legal-section-title">16. General compliance with respect to the apartment:</p>
@@ -688,7 +700,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title">29. Place of execution:</p>
           <p style={{ textIndent: '2rem' }}>
-            The execution of this Agreement shall be complete only upon its execution by the Promoter through its authorized signatory at the Promoter's Office, or at some other place, which may be mutually agreed between the Promoter and the Allottee, in ------------- after the Agreement is duly executed by the Allottee and the Promoter or simultaneously with the execution the said Agreement shall be registered at the office of the Sub-Registrar. Hence this Agreement shall be deemed to have been executed at ------------.
+            The execution of this Agreement shall be complete only upon its execution by the Promoter through its authorized signatory at the Promoter's Office, or at some other place, which may be mutually agreed between the Promoter and the Allottee, in <SpanVal val={placeOfExecution} fieldKey="placeOfExecution" /> after the Agreement is duly executed by the Allottee and the Promoter or simultaneously with the execution the said Agreement shall be registered at the office of the Sub-Registrar. Hence this Agreement shall be deemed to have been executed at <SpanVal val={placeOfDeemedExecution} fieldKey="placeOfDeemedExecution" />.
           </p>
 
           <p className="legal-section-title">30. Notices:</p>

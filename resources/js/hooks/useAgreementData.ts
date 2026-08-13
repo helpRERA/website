@@ -91,6 +91,8 @@ export interface LandJDA {
   tehsilDistrict: string;
   titleDeedDate: string;
   titleDeedRegNo: string;
+  deedType: string;  
+  deedSubRegistrarOffice: string;  
   jdaDate: string;
   regNo: string;
   subRegistrarOffice: string;
@@ -168,6 +170,8 @@ export interface AgreementData {
   landTehsilDistrict: string;
   landTitleDeedDate: string;
   landTitleDeedRegNo: string;
+  landDeedType:string;
+  landDeedSubRegistrarOffice: string; 
   landOwnershipType: 'owner' | 'developer';
   landJDA: LandJDA[];
   projectType: 'commercial' | 'residential' | 'plotted' | 'other';
@@ -177,6 +181,8 @@ export interface AgreementData {
   projectOtherComponents: string;
   plotOtherComponents: string;
   basementLocation: string;
+  placeOfExecution: string;          
+  placeOfDeemedExecution: string;
 
   // Approvals
   commencementAuthority: string;
@@ -318,6 +324,8 @@ const initialData: AgreementData = {
   landTehsilDistrict: '',
   landTitleDeedDate: '',
   landTitleDeedRegNo: '',
+  landDeedType: '',
+  landDeedSubRegistrarOffice: '',
   landOwnershipType: 'owner',
   landJDA: [],
   projectType: 'commercial',
@@ -327,6 +335,8 @@ const initialData: AgreementData = {
   projectOtherComponents: '',
   plotOtherComponents: '',
   basementLocation: '',
+  placeOfExecution: '',             
+  placeOfDeemedExecution: '', 
 
   commencementAuthority: '',
   commencementNo: '',
