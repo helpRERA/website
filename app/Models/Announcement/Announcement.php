@@ -70,6 +70,7 @@ class Announcement extends Model
         'sub_type',
         'published',
         'ticker',
+        'is_new',
         'created_by',
         'updated_by',
         'deleted_at,'

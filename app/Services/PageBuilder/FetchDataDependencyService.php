@@ -13,8 +13,15 @@ use App\Repository\Locality\DistrictRepository;
 use App\Services\Complaints\ComplaintListQuery;
 use App\Services\Project\ProjectListService;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
+use App\Actions\Property\PropertySearch;
+use App\Services\Locality\LocalityListService;
+use Illuminate\Support\Facades\Crypt;
+
+use Illuminate\Support\Facades\App;
+
 
 class FetchDataDependencyService
 {
@@ -119,5 +126,61 @@ class FetchDataDependencyService
         } catch (\Exception $e) {
             return 0;
         }
+    }
+
+    public function browseProjects(): SupportCollection
+    {
+        try {
+            $propertySearch = App::make(PropertySearch::class);
+            $result = $propertySearch->search([
+                'sort_by' => 'certificatePID',
+                'sort_order' => 'desc',
+                'per_page' => 8,
+            ]);
+
+            $projects = collect($result->items ?? $result->getCollection());
+
+            //dd($projects->first()->getRelations());
+
+            return $projects->map(fn($p) => [
+                'ID' => $p->ID,
+                'Name' => $p->Name,
+                'DistrictName' => $p->district->Districtname ?? '',
+                'Area' => $p->Area,
+                'ImageId' => $p->images[0]->ID ?? null,
+                'CertificateNo' => $p->certificateInfo->CertificateNo ?? null,
+                'certificatePID' => $p->certificatePID,
+                'NumberOfResidentialUnits' => $p->NumberOfResidentialUnits,
+                'NumberOfCommercialUnits' => $p->NumberOfCommercialUnits,
+                'apartment_count' => (int) $p->apartment_count,
+                'booked_count' => (int) $p->booked_count,
+            ]);
+        } catch (\Exception $e) {
+            return collect();
+        }
+    }
+
+
+    public function districtList(): SupportCollection
+    {
+        try {
+            $service = app(LocalityListService::class);
+            $districts = collect($service->getDistricts());
+
+            return $districts->map(function ($d) {
+                return [
+                    'Districtcode' => $this->encodeDistrictToken($d->Districtcode ?? $d['Districtcode']),
+                    'Districtname' => $d->Districtname ?? $d['Districtname'],
+                ];
+            });
+        } catch (\Exception $e) {
+            return collect();
+        }
+    }
+
+    private function encodeDistrictToken($code): string
+    {
+        $encrypted = Crypt::encryptString((string) $code);
+        return rtrim(strtr($encrypted, '+/', '-_'), '=');
     }
 }

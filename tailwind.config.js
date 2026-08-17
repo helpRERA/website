@@ -20,6 +20,15 @@ module.exports = {
         urbanist: ['Urbanist', ...defaultTheme.fontFamily.sans],
         inter: ['Inter'],
       },
+       keyframes: {
+        blink: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.3' },
+        },
+      },
+      animation: {
+        blink: 'blink 1.2s ease-in-out infinite',
+      },
       colors: {
         primary: {
           50: '#f0f8ff',
@@ -147,6 +156,7 @@ module.exports = {
       },
     },
   },
+   
 
   plugins: [require('@tailwindcss/forms')],
 }

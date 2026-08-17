@@ -40,6 +40,7 @@ export interface Announcement extends Model {
   description_malayalam: string | null
   documents?: AnnouncementFile[]
   tags?: AnnouncementTag[]
+  is_new: number
 }
 
 export interface AnnouncementTag extends Model {

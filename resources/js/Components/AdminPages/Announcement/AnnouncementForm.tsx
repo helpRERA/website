@@ -16,6 +16,7 @@ export interface AnnouncementFormFields {
   sub_type: string
   published: boolean
   ticker: boolean
+  is_new: boolean
 }
 
 interface Properties<T> {
@@ -110,6 +111,13 @@ export default function AnnouncementForm({
           label='Publish to Ticker'
           data={form.ticker}
           toggle={toggleBoolean('ticker')}
+        />
+      </div>
+      <div className='flex flex-col md:col-start-1 md:row-start-8'>
+        <CheckBox
+          label='Mark as New'
+          data={form.is_new}
+          toggle={toggleBoolean('is_new')}
         />
       </div>
     </div>

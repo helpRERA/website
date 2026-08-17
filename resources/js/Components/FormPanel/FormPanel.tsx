@@ -1643,7 +1643,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 placeholder="e.g. State Government"
               />
             </div>
-            <h3 className="section-title">Possession of the Apartment/Plot(Term 7)</h3>
+            <h3 className="section-title">Possession of the Apartment/Plot (Term 7)</h3>
             <div className="form-group row-2">
               <div>
                 <label>Target Possession Date</label>

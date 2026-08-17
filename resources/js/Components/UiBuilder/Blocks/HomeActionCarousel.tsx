@@ -161,10 +161,10 @@ const ActionCarousel = ({ editMode, language, blockData, onFieldEdit, dispatch }
             </div>
 
             <div className="flex flex-col gap-3 mt-auto">
-              <a href="#" className="bg-white text-[#095b8d] font-medium text-[15px] py-3 px-4 rounded-[8px] text-center hover:bg-gray-100 transition-colors">
+              <a href="https://reraonline.kerala.gov.in/" className="bg-white text-[#095b8d] font-medium text-[15px] py-3 px-4 rounded-[8px] text-center hover:bg-gray-100 transition-colors" target="_blank" rel="noopener noreferrer">
                 Login
               </a>
-              <a href="#" className="bg-transparent border border-white text-white font-medium text-[15px] py-3 px-4 rounded-[8px] text-center hover:bg-white hover:bg-opacity-10 transition-colors">
+              <a href="https://reraonline.kerala.gov.in/Login/UserRegistration" className="bg-transparent border border-white text-white font-medium text-[15px] py-3 px-4 rounded-[8px] text-center hover:bg-white hover:bg-opacity-10 transition-colors" target="_blank" rel="noopener noreferrer">
                 Register
               </a>
             </div>

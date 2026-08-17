@@ -38,6 +38,7 @@ use App\Http\Controllers\Tags\TagController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UIBuilder\UIBuilderController;
 use App\Http\Controllers\UIBuilder\ViewBuilderPageController;
+use App\Http\Controllers\BrowseProjectsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -54,6 +55,10 @@ use Illuminate\Support\Facades\Route;
 //consumer pages
 Route::get('/', [ViewBuilderPageController::class, 'home'])->name('front-page');
 Route::get('/search-results', [SearchController::class, 'index']);
+
+
+
+Route::get('/browse-projects/{district}', [BrowseProjectsController::class, 'byDistrict']);
 
 Route::get('/explore-projects', [ExploreProjectController::class, 'index']);
 Route::get('/projects/{id}', [ExploreProjectController::class, 'details']);

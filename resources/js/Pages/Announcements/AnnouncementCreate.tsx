@@ -20,6 +20,7 @@ const AnnouncementCreate = () => {
     sub_type: '',
     published: false,
     ticker: false,
+    is_new: false,
   })
 
   const errors = usePage().props.errors as unknown as Record<

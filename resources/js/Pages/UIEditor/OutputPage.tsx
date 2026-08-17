@@ -4,6 +4,7 @@ import AppLayout from '../../Components/Layout/AppLayout/AppLayout'
 import {Page} from './../../DataStructures/ui_builder_interfaces'
 import {Language} from '../../ui/ui_interfaces'
 import {Album, Announcement, GalleryVideo} from '../../DataStructures/data_interfaces'
+import { ProjectListItem } from '../../Components/ExploreProject/ExploreProject'
 
 interface Properties {
   page: Page
@@ -21,6 +22,8 @@ export interface PageDataDependencies {
   latestVideos?: GalleryVideo[]
   announcementTicker?: Announcement[]
   complaintsCount?: number
+  browseProjects?: ProjectListItem[]
+  districtList?: { Districtcode: string | number; Districtname: string }[]
 }
 
 const OutputPage = ({page, lang = 'en', dependencies, currentDate}: Properties) => {

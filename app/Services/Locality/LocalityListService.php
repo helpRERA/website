@@ -30,6 +30,7 @@ class LocalityListService
             })
             ->whereNotNUll('Districtcode')
             ->select('Districtname', 'Districtcode')
+            //->orderBy('Districtname', 'ASC')
             ->get();
     }
 

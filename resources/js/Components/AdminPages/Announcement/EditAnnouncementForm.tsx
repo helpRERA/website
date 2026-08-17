@@ -22,6 +22,7 @@ const EditAnnouncementForm = ({ announcement }: Properties) => {
     sub_type: announcement.sub_type ?? '',
     published: announcement.published === 1,
     ticker: announcement.ticker === 1,
+    is_new: announcement.is_new === 1,
   })
 
   const errors = usePage().props.errors as unknown as Record<

@@ -141,7 +141,9 @@ const ResolveComponent = ({
         />
       )}
       {blockName === 'Browse Projects' && (
-        <BrowseProjects />
+        <BrowseProjects projects={dependencies?.browseProjects}
+         districts={dependencies?.districtList}
+        />
       )}
       {blockName === 'Action Carousel' && (
         <ActionCarousel

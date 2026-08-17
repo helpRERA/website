@@ -20,7 +20,10 @@ class ResolveDataService
         if (!isset($page->blocks)) {
             return $result;
         }
+
+       
         foreach ($page->blocks['blocks'] as $block) {
+      
             if (!isset($block['dependencies'])) {
                 continue;
             }
@@ -31,7 +34,7 @@ class ResolveDataService
             }
         }
 
-       // dd($result);
-        return $result;
+     
+        return $result; 
     }
 }
