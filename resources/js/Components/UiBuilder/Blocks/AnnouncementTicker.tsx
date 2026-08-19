@@ -48,8 +48,8 @@ const AnnouncementTicker = ({ language = 'en', announcements, blockData }: Prope
                   <span className='mr-2 h-1.5 w-1.5 rounded-full bg-[#0f2c59]'></span>
 
                   {announcement.is_new === 1 && (
-                    <span className='mx-2 px-3 py-1 text-[12px] font-normal bg-[#085484] text-white rounded-[4px] leading-none tracking-normal no-underline'>
-                      New
+                    <span className='mx-2 px-3 py-1 text-[12px] font-normal bg-[#b50e0f] text-white rounded-[4px] leading-none tracking-normal no-underline'>
+                      Important
                     </span>
                   )}
                   <Localization

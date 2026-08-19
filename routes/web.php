@@ -39,6 +39,7 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\UIBuilder\UIBuilderController;
 use App\Http\Controllers\UIBuilder\ViewBuilderPageController;
 use App\Http\Controllers\BrowseProjectsController;
+use App\Http\Controllers\FeeCalculatorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -87,6 +88,10 @@ Route::post('/schedules/upload', [AgreementForSaleController::class, 'uploadSche
 
 //global-search
 Route::get('/search', [GlobalSearchController::class, 'index']);
+
+//fee calculator 
+Route::get('/registration-fee-for-projects', [FeeCalculatorController::class, 'show'])->name('fee-calculator.show');
+
 
 //image download
 Route::get('/uploaded-images/{id}', [ExploreProjectController::class, 'imageDownload']);

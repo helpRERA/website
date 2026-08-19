@@ -17,6 +17,12 @@ class PropertySearch
      */
     private Builder $query;
 
+    private const SORTABLE_COLUMNS = [
+        'certificatePID' => 'certificateP.ID',
+        'Name' => 'tbl_Project.Name',
+        'ProposedDateOfCompletion' => 'tbl_Project.ProposedDateOfCompletion',
+    ];
+
     public function __construct(private ProjectMaster $projectMaster)
     {
         $this->query = $this->projectMaster->projectSearch();
@@ -67,11 +73,11 @@ class PropertySearch
     {
         if ($search != null) {
             $this->query->where(function (Builder $query) use ($search) {
-                $value = '%'.$search.'%';
+                $value = '%' . $search . '%';
                 $fullName = DB::raw("IndivisualName + ' ' + IndivisualMName + ' ' + IndivisualLName");
                 $query->whereHas(
                     'certificateInfo',
-                    fn ($builder) => $builder->where('CertificateNo', 'LIKE', '%'.$search.'%')
+                    fn($builder) => $builder->where('CertificateNo', 'LIKE', '%' . $search . '%')
                 )->orwhere('Locality', 'LIKE', $value)
                     ->orWhere('Name', 'LIKE', $value)
                     ->orWhereHas('district', function (Builder $query) use ($value) {
@@ -117,7 +123,7 @@ class PropertySearch
         if ($buildingType != null) {
             $this->query = $this->query->whereHas(
                 'apartments',
-                fn (Builder $query) => $query->where('ApartmentType', $buildingType)
+                fn(Builder $query) => $query->where('ApartmentType', $buildingType)
             );
         }
     }
@@ -185,9 +191,20 @@ class PropertySearch
         }
     }
 
+
+    // private function sort(string $sortOrder, string $sortBy): void
+    // {
+    //     $this->query->orderBy($sortBy, $sortOrder);
+    // }
+
+
+
     private function sort(string $sortOrder, string $sortBy): void
     {
-        $this->query->orderBy($sortBy, $sortOrder);
+        $column = self::SORTABLE_COLUMNS[$sortBy] ?? 'certificateP.ID';
+        $sortOrder = strtolower($sortOrder) === 'asc' ? 'asc' : 'desc';
+
+        $this->query->orderBy($column, $sortOrder);
     }
 
     private function searchVillage(?string $village): void

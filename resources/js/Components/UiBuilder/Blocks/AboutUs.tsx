@@ -1,3 +1,4 @@
+import { Link } from '@inertiajs/react'
 import React from 'react'
 import { Language } from '../../../ui/ui_interfaces'
 
@@ -44,14 +45,15 @@ const AboutUs = ({
               K-RERA provides verified information on real estate projects and agents in Kerala, making it easier for homebuyers to check project details, track progress, and raise complaints when needed. It promotes transparency and accountability across the real estate ecosystem.
             </p>
             <div>
-              <a href='#' className='inline-flex items-center gap-3 bg-[#095b8d] text-white rounded-full py-[10px] pl-6 pr-2 hover:bg-[#064268] transition-colors'>
+              
+              <Link href={'/about-k-rera'} className='inline-flex items-center gap-3 bg-[#095b8d] text-white rounded-full py-[10px] pl-6 pr-2 hover:bg-[#064268] transition-colors'>
                 <span className='text-[13px] font-medium'>Read More</span>
                 <div className='bg-white text-[#095b8d] rounded-full p-1.5'>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
                     <path fillRule="evenodd" d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z" clipRule="evenodd" />
                   </svg>
                 </div>
-              </a>
+              </Link>
             </div>
           </div>
         </div>

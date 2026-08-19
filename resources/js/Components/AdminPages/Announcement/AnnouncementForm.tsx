@@ -139,7 +139,7 @@ export default function AnnouncementForm({
           toggle={toggleBoolean('ticker')}
         />
         <CheckBox
-          label='Mark as New'
+          label='Mark as Important'
           data={form.is_new}
           toggle={toggleBoolean('is_new')}
         />
