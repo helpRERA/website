@@ -9,6 +9,8 @@ import useCustomForm from '../../hooks/useCustomForm'
 import Button from '../../ui/button/Button'
 import { router, usePage } from '@inertiajs/react'
 
+
+
 const AnnouncementCreate = () => {
   const { form, setFormValue, toggleBoolean } = useCustomForm<AnnouncementFormFields>({
     title: '',
@@ -21,6 +23,7 @@ const AnnouncementCreate = () => {
     published: false,
     ticker: false,
     is_new: false,
+    category:'',
   })
 
   const errors = usePage().props.errors as unknown as Record<

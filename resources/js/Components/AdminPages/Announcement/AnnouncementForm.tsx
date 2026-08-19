@@ -6,6 +6,16 @@ import SelectList from '../../../ui/form/SelectList'
 import useCascadedReferenceData from '../../../data_hooks/useCascadedReferenceData'
 import CheckBox from '../../../ui/form/CheckBox'
 
+
+
+export const ANNOUNCEMENT_CATEGORIES = [
+  { value_one: 'Project' },
+  { value_one: 'Promoters' },
+  { value_one: 'Agents' },
+  { value_one: 'Legal' },
+  { value_one: 'Others' },
+]
+
 export interface AnnouncementFormFields {
   title: string
   title_malayalam: string
@@ -17,6 +27,7 @@ export interface AnnouncementFormFields {
   published: boolean
   ticker: boolean
   is_new: boolean
+  category: string
 }
 
 interface Properties<T> {
@@ -33,10 +44,11 @@ export default function AnnouncementForm({
   errors,
 }: Properties<AnnouncementFormFields>) {
   const [types] = useReferenceValue('Announcement', 'Type')
+
   const [subTypes] = useCascadedReferenceData('Announcement', 'Sub Type', form.type)
 
   return (
-    <div className='my-10 grid grid-cols-1 gap-5 md:grid-cols-2'>
+    <div className='my-10 grid grid-cols-1 gap-x-8 gap-y-5 md:grid-cols-2'>
       <div className='flex flex-col'>
         <Input
           label='Announcement Title *'
@@ -53,6 +65,7 @@ export default function AnnouncementForm({
           error={errors.title_malayalam}
         />
       </div>
+
       <div className='flex flex-col'>
         <TextArea
           label='Announcement Description *'
@@ -69,6 +82,7 @@ export default function AnnouncementForm({
           error={errors.description_malayalam}
         />
       </div>
+
       <div className='flex flex-col'>
         <DatePicker
           label='Date *'
@@ -77,7 +91,19 @@ export default function AnnouncementForm({
           error={errors.date}
         />
       </div>
-      <div className='flex flex-col md:row-start-4'>
+      <div className='flex flex-col'>
+        <SelectList
+          label='Category *'
+          setData={setFormValue('category')}
+          data={form.category}
+          list={ANNOUNCEMENT_CATEGORIES}
+          dataKey='value_one'
+          displayKey='value_one'
+          error={errors.category}
+        />
+      </div>
+
+      <div className='flex flex-col'>
         <SelectList
           label='Type *'
           setData={setFormValue('type')}
@@ -88,7 +114,7 @@ export default function AnnouncementForm({
           error={errors.type}
         />
       </div>
-      <div className='flex flex-col md:row-start-5'>
+      <div className='flex flex-col'>
         <SelectList
           label='Sub Type *'
           setData={setFormValue('sub_type')}
@@ -99,21 +125,19 @@ export default function AnnouncementForm({
           error={errors.sub_type}
         />
       </div>
-      <div className='flex flex-col md:row-start-6'>
+
+      {/* Checkboxes grouped in one row, spanning both columns */}
+      <div className='flex flex-wrap items-center gap-8 md:col-span-2'>
         <CheckBox
           label='Published'
           data={form.published}
           toggle={toggleBoolean('published')}
         />
-      </div>
-      <div className='flex flex-col md:row-start-7'>
         <CheckBox
           label='Publish to Ticker'
           data={form.ticker}
           toggle={toggleBoolean('ticker')}
         />
-      </div>
-      <div className='flex flex-col md:col-start-1 md:row-start-8'>
         <CheckBox
           label='Mark as New'
           data={form.is_new}

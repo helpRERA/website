@@ -24,10 +24,10 @@ const Footer = () => {
                 <p>Thiruvananthapuram -695004</p>
               </div>
               
-              <div className='flex flex-wrap items-center gap-3 mt-1'>
+              {/* <div className='flex flex-wrap items-center gap-3 mt-1'>
                 <span className='text-[#444] text-[15px] shrink-0'>Let's Connect:</span>
                 <ul className='flex gap-2.5'>
-                  {/* Facebook */}
+                  
                   <li>
                     <a href='#' className='bg-[#085484] text-white w-[26px] h-[26px] rounded-full flex items-center justify-center hover:opacity-80 transition-opacity'>
                       <span className='sr-only'>Facebook</span>
@@ -36,7 +36,7 @@ const Footer = () => {
                       </svg>
                     </a>
                   </li>
-                  {/* Twitter */}
+                  
                   <li>
                     <a href='#' className='bg-[#085484] text-white w-[26px] h-[26px] rounded-full flex items-center justify-center hover:opacity-80 transition-opacity'>
                       <span className='sr-only'>Twitter</span>
@@ -45,7 +45,7 @@ const Footer = () => {
                       </svg>
                     </a>
                   </li>
-                  {/* Instagram */}
+                  
                   <li>
                     <a href='#' className='bg-[#085484] text-white w-[26px] h-[26px] rounded-full flex items-center justify-center hover:opacity-80 transition-opacity'>
                       <span className='sr-only'>Instagram</span>
@@ -55,7 +55,7 @@ const Footer = () => {
                     </a>
                   </li>
                 </ul>
-              </div>
+              </div> */}
             </div>
 
             {/* Column 2: Quick Links */}

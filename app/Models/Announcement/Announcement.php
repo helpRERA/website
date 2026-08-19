@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $description_malayalam
  * @property string|null $date
  * @property string|null $type
+ * @property string|null $category
  * @property int $published
  * @property int|null $created_by
  * @property int|null $updated_by
@@ -68,12 +69,13 @@ class Announcement extends Model
         'date',
         'type',
         'sub_type',
+        'category',
         'published',
         'ticker',
         'is_new',
         'created_by',
         'updated_by',
-        'deleted_at,'
+        'deleted_at'
     ];
 
     /**

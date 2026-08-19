@@ -171,6 +171,7 @@ class FetchDataDependencyService
                 return [
                     'Districtcode' => $this->encodeDistrictToken($d->Districtcode ?? $d['Districtcode']),
                     'Districtname' => $d->Districtname ?? $d['Districtname'],
+                    'Districtno' => $d->Districtcode ?? $d['Districtcode'],
                 ];
             });
         } catch (\Exception $e) {
@@ -183,4 +184,7 @@ class FetchDataDependencyService
         $encrypted = Crypt::encryptString((string) $code);
         return rtrim(strtr($encrypted, '+/', '-_'), '=');
     }
+
+
+    
 }

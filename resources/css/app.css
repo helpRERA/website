@@ -478,4 +478,92 @@ input[type='range']:active::-webkit-slider-thumb {
     background: #0f2c59;
   }
 }
+/************accessiblity**************/
+
+:root {
+  --a11y-font-scale: 1;
+  --a11y-bg: initial;
+  --a11y-text: initial;
+  --a11y-surface: initial;
+}
+
+html {
+  font-size: calc(100% * var(--a11y-font-scale));
+}
+
+
+.a11y-high-contrast {
+  --a11y-bg: #000;
+  --a11y-text: #fff;
+  --a11y-surface: #000;
+  filter: contrast(1.15);
+}
+
+.a11y-high-contrast body,
+.a11y-high-contrast .modal,
+.a11y-high-contrast .panel,
+.a11y-high-contrast [class*="dialog"] {
+  background: var(--a11y-surface) !important;
+  color: var(--a11y-text) !important;
+}
+
+ .a11y-high-contrast a,
+.a11y-high-contrast button,
+.a11y-high-contrast input[type="checkbox"],
+.a11y-high-contrast .toggle,
+.a11y-high-contrast .toggle-track,
+.a11y-high-contrast .toggle-thumb {
+  outline: 1px solid currentColor;
+  background: var(--a11y-surface) !important;
+  color: var(--a11y-text) !important;
+  border-color: currentColor !important;
+} 
+
+
+.a11y-high-contrast .toggle[aria-checked="true"],
+.a11y-high-contrast input[type="checkbox"]:checked + .toggle-track {
+  background: #fff !important;
+  color: #000 !important;
+}
+
+
+.a11y-dyslexia-font :not(.icon):not([class*="icon-"]):not([class*="fa-"]):not(svg):not(svg *) {
+  font-family: 'OpenDyslexic', 'Lexend', 'Verdana', 'Arial', sans-serif !important;
+  letter-spacing: 0.03em !important;
+  line-height: 1.6 !important;
+}
+
+
+.a11y-reduce-motion *,
+.a11y-reduce-motion *::before,
+.a11y-reduce-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+
+.a11y-underline-links a {
+  text-decoration: underline !important;
+}
+
+
+.toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+
+#a11y-panel {
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+#a11y-panel * {
+  box-sizing: border-box;
+}
+
 

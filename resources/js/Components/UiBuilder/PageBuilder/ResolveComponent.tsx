@@ -88,6 +88,7 @@ const ResolveComponent = ({
           onFieldEdit={onFieldEdit}
           blockData={block as unknown as HalfImageBlock}
           language={language}
+          districts={dependencies?.districtList}
         />
       )}
       {blockName === 'Rich Text' && (

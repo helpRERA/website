@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { router } from '@inertiajs/react'
+import { router, usePage } from '@inertiajs/react'
 import EditLabel from '../../../ui/button/EditLabel'
 import Localization from '../../../ui/Localization'
 import { BlocKFieldInfo, BlockFieldTypes, BlockFieldValues } from '../PageBuilder/BlockEditor'
@@ -7,6 +7,31 @@ import AddLabel from '../AddLabel'
 import { HalfImageBlock, imageBlock } from '../DefaultBlockData'
 import { Language } from '../../../ui/ui_interfaces'
 import LinkButton from '../../../ui/button/LinkButton'
+import useReferenceValue from '../../../data_hooks/useReferenceValue'
+
+
+// Same project type list used on the Explore Projects filter form (tbl_CommonDDMaster).
+export const PROJECT_TYPE_PLOT = '15'
+export const PROJECT_TYPE_SHOP = '12'
+export const PROJECT_TYPE_RESIDENTIAL = '13'
+export const PROJECT_TYPE_VILLAGE = '33'
+export const PROJECT_TYPE_MIXED = '16'
+
+const projectTypes = [
+  { id: PROJECT_TYPE_SHOP, TypeName: 'Shops/Office Space (Commercial)' },
+  { id: PROJECT_TYPE_RESIDENTIAL, TypeName: 'Residential' },
+  { id: PROJECT_TYPE_PLOT, TypeName: 'Plots' },
+  { id: PROJECT_TYPE_VILLAGE, TypeName: 'Villas (Plots & Buildings)' },
+  { id: PROJECT_TYPE_MIXED, TypeName: 'Mixed (Commercial & Residential)' },
+]
+
+interface District {
+  Districtno: number
+  Districtname: string
+}
+
+
+
 interface Properties {
   registeredProjects?: number
   registeredAgents?: number
@@ -16,8 +41,9 @@ interface Properties {
   onFieldEdit?: (field: BlocKFieldInfo) => void
   blockData?: HalfImageBlock
   language?: Language
-}
+  districts?: District[]
 
+}
 
 function BannerRightImage({
   registeredAgents,
@@ -28,11 +54,17 @@ function BannerRightImage({
   onFieldEdit,
   blockData = imageBlock,
   language = 'en',
+  districts = [],
 }: Properties) {
+
+
+
   const [activeTab, setActiveTab] = useState<'projects' | 'agents' | 'complaints' | 'cases'>('projects')
 
-  // Search state
+
   const [projectSearch, setProjectSearch] = useState('')
+  const [projectDistrict, setProjectDistrict] = useState('')
+  const [projectType, setProjectType] = useState('')
   const [agentSearch, setAgentSearch] = useState('')
   const [agentRegNo, setAgentRegNo] = useState('')
   const [complaintSearch, setComplaintSearch] = useState('')
@@ -41,7 +73,11 @@ function BannerRightImage({
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
     if (activeTab === 'projects') {
-      router.get('/explore-projects', { search: projectSearch })
+      router.get('/explore-projects', {
+        search: projectSearch,
+        district: projectDistrict,
+        project_type: projectType,
+      })
     } else if (activeTab === 'agents') {
       router.get('/agents', { agent_name: agentSearch, registration_number: agentRegNo })
     } else if (activeTab === 'complaints') {
@@ -55,7 +91,6 @@ function BannerRightImage({
   const inactiveTabClass = 'w-full sm:w-auto whitespace-nowrap rounded-lg md:rounded-full px-2 sm:px-6 py-2 sm:py-2.5 text-[12px] sm:text-sm font-medium text-[#246b9a] transition-colors hover:bg-gray-100 bg-white'
 
   const onEdit = (
-
     field: string,
     fieldType: BlockFieldTypes,
     oldValue: BlockFieldValues,
@@ -111,7 +146,7 @@ function BannerRightImage({
                 </button>
               </div>
             </div>
-            
+
             <div className='w-full rounded-lg bg-white p-6 shadow-md md:p-8 md:pb-6'>
               <form onSubmit={handleSearch}>
                 {activeTab === 'projects' && (
@@ -128,14 +163,32 @@ function BannerRightImage({
                     </div>
                     <div className='flex flex-col'>
                       <label className='mb-2 text-sm font-medium text-[#246b9a]'>District</label>
-                      <select className='w-full rounded-md border border-gray-200 p-3 text-sm text-gray-700 focus:border-[#0f2c59] focus:outline-none focus:ring-1 focus:ring-[#0f2c59]'>
+                      <select
+                        value={projectDistrict}
+                        onChange={(e) => setProjectDistrict(e.target.value)}
+                        className='w-full rounded-md border border-gray-200 p-3 text-sm text-gray-700 focus:border-[#0f2c59] focus:outline-none focus:ring-1 focus:ring-[#0f2c59]'
+                      >
                         <option value=''>Select District</option>
+                        {districts.map((district) => (
+                          <option key={district.Districtno} value={district.Districtno}>
+                            {district.Districtname}
+                          </option>
+                        ))}
                       </select>
                     </div>
                     <div className='flex flex-col'>
                       <label className='mb-2 text-sm font-medium text-[#246b9a]'>Project Type</label>
-                      <select className='w-full rounded-md border border-gray-200 p-3 text-sm text-gray-700 focus:border-[#0f2c59] focus:outline-none focus:ring-1 focus:ring-[#0f2c59]'>
+                      <select
+                        value={projectType}
+                        onChange={(e) => setProjectType(e.target.value)}
+                        className='w-full rounded-md border border-gray-200 p-3 text-sm text-gray-700 focus:border-[#0f2c59] focus:outline-none focus:ring-1 focus:ring-[#0f2c59]'
+                      >
                         <option value=''>Select Project Type</option>
+                        {projectTypes.map((type) => (
+                          <option key={type.id} value={type.id}>
+                            {type.TypeName}
+                          </option>
+                        ))}
                       </select>
                     </div>
                     <div className='flex flex-col justify-end'>

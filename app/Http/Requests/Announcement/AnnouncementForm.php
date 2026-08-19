@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Announcement;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 /**
  * @method array{
@@ -46,6 +47,7 @@ class AnnouncementForm extends FormRequest
             'sub_type' => ['required', 'string', 'max:255'],
             'published' => ['required', 'boolean'],
             'ticker' => ['required', 'boolean'],
+            'category' => ['required', 'string', Rule::in(['Project', 'Promoters', 'Agents', 'Legal', 'Others'])],
         ];
     }
 }

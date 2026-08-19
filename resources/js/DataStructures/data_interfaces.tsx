@@ -41,6 +41,7 @@ export interface Announcement extends Model {
   documents?: AnnouncementFile[]
   tags?: AnnouncementTag[]
   is_new: number
+  category: string | null
 }
 
 export interface AnnouncementTag extends Model {
@@ -109,3 +110,9 @@ export interface DocumentsByType {
   no_of_docs: number
   latest_date?: string
 }
+
+export interface ProjectType {
+  id: number
+  name: string
+}
+

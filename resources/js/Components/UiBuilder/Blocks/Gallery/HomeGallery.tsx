@@ -19,50 +19,125 @@ interface Properties {
   blockData: BlockConfiguration
 }
 
+// Normalized item so albums + videos can share one carousel
+type HighlightItem =
+  | { type: 'album'; id: number; title: string; image: string; href: string; date: string }
+  | { type: 'video'; id: number; title: string; thumbnail: string; href: string; date: string }
+
+function getYoutubeVideoId(url: string): string | null {
+  try {
+    const parsed = new URL(url)
+    if (parsed.pathname.startsWith('/embed/')) {
+      return parsed.pathname.split('/embed/')[1].split('/')[0]
+    }
+    if (parsed.hostname.includes('youtube.com')) {
+      return parsed.searchParams.get('v')
+    }
+    if (parsed.hostname === 'youtu.be') {
+      return parsed.pathname.substring(1).split('/')[0]
+    }
+
+    return null
+  } catch {
+    return null
+  }
+}
+
+function getYoutubeThumbnail(url: string): string {
+  const videoId = getYoutubeVideoId(url)
+
+  return videoId
+    ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+    : '/placeholder.png'
+}
+
+function getYoutubeWatchUrl(url: string): string {
+  try {
+    const parsed = new URL(url)
+
+    if (parsed.pathname.startsWith('/embed/')) {
+      const videoId = parsed.pathname.split('/embed/')[1].split('/')[0]
+      return `https://www.youtube.com/watch?v=${videoId}`
+    }
+    if (parsed.hostname === 'youtu.be') {
+      const videoId = parsed.pathname.substring(1)
+      return `https://www.youtube.com/watch?v=${videoId}`
+    }
+
+    if (
+      parsed.hostname.includes('youtube.com') &&
+      parsed.searchParams.has('v')
+    ) {
+      const videoId = parsed.searchParams.get('v')
+      return `https://www.youtube.com/watch?v=${videoId}`
+    }
+
+    return url
+  } catch {
+    return url
+  }
+}
+
+
 export default function HomeGallery({
   lang = 'en',
   latestAlbums,
   latestVideos,
   blockData,
 }: Properties) {
-  // Take up to 6 albums for the highlights
-  const highlightAlbums = latestAlbums && latestAlbums.length > 0 ? latestAlbums.slice(0, 6) : []
-
-  // Fallback mock images if no albums available
   const sampleImages = [
-    '/imge/gallery/1.png',
-    '/imge/gallery/2.png',
-    '/imge/gallery/3.png',
-    '/imge/gallery/1.png',
-    '/imge/gallery/2.png',
-    '/imge/gallery/3.png'
+    '/placeholder.png',
+    '/placeholder.png',
+    '/placeholder.png',
+    '/placeholder.png',
+    '/placeholder.png',
+    '/placeholder.png'
   ];
+
+  const albumItems: HighlightItem[] = (latestAlbums ?? []).map((album) => ({
+    type: 'album',
+    id: album.id,
+    title: album.name,
+    image: album.cover_photo,
+    href: `/gallery/${album.url}`,
+    date: album.event_date,
+  }))
+
+  const videoItems: HighlightItem[] = (latestVideos ?? []).map((video) => ({
+    type: 'video',
+    id: video.id,
+    title: video.caption,
+    thumbnail: getYoutubeThumbnail(video.url),
+    href: getYoutubeWatchUrl(video.url),
+    date: video.date,
+  }))
+
+  // Merge, sort newest first, cap at 6 for the highlights strip
+  const highlights = [...albumItems, ...videoItems]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 6)
 
   return (
     <div className={`w-full bg-white font-sans pt-12 pb-8 overflow-hidden ${blockData?.marginTop} ${blockData?.marginBottom}`}>
       <div className="cmpad">
-        
+
         {/* Top Section: Heading & Button */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">
           <div className="flex flex-col">
-            {/* Subheading */}
             <div className="flex items-center gap-3 mb-2 lg:mb-4">
               <span className="text-gray-400 font-medium text-sm">||</span>
               <span className="text-[11px] font-semibold tracking-[0.2em] text-gray-500 uppercase">
                 GALLERY
               </span>
             </div>
-
-            {/* Heading */}
             <h2 className="tracking-tight font-urbanist flex flex-wrap gap-x-2">
               <span className="text-[#085484] font-semibold text-[28px] md:text-[36px] lg:text-[42px] leading-[1.2]">Highlights from</span>
               <span className="text-[#444444] font-normal text-[28px] md:text-[36px] lg:text-[42px] leading-[1.2]">Events and Initiatives</span>
             </h2>
           </div>
 
-          {/* View More Button */}
           <div className="mt-6 md:mt-0 shrink-0 pb-1">
-            <a 
+            <a
               href={`/gallery?lang=${lang}`}
               className="inline-flex items-center gap-3 bg-[#095b8d] text-white rounded-full py-2.5 pl-5 pr-2 hover:bg-[#064268] transition-colors shadow-sm"
             >
@@ -93,35 +168,52 @@ export default function HomeGallery({
             }}
             className="px-4 sm:px-0 pb-4"
           >
-            {highlightAlbums.length > 0 ? (
-              highlightAlbums.map((album, idx) => (
-                <SwiperSlide key={album.id}>
-                  <a 
-                    href={`/gallery/${album.url}`}
+            {highlights.length > 0 ? (
+              highlights.map((item, idx) => (
+                <SwiperSlide key={`${item.type}-${item.id}`}>
+                  <a
+                    href={item.href}
+                    target={item.type === 'video' ? '_blank' : undefined}
+                    rel={item.type === 'video' ? 'noopener noreferrer' : undefined}
                     className="group relative flex flex-col overflow-hidden rounded-[16px] shadow-sm hover:shadow-md transition-shadow duration-300"
                   >
-                    <div className="w-full h-[250px] overflow-hidden">
-                      <img 
-                        src={album.cover_photo} 
-                        alt={album.name} 
+                    <div className="w-full h-[250px] overflow-hidden relative">
+                      <img
+                        src={item.type === 'album' ? item.image : item.thumbnail}
+                        alt={item.title}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         onError={(e) => {
                           e.currentTarget.src = sampleImages[idx % sampleImages.length];
                         }}
                       />
+
+                      {/* Play icon overlay for videos */}
+                      {item.type === 'video' && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
+                          <div className="bg-white/90 rounded-full p-3 shadow-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#095b8d" className="w-6 h-6">
+                              <path d="M8 5v14l11-7z" />
+                            </svg>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Title overlay */}
+                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent px-4 py-3">
+                        <p className="text-white text-sm font-medium line-clamp-2">{item.title}</p>
+                      </div>
                     </div>
                   </a>
                 </SwiperSlide>
               ))
             ) : (
-              // Fallback mock images if no albums available (for preview)
               sampleImages.map((imgUrl, item) => (
                 <SwiperSlide key={item}>
                   <div className="group relative flex flex-col overflow-hidden rounded-[16px] shadow-sm hover:shadow-md transition-shadow duration-300">
                     <div className="w-full h-[250px] overflow-hidden">
-                      <img 
-                        src={imgUrl} 
-                        alt={`Gallery Highlight ${item + 1}`} 
+                      <img
+                        src={imgUrl}
+                        alt={`Gallery Highlight ${item + 1}`}
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     </div>

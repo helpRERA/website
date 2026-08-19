@@ -23,7 +23,8 @@ export interface PageDataDependencies {
   announcementTicker?: Announcement[]
   complaintsCount?: number
   browseProjects?: ProjectListItem[]
-  districtList?: { Districtcode: string | number; Districtname: string }[]
+  districtList?: { Districtcode: string | number; Districtname: string; Districtno:number}[]
+  
 }
 
 const OutputPage = ({page, lang = 'en', dependencies, currentDate}: Properties) => {
