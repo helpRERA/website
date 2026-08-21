@@ -2,7 +2,9 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vite build && vite build --ssr"
+    "build": "NODE_OPTIONS=--max-old-space-size=4096 vite build && NODE_OPTIONS=--max-old-space-size=4096 vite build --ssr",
+    "wbuild": "vite build && vite build --ssr "
+
   },
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",
