@@ -16,6 +16,7 @@ use Illuminate\Validation\Rule;
  * sub_type: string,
  * published: bool,
  * publish_to_ticker: bool,
+ * category: array<string>
  * } all()
  */
 class AnnouncementForm extends FormRequest
@@ -47,7 +48,8 @@ class AnnouncementForm extends FormRequest
             'sub_type' => ['required', 'string', 'max:255'],
             'published' => ['required', 'boolean'],
             'ticker' => ['required', 'boolean'],
-            'category' => ['required', 'string', Rule::in(['Project', 'Promoters', 'Agents', 'Legal', 'Others'])],
+            'category' => ['required', 'array'],
+            'category.*' => ['required', 'string',Rule::in(['Project','Promoters','Agents','Legal','Others',]), ],
         ];
     }
 }

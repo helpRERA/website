@@ -24,6 +24,27 @@ interface Properties {
   blockData?: BlockConfiguration
 }
 
+
+const getCategories = (
+  category: string[] | string | null | undefined
+): string[] => {
+  if (Array.isArray(category)) {
+    return category
+  }
+  if (!category) {
+    return []
+  }
+  try {
+    const parsed = JSON.parse(category)
+    if (Array.isArray(parsed)) {
+      return parsed
+    }
+  } catch {
+  }
+  return [category]
+}
+
+
 const OrdersIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
     <path d="M29.2593 17.7083H26.0987C25.8975 17.7083 25.7289 17.6408 25.5929 17.5057C25.4569 17.3707 25.3894 17.2021 25.3903 17C25.3913 16.7979 25.4588 16.6293 25.5929 16.4942C25.727 16.3592 25.8956 16.2916 26.0987 16.2916H29.2578C29.4599 16.2916 29.629 16.3592 29.765 16.4942C29.901 16.6293 29.9685 16.7979 29.9676 17C29.9666 17.2021 29.8986 17.3707 29.7636 17.5057C29.6285 17.6408 29.4604 17.7083 29.2593 17.7083ZM23.7059 23.5549C23.8334 23.3877 23.9907 23.2895 24.1777 23.2602C24.3656 23.2319 24.5427 23.281 24.7089 23.4076L27.2221 25.2988C27.3883 25.4254 27.4861 25.5826 27.5153 25.7705C27.5437 25.9575 27.4946 26.1346 27.368 26.3018C27.2414 26.468 27.0847 26.5658 26.8977 26.5951C26.7107 26.6243 26.5336 26.5752 26.3664 26.4477L23.8547 24.5579C23.6875 24.4304 23.5893 24.2731 23.56 24.0861C23.5307 23.8991 23.5794 23.7221 23.7059 23.5549ZM27.1116 8.59347L24.6013 10.4833C24.435 10.6108 24.2584 10.6599 24.0714 10.6306C23.8835 10.6014 23.7262 10.5031 23.5997 10.336C23.4722 10.1688 23.4231 9.99172 23.4523 9.80472C23.4807 9.61772 23.5789 9.46094 23.747 9.33438L26.2588 7.44313C26.4259 7.31563 26.603 7.26652 26.79 7.2958C26.977 7.32413 27.1338 7.42235 27.2603 7.59047C27.3878 7.75763 27.4369 7.93472 27.4077 8.12172C27.3793 8.30872 27.2816 8.46597 27.1144 8.59347" fill="currentColor" />
@@ -86,8 +107,15 @@ const LatestAnnouncements = ({ announcements, language = 'en', blockData }: Prop
   }, [selectedTab, fetchData])
 
   const filteredItems = useMemo(() => {
-    if (selectedFilter === 'All') return items
-    return items.filter((announcement) => announcement.category === selectedFilter)
+    if (selectedFilter === 'All') {
+      return items
+    }
+
+    return items.filter((announcement) => {
+      const categories = getCategories(announcement.category)
+
+      return categories.includes(selectedFilter)
+    })
   }, [items, selectedFilter])
 
   const tabs = [
@@ -209,10 +237,16 @@ const LatestAnnouncements = ({ announcements, language = 'en', blockData }: Prop
                       </div>
 
                       {/* Real category, no longer a placeholder */}
-                      <div className="shrink-0 mb-3 sm:mb-0 sm:mr-5">
-                        <span className="px-3 py-1 text-[12px] font-normal bg-[#085484] text-white rounded-[4px] leading-none tracking-normal" style={{ fontFamily: 'Poppins, sans-serif' }}>
-                          {announcement.category}
-                        </span>
+                      <div className="shrink-0 mb-3 sm:mb-0 sm:mr-5 flex flex-wrap gap-2">
+                        {getCategories(announcement.category).map((category, index) => (
+                          <span
+                            key={`${category}-${index}`}
+                            className="px-3 py-1 text-[12px] font-normal bg-[#085484] text-white rounded-[4px] leading-none tracking-normal"
+                            style={{ fontFamily: 'Poppins, sans-serif' }}
+                          >
+                            {category}
+                          </span>
+                        ))}
                       </div>
 
                       <div className="flex-grow pr-4">

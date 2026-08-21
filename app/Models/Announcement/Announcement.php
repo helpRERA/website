@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $description_malayalam
  * @property string|null $date
  * @property string|null $type
- * @property string|null $category
+ * @property array<string>|null $category
  * @property int $published
  * @property int|null $created_by
  * @property int|null $updated_by
@@ -76,6 +76,13 @@ class Announcement extends Model
         'created_by',
         'updated_by',
         'deleted_at'
+    ];
+
+    protected $casts = [
+        "category" => "array",
+        // "published"=> true,
+        // "ticker"=> false,
+        // "is_new"=> false
     ];
 
     /**

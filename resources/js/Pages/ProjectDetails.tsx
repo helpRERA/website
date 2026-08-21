@@ -65,6 +65,8 @@ export interface ProjectDetailData {
   booked_plots: number | null
   plot_count: number | null
   PType: string
+  IsDefault?: number | string
+  DefaultReason?: string | null
 }
 
 export interface ProjectLastModified {

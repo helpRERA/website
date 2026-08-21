@@ -17,11 +17,14 @@ class ComplaintController extends Controller
 {
     public function index(ComplaintsListService $complaintsList, Request $request): Response
     {
+        //\DB::connection('k_rera')->enableQueryLog();
         $complaints = $complaintsList->getData(
             $request->search ?? null,
             $request->ruling_by ?? ComplaintsListService::RULING_BY_KRERA,
             $request->sort ?? 'newest'
         );
+        //dd(\DB::connection('k_rera')->getQueryLog());
+
 
         $reliefSought = DB::connection('k_rera')
             ->table('tbl_ReliefSought')

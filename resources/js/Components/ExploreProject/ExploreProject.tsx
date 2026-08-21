@@ -16,6 +16,8 @@ export interface ProjectListItem extends Project {
   documents: Pick<ProjectDocument, 'ID' | 'DocID' | 'ProjectId' | 'DocumentName'>[]
   certificate_info?: Pick<Certificate, 'CertificateNo'>
   today: string
+  IsDefault?: number 
+  DefaultReason?: string | null
 }
 
 const sortBy = [

@@ -32,7 +32,7 @@ class ViewBuilderPageController extends Controller
     ): mixed {
         $page = $resolve->getPage('home');
         $data = $resolveDataService->getData($page);
-
+//dd($data );
 
         return Inertia::render('UIEditor/OutputPage', [
             'page' => $page,

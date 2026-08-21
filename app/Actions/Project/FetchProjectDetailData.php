@@ -41,6 +41,7 @@ class FetchProjectDetailData
                 'plot_info',
                 fn (JoinClause $join) => $join->on('plot_info.ProjectID', '=', 'tbl_Project.ID')
             )
+            ->leftJoin('tbl_ProjectDefaults as Pd', 'Pd.ProjectId', '=', 'tbl_Project.ID')
             ->with([
                 'facilities',
                 'coordinates',
@@ -61,7 +62,10 @@ class FetchProjectDetailData
         $this->withBuilding($query);
         $this->withCompany($query);
 
-        $query->selectRaw('tbl_Project.*, apartment_info.*, plot_info.*');
+        $query->selectRaw(
+            'tbl_Project.*, apartment_info.*, plot_info.*, Pd.DefaultReason'
+            . ', CASE WHEN ISNULL(Pd.DefaultReason, \'\') = \'\' THEN 0 ELSE 1 END AS IsDefault'
+        );
 
         return $query->firstOrFail();
     }

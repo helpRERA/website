@@ -30,8 +30,10 @@ class ExploreProjectController extends Controller
         PropertySearch $propertySearch,
         LocalityListService $localityListService
     ) {
-        $projects = $propertySearch->search($request->all());
-
+        //\DB::connection('k_rera')->enableQueryLog();
+            $projects = $propertySearch->search($request->all());
+       // dd(\DB::connection('k_rera')->getQueryLog());
+//dd( $projects);
         return Inertia::render('ExploreProjectsPage', [
             'projects' => $projects,
             'districts' => fn () => $localityListService->getDistricts(),
@@ -67,6 +69,8 @@ class ExploreProjectController extends Controller
     ) {
 
         $project = $fetchProject->getData((int) $projectId);
+
+      
 
         $prevUrl = str_replace(url('/'), '', url()->previous());
 

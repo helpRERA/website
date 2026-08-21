@@ -4,7 +4,7 @@ namespace App\Http\Controllers\NavEditor;
 
 use App\Actions\NavMenu\NavMenuItemCreate;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UiEditor\NavMenuStoreRequest;
+use App\Http\Requests\UIEditor\NavMenuStoreRequest;
 use App\Repository\NavMenu\NavMenuRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;

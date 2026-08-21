@@ -26,11 +26,16 @@ const ProjectCard = ({ project, today, lang = 'en' }: Properties) => {
 
   const { promoterName } = usePromoterInfo(project.promoter ?? null)
 
+  const isDefault = Number(project.IsDefault) === 1
+
+
+
   return (
     <Link
       href={`/projects/${project.ID}?lang=${lang}`}
       as='a'
-      className='flex w-full cursor-pointer flex-col lg:flex-row gap-6 rounded-xl bg-white p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow'
+      className={`flex w-full cursor-pointer flex-col lg:flex-row gap-6 rounded-xl p-6 shadow-sm border transition-shadow hover:shadow-md ${isDefault ? 'border-red-300 bg-red-50' : 'border-gray-100 bg-white'
+        }`}
     >
       {/* Left Column - Image */}
       <div className='flex w-full shrink-0 flex-col lg:w-[320px]'>
@@ -50,9 +55,24 @@ const ProjectCard = ({ project, today, lang = 'en' }: Properties) => {
 
       {/* Middle Column - Details */}
       <div className='flex w-full flex-col lg:flex-grow border-b border-gray-100 pb-4 lg:border-b-0 lg:border-r lg:pb-0 lg:pr-6'>
-        <h1 className='text-[22px] font-medium uppercase text-[#085484] tracking-wide'>
-          {project.Name}
-        </h1>
+        <div className='flex items-center gap-2 flex-wrap'>
+          <h1 className='text-[22px] font-medium uppercase text-[#085484] tracking-wide'>
+            {project.Name}
+          </h1>
+          {isDefault && (
+            <span className='inline-flex items-center gap-1 rounded-full bg-red-100 px-3 py-1 text-[11px] font-semibold text-red-700 whitespace-nowrap'>
+              <svg className='h-3.5 w-3.5' fill='currentColor' viewBox='0 0 20 20'>
+                <path fillRule='evenodd' d='M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l6.518 11.598c.75 1.334-.213 2.98-1.742 2.98H3.48c-1.53 0-2.493-1.646-1.743-2.98L8.257 3.1zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z' clipRule='evenodd' />
+              </svg>
+              Defaulted
+            </span>
+          )}
+        </div>
+
+        {isDefault && project.DefaultReason && (
+          <p className='mt-1 text-[12px] text-red-600'>{project.DefaultReason}</p>
+        )}
+
         <div className='mt-2 flex flex-col gap-1.5 text-[13px] text-gray-600'>
           <div className='flex items-center gap-2'>
             <svg className='h-4 w-4 shrink-0 text-gray-700' fill='currentColor' viewBox='0 0 20 20'>
@@ -71,7 +91,7 @@ const ProjectCard = ({ project, today, lang = 'en' }: Properties) => {
             </span>
           </div>
         </div>
-        
+
         <div className='mt-6 flex flex-col gap-2 text-[13px]'>
           <div className='flex items-center gap-6'>
             <span className='text-gray-500 w-[150px]'>Total Area</span>
@@ -129,7 +149,7 @@ const ProjectCard = ({ project, today, lang = 'en' }: Properties) => {
                 {project.certificate_info?.CertificateNo}
               </div>
             </div>
-            
+
             <div className='flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#085484] text-white shadow-md hover:bg-[#06426a] transition-colors'>
               <svg className='h-5 w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
                 <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />

@@ -96,6 +96,7 @@ class AnnouncementController extends Controller
 
     public function update(AnnouncementForm $request, AnnouncementUpdate $updateService, string $announcementId): RedirectResponse
     {
+       
         return $updateService->update($request->all(), (int)$announcementId);
     }
 

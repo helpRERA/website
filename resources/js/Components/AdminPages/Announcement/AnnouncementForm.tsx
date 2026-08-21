@@ -5,6 +5,7 @@ import useReferenceValue from '../../../data_hooks/useReferenceValue'
 import SelectList from '../../../ui/form/SelectList'
 import useCascadedReferenceData from '../../../data_hooks/useCascadedReferenceData'
 import CheckBox from '../../../ui/form/CheckBox'
+import CategoryMultiSelect from '../../../ui/form/CategoryMultiSelect'
 
 
 
@@ -27,7 +28,7 @@ export interface AnnouncementFormFields {
   published: boolean
   ticker: boolean
   is_new: boolean
-  category: string
+  category: string[]
 }
 
 interface Properties<T> {
@@ -92,13 +93,11 @@ export default function AnnouncementForm({
         />
       </div>
       <div className='flex flex-col'>
-        <SelectList
+        <CategoryMultiSelect
           label='Category *'
           setData={setFormValue('category')}
           data={form.category}
           list={ANNOUNCEMENT_CATEGORIES}
-          dataKey='value_one'
-          displayKey='value_one'
           error={errors.category}
         />
       </div>

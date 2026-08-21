@@ -451,11 +451,11 @@ class ProjectMaster extends Model
                     $hasMany->select('ID', 'ProjectID')
                         ->orderByRaw(
                             'CASE 
-                            WHEN DocID = ' . ConsideredDocuments::COVER_PHOTO . ' THEN 2
-                            WHEN DocID = ' . ConsideredDocuments::BROCHURE_PHOTO . ' THEN 1
-                            ELSE 0
-                         END DESC,
-                         CreatedOn DESC'
+                        WHEN DocID = ' . ConsideredDocuments::COVER_PHOTO . ' THEN 2
+                        WHEN DocID = ' . ConsideredDocuments::BROCHURE_PHOTO . ' THEN 1
+                        ELSE 0
+                     END DESC,
+                     CreatedOn DESC'
                         );
                 },
                 'documents' => function ($hasMany) {
@@ -470,17 +470,20 @@ class ProjectMaster extends Model
             ->leftJoinSub(
                 $availabilityQuery,
                 'apartment_info',
-                fn (JoinClause $join) => $join->on('apartment_info.ProjectID', '=', 'tbl_Project.ID')
+                fn(JoinClause $join) => $join->on('apartment_info.ProjectID', '=', 'tbl_Project.ID')
             )
             ->leftJoinSub(
                 $plotAvailabilityQuery,
                 'plot_info',
-                fn (JoinClause $join) => $join->on('plot_info.ProjectID', '=', 'tbl_Project.ID')
+                fn(JoinClause $join) => $join->on('plot_info.ProjectID', '=', 'tbl_Project.ID')
             )
             ->leftJoin('tbl_CertificateP as certificateP', 'certificateP.ProjectID', '=', 'tbl_Project.ID')
+            ->leftJoin('tbl_ProjectDefaults as Pd', 'Pd.ProjectId', '=', 'tbl_Project.ID')
             ->selectRaw(
                 'apartment_info.apartment_count, apartment_info.booked_count, certificateP.ID as certificatePID'
-                .', plot_info.plot_count, plot_info.booked_plots, tbl_Project.*'
+                . ', plot_info.plot_count, plot_info.booked_plots, tbl_Project.*'
+                . ', Pd.DefaultReason'
+                . ', CASE WHEN ISNULL(Pd.DefaultReason, \'\') = \'\' THEN 0 ELSE 1 END AS IsDefault'
             );
     }
 
