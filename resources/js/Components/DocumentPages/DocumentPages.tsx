@@ -26,7 +26,7 @@ const SpanVal: React.FC<SpanValProps> = ({ val, fallback = '', fieldKey }) => {
 const BlankLine: React.FC<{ width?: string }> = ({ width = '110px' }) => (
   <span
     style={{
-       display: 'inline-block',
+      display: 'inline-block',
       width,
       borderBottom: '1px dashed #c2952b',
       height: '1em',
@@ -35,6 +35,9 @@ const BlankLine: React.FC<{ width?: string }> = ({ width = '110px' }) => (
     }}
   />
 );
+
+
+
 
 interface DocumentPagesProps {
   data: AgreementData;
@@ -48,7 +51,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
     promoterType, promoterCompany, promoterPartnership, promoterIndividual,
     allotteeType, allotteeCompany, allotteePartnership, allotteeIndividual, allotteeHuf,
     jointAllottees,
-    landSurveyNos, landAdmeasuring, landSituatedAt, landTehsilDistrict,landDeedType, landDeedSubRegistrarOffice, landOwnershipType, landJDA,
+    landSurveyNos, landAdmeasuring, landSituatedAt, landTehsil, landDistrict, landDeedType, landDeedSubRegistrarOffice, landOwnershipType, landJDA,
     projectType, projectBuildingType, projectComprising, projectName, projectOtherComponents, plotOtherComponents,
     commencementAuthority, commencementNo, commencementDate, layoutAuthority, reraRegNo, reraRegDate,
     unitNo, unitFloor, unitTower, unitCarpetArea, garageDetails, plotNo, plotArea,
@@ -61,17 +64,22 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
     maintenanceClauses,
     defaultConsecutiveDemands, defaultConsecutiveMonths,
     prescribedByLaws, additionalDisclosures, additionalTerms,
-    facilitiesOutsideProject, competentAuthorityForDeclaration
+    facilitiesOutsideProject, competentAuthorityForDeclaration,
+    hasEncumbrances, encumbranceDetails
   } = data;
+
+
+  const resolvedProjectType = projectType === 'other' ? data.projectTypeOther : projectType;
+  const resolvedBuildingType = projectBuildingType === 'other' ? data.projectBuildingTypeOther : projectBuildingType;
 
   return (
     <div className="paper-container" id="preview-content">
-  
+
 
       {/* PAGE 26 */}
       <div className="paper-page">
-      
-        
+
+
         <div className="page-number">26</div>
         <div className="page-content">
           <div className="legal-header">
@@ -176,7 +184,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title" style={{ marginTop: '1rem' }}>WHEREAS:</p>
           <div className="indent-1">
-           A. The Promoter is the absolute and lawful owner of (survey Nos.) (Please insert land details as per local laws). <SpanVal val={landSurveyNos} fieldKey="landSurveyNos" /> totally admeasuring <SpanVal val={landAdmeasuring} fieldKey="landAdmeasuring" /> square meters situated at <SpanVal val={landSituatedAt} fieldKey="landSituatedAt" /> in Tehsil & District <SpanVal val={landTehsilDistrict} fieldKey="landTehsilDistrict" /> ("Said Land") vide <SpanVal val={landDeedType ? landDeedType.toLowerCase() + '(s)' : ''} fallback="sale deed(s)" fieldKey="landDeedType" /> dated <SpanVal val={formatDateDMY(landTitleDeedDate)} fieldKey="landTitleDeedDate" /> registered as documents No. <SpanVal val={landTitleDeedRegNo} fieldKey="landTitleDeedRegNo" /> at the office of the Sub-Registrar<SpanVal val={landDeedSubRegistrarOffice ? ` ${landDeedSubRegistrarOffice}` : ''} fieldKey="landDeedSubRegistrarOffice" />;
+            A. The Promoter is the absolute and lawful owner of (survey Nos.) (Please insert land details as per local laws). <SpanVal val={landSurveyNos} fieldKey="landSurveyNos" /> totally admeasuring <SpanVal val={landAdmeasuring} fieldKey="landAdmeasuring" /> square meters situated at <SpanVal val={landSituatedAt} fieldKey="landSituatedAt" /> in Tehsil <SpanVal val={landTehsil} fieldKey="landTehsil" /> and District <SpanVal val={landDistrict} fieldKey="landDistrict" /> ("Said Land") vide <SpanVal val={landDeedType ? landDeedType.toLowerCase() + '(s)' : ''} fieldKey="landDeedType" /> dated <SpanVal val={formatDateDMY(landTitleDeedDate)} fieldKey="landTitleDeedDate" /> registered as documents No. <SpanVal val={landTitleDeedRegNo} fieldKey="landTitleDeedRegNo" /> at the office of the Sub-Registrar<SpanVal val={landDeedSubRegistrarOffice ? ` ${landDeedSubRegistrarOffice}` : ''} fieldKey="landDeedSubRegistrarOffice" />;
           </div>
 
           {landOwnershipType === 'developer' && landJDA.length > 0 && (
@@ -191,7 +199,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
                 </p>
               )}
               <div style={{ paddingLeft: '2rem', marginBottom: 0 }}>
-                <SpanVal val={jda.ownerName} fieldKey="landJDA" /> ("Owner") is the absolute and lawful owner of (khasra Nos./survey Nos.) <SpanVal val={jda.surveyNos} fieldKey="landJDA" /> totally admeasuring <SpanVal val={jda.admeasuring} fieldKey="landJDA" /> square meters situated at <SpanVal val={jda.situatedAt} fieldKey="landJDA" /> in Tehsil & District <SpanVal val={jda.tehsilDistrict} fieldKey="landJDA" /> vide <SpanVal val={jda.deedType ? jda.deedType.toLowerCase() + '(s)' : ''} fallback="sale deed(s)" fieldKey="landJDA" /> dated <SpanVal val={formatDateDMY(jda.titleDeedDate)} fieldKey="landJDA" /> registered as documents No. <SpanVal val={jda.titleDeedRegNo} fieldKey="landJDA" /> at the office of the Sub-Registrar<SpanVal val={jda.deedSubRegistrarOffice ? `, ${jda.deedSubRegistrarOffice}` : ''} fieldKey="landJDA" />. The Owner and the Promoter have entered into a (collaboration/development/joint development) agreement dated <SpanVal val={formatDateDMY(jda.jdaDate)} fieldKey="landJDA" /> registered as document No. <SpanVal val={jda.regNo} fieldKey="landJDA" /> at the office of the Sub-Registrar <SpanVal val={jda.subRegistrarOffice} fieldKey="landJDA" />{jda.additionalDetails ? ` ` : ''}{jda.additionalDetails ? <SpanVal val={jda.additionalDetails} fieldKey="landJDA" /> : ''};
+                <SpanVal val={jda.ownerName} fieldKey="landJDA" /> ("Owner") is the absolute and lawful owner of (khasra Nos./survey Nos.) <SpanVal val={jda.surveyNos} fieldKey="landJDA" /> totally admeasuring <SpanVal val={jda.admeasuring} fieldKey="landJDA" /> square meters situated at <SpanVal val={jda.situatedAt} fieldKey="landJDA" /> in Tehsil <SpanVal val={jda.tehsil} fieldKey="landJDA" /> and District <SpanVal val={jda.district} fieldKey="landJDA" /> vide <SpanVal val={jda.deedType ? jda.deedType.toLowerCase() + '(s)' : ''} fieldKey="landJDA" /> dated <SpanVal val={formatDateDMY(jda.titleDeedDate)} fieldKey="landJDA" /> registered as documents No. <SpanVal val={jda.titleDeedRegNo} fieldKey="landJDA" /> at the office of the Sub-Registrar<SpanVal val={jda.deedSubRegistrarOffice ? `, ${jda.deedSubRegistrarOffice}` : ''} fieldKey="landJDA" />. The Owner and the Promoter have entered into a (collaboration/development/joint development) agreement dated <SpanVal val={formatDateDMY(jda.jdaDate)} fieldKey="landJDA" /> registered as document No. <SpanVal val={jda.regNo} fieldKey="landJDA" /> at the office of the Sub-Registrar <SpanVal val={jda.subRegistrarOffice} fieldKey="landJDA" />{jda.additionalDetails ? ` ` : ''}{jda.additionalDetails ? <SpanVal val={jda.additionalDetails} fieldKey="landJDA" /> : ''};
               </div>
             </div>
           ))}
@@ -199,12 +207,12 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           {projectType !== 'plotted' ? (
             <div className="indent-1">
-              B. The Said Land is earmarked for the purpose of building a <SpanVal val={projectBuildingType} fieldKey="projectBuildingType" /> project, comprising <SpanVal val={projectComprising} fieldKey="projectComprising" /> multistoried apartment buildings and <SpanVal val={projectOtherComponents} fieldKey="projectOtherComponents" /> and the said project shall be known as '<SpanVal val={projectName} fieldKey="projectName" />' (<b>"Project"</b>);
+              B. The Said Land is earmarked for the purpose of building a <SpanVal val={resolvedBuildingType} fieldKey="projectBuildingType" /> project, comprising <SpanVal val={projectComprising} fieldKey="projectComprising" /> multistoried apartment buildings and <SpanVal val={projectOtherComponents} fieldKey="projectOtherComponents" /> and the said project shall be known as '<SpanVal val={projectName} fieldKey="projectName" />' (<b>"Project"</b>);
             </div>
           ) : (
             <div style={{ border: '1.5px dashed var(--accent-gold)', padding: '0.5rem', borderRadius: '4px', marginBottom: '0.75rem' }}>
               <div className="indent-1" style={{ marginBottom: 0 }}>
-                B. The Said Land is earmarked for the purpose of plotted development of a <SpanVal val={projectBuildingType} fieldKey="projectBuildingType" /> project, comprising plots and <SpanVal val={plotOtherComponents} fieldKey="plotOtherComponents" /> and the said project shall be known as '<SpanVal val={projectName} fieldKey="projectName" />' (<b>"Project"</b>);
+                B. The Said Land is earmarked for the purpose of plotted development of a <SpanVal val={resolvedBuildingType} fieldKey="projectBuildingType" /> project, comprising plots and <SpanVal val={plotOtherComponents} fieldKey="plotOtherComponents" /> and the said project shall be known as '<SpanVal val={projectName} fieldKey="projectName" />' (<b>"Project"</b>);
               </div>
             </div>
           )}
@@ -225,12 +233,13 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
             E. The Promoter has obtained the final layout plan approvals for the Project from <SpanVal val={layoutAuthority} fieldKey="layoutAuthority" />. The Promoter agrees and undertakes that it shall not make any changes to these layout plans except in strict compliance with section 14 of the Act and other laws as applicable;
           </div>
 
-         <div className="indent-1" style={{ marginTop: '1rem' }}>
+          <div className="indent-1" style={{ marginTop: '1rem' }}>
             F. The Promoter has registered the Project under the provisions of the Act with the Real Estate Regulatory Authority at <BlankLine /> on <SpanVal val={reraRegDate} fieldKey="reraRegDate" /> under the registration No. <SpanVal val={reraRegNo} fieldKey="reraRegNo" />;
           </div>
           {projectType !== 'plotted' ? (
             <div className="indent-1">
-              G. The Allottee had applied for an apartment in the Project vide application No. <SpanVal val={applicationNo} fieldKey="applicationNo" /> dated <SpanVal val={applicationDate} fieldKey="applicationDate" /> and has been allotted apartment No. <SpanVal val={unitNo} fieldKey="unitNo" /> having carpet area of <SpanVal val={unitCarpetArea} fieldKey="unitCarpetArea" /> square feet, type <SpanVal val={apartmentType} fieldKey="apartmentType" /> on <SpanVal val={unitFloor} fieldKey="unitFloor" /> floor in <SpanVal val={unitTower} fieldKey="unitTower" /> ("Building") along with garage/closed parking No. <SpanVal val={garageDetails[0]?.no || ''} fieldKey="garageNo" /> admeasuring <SpanVal val={garageDetails[0]?.area || ''} fieldKey="garageArea" /> square feet in the <BlankLine /> as permissible under the applicable law and of <i>pro rata</i> share in the common areas ("Common Areas") as defined under clause (n) of Section 2 of the Act (hereinafter referred to as the "Apartment" more particularly described in Schedule A and the floor plan of the apartment is annexed hereto and marked as Schedule B);
+              G. The Allottee had applied for an apartment in the Project vide application No. <SpanVal val={applicationNo} fieldKey="applicationNo" /> dated <SpanVal val={applicationDate} fieldKey="applicationDate" /> and has been allotted apartment No. <SpanVal val={unitNo} fieldKey="unitNo" /> having carpet area of <SpanVal val={unitCarpetArea} fieldKey="unitCarpetArea" /> square feet, type <SpanVal val={apartmentType} fieldKey="apartmentType" /> on <SpanVal val={unitFloor} fieldKey="unitFloor" /> floor in <SpanVal val={unitTower} fieldKey="unitTower" /> ("Building") along with garage/closed parking No. <BlankLine /> admeasuring <SpanVal val={garageDetails[0]?.area || ''} fieldKey="garageArea" /> square feet in the <BlankLine />(Please insert the
+              location of the garage/closed parking), as permissible under the applicable law and of <i>pro rata</i> share in the common areas ("Common Areas") as defined under clause (n) of Section 2 of the Act (hereinafter referred to as the "Apartment" more particularly described in Schedule A and the floor plan of the apartment is annexed hereto and marked as Schedule B);
             </div>
           ) : (
             <div style={{ border: '1.5px dashed var(--accent-gold)', padding: '0.5rem', borderRadius: '4px', marginBottom: '0.75rem' }}>
@@ -327,25 +336,17 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
             <table className="doc-table">
               <tbody>
                 {garageDetails.length > 0 ? (
-                  garageDetails.map((g, idx) => (
-                    <tr key={g.id} data-field="garagePrice">
-                      <td style={{ textAlign: 'center' }}>Garage/Closed parking - {idx + 1}</td>
-                      <td style={{ textAlign: 'center' }}>Price for {idx + 1}: Rs. <SpanVal val={g.price || '0'} fieldKey="garagePrice" /></td>
+                  garageDetails.map((g) => (
+                    <tr key={g.id} data-field="garageNo">
+                      <td style={{ textAlign: 'center' }}><SpanVal val={g.no} fallback="" fieldKey="garageNo" /></td>
+                      <td style={{ textAlign: 'center' }}><BlankLine width="150px" /></td>
                     </tr>
                   ))
                 ) : (
-                  <>
-                    <tr data-field="garagePrice">
-                      <td style={{ textAlign: 'center' }}>Garage/Closed parking - 1</td>
-                      <td style={{ textAlign: 'center' }}>Price for 1</td>
-                    </tr>
-                    <tr data-field="garagePrice">
-                      <td style={{ textAlign: 'center' }}>Garage/Closed parking - 2</td>
-                      <td style={{ textAlign: 'center' }}>Price for 2</td>
-                    </tr>
-                    <tr data-field="garagePrice"><td style={{ height: '24px' }}></td><td></td></tr>
-                    <tr data-field="garagePrice"><td style={{ height: '24px' }}></td><td></td></tr>
-                  </>
+                  <tr data-field="garageNo">
+                    <td style={{ height: '24px' }}></td>
+                    <td style={{ textAlign: 'center' }}><BlankLine width="150px" /></td>
+                  </tr>
                 )}
               </tbody>
             </table>
@@ -364,12 +365,15 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
                 {data.plotPricing.length > 0 ? (
                   data.plotPricing.map((p) => (
                     <tr key={p.id} data-field="plotPricing">
-                      <td>{p.plotNoType || 'Plot No. / Type'}</td>
-                      <td style={{ textAlign: 'center' }}>Rs. {p.ratePerSqFt || '0'}</td>
+                      <td style={{ textAlign: 'center' }}>{p.plotNoType || ''}</td>
+                      <td style={{ textAlign: 'center' }}><BlankLine width="150px" /></td>
                     </tr>
                   ))
                 ) : (
-                  <tr data-field="plotPricing"><td style={{ height: '24px' }}></td><td></td></tr>
+                  <tr data-field="plotPricing">
+                    <td style={{ height: '24px' }}></td>
+                    <td style={{ textAlign: 'center' }}><BlankLine width="150px" /></td>
+                  </tr>
                 )}
               </tbody>
             </table>
@@ -442,8 +446,12 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           <div className="indent-1">
             1.12 The Allottee has paid a sum of Rs. <SpanVal val={bookingAmount} fieldKey="bookingAmount" /> (Rupees <SpanVal val={bookingAmountWords} fieldKey="bookingAmountWords" /> only) as booking amount being part payment towards the Total Price of the (Apartment/Plot) at the time of application the receipt of which the Promoter hereby acknowledges and the Allottee hereby agrees to pay the remaining price of the (Apartment/Plot) as prescribed in the Payment Plan as may be demanded by the Promoter within the time and in the manner specified therein:
           </div>
-          <p style={{ fontStyle: 'italic', margin: '0.5rem 0 0.5rem 2rem', fontSize: '9.5pt' }}>
+          {/* <p style={{ fontStyle: 'italic', margin: '0.5rem 0 0.5rem 2rem', fontSize: '9.5pt' }}>
             Provided that if the allottee delays in payment towards any amount for which is payable, he shall be liable to pay interest at the rate of <SpanVal val={delayInterestRate} fieldKey="delayInterestRate" />% p.a..
+          </p> */}
+
+          <p style={{ fontStyle: 'italic', margin: '0.5rem 0 0.5rem 2rem', fontSize: '9.5pt' }}>
+            Provided that if the allottee delays in payment towards any amount for which payable, he shall be liable to pay interest at the rate specified in the Rules.
           </p>
 
           <p className="legal-section-title">2. Mode of Payment:</p>
@@ -472,12 +480,12 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title">6. Construction of the Project/Apartment:</p>
           <p style={{ textIndent: '2rem' }}>
-            The Allottee has seen the specifications of the (Apartment/Plot) and accepted the Payment Plan, floor plans, layout plans (annexured along with this Agreement) which has been approved by the competent authority, as represented by the Promoter. The Promoter shall develop the Project in accordance with the said layout plans, floor plans and specifications. Subject to the terms in this Agreement, the Promoter undertakes to strictly abide by the bye-laws, FAR and density norms and provisions prescribed by the <SpanVal val={prescribedByLaws} fieldKey="prescribedByLaws" /> laws and shall not have an option to make any variation/modification in such plans, other than in the manner provided under the Act, and breach of this term by the Promoter shall constitute a material breach of the Agreement.
+            The Allottee has seen the specifications of the (Apartment/Plot) and accepted the Payment Plan, floor plans, layout plans (annexured along with this Agreement) which has been approved by the competent authority, as represented by the Promoter. The Promoter shall develop the Project in accordance with the said layout plans, floor plans and specifications. Subject to the terms in this Agreement, the Promoter undertakes to strictly abide by the bye-laws, FAR and density norms and provisions prescribed by the prevailing Development Control Regulations in the locality  and shall not have an option to make any variation/modification in such plans, other than in the manner provided under the Act, and breach of this term by the Promoter shall constitute a material breach of the Agreement.
           </p>
 
           <p className="legal-section-title">7. Possession of the Apartment/Plot:</p>
           <div className="indent-1">
-            7.1 <i>Schedule for possession of the said (Apartment/Plot):</i> The Promoter agrees and understands that timely delivery of possession of the (Apartment/Plot) is the essence of the Agreement. The Promoter, based on the approved plans and specifications, assures to hand over possession of the (Apartment/Plot) on <SpanVal val={possessionTargetMonth} fieldKey="possessionTargetMonth" /> unless there is delay or failure due to war, flood, drought, fire, cyclone, earthquake or any other calamity caused by nature affecting the regular development of the real estate project (<b>"Force Majeure"</b>). If, however, the completion of the Project is delayed due to the Force Majeure conditions then the Allottee agrees that the Promoter shall be entitled to the extension of time for delivery of possession of the (Apartment/Plot), provided that such Force Majeure conditions are not of a nature which make it impossible for the contract to be implemented. The Allottee agrees and confirms that, in the event it becomes impossible for the Promoter to implement the project due to Force Majeure conditions, then this allotment shall stand terminated and the Promoter shall refund to the Allottee the entire amount received by the Promoter from the allotment within 45 days from that date. After refund of the money paid by the Allottee, Allottee agrees that he/she shall not have any rights, claims etc. against the Promoter and that the Promoter shall be released and discharged from all its obligations and liabilities under this Agreement.
+            7.1 <i>Schedule for possession of the said (Apartment/Plot):</i> The Promoter agrees and understands that timely delivery of possession of the (Apartment/Plot) is the essence of the Agreement. The Promoter, based on the approved plans and specifications, assures to hand over possession of the (Apartment/Plot) on <SpanVal val={formatDateDMY(possessionTargetMonth)} fieldKey="possessionTargetMonth" /> unless there is delay or failure due to war, flood, drought, fire, cyclone, earthquake or any other calamity caused by nature affecting the regular development of the real estate project (<b>"Force Majeure"</b>). If, however, the completion of the Project is delayed due to the Force Majeure conditions then the Allottee agrees that the Promoter shall be entitled to the extension of time for delivery of possession of the (Apartment/Plot), provided that such Force Majeure conditions are not of a nature which make it impossible for the contract to be implemented. The Allottee agrees and confirms that, in the event it becomes impossible for the Promoter to implement the project due to Force Majeure conditions, then this allotment shall stand terminated and the Promoter shall refund to the Allottee the entire amount received by the Promoter from the allotment within 45 days from that date. After refund of the money paid by the Allottee, Allottee agrees that he/she shall not have any rights, claims etc. against the Promoter and that the Promoter shall be released and discharged from all its obligations and liabilities under this Agreement.
           </div>
 
           <div className="indent-1" style={{ marginTop: '1rem' }}>
@@ -520,12 +528,22 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
             (ii) The Promoter has lawful rights and requisite approvals from the competent authorities to carry out development of the Project;
           </div>
 
-          <div className="indent-1">
-            (iii) There are no encumbrances upon the said Land or the Project;
-            <p style={{ fontStyle: 'italic', margin: '0.25rem 0 0.25rem 2rem', fontSize: '9.5pt' }}>
-              (in case there are any encumbrances on the land provide details of such encumbrances including any rights, title, interest and name of party in or over such land);
-            </p>
+          <div className="indent-1" data-field="hasEncumbrances">
+            {hasEncumbrances === 'yes' ? (
+              <>
+                (iii) There are encumbrances upon the said Land or the Project, the details of which are as follows:
+                <div
+                  data-field="encumbranceDetails"
+                  style={{ marginTop: '0.25rem', paddingLeft: '0.5rem', whiteSpace: 'pre-wrap' }}
+                >
+                  <SpanVal val={encumbranceDetails} fallback="(Please provide details of such encumbrances including any rights, title, interest and name of party in or over such land)" fieldKey="encumbranceDetails" />
+                </div>
+              </>
+            ) : (
+              <>(iii) There are no encumbrances upon the said Land or the Project;</>
+            )}
           </div>
+
           <div className="indent-1">
             (iv) There are no litigations pending before any Court of law with respect to the said Land, Project or the (Apartment/Plot);
           </div>
@@ -623,7 +641,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title">15. Usage:</p>
           <p style={{ textIndent: '2rem' }}>
-            Use of Basement and Service Areas.— The basement(s) and service areas, if any, as located within the <SpanVal val={basementLocation} fieldKey="basementLocation" /> (Project name) shall be earmarked for purposes such as parking spaces and services including but not limited to electric sub-station, transformer, DG set rooms, underground water tanks, pump rooms, maintenance and service rooms, fire fighting pumps and equipment's etc. and other permitted uses as per sanctioned plans. The Allottee shall not be permitted to use the services areas and the basements in any manner whatsoever, other than those earmarked as parking spaces, and the same shall be reserved for use by the association of allottees formed by the Allottees for rendering maintenance services.
+            Use of Basement and Service Areas.— The basement(s) and service areas, if any, as located within the <SpanVal val={facilitiesOutsideProject} fieldKey="facilitiesOutsideProject" /> (Project name) shall be earmarked for purposes such as parking spaces and services including but not limited to electric sub-station, transformer, DG set rooms, underground water tanks, pump rooms, maintenance and service rooms, fire fighting pumps and equipment's etc. and other permitted uses as per sanctioned plans. The Allottee shall not be permitted to use the services areas and the basements in any manner whatsoever, other than those earmarked as parking spaces, and the same shall be reserved for use by the association of allottees formed by the Allottees for rendering maintenance services.
           </p>
 
           <p className="legal-section-title">16. General compliance with respect to the apartment:</p>

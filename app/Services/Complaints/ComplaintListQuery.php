@@ -4,7 +4,7 @@ namespace App\Services\Complaints;
 
 class ComplaintListQuery
 {
-    const QUERY = "
+   const QUERY = "
     select
   row_number() OVER (
     ORDER BY
@@ -29,6 +29,7 @@ class ComplaintListQuery
   temptable_citizencomplaint.ProjectName,
   temptable_citizencomplaint.InteriumOrder,
   temptable_citizencomplaint.FinalOrder,
+  temptable_citizencomplaint.ProjectId,
   '1' as Division
 from
   (
@@ -75,7 +76,8 @@ from
       (
         UH.ComplaintNo + '/' + CONVERT(varchar, UH.ComplaintYear)
       ) ComplaintNo,
-      UH.ComplaintYear
+      UH.ComplaintYear,
+      CAST(NULL AS varchar(50)) AS ProjectId
     FROM
       tbl_Complaint a
       left join tbl_UserHearingDetails UH on a.id = UH.ProjectID
@@ -149,7 +151,8 @@ from
       (
         a.ComplaintNo + '/' + CONVERT(varchar, a.ComplaintYear)
       ) ComplaintNo,
-      a.ComplaintYear
+      a.ComplaintYear,
+      CAST(ISNULL(a.ProjectId, '0') AS varchar(50)) AS ProjectId
     FROM
       AlreadyRegisteredComplaints a
     union all
@@ -184,7 +187,8 @@ from
       CASE WHEN a.OrderTypeId = 2
       and isnull(DocName, '')<> '' THEN '1' else '0' END AS FinalOrder,
       a.ComplaintNo,
-      a.ComplaintYear
+      a.ComplaintYear,
+      CAST(NULL AS varchar(50)) AS ProjectId
     FROM
       RegisteredAppeal a
   ) temptable_citizencomplaint

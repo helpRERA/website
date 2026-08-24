@@ -16,6 +16,7 @@ export interface Complaint {
   ComplainantName: string
   RespondentName: string
   ProjectName: string | null
+  ProjectId: string | null
   RulingorJudge_Date: string
   InteriumOrder: string
   FinalOrder: string

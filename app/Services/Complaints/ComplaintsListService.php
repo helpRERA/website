@@ -49,4 +49,35 @@ class ComplaintsListService
 
         return $arrayPagination->paginate();
     }
+
+    public function getDashboardData(): array
+    {
+        $list = DB::connection('k_rera')->select(
+            ComplaintListQuery::QUERY .
+            ' order by CAST(ComplaintYear as INT) desc, CAST(ComplaintID as INT) desc'
+        );
+
+        return array_map(
+            static function ($item) {
+                return [
+                    'id' => $item->ID,
+                    'complaintId' => $item->ComplaintID,
+                    'complaintNo' => $item->ComplaintNo,
+                    'complaintYear' => (string) $item->ComplaintYear,
+                    'complainantName' => $item->ComplainantName,
+                    'respondentName' => $item->RespondentName,
+                    'projectName' => $item->ProjectName,
+                    'rulingByMaharera' => (int) $item->RulingByMaharera,
+                    'judgementByOfficer' => (int) $item->JudgementByOfficer,
+                    'rulingDate' => $item->RulingorJudge_Date,
+                    'interiumOrder' => (int) $item->InteriumOrder,
+                    'finalOrder' => (int) $item->FinalOrder,
+                    'type' => (string) $item->Type,
+                    'tableName' => $item->Tbl_Name,
+                    'division' => (string) $item->Division,
+                ];
+            },
+            $list
+        );
+    }
 }

@@ -88,7 +88,8 @@ export interface LandJDA {
   surveyNos: string;
   admeasuring: string;
   situatedAt: string;
-  tehsilDistrict: string;
+  tehsil: string;
+  district: string;
   titleDeedDate: string;
   titleDeedRegNo: string;
   deedType: string;  
@@ -103,7 +104,7 @@ export interface GarageDetail {
   id: number;
   no: string;
   area: string;
-  price: string;
+  // price: string;
 }
 
 export interface PlotPriceItem {
@@ -167,7 +168,9 @@ export interface AgreementData {
   landSurveyNos: string;
   landAdmeasuring: string;
   landSituatedAt: string;
-  landTehsilDistrict: string;
+  landTehsil: string;
+  landDistrict: string;
+
   landTitleDeedDate: string;
   landTitleDeedRegNo: string;
   landDeedType:string;
@@ -175,7 +178,10 @@ export interface AgreementData {
   landOwnershipType: 'owner' | 'developer';
   landJDA: LandJDA[];
   projectType: 'commercial' | 'residential' | 'plotted' | 'other';
-  projectBuildingType: 'residential' | 'commercial' | 'mixed';
+  projectBuildingType: 'residential' | 'commercial' | 'plotted' | 'other';
+  projectTypeOther: string;
+  projectBuildingTypeOther: string;
+
   projectComprising: string;
   projectName: string;
   projectOtherComponents: string;
@@ -217,6 +223,10 @@ export interface AgreementData {
   paymentFavourOf: string;
   paymentPayableAt: string;
   priceBreakdown: PriceBreakdownItem[];
+
+
+  hasEncumbrances: 'yes' | 'no';
+  encumbranceDetails: string;
 
   // Payment Plan (Schedule C)
   paymentPlan: PaymentPlanItem[];
@@ -321,7 +331,8 @@ const initialData: AgreementData = {
   landSurveyNos: '',
   landAdmeasuring: '',
   landSituatedAt: '',
-  landTehsilDistrict: '',
+  landTehsil: '',
+  landDistrict: '',
   landTitleDeedDate: '',
   landTitleDeedRegNo: '',
   landDeedType: '',

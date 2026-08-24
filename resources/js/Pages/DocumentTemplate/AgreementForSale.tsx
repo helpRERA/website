@@ -46,7 +46,7 @@ function MainApp({ projectId, userId, agreement }: {
   agreement: any | null;
 }): React.ReactElement {
   
-  const [activeStep, setActiveStep] = useState<number>(0);
+  const [activeStep, setActiveStep] = useState<number>(1);
   const [activeView, setActiveView] = useState<'form' | 'preview'>('form');
   const [activeField, setActiveField] = useState<string | null>(null);
   const initialFormData = useMemo(() => mapAgreementFromServer(agreement), [agreement]);

@@ -37,6 +37,7 @@ interface ComplaintInfo {
   AvailableReliefSoughtId: string
   projectId: string
   AlreadyRegisteredProject: string
+  Relief_Sought: string | null
 }
 
 export default function ComplaintMoreInfo({ complaintId, reliefSought }: Props) {
@@ -94,14 +95,15 @@ export default function ComplaintMoreInfo({ complaintId, reliefSought }: Props) 
           <div className='text-sm font-medium'>Date Of Filing:</div>
           <div className='text-sm font-semibold'>{getIndianDate(complaintInfo?.DateofFiling)}</div>
 
-          <div className='text-sm font-medium'>Order Type:</div>
+          {/* <div className='text-sm font-medium'>Order Type:</div>
           <div className='text-sm font-semibold'>{complaintInfo?.OrderTypeValue}</div>
 
           <div className='text-sm font-medium'>Order Passed:</div>
-          <div className='text-sm font-semibold'>{complaintInfo?.Orderspassed}</div>
+          <div className='text-sm font-semibold'>{complaintInfo?.Orderspassed}</div> */}
 
           <div className='text-sm font-medium'>Relief Sought:</div>
-          <div className='text-sm font-semibold'>{reliefs}</div>
+          {/* <div className='text-sm font-semibold'>{reliefs}</div> */}
+          <div className='text-sm font-semibold'>{complaintInfo?.Relief_Sought}</div>
 
           <div className='text-sm font-medium'>Disposed:</div>
           <div className='text-sm font-semibold'>

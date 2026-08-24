@@ -157,7 +157,7 @@ const ExploreProject = ({
 
         <div className='mt-10 flex flex-col items-center justify-between gap-4 md:flex-row'>
           <div className='text-[15px] text-gray-500'>
-            Showing Results for {projects.total} K-rera registered projects
+            Showing Results for {projects.total} K-RERA registered projects
           </div>
           <div className='flex items-center gap-4'>
             <span className='text-[14px] text-gray-600'>Sort By:</span>

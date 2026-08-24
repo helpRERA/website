@@ -45,7 +45,7 @@ const AboutUs = ({
               K-RERA provides verified information on real estate projects and agents in Kerala, making it easier for homebuyers to check project details, track progress, and raise complaints when needed. It promotes transparency and accountability across the real estate ecosystem.
             </p>
             <div>
-              
+
               <Link href={'/about-k-rera'} className='inline-flex items-center gap-3 bg-[#095b8d] text-white rounded-full py-[10px] pl-6 pr-2 hover:bg-[#064268] transition-colors'>
                 <span className='text-[13px] font-medium'>Read More</span>
                 <div className='bg-white text-[#095b8d] rounded-full p-1.5'>
@@ -63,40 +63,52 @@ const AboutUs = ({
           {/* 3. Bottom Left: Stats Grid */}
           <div className='grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4'>
             {/* Stat 1 */}
-            <div className='bg-white rounded-[20px] shadow-[0px_4px_24px_0px_#00000014] p-4 lg:p-5 flex flex-col justify-center border border-[#EEEEEE]'>
+            <a
+              href='/explore-projects'
+              className='bg-white rounded-[20px] shadow-[0px_4px_24px_0px_#00000014] p-4 lg:p-5 flex flex-col justify-center border border-[#EEEEEE] hover:shadow-[0px_4px_24px_0px_#00000028] hover:border-[#085484]/30 transition-all cursor-pointer'
+            >
               <div className='mb-3'>
                 <img src="/svg/project.svg" alt="Projects" className="w-7 h-7" />
               </div>
               <div className='text-[32px] leading-tight font-medium text-[#1B1B1B] mb-1'>{registeredProjects}</div>
               <div className='text-[16px] font-normal text-[#595959]'>Registered Projects</div>
-            </div>
+            </a>
 
             {/* Stat 2 */}
-            <div className='bg-white rounded-[20px] shadow-[0px_4px_24px_0px_#00000014] p-4 lg:p-5 flex flex-col justify-center border border-[#EEEEEE]'>
+            <a
+              href='/complaint-list'
+              className='bg-white rounded-[20px] shadow-[0px_4px_24px_0px_#00000014] p-4 lg:p-5 flex flex-col justify-center border border-[#EEEEEE] hover:shadow-[0px_4px_24px_0px_#00000028] hover:border-[#085484]/30 transition-all cursor-pointer'
+            >
               <div className='mb-3'>
                 <img src="/svg/doc.svg" alt="Complaints" className="w-7 h-7" />
               </div>
               <div className='text-[32px] leading-tight font-medium text-[#1B1B1B] mb-1'>{complaintsCount}</div>
               <div className='text-[16px] font-normal text-[#595959]'>Complaints Filed</div>
-            </div>
+            </a>
 
             {/* Stat 3 */}
-            <div className='bg-white rounded-[20px] shadow-[0px_4px_24px_0px_#00000014] p-4 lg:p-5 flex flex-col justify-center border border-[#EEEEEE]'>
+            <a
+              href='/agents'
+              className='bg-white rounded-[20px] shadow-[0px_4px_24px_0px_#00000014] p-4 lg:p-5 flex flex-col justify-center border border-[#EEEEEE] hover:shadow-[0px_4px_24px_0px_#00000028] hover:border-[#085484]/30 transition-all cursor-pointer'
+            >
               <div className='mb-3'>
                 <img src="/svg/agent.svg" alt="Agents" className="w-7 h-7" />
               </div>
               <div className='text-[32px] leading-tight font-medium text-[#1B1B1B] mb-1'>{registeredAgents}</div>
               <div className='text-[16px] font-normal text-[#595959]'>Registered Agents</div>
-            </div>
+            </a>
 
             {/* Stat 4 */}
-            <div className='bg-white rounded-[20px] shadow-[0px_4px_24px_0px_#00000014] p-4 lg:p-5 flex flex-col justify-center border border-[#EEEEEE]'>
+            <a
+              href='/promoters'
+              className='bg-white rounded-[20px] shadow-[0px_4px_24px_0px_#00000014] p-4 lg:p-5 flex flex-col justify-center border border-[#EEEEEE] hover:shadow-[0px_4px_24px_0px_#00000028] hover:border-[#085484]/30 transition-all cursor-pointer'
+            >
               <div className='mb-3'>
                 <img src="/svg/promoter.svg" alt="Promoters" className="w-7 h-7" />
               </div>
               <div className='text-[32px] leading-tight font-medium text-[#1B1B1B] mb-1'>{promotersCount}</div>
               <div className='text-[16px] font-normal text-[#595959]'>Registered Promoters</div>
-            </div>
+            </a>
           </div>
 
           {/* 4. Bottom Right: Image */}

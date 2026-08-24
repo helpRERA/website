@@ -11,7 +11,7 @@ class ComplaintInfoController extends Controller
 {
     public function __invoke(Request $request): JsonResponse
     {
-        $complaint = DB::connection('k_rera')
+         $complaint = DB::connection('k_rera')
             ->select("
             select ROW_NUMBER() over(order by ARC.AlreadyRegisteredComplaintsId desc) AS Row, count(1) OVER() as TotalCount,
                                 ARC.AlreadyRegisteredComplaintsId as AlreadyRegisteredComplaintsId, ARC.Complainant as Complainant,
@@ -21,14 +21,24 @@ class ComplaintInfoController extends Controller
                                 ,isnull(ARC.DocName,'') DocumentName,c.ComplaintType,c.ComplaintTypeId,ot.OrderTypeValue
                                 ,isnull(isDisposed,0) Disposed,DateofFiling,isnull(Bench,0)BanchValueId,ReliefSought,Orderspassed,RemarksStatus,EpDetails
                                 ,AvailableReliefSought,AvailableReliefSoughtId,isnull(projectId,'0')projectId,isnull(AlreadyRegisteredProject,'No')AlreadyRegisteredProject
+                                ,RS_Latest.rlf_id, RS_Latest.Relief_Sought
                 from AlreadyRegisteredComplaints ARC with(nolock)
                 left join ComplaintTypeTable c on ARC.ComplaintTypeId=c.ComplaintTypeId
                 LEFT join OrderTypeTable ot on arc.OrderTypeId=ot.OrderTypeId
                 left join tbl_Project p on ARC.ProjectId=p.ID
+                outer apply (
+                    select top 1 CR.rlf_id, RS.Relief_Sought
+                    from tbl_complaint_relief_sought CR
+                    left join tbl_ReliefSought RS on CR.rlf_id = RS.ID
+                    where CR.complaint_id = ARC.AlreadyRegisteredComplaintsId
+                    order by CR.comp_rlf_id desc
+                ) RS_Latest
                 where ARC.AlreadyRegisteredComplaintsId= ?
                 order by ARC.AlreadyRegisteredComplaintsId desc
             ", [$request->input('complaint_id')]);
 
+
+           
         return response()->json($complaint);
     }
 }

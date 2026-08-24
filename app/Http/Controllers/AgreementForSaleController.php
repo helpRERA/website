@@ -65,15 +65,18 @@ class AgreementForSaleController extends Controller
             'land_survey_nos' => $request->input('landSurveyNos'),
             'land_admeasuring' => $request->input('landAdmeasuring'),
             'land_situated_at' => $request->input('landSituatedAt'),
-            'land_tehsil_district' => $request->input('landTehsilDistrict'),
+            'land_tehsil' => $request->input('landTehsil'),
+            'land_district' => $request->input('landDistrict'),
             'land_deed_type' => $request->input('landDeedType'),
             'land_deed_sub_registrar_office' => $request->input('landDeedSubRegistrarOffice'),
             'land_title_deed_regno' => $request->input('landTitleDeedRegNo'),
             'land_title_deed_date' => $request->input('landTitleDeedDate'),
             'land_ownership_type' => $request->input('landOwnershipType'),
             'project_type' => $request->input('projectType'),
+            'project_type_other' => $request->input('projectType') === 'other' ? $request->input('projectTypeOther') : null,
             'project_name' => $request->input('projectName'),
             'project_building_type' => $request->input('projectBuildingType'),
+            'project_building_type_other' => $request->input('projectBuildingType') === 'other' ? $request->input('projectBuildingTypeOther') : null,
             'project_comprising' => $request->input('projectComprising'),
             'project_other_components' => $request->input('projectOtherComponents'),
             'plot_other_components' => $request->input('plotOtherComponents'),
@@ -106,8 +109,12 @@ class AgreementForSaleController extends Controller
             'additional_terms' => $request->input('additionalTerms'),
             'default_consecutive_demands' => $request->input('defaultConsecutiveDemands'),
             'default_consecutive_months' => $request->input('defaultConsecutiveMonths'),
-            'place_of_execution' => $request->input('placeOfExecution'),              
-            'place_of_deemed_execution' => $request->input('placeOfDeemedExecution'), 
+            'place_of_execution' => $request->input('placeOfExecution'),
+            'place_of_deemed_execution' => $request->input('placeOfDeemedExecution'),
+            'payment_favour_of' => $request->input('paymentFavourOf'),
+            'payment_payable_at' => $request->input('paymentPayableAt'),
+            'has_encumbrances' => $request->input('hasEncumbrances'),
+            'encumbrance_details' => $request->input('encumbranceDetails'),
             'schedule_a' => $request->input('scheduleA'),
             'schedule_b' => $request->input('scheduleB'),
             'schedule_c' => $request->input('scheduleC'),
@@ -209,7 +216,8 @@ class AgreementForSaleController extends Controller
                         'survey_nos' => $jda['surveyNos'] ?? null,
                         'area' => $jda['admeasuring'] ?? null,
                         'location' => $jda['situatedAt'] ?? null,
-                        'district' => $jda['tehsilDistrict'] ?? null,
+                        'tehsil' => $jda['tehsil'] ?? null,
+                        'district' => $jda['district'] ?? null,
                         'title_deed_date' => $jda['titleDeedDate'] ?? null,
                         'deed_type' => $jda['deedType'] ?? null,
                         'deed_sub_registrar_office' => $jda['deedSubRegistrarOffice'] ?? null,
@@ -265,17 +273,11 @@ class AgreementForSaleController extends Controller
             if (!empty($request->garageDetails)) {
 
                 foreach ($request->garageDetails as $garage) {
-
                     $agreement->garageDetails()->create([
-
-                        'slot_no' => $garage['slotNo'] ?? null,
+                        'no' => $garage['no'] ?? null,
                         'area' => $garage['area'] ?? null,
-                        'price' => $garage['price'] ?? null,
-
                     ]);
-
                 }
-
             }
 
 
@@ -414,9 +416,10 @@ class AgreementForSaleController extends Controller
                     'survey_nos' => $jda['surveyNos'] ?? null,
                     'area' => $jda['admeasuring'] ?? null,
                     'location' => $jda['situatedAt'] ?? null,
-                    'district' => $jda['tehsilDistrict'] ?? null,
+                    'tehsil' => $jda['tehsil'] ?? null,
+                    'district' => $jda['district'] ?? null,
                     'title_deed_date' => $jda['titleDeedDate'] ?? null,
-                    'deed_type' => $jda['deedType'] ?? null,   
+                    'deed_type' => $jda['deedType'] ?? null,
                     'deed_sub_registrar_office' => $jda['deedSubRegistrarOffice'] ?? null,
                     'additional_details' => $jda['additionalDetails'] ?? null,
                 ]);
@@ -452,12 +455,12 @@ class AgreementForSaleController extends Controller
             | Replace Garage Details
             |--------------------------------------------------------------------------
             */
+           
             $agreement->garageDetails()->delete();
             foreach ($request->garageDetails ?? [] as $garage) {
                 $agreement->garageDetails()->create([
-                    'slot_no' => $garage['slotNo'] ?? null,
+                    'no' => $garage['no'] ?? null,
                     'area' => $garage['area'] ?? null,
-                    'price' => $garage['price'] ?? null,
                 ]);
             }
 
