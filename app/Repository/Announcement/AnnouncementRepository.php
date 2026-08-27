@@ -55,7 +55,7 @@ class AnnouncementRepository
         int    $limit = 6
     ): Collection
     {
-        return Announcement::orderBy('created_at', 'desc')
+        return Announcement::orderBy('date', 'desc')
             ->published()
             ->limit($limit)
             ->when($type != null, function ($query) use ($type) {

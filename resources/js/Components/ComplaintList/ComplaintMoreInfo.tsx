@@ -38,6 +38,7 @@ interface ComplaintInfo {
   projectId: string
   AlreadyRegisteredProject: string
   Relief_Sought: string | null
+  ReliefSoughtList: string | null
 }
 
 export default function ComplaintMoreInfo({ complaintId, reliefSought }: Props) {
@@ -103,7 +104,7 @@ export default function ComplaintMoreInfo({ complaintId, reliefSought }: Props) 
 
           <div className='text-sm font-medium'>Relief Sought:</div>
           {/* <div className='text-sm font-semibold'>{reliefs}</div> */}
-          <div className='text-sm font-semibold'>{complaintInfo?.Relief_Sought}</div>
+          <div className='text-sm font-semibold'>{complaintInfo?.ReliefSoughtList}</div>
 
           <div className='text-sm font-medium'>Disposed:</div>
           <div className='text-sm font-semibold'>

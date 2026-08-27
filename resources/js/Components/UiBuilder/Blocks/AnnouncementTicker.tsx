@@ -41,11 +41,15 @@ const AnnouncementTicker = ({ language = 'en', announcements, blockData }: Prope
               {announcements?.map((announcement) => (
                 <Link
                   as='a'
-                  className='flex items-center text-sm font-medium text-[#0f2c59] hover:underline'
+                  className={`flex items-center text-sm font-medium hover:underline ${announcement.is_new === 1 ? 'text-[#b50e0f]' : 'text-[#0f2c59]'
+                    }`}
                   href={`/announcements/${announcement.id}?lang=${language}`}
                   key={announcement.id}
                 >
-                  <span className='mr-2 h-1.5 w-1.5 rounded-full bg-[#0f2c59]'></span>
+                  <span
+                    className={`mr-2 h-1.5 w-1.5 rounded-full ${announcement.is_new === 1 ? 'bg-[#b50e0f]' : 'bg-[#0f2c59]'
+                      }`}
+                  ></span>
 
                   {announcement.is_new === 1 && (
                     <span className='mx-2 px-3 py-1 text-[12px] font-normal bg-[#b50e0f] text-white rounded-[4px] leading-none tracking-normal no-underline'>
@@ -58,6 +62,7 @@ const AnnouncementTicker = ({ language = 'en', announcements, blockData }: Prope
                       malayalam: announcement.title_malayalam,
                     }}
                     language={language}
+                    className={announcement.is_new === 1 ? 'text-[#b50e0f]' : ''}
                   />
                 </Link>
               ))}

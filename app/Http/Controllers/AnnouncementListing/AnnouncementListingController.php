@@ -44,6 +44,7 @@ class AnnouncementListingController extends Controller
         AnnouncementRepository $repo
     ): JsonResponse {
         $type = $request->type;
+     
         return response()->json($repo->latest($type));
     }
 }
