@@ -49,6 +49,18 @@ class Agreement extends Model
     {
         return $this->hasMany(Witness::class);
     }
+    public function landOwnerEntries()
+    {
+        return $this->hasMany(LandOwnerEntry::class);
+    }
+    public function maintenanceClauses()
+    {
+        return $this->hasMany(MaintenanceClause::class);
+    }
+    public function additionalTerms()
+    {
+        return $this->hasMany(AdditionalTerm::class);
+    }
         
 }
  

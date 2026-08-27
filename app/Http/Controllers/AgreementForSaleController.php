@@ -33,7 +33,10 @@ class AgreementForSaleController extends Controller
             'promoterIndividual',
             'promoterPartnership',
             'landJdas',
+            'landOwnerEntries',
             'additionalDisclosures',
+            'maintenanceClauses',
+            'additionalTerms',
             'PriceBreakdown',
             'garageDetails',
             'plotPricings',
@@ -62,15 +65,16 @@ class AgreementForSaleController extends Controller
             'date_year' => $request->input('dateYear'),
             'promoter_type' => $request->input('promoterType'),
             'allottee_type' => $request->input('allotteeType'),
-            'land_survey_nos' => $request->input('landSurveyNos'),
-            'land_admeasuring' => $request->input('landAdmeasuring'),
-            'land_situated_at' => $request->input('landSituatedAt'),
-            'land_tehsil' => $request->input('landTehsil'),
-            'land_district' => $request->input('landDistrict'),
-            'land_deed_type' => $request->input('landDeedType'),
-            'land_deed_sub_registrar_office' => $request->input('landDeedSubRegistrarOffice'),
-            'land_title_deed_regno' => $request->input('landTitleDeedRegNo'),
-            'land_title_deed_date' => $request->input('landTitleDeedDate'),
+            //'land_survey_nos' => $request->input('landSurveyNos'),
+            // 'land_resurvey_nos' => $request->input('landResurveyNos'),
+            // 'land_admeasuring' => $request->input('landAdmeasuring'),
+            // 'land_situated_at' => $request->input('landSituatedAt'),
+            // 'land_tehsil' => $request->input('landTehsil'),
+            //'land_district' => $request->input('landDistrict'),
+            // 'land_deed_type' => $request->input('landDeedType'),
+            //  'land_deed_sub_registrar_office' => $request->input('landDeedSubRegistrarOffice'),
+            // 'land_title_deed_regno' => $request->input('landTitleDeedRegNo'),
+            //  'land_title_deed_date' => $request->input('landTitleDeedDate'),
             'land_ownership_type' => $request->input('landOwnershipType'),
             'project_type' => $request->input('projectType'),
             'project_type_other' => $request->input('projectType') === 'other' ? $request->input('projectTypeOther') : null,
@@ -106,7 +110,7 @@ class AgreementForSaleController extends Controller
             'prescribed_by_laws' => $request->input('prescribedByLaws'),
             'maintenance_clauses' => $request->input('maintenanceClauses'),
             'basement_location' => $request->input('basementLocation'),
-            'additional_terms' => $request->input('additionalTerms'),
+           // 'additional_terms' => $request->input('additionalTerms'),
             'default_consecutive_demands' => $request->input('defaultConsecutiveDemands'),
             'default_consecutive_months' => $request->input('defaultConsecutiveMonths'),
             'place_of_execution' => $request->input('placeOfExecution'),
@@ -197,6 +201,30 @@ class AgreementForSaleController extends Controller
 
             }
 
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Save Land Owner Entries
+            |--------------------------------------------------------------------------
+            */
+            if (!empty($request->landOwnerEntries)) {
+                foreach ($request->landOwnerEntries as $entry) {
+                    $agreement->landOwnerEntries()->create([
+                        'survey_nos' => $entry['surveyNos'] ?? null,
+                        'resurvey_nos' => $entry['resurveyNos'] ?? null,
+                        'admeasuring' => $entry['admeasuring'] ?? null,
+                        'situated_at' => $entry['situatedAt'] ?? null,
+                        'tehsil' => $entry['tehsil'] ?? null,
+                        'district' => $entry['district'] ?? null,
+                        'title_deed_date' => $entry['titleDeedDate'] ?? null,
+                        'title_deed_regno' => $entry['titleDeedRegNo'] ?? null,
+                        'deed_type' => $entry['deedType'] ?? null,
+                        'deed_sub_registrar_office' => $entry['deedSubRegistrarOffice'] ?? null,
+                    ]);
+                }
+            }
+
             /*
             |--------------------------------------------------------------------------
             | Save Land JDA Details
@@ -243,6 +271,30 @@ class AgreementForSaleController extends Controller
 
                 ]);
 
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Save Maintenance Clauses
+            |--------------------------------------------------------------------------
+            */
+            foreach ($request->maintenanceClauses ?? [] as $clause) {
+                $agreement->maintenanceClauses()->create([
+                    'clause' => $clause['text'] ?? null,
+                ]);
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Save Additional Terms
+            |--------------------------------------------------------------------------
+            */
+            foreach ($request->additionalTerms ?? [] as $term) {
+                $agreement->additionalTerms()->create([
+                    'term' => $term['text'] ?? null,
+                ]);
             }
 
 
@@ -401,6 +453,28 @@ class AgreementForSaleController extends Controller
                 );
             }
 
+
+            /*
+            |--------------------------------------------------------------------------
+            | Replace Land Owner Entries
+            |--------------------------------------------------------------------------
+            */
+            $agreement->landOwnerEntries()->delete();
+            foreach ($request->landOwnerEntries ?? [] as $entry) {
+                $agreement->landOwnerEntries()->create([
+                    'survey_nos' => $entry['surveyNos'] ?? null,
+                    'resurvey_nos' => $entry['resurveyNos'] ?? null,
+                    'admeasuring' => $entry['admeasuring'] ?? null,
+                    'situated_at' => $entry['situatedAt'] ?? null,
+                    'tehsil' => $entry['tehsil'] ?? null,
+                    'district' => $entry['district'] ?? null,
+                    'title_deed_date' => $entry['titleDeedDate'] ?? null,
+                    'title_deed_regno' => $entry['titleDeedRegNo'] ?? null,
+                    'deed_type' => $entry['deedType'] ?? null,
+                    'deed_sub_registrar_office' => $entry['deedSubRegistrarOffice'] ?? null,
+                ]);
+            }
+
             /*
             |--------------------------------------------------------------------------
             | Replace Land JDA Details
@@ -437,6 +511,32 @@ class AgreementForSaleController extends Controller
                 ]);
             }
 
+
+            /*
+            |--------------------------------------------------------------------------
+            | Replace Maintenance Clauses
+            |--------------------------------------------------------------------------
+            */
+                $agreement->maintenanceClauses()->delete();
+                foreach ($request->maintenanceClauses ?? [] as $clause) {
+                    $agreement->maintenanceClauses()->create([
+                        'clause' => $clause['text'] ?? null,
+                    ]);
+                }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Replace Additional Terms
+            |--------------------------------------------------------------------------
+            */
+            $agreement->additionalTerms()->delete();
+            foreach ($request->additionalTerms ?? [] as $term) {
+                $agreement->additionalTerms()->create([
+                    'term' => $term['text'] ?? null,
+                ]);
+            }
+
             /*
             |--------------------------------------------------------------------------
             | Replace Price Breakdown
@@ -455,7 +555,7 @@ class AgreementForSaleController extends Controller
             | Replace Garage Details
             |--------------------------------------------------------------------------
             */
-           
+
             $agreement->garageDetails()->delete();
             foreach ($request->garageDetails ?? [] as $garage) {
                 $agreement->garageDetails()->create([

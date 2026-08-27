@@ -1,6 +1,7 @@
 import React from 'react';
 import { AgreementData } from '../../hooks/useAgreementData';
 import { formatDateDMY } from '../../utils/formatDate';
+import { toRomanLower } from '../../utils/toRoman';
 
 // Helper component for underlined / highlighted placeholders
 interface SpanValProps {
@@ -51,7 +52,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
     promoterType, promoterCompany, promoterPartnership, promoterIndividual,
     allotteeType, allotteeCompany, allotteePartnership, allotteeIndividual, allotteeHuf,
     jointAllottees,
-    landSurveyNos, landAdmeasuring, landSituatedAt, landTehsil, landDistrict, landDeedType, landDeedSubRegistrarOffice, landOwnershipType, landJDA,
+    landOwnerEntries, landOwnershipType, landJDA,
     projectType, projectBuildingType, projectComprising, projectName, projectOtherComponents, plotOtherComponents,
     commencementAuthority, commencementNo, commencementDate, layoutAuthority, reraRegNo, reraRegDate,
     unitNo, unitFloor, unitTower, unitCarpetArea, garageDetails, plotNo, plotArea,
@@ -183,13 +184,16 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           </p>
 
           <p className="legal-section-title" style={{ marginTop: '1rem' }}>WHEREAS:</p>
-          <div className="indent-1">
-            A. The Promoter is the absolute and lawful owner of (survey Nos.) (Please insert land details as per local laws). <SpanVal val={landSurveyNos} fieldKey="landSurveyNos" /> totally admeasuring <SpanVal val={landAdmeasuring} fieldKey="landAdmeasuring" /> square meters situated at <SpanVal val={landSituatedAt} fieldKey="landSituatedAt" /> in Tehsil <SpanVal val={landTehsil} fieldKey="landTehsil" /> and District <SpanVal val={landDistrict} fieldKey="landDistrict" /> ("Said Land") vide <SpanVal val={landDeedType ? landDeedType.toLowerCase() + '(s)' : ''} fieldKey="landDeedType" /> dated <SpanVal val={formatDateDMY(landTitleDeedDate)} fieldKey="landTitleDeedDate" /> registered as documents No. <SpanVal val={landTitleDeedRegNo} fieldKey="landTitleDeedRegNo" /> at the office of the Sub-Registrar<SpanVal val={landDeedSubRegistrarOffice ? ` ${landDeedSubRegistrarOffice}` : ''} fieldKey="landDeedSubRegistrarOffice" />;
-          </div>
+          {landOwnerEntries.map((entry, idx) => (
+            <div className="indent-1" key={entry.id} style={{ marginTop: idx > 0 ? '1rem' : 0 }}>
+              {idx === 0 ? 'A.' : `A(${idx + 1}).`} The Promoter is the absolute and lawful owner of (survey Nos.) (Please insert land details as per local laws). <SpanVal val={entry.surveyNos} fieldKey="landOwnerEntries" /> (Resurvey Nos.) <SpanVal val={entry.resurveyNos} fallback="" fieldKey="landOwnerEntries" /> totally admeasuring <SpanVal val={entry.admeasuring} fieldKey="landOwnerEntries" /> square meters situated at <SpanVal val={entry.situatedAt} fieldKey="landOwnerEntries" /> in Tehsil <SpanVal val={entry.tehsil} fieldKey="landOwnerEntries" /> and District <SpanVal val={entry.district} fieldKey="landOwnerEntries" /> ("Said Land") vide <SpanVal val={entry.deedType ? entry.deedType.toLowerCase() + '(s)' : ''} fieldKey="landOwnerEntries" /> dated <SpanVal val={formatDateDMY(entry.titleDeedDate)} fieldKey="landOwnerEntries" /> registered as documents No. <SpanVal val={entry.titleDeedRegNo} fieldKey="landOwnerEntries" /> at the office of the Sub-Registrar<SpanVal val={entry.deedSubRegistrarOffice ? ` ${entry.deedSubRegistrarOffice}` : ''} fieldKey="landOwnerEntries" />;
+            </div>
+          ))}
 
-          {landOwnershipType === 'developer' && landJDA.length > 0 && (
+          {/* {landOwnershipType === 'developer' && landJDA.length > 0 && (
             <p className="or-separator" style={{ margin: '0.5rem 0' }}>OR</p>
-          )}
+          )} */}
+
 
           {landOwnershipType === 'developer' && landJDA.map((jda, idx) => (
             <div key={jda.id} style={{ padding: '0.5rem', marginBottom: '0.75rem' }}>
@@ -198,8 +202,8 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
                   JDA Details ({idx + 1}):
                 </p>
               )}
-              <div style={{ paddingLeft: '2rem', marginBottom: 0 }}>
-                <SpanVal val={jda.ownerName} fieldKey="landJDA" /> ("Owner") is the absolute and lawful owner of (khasra Nos./survey Nos.) <SpanVal val={jda.surveyNos} fieldKey="landJDA" /> totally admeasuring <SpanVal val={jda.admeasuring} fieldKey="landJDA" /> square meters situated at <SpanVal val={jda.situatedAt} fieldKey="landJDA" /> in Tehsil <SpanVal val={jda.tehsil} fieldKey="landJDA" /> and District <SpanVal val={jda.district} fieldKey="landJDA" /> vide <SpanVal val={jda.deedType ? jda.deedType.toLowerCase() + '(s)' : ''} fieldKey="landJDA" /> dated <SpanVal val={formatDateDMY(jda.titleDeedDate)} fieldKey="landJDA" /> registered as documents No. <SpanVal val={jda.titleDeedRegNo} fieldKey="landJDA" /> at the office of the Sub-Registrar<SpanVal val={jda.deedSubRegistrarOffice ? `, ${jda.deedSubRegistrarOffice}` : ''} fieldKey="landJDA" />. The Owner and the Promoter have entered into a (collaboration/development/joint development) agreement dated <SpanVal val={formatDateDMY(jda.jdaDate)} fieldKey="landJDA" /> registered as document No. <SpanVal val={jda.regNo} fieldKey="landJDA" /> at the office of the Sub-Registrar <SpanVal val={jda.subRegistrarOffice} fieldKey="landJDA" />{jda.additionalDetails ? ` ` : ''}{jda.additionalDetails ? <SpanVal val={jda.additionalDetails} fieldKey="landJDA" /> : ''};
+              <div className="indent-1" style={{ paddingLeft: '2rem', marginBottom: 0 }}>
+                A. <SpanVal val={jda.ownerName} fieldKey="landJDA" /> ("Owner") is the absolute and lawful owner of (khasra Nos./survey Nos.) <SpanVal val={jda.surveyNos} fieldKey="landJDA" /> totally admeasuring <SpanVal val={jda.admeasuring} fieldKey="landJDA" /> square meters situated at <SpanVal val={jda.situatedAt} fieldKey="landJDA" /> in Tehsil <SpanVal val={jda.tehsil} fieldKey="landJDA" /> and District <SpanVal val={jda.district} fieldKey="landJDA" /> vide <SpanVal val={jda.deedType ? jda.deedType.toLowerCase() + '(s)' : ''} fieldKey="landJDA" /> dated <SpanVal val={formatDateDMY(jda.titleDeedDate)} fieldKey="landJDA" /> registered as documents No. <SpanVal val={jda.titleDeedRegNo} fieldKey="landJDA" /> at the office of the Sub-Registrar<SpanVal val={jda.deedSubRegistrarOffice ? `, ${jda.deedSubRegistrarOffice}` : ''} fieldKey="landJDA" />. The Owner and the Promoter have entered into a (collaboration/development/joint development) agreement dated <SpanVal val={formatDateDMY(jda.jdaDate)} fieldKey="landJDA" /> registered as document No. <SpanVal val={jda.regNo} fieldKey="landJDA" /> at the office of the Sub-Registrar <SpanVal val={jda.subRegistrarOffice} fieldKey="landJDA" />{jda.additionalDetails ? ` ` : ''}{jda.additionalDetails ? <SpanVal val={jda.additionalDetails} fieldKey="landJDA" /> : ''};
               </div>
             </div>
           ))}
@@ -615,13 +619,33 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           <p style={{ textIndent: '2rem' }}>
             The Promoter shall be responsible to provide and maintain essential services in the Project till the taking over of the maintenance of the project by the association of the allottees. The cost of such maintenance has been included in the Total Price of the (Apartment/Plot).
           </p>
-          <div style={{ paddingLeft: '2rem' }}>
+          {/* <div style={{ paddingLeft: '2rem' }}>
             <div
               className={`placeholder-field-block ${!maintenanceClauses || maintenanceClauses.trim() === '' ? 'empty' : ''}`}
               data-field="maintenanceClauses"
             >
               {maintenanceClauses && maintenanceClauses.trim() !== '' ? maintenanceClauses : "(Insert any other clauses in relation to maintenance of project, infrastructure and equipment)"}
             </div>
+          </div> */}
+
+          <div style={{ paddingLeft: '2rem' }}>
+            {maintenanceClauses.length > 0 ? (
+              <div style={{ margin: '0.5rem 0' }}>
+                {maintenanceClauses.map((item, idx) => (
+                  <div
+                    key={item.id}
+                    data-field="maintenanceClauses"
+                    style={{ marginBottom: '0.25rem' }}
+                  >
+                    {idx + 1}. {item.text}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="placeholder-field-block empty" data-field="maintenanceClauses">
+                (Insert any other clauses in relation to maintenance of project, infrastructure and equipment)
+              </div>
+            )}
           </div>
 
           <p className="legal-section-title">12. Defect liability:</p>
@@ -752,14 +776,27 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           <p style={{ textIndent: '2rem' }}>
             All or any disputes arising out of or touching upon or in relation to the terms and conditions of this Agreement, including the interpretation and validity of the terms thereof and the respective rights and obligations of the Parties, shall be settled amicably by mutual discussion, failing which the same shall be settled through the adjudicating officer appointed under the Act.
           </p>
-          <div style={{ paddingLeft: '2rem' }}>
-            <div
-              className={`placeholder-field-block ${!additionalTerms || additionalTerms.trim() === '' ? 'empty' : ''}`}
-              data-field="additionalTerms"
-            >
-              {additionalTerms && additionalTerms.trim() !== '' ? additionalTerms : "(Please insert any other terms and conditions as per the contractual understanding between the parties, however, please ensure that such additional terms and conditions are not in derogation of or inconsistent with the terms and conditions set out above or the Act and the Rules and Regulations made thereunder.)"}
+
+          <p className="legal-section-title">34. Additional Terms:</p>
+          {additionalTerms.length > 0 ? (
+            <div className="indent-1" style={{ marginTop: '0.5rem' }}>
+              {additionalTerms.map((item, idx) => (
+                <div
+                  key={item.id}
+                  data-field="additionalTerms"
+                  style={{ marginBottom: '0.5rem' }}
+                >
+                  ({toRomanLower(idx + 1)}) {item.text}
+                </div>
+              ))}
             </div>
-          </div>
+          ) : (
+            <div className="indent-1" style={{ marginTop: '0.5rem' }}>
+              <div className="placeholder-field-block empty" data-field="additionalTerms">
+                (Please insert any other terms and conditions as per the contractual understanding between the parties, however, please ensure that such additional terms and conditions are not in derogation of or inconsistent with the terms and conditions set out above or the Act and the Rules and Regulations made thereunder.)
+              </div>
+            </div>
+          )}
 
           <p style={{ marginTop: '0.5rem' }}>
             IN WITNESS WHEREOF parties herein above named have set their respective hands and signed this Agreement for sale at <SpanVal val={executionPlace} fieldKey="executionPlace" /> in the presence of attesting witness, signing as such on the day first above written.

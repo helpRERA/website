@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Plus, Trash2, ChevronRight, ChevronLeft, RefreshCw } from 'lucide-react';
-import { AgreementData, JointAllottee, GarageDetail, PriceBreakdownItem, PaymentPlanItem, Witness, DisclosureItem, LandJDA, PlotPriceItem } from '../../hooks/useAgreementData';
+import { AgreementData, JointAllottee, GarageDetail, PriceBreakdownItem, PaymentPlanItem, Witness, DisclosureItem, MaintenanceClauseItem, AdditionalTermItem, LandJDA, LandOwnerEntry, PlotPriceItem } from '../../hooks/useAgreementData';
 import logoUrl from '../../../../public/imge/logonew.svg';
+import { toRomanLower } from '../../utils/toRoman';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
@@ -17,6 +18,8 @@ function ordinalDay(n: number): string {
   const v = n % 100;
   return `${n}${s[(v - 20) % 10] || s[v] || s[0]}`;
 }
+
+
 
 
 function buildIsoFromParts(day: string, month: string, year: string): string {
@@ -181,7 +184,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
     0: ['dateDay', 'dateMonth', 'dateYear', 'executionPlace'],
     1: ['promoterType', 'promoterCompany', 'promoterPartnership', 'promoterIndividual'],
     2: ['allotteeType', 'allotteeCompany', 'allotteePartnership', 'allotteeIndividual', 'allotteeHuf', 'jointAllottees'],
-    3: ['landSurveyNos', 'landAdmeasuring', 'landSituatedAt', 'landTehsil', 'landDistrict', 'landTitleDeedDate', 'landTitleDeedRegNo', 'landDeedType', 'landDeedSubRegistrarOffice', 'landOwnershipType', 'landJDA', 'projectType', 'projectTypeOther', 'projectBuildingType', 'projectBuildingTypeOther', 'projectComprising', 'projectName', 'projectOtherComponents', 'plotOtherComponents', 'basementLocation'],
+    3: ['landOwnerEntries', 'landJDA', 'projectType', 'projectTypeOther', 'projectBuildingType', 'projectBuildingTypeOther', 'projectComprising', 'projectName', 'projectOtherComponents', 'plotOtherComponents', 'basementLocation'],
     4: ['commencementAuthority', 'commencementNo', 'commencementDate', 'layoutAuthority', 'reraRegNo', 'reraRegDate', 'maintenanceClauses', 'facilitiesOutsideProject', 'competentAuthorityForDeclaration', 'relevantStateAct', 'hasEncumbrances', 'encumbranceDetails'],
     5: ['applicationNo', 'applicationDate', 'apartmentType', 'unitNo', 'unitFloor', 'unitTower', 'unitCarpetArea', 'plotNo', 'plotArea', 'garageDetails', 'ratePerSqFt', 'totalPrice', 'totalPriceWords', 'bookingAmount', 'bookingAmountWords', 'paymentFavourOf', 'paymentPayableAt', 'priceBreakdown', 'plotPricing'],
     6: ['earlyPaymentRebate', 'delayInterestRate', 'possessionTargetMonth', 'gracePeriodDays', 'defaultConsecutiveDemands', 'defaultConsecutiveMonths', 'prescribedByLaws', 'additionalTerms', 'additionalDisclosures', 'paymentPlan', 'placeOfExecution', 'placeOfDeemedExecution'],
@@ -354,6 +357,54 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
     updateField('additionalDisclosures', newDisclosures);
   };
 
+
+  const addMaintenanceClause = () => {
+    const newClauses: MaintenanceClauseItem[] = [
+      ...data.maintenanceClauses,
+      { id: Date.now(), text: '' }
+    ];
+    updateField('maintenanceClauses', newClauses);
+  };
+
+  const removeMaintenanceClause = (id: number) => {
+    const newClauses = data.maintenanceClauses.filter(c => c.id !== id);
+    updateField('maintenanceClauses', newClauses);
+  };
+
+  const updateMaintenanceClause = (id: number, value: string) => {
+    const newClauses = data.maintenanceClauses.map(c => {
+      if (c.id === id) {
+        return { ...c, text: value };
+      }
+      return c;
+    });
+    updateField('maintenanceClauses', newClauses);
+  };
+
+
+  const addAdditionalTerm = () => {
+    const newTerms: AdditionalTermItem[] = [
+      ...data.additionalTerms,
+      { id: Date.now(), text: '' }
+    ];
+    updateField('additionalTerms', newTerms);
+  };
+
+  const removeAdditionalTerm = (id: number) => {
+    const newTerms = data.additionalTerms.filter(t => t.id !== id);
+    updateField('additionalTerms', newTerms);
+  };
+
+  const updateAdditionalTerm = (id: number, value: string) => {
+    const newTerms = data.additionalTerms.map(t => {
+      if (t.id === id) {
+        return { ...t, text: value };
+      }
+      return t;
+    });
+    updateField('additionalTerms', newTerms);
+  };
+
   const addJDA = () => {
     const newJDAs: LandJDA[] = [
       ...data.landJDA,
@@ -392,6 +443,40 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
     });
     updateField('landJDA', newJDAs);
   };
+
+  const addLandOwnerEntry = () => {
+    const newEntries: LandOwnerEntry[] = [
+      ...data.landOwnerEntries,
+      {
+        id: Date.now(),
+        surveyNos: '',
+        resurveyNos: '',
+        admeasuring: '',
+        situatedAt: '',
+        tehsil: '',
+        district: '',
+        titleDeedDate: '',
+        titleDeedRegNo: '',
+        deedType: '',
+        deedSubRegistrarOffice: '',
+      }
+    ];
+    updateField('landOwnerEntries', newEntries);
+  };
+
+  const removeLandOwnerEntry = (id: number) => {
+    const newEntries = data.landOwnerEntries.filter(e => e.id !== id);
+    updateField('landOwnerEntries', newEntries);
+  };
+
+  const updateLandOwnerEntry = (id: number, field: keyof Omit<LandOwnerEntry, 'id'>, value: string) => {
+    const newEntries = data.landOwnerEntries.map(e => {
+      if (e.id === id) return { ...e, [field]: value };
+      return e;
+    });
+    updateField('landOwnerEntries', newEntries);
+  };
+
 
   const addPlotPricing = () => {
     const newPlots: PlotPriceItem[] = [
@@ -825,6 +910,13 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                     if (data.landOwnershipType !== 'owner') {
                       updateField('landJDA', []);
                       updateField('landOwnershipType', 'owner');
+                      if (data.landOwnerEntries.length === 0) {
+                        updateField('landOwnerEntries', [{
+                          id: Date.now(), surveyNos: '', resurveyNos: '', admeasuring: '',
+                          situatedAt: '', tehsil: '', district: '', titleDeedDate: '',
+                          titleDeedRegNo: '', deedType: '', deedSubRegistrarOffice: ''
+                        }]);
+                      }
                     }
                   }}
                 >
@@ -834,14 +926,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                   className={`toggle-btn ${data.landOwnershipType === 'developer' ? 'active' : ''}`}
                   onClick={() => {
                     if (data.landOwnershipType !== 'developer') {
-                      updateField('landSurveyNos', '');
-                      updateField('landAdmeasuring', '');
-                      updateField('landSituatedAt', '');
-                      updateField('landTehsilDistrict', '');
-                      updateField('landTitleDeedDate', '');
-                      updateField('landTitleDeedRegNo', '');
-                      updateField('landDeedType', '');
-                      updateField('landDeedSubRegistrarOffice', '');
+                      updateField('landOwnerEntries', []);
                       updateField('landOwnershipType', 'developer');
                     }
                   }}
@@ -853,113 +938,159 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
 
             {/* TAB PANEL: Promoter is Owner → Land & Project Details fields */}
             {data.landOwnershipType === 'owner' && (
-              <>
-                <h3 className="section-title">Land & Project Details (Clause A)</h3>
-                <div className="form-group row-2">
-                  <div>
-                    <label>Survey Numbers</label>
-                    <input
-                      type="text"
-                      value={data.landSurveyNos}
-                      onFocus={() => setActiveField('landSurveyNos')} onChange={(e) => updateField('landSurveyNos', e.target.value)}
-                      placeholder="e.g. 101/2, 101/3"
-                    />
-                  </div>
-                  <div>
-                    <label>Land Area (Sq. Meters)</label>
-                    <input
-                      type="text"
-                      value={data.landAdmeasuring}
-                      onFocus={() => setActiveField('landAdmeasuring')} onChange={(e) => updateField('landAdmeasuring', e.target.value)}
-                      placeholder="e.g. 4,050"
-                    />
-                  </div>
+              <div className="form-group" style={{ marginTop: '0.5rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+                  <label style={{ fontWeight: '600' }}>Land & Project Details (Clause A)</label>
+                  <button className="btn-secondary" onClick={addLandOwnerEntry} style={{ padding: '0.25rem 0.5rem', fontSize: '0.7rem' }}>
+                    <Plus size={12} /> Add Land Entry
+                  </button>
                 </div>
-                <div className="form-group row-2">
-                  <div>
-                    <label>Village</label>
-                    <input
-                      type="text"
-                      value={data.landSituatedAt}
-                      onFocus={() => setActiveField('landSituatedAt')} onChange={(e) => updateField('landSituatedAt', e.target.value)}
-                      placeholder="e.g. Pattom"
-                    />
-                  </div>
+                <div className="list-container" style={{ padding: '0.5rem' }}>
+                  {data.landOwnerEntries.length === 0 ? (
+                    <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
+                      No land entries added.
+                    </span>
+                  ) : (
+                    data.landOwnerEntries.map((entry, idx) => (
+                      <div key={entry.id} className="list-item" style={{ flexDirection: 'column', alignItems: 'stretch', padding: '0.5rem', border: '1px solid var(--border-ui)', gap: '0.5rem' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <span style={{ fontSize: '0.75rem', fontWeight: 'bold' }}>Land Entry #{idx + 1}</span>
+                          {data.landOwnerEntries.length > 1 && (
+                            <button className="btn-danger" onClick={() => removeLandOwnerEntry(entry.id)} style={{ padding: '2px 6px' }}>
+                              <Trash2 size={12} />
+                            </button>
+                          )}
+                        </div>
 
-                  <div>
-                    <label>Tehsil</label>
-                    <input
-                      type="text"
-                      value={data.landTehsil}
-                      onFocus={() => setActiveField('landTehsil')}
-                      onChange={(e) => updateField('landTehsil', e.target.value)}
-                      placeholder="e.g. Thiruvananthapuram"
-                    />
-                  </div>
+                        <div className="form-group row-2">
+                          <div>
+                            <label style={{ fontSize: '0.7rem' }}>Survey Numbers</label>
+                            <input
+                              style={{ padding: '0.35rem' }}
+                              type="text"
+                              value={entry.surveyNos}
+                              onFocus={() => setActiveField('landOwnerEntries')}
+                              onChange={(e) => updateLandOwnerEntry(entry.id, 'surveyNos', e.target.value)}
+                              placeholder="e.g. 101/2, 101/3"
+                            />
+                          </div>
+                          <div>
+                            <label style={{ fontSize: '0.7rem' }}>Resurvey Numbers</label>
+                            <input
+                              style={{ padding: '0.35rem' }}
+                              type="text"
+                              value={entry.resurveyNos}
+                              onFocus={() => setActiveField('landOwnerEntries')}
+                              onChange={(e) => updateLandOwnerEntry(entry.id, 'resurveyNos', e.target.value)}
+                              placeholder="e.g. 45/1, 45/2"
+                            />
+                          </div>
+                        </div>
 
+                        <div className="form-group row-2">
+                          <div>
+                            <label style={{ fontSize: '0.7rem' }}>Land Area (Sq. Meters)</label>
+                            <input
+                              style={{ padding: '0.35rem' }}
+                              type="text"
+                              value={entry.admeasuring}
+                              onFocus={() => setActiveField('landOwnerEntries')}
+                              onChange={(e) => updateLandOwnerEntry(entry.id, 'admeasuring', e.target.value)}
+                              placeholder="e.g. 4,050"
+                            />
+                          </div>
+                          <div>
+                            <label style={{ fontSize: '0.7rem' }}>Village</label>
+                            <input
+                              style={{ padding: '0.35rem' }}
+                              type="text"
+                              value={entry.situatedAt}
+                              onFocus={() => setActiveField('landOwnerEntries')}
+                              onChange={(e) => updateLandOwnerEntry(entry.id, 'situatedAt', e.target.value)}
+                              placeholder="e.g. Pattom"
+                            />
+                          </div>
+                        </div>
 
+                        <div className="form-group row-2">
+                          <div>
+                            <label style={{ fontSize: '0.7rem' }}>Tehsil</label>
+                            <input
+                              style={{ padding: '0.35rem' }}
+                              type="text"
+                              value={entry.tehsil}
+                              onFocus={() => setActiveField('landOwnerEntries')}
+                              onChange={(e) => updateLandOwnerEntry(entry.id, 'tehsil', e.target.value)}
+                              placeholder="e.g. Thiruvananthapuram"
+                            />
+                          </div>
+                          <div>
+                            <label style={{ fontSize: '0.7rem' }}>District</label>
+                            <input
+                              style={{ padding: '0.35rem' }}
+                              type="text"
+                              value={entry.district}
+                              onFocus={() => setActiveField('landOwnerEntries')}
+                              onChange={(e) => updateLandOwnerEntry(entry.id, 'district', e.target.value)}
+                              placeholder="e.g. Thiruvananthapuram"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="form-group">
+                          <label style={{ fontSize: '0.7rem' }}>Type of Deed</label>
+                          <select
+                            style={{ padding: '0.35rem' }}
+                            value={entry.deedType}
+                            onFocus={() => setActiveField('landOwnerEntries')}
+                            onChange={(e) => updateLandOwnerEntry(entry.id, 'deedType', e.target.value)}
+                          >
+                            <option value="">Select type</option>
+                            <option value="Sale Deed">Sale Deed</option>
+                            <option value="Gift Deed">Gift Deed</option>
+                            <option value="Lease Deed">Lease Deed</option>
+                            <option value="Settlement Deed">Settlement Deed</option>
+                            <option value="Partition Deed">Partition Deed</option>
+                            <option value="Exchange Deed">Exchange Deed</option>
+                          </select>
+                        </div>
+
+                        <div className="form-group row-2">
+                          <div>
+                            <label style={{ fontSize: '0.7rem' }}>Deed Date</label>
+                            <DateFieldDDMMYYYY
+                              value={entry.titleDeedDate}
+                              onFocus={() => setActiveField('landOwnerEntries')}
+                              onChange={(v) => updateLandOwnerEntry(entry.id, 'titleDeedDate', v)}
+                            />
+                          </div>
+                          <div>
+                            <label style={{ fontSize: '0.7rem' }}>Document No.</label>
+                            <input
+                              style={{ padding: '0.35rem' }}
+                              type="text"
+                              value={entry.titleDeedRegNo}
+                              onFocus={() => setActiveField('landOwnerEntries')}
+                              onChange={(e) => updateLandOwnerEntry(entry.id, 'titleDeedRegNo', e.target.value)}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="form-group">
+                          <label style={{ fontSize: '0.7rem' }}>Sub-Registrar Office where registered</label>
+                          <input
+                            style={{ padding: '0.35rem' }}
+                            type="text"
+                            value={entry.deedSubRegistrarOffice}
+                            onFocus={() => setActiveField('landOwnerEntries')}
+                            onChange={(e) => updateLandOwnerEntry(entry.id, 'deedSubRegistrarOffice', e.target.value)}
+                          />
+                        </div>
+                      </div>
+                    ))
+                  )}
                 </div>
-                <div className="form-group row-2">
-                  <div>
-                    <label>District</label>
-                    <input
-                      type="text"
-                      value={data.landDistrict}
-                      onFocus={() => setActiveField('landDistrict')}
-                      onChange={(e) => updateField('landDistrict', e.target.value)}
-                      placeholder="e.g. Thiruvananthapuram"
-                    />
-                  </div>
-
-                  <div>
-                    <label>Type of Deed</label>
-                    <select
-                      value={data.landDeedType}
-                      onFocus={() => setActiveField('landDeedType')}
-                      onChange={(e) => updateField('landDeedType', e.target.value)}
-                    >
-                      <option value="">Select type</option>
-                      <option value="Sale Deed">Sale Deed</option>
-                      <option value="Gift Deed">Gift Deed</option>
-                      <option value="Lease Deed">Lease Deed</option>
-                      <option value="Settlement Deed">Settlement Deed</option>
-                      <option value="Partition Deed">Partition Deed</option>
-                      <option value="Exchange Deed">Exchange Deed</option>
-                    </select>
-                  </div>
-
-                </div>
-
-                <div className="form-group row-2">
-
-                  <div>
-                    <label> Deed Date</label>
-                    <DateFieldDDMMYYYY
-                      value={data.landTitleDeedDate}
-                      onFocus={() => setActiveField('landTitleDeedDate')}
-                      onChange={(v) => updateField('landTitleDeedDate', v)}
-                    />
-                  </div>
-
-                  <div>
-                    <label>Document No.</label>
-                    <input
-                      type="text"
-                      value={data.landTitleDeedRegNo}
-                      onFocus={() => setActiveField('landTitleDeedRegNo')} onChange={(e) => updateField('landTitleDeedRegNo', e.target.value)}
-                    />
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label>Sub-Registrar Office where registered</label>
-                  <input
-                    type="text"
-                    value={data.landDeedSubRegistrarOffice}
-                    onFocus={() => setActiveField('landDeedSubRegistrarOffice')}
-                    onChange={(e) => updateField('landDeedSubRegistrarOffice', e.target.value)}
-                  />
-                </div>
-              </>
+              </div>
             )}
 
             {/* TAB PANEL: JDA (Developer) */}
@@ -1820,7 +1951,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             </div>
 
 
-            <h3 className="section-title" style={{ marginTop: '1rem' }}>Maintenance Clauses (Term 11)</h3>
+            {/* <h3 className="section-title" style={{ marginTop: '1rem' }}>Maintenance Clauses (Term 11)</h3>
             <div className="form-group">
               <label>Additional Maintenance Clauses</label>
               <textarea
@@ -1829,6 +1960,43 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 rows={3}
                 placeholder="(Insert any other clauses in relation to maintenance of project, infrastructure and equipment)"
               />
+            </div> */}
+
+
+            <h3 className="section-title" style={{ marginTop: '1rem' }}>Maintenance Clauses (Term 11)</h3>
+            <div className="form-group" style={{ marginTop: '0.5rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+                <label style={{ fontWeight: '600' }}>Additional Maintenance Clauses</label>
+                <button className="btn-secondary" onClick={addMaintenanceClause} style={{ padding: '0.25rem 0.5rem', fontSize: '0.7rem' }}>
+                  <Plus size={12} /> Add
+                </button>
+              </div>
+              <div className="list-container" style={{ padding: '0.5rem' }}>
+                {data.maintenanceClauses.length === 0 ? (
+                  <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
+                    No maintenance clauses added.
+                  </span>
+                ) : (
+                  data.maintenanceClauses.map((item, idx) => (
+                    <div key={item.id} className="list-item" style={{ padding: '0.5rem', gap: '0.4rem', border: '1px solid var(--border-ui)', alignItems: 'flex-start' }}>
+                      <span style={{ fontSize: '0.75rem', fontWeight: 'bold', paddingTop: '0.4rem', minWidth: '1.5rem' }}>
+                        {idx + 1}.
+                      </span>
+                      <textarea
+                        style={{ flex: 1, padding: '0.35rem' }}
+                        rows={2}
+                        value={item.text}
+                        onFocus={() => setActiveField('maintenanceClauses')}
+                        onChange={(e) => updateMaintenanceClause(item.id, e.target.value)}
+                        placeholder="Enter maintenance clause"
+                      />
+                      <button className="btn-danger" onClick={() => removeMaintenanceClause(item.id)} style={{ padding: '0.4rem' }}>
+                        <Trash2 size={12} />
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
 
 
@@ -1882,7 +2050,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               </div>
             </div>
 
-            <h3 className="section-title" style={{ marginTop: '1rem' }}>Additional Terms (Term 33)</h3>
+            {/* <h3 className="section-title" style={{ marginTop: '1rem' }}>Additional Terms (Term 33)</h3>
 
             <div className="form-group" style={{ marginTop: '0.5rem' }}>
               <label>Other Terms & Conditions (Optional)</label>
@@ -1892,7 +2060,44 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 rows={4}
                 placeholder="(Please insert any other terms and conditions as per the contractual understanding between the parties...)"
               />
+            </div> */}
+
+            <h3 className="section-title" style={{ marginTop: '1rem' }}>Additional Terms (Term 34)</h3>
+            <div className="form-group" style={{ marginTop: '0.5rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+                <label style={{ fontWeight: '600' }}>Other Terms & Conditions (Optional)</label>
+                <button className="btn-secondary" onClick={addAdditionalTerm} style={{ padding: '0.25rem 0.5rem', fontSize: '0.7rem' }}>
+                  <Plus size={12} /> Add
+                </button>
+              </div>
+              <div className="list-container" style={{ padding: '0.5rem' }}>
+                {data.additionalTerms.length === 0 ? (
+                  <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textAlign: 'center' }}>
+                    No additional terms added.
+                  </span>
+                ) : (
+                  data.additionalTerms.map((item, idx) => (
+                    <div key={item.id} className="list-item" style={{ padding: '0.5rem', gap: '0.4rem', border: '1px solid var(--border-ui)', alignItems: 'flex-start' }}>
+                      <span style={{ fontSize: '0.75rem', fontWeight: 'bold', paddingTop: '0.4rem', minWidth: '2rem' }}>
+                        ({toRomanLower(idx + 1)})
+                      </span>
+                      <textarea
+                        style={{ flex: 1, padding: '0.35rem' }}
+                        rows={2}
+                        value={item.text}
+                        onFocus={() => setActiveField('additionalTerms')}
+                        onChange={(e) => updateAdditionalTerm(item.id, e.target.value)}
+                        placeholder="Enter additional term or condition"
+                      />
+                      <button className="btn-danger" onClick={() => removeAdditionalTerm(item.id)} style={{ padding: '0.4rem' }}>
+                        <Trash2 size={12} />
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
+
           </div>
         )}
 

@@ -100,6 +100,25 @@ export interface LandJDA {
   additionalDetails: string;
 }
 
+export interface LandOwnerEntry {
+  id: number;
+  surveyNos: string;
+  resurveyNos: string;
+  admeasuring: string;
+  situatedAt: string;
+  tehsil: string;
+  district: string;
+  titleDeedDate: string;
+  titleDeedRegNo: string;
+  deedType: string;
+  deedSubRegistrarOffice: string;
+}
+
+export interface AdditionalTermItem {
+  id: number;
+  text: string;
+}
+
 export interface GarageDetail {
   id: number;
   no: string;
@@ -137,6 +156,10 @@ export interface DisclosureItem {
   text: string;
 }
 
+export interface MaintenanceClauseItem {
+  id: number;
+  text: string;
+}
 
 
 // ─── Main Data Type ───────────────────────────────────────────────────────────
@@ -166,6 +189,7 @@ export interface AgreementData {
 
   // Property & Recitals Details
   landSurveyNos: string;
+  landResurveyNos: string;
   landAdmeasuring: string;
   landSituatedAt: string;
   landTehsil: string;
@@ -177,6 +201,7 @@ export interface AgreementData {
   landDeedSubRegistrarOffice: string; 
   landOwnershipType: 'owner' | 'developer';
   landJDA: LandJDA[];
+  landOwnerEntries: LandOwnerEntry[];
   projectType: 'commercial' | 'residential' | 'plotted' | 'other';
   projectBuildingType: 'residential' | 'commercial' | 'plotted' | 'other';
   projectTypeOther: string;
@@ -197,7 +222,8 @@ export interface AgreementData {
   layoutAuthority: string;
   reraRegNo: string;
   reraRegDate: string;
-  maintenanceClauses: string;
+  //maintenanceClauses: string;
+  maintenanceClauses: MaintenanceClauseItem[];
   facilitiesOutsideProject: string;
   competentAuthorityForDeclaration: string;
   relevantStateAct: string;
@@ -240,7 +266,8 @@ export interface AgreementData {
   defaultConsecutiveMonths: string;
   prescribedByLaws: string;
   additionalDisclosures: DisclosureItem[];
-  additionalTerms: string;
+  //additionalTerms: string;
+  additionalTerms: AdditionalTermItem[];
   apartmentOwnershipAct: string;
 
   // Signatures & Witnesses
@@ -326,9 +353,26 @@ const initialData: AgreementData = {
     pan: '',
   },
 
+  landOwnerEntries: [
+  {
+    id: Date.now(),
+    surveyNos: '',
+    resurveyNos: '',
+    admeasuring: '',
+    situatedAt: '',
+    tehsil: '',
+    district: '',
+    titleDeedDate: '',
+    titleDeedRegNo: '',
+    deedType: '',
+    deedSubRegistrarOffice: '',
+  }
+],
+
   jointAllottees: [],
 
   landSurveyNos: '',
+  landResurveyNos: '',
   landAdmeasuring: '',
   landSituatedAt: '',
   landTehsil: '',
@@ -339,6 +383,7 @@ const initialData: AgreementData = {
   landDeedSubRegistrarOffice: '',
   landOwnershipType: 'owner',
   landJDA: [],
+  
   projectType: 'commercial',
   projectBuildingType: 'residential',
   projectComprising: '',
@@ -355,7 +400,8 @@ const initialData: AgreementData = {
   layoutAuthority: '',
   reraRegNo: '',
   reraRegDate: '',
-  maintenanceClauses: '',
+  //maintenanceClauses: '',
+  maintenanceClauses: [],
   facilitiesOutsideProject: '',
   competentAuthorityForDeclaration: '',
   relevantStateAct: '',
@@ -400,7 +446,8 @@ const initialData: AgreementData = {
   defaultConsecutiveMonths: '',
   prescribedByLaws: '',
   additionalDisclosures: [],
-  additionalTerms: '',
+  //additionalTerms: '',
+  additionalTerms: [],
   apartmentOwnershipAct: '',
 
   witnesses: [],

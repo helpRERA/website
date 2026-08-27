@@ -11,6 +11,7 @@ export function mapAgreementFromServer(agreement: any): Partial<AgreementData> {
     promoterType: agreement.promoter_type ?? 'company',
     allotteeType: agreement.allottee_type ?? 'individual',
     landSurveyNos: agreement.land_survey_nos ?? '',
+    landResurveyNos: agreement.land_resurvey_nos ?? '',
     landAdmeasuring: agreement.land_admeasuring ?? '',
     landSituatedAt: agreement.land_situated_at ?? '',
     // landTehsilDistrict: agreement.land_tehsil_district ?? '',
@@ -56,10 +57,10 @@ export function mapAgreementFromServer(agreement: any): Partial<AgreementData> {
     facilitiesOutsideProject: agreement.facilities_outside_project ?? '',
     competentAuthorityForDeclaration: agreement.competent_authority ?? '',
     prescribedByLaws: agreement.prescribed_by_laws ?? '',
-    maintenanceClauses: agreement.maintenance_clauses ?? '',
+    // maintenanceClauses: agreement.maintenance_clauses ?? '',
     defaultConsecutiveDemands: agreement.default_consecutive_demands?.toString() ?? '',
     defaultConsecutiveMonths: agreement.default_consecutive_months?.toString() ?? '',
-    additionalTerms: agreement.additional_terms ?? '',
+    //additionalTerms: agreement.additional_terms ?? '',
     paymentFavourOf: agreement.payment_favour_of ?? '',
     paymentPayableAt: agreement.payment_payable_at ?? '',
     hasEncumbrances: agreement.has_encumbrances ?? '',
@@ -116,6 +117,32 @@ export function mapAgreementFromServer(agreement: any): Partial<AgreementData> {
       regNo: j.reg_no ?? '',
       subRegistrarOffice: j.sub_registrar_office ?? '',
       additionalDetails: j.additional_details ?? '',
+    })),
+
+
+    landOwnerEntries: (agreement.land_owner_entries || []).map(e => ({
+      id: e.id,
+      surveyNos: e.survey_nos || '',
+      resurveyNos: e.resurvey_nos || '',
+      admeasuring: e.admeasuring || '',
+      situatedAt: e.situated_at || '',
+      tehsil: e.tehsil || '',
+      district: e.district || '',
+      titleDeedDate: e.title_deed_date || '',
+      titleDeedRegNo: e.title_deed_regno || '',
+      deedType: e.deed_type || '',
+      deedSubRegistrarOffice: e.deed_sub_registrar_office || '',
+    })),
+
+
+    maintenanceClauses: (agreement.maintenance_clauses || []).map((m: any) => ({
+      id: m.id,
+      text: m.clause || '',
+    })),
+
+    additionalTerms: (agreement.additional_terms || []).map((t: any) => ({
+      id: t.id,
+      text: t.term || '',
     })),
 
     additionalDisclosures: (agreement.additional_disclosures ?? []).map((d: any, i: number) => ({
