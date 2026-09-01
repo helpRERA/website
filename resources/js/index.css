@@ -923,3 +923,24 @@ input:focus, select:focus, textarea:focus {
     position:relative;
 }
 
+
+
+
+
+
+.form-group.row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-items: start; 
+}
+
+.form-group.row-2 > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group.row-2 label {
+  min-height: 2.4rem; 
+  display: block;
+}

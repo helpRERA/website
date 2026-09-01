@@ -1792,14 +1792,14 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
 
 
             <h3 className="section-title" style={{ marginTop: '1rem' }}>Terms 1.10</h3>
-            <div className="form-group">
+            {/* <div className="form-group">
               <label>Project Name</label>
               <input
                 type="text"
                 value={data.facilitiesOutsideProject}
                 onFocus={() => setActiveField('facilitiesOutsideProject')} onChange={(e) => updateField('facilitiesOutsideProject', e.target.value)}
               />
-            </div>
+            </div> */}
             <div className="form-group row-2">
               <div>
                 <label>Competent Authority </label>
@@ -1856,9 +1856,21 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               />
             </div> */}
             <h3 className="section-title">Possession of the Apartment/Plot (Term 7)</h3>
-            <div className="form-group row-2">
+            <div className="form-group row-2" style={{ alignItems: 'flex-end' }}>
               <div>
-                <label>Target Completion Date</label>
+                <label style={{ display: 'block' }}>
+                  Target Completion Date
+                  <small style={{
+                    display: 'block',
+                    fontWeight: 400,
+                    fontSize: '0.7rem',
+                    color: 'var(--text-secondary, #6b7280)',
+                    marginTop: '2px',
+                    lineHeight: 1.3,
+                  }}>
+                    (same as furnished in the registration application)
+                  </small>
+                </label>
                 <DateFieldDDMMYYYY
                   value={data.possessionTargetMonth}
                   onFocus={() => setActiveField('possessionTargetMonth')}
@@ -1866,7 +1878,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 />
               </div>
               <div>
-                <label>Possession offering Duration</label>
+                <label style={{ display: 'block' }}>Possession offering Duration</label>
                 <input
                   type="number"
                   min={1}
@@ -1887,7 +1899,6 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 />
               </div>
             </div>
-
 
             <h3 className="section-title" style={{ marginTop: '1rem' }}>Encumbrances (Term 8)</h3>
             <div className="form-group">

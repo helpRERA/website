@@ -203,7 +203,7 @@ export interface AgreementData {
   landJDA: LandJDA[];
   landOwnerEntries: LandOwnerEntry[];
   projectType: 'commercial' | 'residential' | 'plotted' | 'other';
-  projectBuildingType: 'residential' | 'commercial' | 'plotted' | 'other';
+  projectBuildingType: 'residential' | 'commercial' | 'plotted' | 'other' | '';
   projectTypeOther: string;
   projectBuildingTypeOther: string;
 
@@ -385,7 +385,7 @@ const initialData: AgreementData = {
   landJDA: [],
   
   projectType: 'commercial',
-  projectBuildingType: 'residential',
+  projectBuildingType: '',
   projectComprising: '',
   projectName: '',
   projectOtherComponents: '',

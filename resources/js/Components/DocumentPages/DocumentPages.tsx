@@ -317,7 +317,9 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
               {priceBreakdown.map((row) => (
                 <tr key={row.id} data-field="priceBreakdown">
                   <td>{row.description || 'Description'}</td>
-                  <td style={{ textAlign: 'center' }}>Rs. {row.amount || '0'}</td>
+                  <td style={{ textAlign: 'center' }}>
+                    {row.amount ? `Rs. ${row.amount}` : <BlankLine width="150px" />}
+                  </td>
                 </tr>
               ))}
               {/* Empty rows to match official format if no breakdown is provided */}
@@ -440,7 +442,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           </div>
 
           <div className="indent-1" style={{ marginTop: '1.5rem', textAlign: 'left' }}>
-            1.10 It is understood by the Allottee that all other areas and i.e. areas and facilities falling outside the Project, namely <SpanVal val={facilitiesOutsideProject} fallback="" fieldKey="facilitiesOutsideProject" /> shall not form a part of the declaration to be filed with <SpanVal val={competentAuthorityForDeclaration} fallback="(Please insert the name of the concerned competent authority)" fieldKey="competentAuthorityForDeclaration" /> to be filed in accordance with the <SpanVal val={relevantStateAct} fallback="(Please insert the name of the relevant State act, if any)" fieldKey="relevantStateAct" />.
+            1.10 It is understood by the Allottee that all other areas and i.e. areas and facilities falling outside the Project, namely <SpanVal val={projectName} fieldKey="projectName" /> shall not form a part of the declaration to be filed with <SpanVal val={competentAuthorityForDeclaration} fallback="(Please insert the name of the concerned competent authority)" fieldKey="competentAuthorityForDeclaration" /> to be filed in accordance with the <SpanVal val={relevantStateAct} fallback="(Please insert the name of the relevant State act, if any)" fieldKey="relevantStateAct" />.
           </div>
 
           <div className="indent-1" style={{ marginTop: '1.5rem' }}>
@@ -454,9 +456,9 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
             Provided that if the allottee delays in payment towards any amount for which is payable, he shall be liable to pay interest at the rate of <SpanVal val={delayInterestRate} fieldKey="delayInterestRate" />% p.a..
           </p> */}
 
-          <p style={{ fontStyle: 'italic', margin: '0.5rem 0 0.5rem 2rem', fontSize: '9.5pt' }}>
+          <div className="indent-1" style={{ textIndent: '2rem' }}>
             Provided that if the allottee delays in payment towards any amount for which payable, he shall be liable to pay interest at the rate specified in the Rules.
-          </p>
+          </div>
 
           <p className="legal-section-title">2. Mode of Payment:</p>
           <p style={{ textIndent: '2rem' }}>

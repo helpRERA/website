@@ -16,16 +16,47 @@ use Illuminate\Support\Facades\Storage;
 
 class AgreementForSaleController extends Controller
 {
+    /**
+     * Normalize all user-supplied scalar values, including values in nested
+     * arrays. SQL injection is prevented by Eloquent's parameter binding; this
+     * additionally removes null bytes, HTML tags and surrounding whitespace.
+     */
+    private function sanitizeValue(mixed $value): mixed
+    {
+        if (is_array($value)) {
+            return array_map(fn ($item) => $this->sanitizeValue($item), $value);
+        }
+
+        if (is_string($value)) {
+            return trim(strip_tags(str_replace("\0", '', $value)));
+        }
+
+        return $value;
+    }
+
+    private function sanitizeRequest(Request $request): void
+    {
+        $request->merge($this->sanitizeValue($request->all()));
+    }
+
     public function index(Request $request)
     {
-        $data = $request->data;
+        $data = $request->route('data');
 
-        $decoded = base64_decode($data);
+        abort_unless(is_string($data) && $data !== '' && strlen($data) <= 4096, 422, 'Invalid request data.');
+
+        $data = $this->sanitizeValue($data);
+
+        $decoded = base64_decode($data, true);
+
+        abort_if($decoded === false, 422, 'Invalid request data.');
 
         parse_str($decoded, $params);
 
-        $projectId = $params['ProjectID'] ?? null;
-        $userId = $params['UserID'] ?? null;
+        $projectId = $this->sanitizeValue($params['ProjectID'] ?? null);
+        $userId = $this->sanitizeValue($params['UserID'] ?? null);
+
+        abort_unless(is_scalar($projectId) && is_scalar($userId), 422, 'Invalid request data.');
 
 
         $agreement = Agreement::with([
@@ -130,7 +161,7 @@ class AgreementForSaleController extends Controller
 
     public function store(Request $request)
     {
-
+        $this->sanitizeRequest($request);
 
         DB::beginTransaction();
 
@@ -386,6 +417,9 @@ class AgreementForSaleController extends Controller
 
     public function update(Request $request, $id)
     {
+        $this->sanitizeRequest($request);
+        abort_unless(filter_var($id, FILTER_VALIDATE_INT) !== false, 422, 'Invalid agreement ID.');
+
         DB::beginTransaction();
 
         try {
