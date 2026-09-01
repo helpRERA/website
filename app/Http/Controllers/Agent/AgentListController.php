@@ -82,6 +82,8 @@ class AgentListController extends Controller
             }
         }
 
+     
+
         return Inertia::render('AgentList/AgentListPage', [
             'districts' => fn() => $localityListService->getDistricts(),
             'agents' => $registeredAgents,
