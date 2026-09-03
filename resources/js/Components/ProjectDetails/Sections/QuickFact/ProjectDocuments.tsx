@@ -11,26 +11,25 @@ interface Properties {
   project: ProjectDetailData
   reference: React.RefObject<HTMLDivElement>
   documents: DocumentsByType[]
-  orders: DocumentsByType[]
   lang?: Language
 }
 
-const ProjectDocuments = ({ project, reference, lang = 'en', documents, orders }: Properties) => {
+const ProjectDocuments = ({ project, reference, lang = 'en', documents }: Properties) => {
   return (
     <>
       <div className='mx-auto flex w-full max-w-[1100px] flex-col gap-6 px-4 mb-10' ref={reference}>
         <h3 className='text-[20px] font-medium text-[#085484] mb-2' style={{ fontFamily: "'Urbanist', sans-serif" }}>
           Project Related Important Documents
         </h3>
-        {documents.length === 0 && orders.length === 0 && (
+        {documents.length === 0 && (
           <div className='text-xs text-red-500'>
             * There are no documents associated with this project.
           </div>
         )}
         <div className='flex flex-col gap-4'>
-          {projectDocCategories.map((category) => (
+          {projectDocCategories.filter((category) => category.type === 'document').map((category) => (
             <ProjectDocumentAccordion
-              documents={category.type === 'order' ? orders : documents}
+              documents={documents}
               projectCategory={category}
               key={category.id}
               project={project}

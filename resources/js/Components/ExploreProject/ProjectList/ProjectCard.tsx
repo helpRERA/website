@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { Link } from '@inertiajs/react'
+import { Link, router } from '@inertiajs/react'
 import { getIndianDate } from '../../../libs/dates'
 import useProjectImages from '../../ProjectDetails/ProjectImages/useProjectImages'
 import { ProjectListItem } from '../ExploreProject'
@@ -17,6 +17,14 @@ interface Properties {
   today: string
 }
 
+const projectTypeLabels: Record<string, string> = {
+  '12': 'Shops/Office Space (Commercial)',
+  '13': 'Residential',
+  '15': 'Plots',
+  '16': 'Mixed (Commercial & Residential)',
+  '33': 'Villas (Plots & Buildings)',
+}
+
 const ProjectCard = ({ project, today, lang = 'en' }: Properties) => {
   const images = useProjectImages(project.images ?? [])
 
@@ -27,8 +35,9 @@ const ProjectCard = ({ project, today, lang = 'en' }: Properties) => {
   const { promoterName } = usePromoterInfo(project.promoter ?? null)
 
   const isDefault = Number(project.IsDefault) === 1
-
-
+  const projectType = project.PType == null
+    ? project.ProjectType
+    : projectTypeLabels[project.PType] ?? project.ProjectType ?? project.PType
 
   return (
     <Link
@@ -56,7 +65,7 @@ const ProjectCard = ({ project, today, lang = 'en' }: Properties) => {
       {/* Middle Column - Details */}
       <div className='flex w-full flex-col lg:flex-grow border-b border-gray-100 pb-4 lg:border-b-0 lg:border-r lg:pb-0 lg:pr-6'>
         <div className='flex items-center gap-2 flex-wrap'>
-          <h1 className='text-[22px] font-medium uppercase text-[#085484] tracking-wide'>
+          <h1 className='text-[22px] font-bold uppercase text-[#085484] tracking-wide'>
             {project.Name}
           </h1>
           {isDefault && (
@@ -78,7 +87,7 @@ const ProjectCard = ({ project, today, lang = 'en' }: Properties) => {
             <svg className='h-4 w-4 shrink-0 text-gray-700' fill='currentColor' viewBox='0 0 20 20'>
               <path fillRule='evenodd' d='M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z' clipRule='evenodd' />
             </svg>
-            <span className='font-medium text-gray-700 uppercase'>{promoterName}</span>
+            <span className='font-bold text-gray-700 uppercase'>{promoterName}</span>
           </div>
           <div className='flex items-center gap-2'>
             <svg className='h-4 w-4 shrink-0 text-[#085484]' fill='currentColor' viewBox='0 0 20 20'>
@@ -93,13 +102,17 @@ const ProjectCard = ({ project, today, lang = 'en' }: Properties) => {
         </div>
 
         <div className='mt-6 flex flex-col gap-2 text-[13px]'>
-          <div className='flex items-center gap-6'>
-            <span className='text-gray-500 w-[150px]'>Total Area</span>
+          <div className='flex items-center gap-2'>
+            <span className='text-gray-500 w-[120px]'>Project Type</span>
+            <span className='font-semibold text-gray-800'>{projectType ?? 'N/A'}</span>
+          </div>
+          <div className='flex items-center gap-2'>
+            <span className='text-gray-500 w-[120px]'>Total Land Area</span>
             <span className='font-semibold text-gray-800'>{project.Area} sqm</span>
           </div>
           {project.PType != PROJECT_TYPE_PLOT && (
             <div className='flex items-center gap-2'>
-              <span className='text-gray-500'>Number of Building:</span>
+              <span className='text-gray-500'>Number of Buildings:</span>
               <span className='text-gray-600'>{project.buildings_count}</span>
             </div>
           )}
@@ -126,6 +139,11 @@ const ProjectCard = ({ project, today, lang = 'en' }: Properties) => {
                   </span>
                 </>
               )}
+              <ProjectStatusPill
+                completed={completed}
+                proposedDate={project.ProposedDateOfCompletion}
+                today={today}
+              />
             </div>
 
             <div className='w-full'>
@@ -145,7 +163,14 @@ const ProjectCard = ({ project, today, lang = 'en' }: Properties) => {
                 </svg>
                 <span>Certificate</span>
               </div>
-              <div className='inline-flex items-center justify-center rounded-full border border-[#085484] bg-white px-4 py-1.5 text-[11px] font-medium text-gray-600'>
+              <div
+                className='inline-flex cursor-pointer items-center justify-center rounded-full border border-[#085484] bg-white px-4 py-1.5 text-[11px] font-medium text-gray-600'
+                onClick={(event) => {
+                  event.preventDefault()
+                  event.stopPropagation()
+                  router.get(`/projects?registration_number=${encodeURIComponent(project.certificate_info?.CertificateNo ?? '')}`)
+                }}
+              >
                 {project.certificate_info?.CertificateNo}
               </div>
             </div>

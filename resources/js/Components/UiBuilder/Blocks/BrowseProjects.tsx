@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { Autoplay } from 'swiper'
-import { Link } from '@inertiajs/react'
+import { Link, router } from '@inertiajs/react'
 import 'swiper/css/bundle'
 import 'swiper/css'
 
@@ -222,7 +222,14 @@ const BrowseProjects = ({ projects: initialProjects = [], districts = [] }: Brow
                         </div>
 
                         <div className="flex items-end justify-between mt-auto pt-2">
-                          <div className="flex flex-col gap-1.5">
+                          <div
+                            className="flex flex-col gap-1.5 cursor-pointer"
+                            onClick={(event) => {
+                              event.preventDefault()
+                              event.stopPropagation()
+                              router.get(`/projects?registration_number=${encodeURIComponent(project.CertificateNo ?? '')}`)
+                            }}
+                          >
                             <div className="flex items-center text-[#595959] text-[11px] font-medium" style={{ fontFamily: '"DM Sans", sans-serif' }}>
                               <img src="/svg/certificateproject.svg" alt="certificate" className="w-[14px] h-[14px] mr-1.5 shrink-0" />
                               Certificate

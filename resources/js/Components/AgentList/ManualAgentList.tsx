@@ -25,7 +25,9 @@ const ManualAgentList = ({ manual }: Properties) => {
               <td className='standard-td'>{agent.RegistrationNumber}</td>
               <td className='standard-td'>{agent.Agent_Name}</td>
               <td className='standard-td'>{agent.Agent_Type}</td>
-              <td className='standard-td'>{agent.PermanentAddress}</td>
+              <td className='standard-td'>
+                {agent.CommAddress?.trim() ? agent.CommAddress : agent.Address ?? agent.PermanentAddress}
+              </td>
               <td className='standard-td'>{agent.PhoneNumber}</td>
               <td className='standard-td'>
                 {agent.Certificate_Path && (

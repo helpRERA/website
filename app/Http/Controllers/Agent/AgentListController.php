@@ -50,8 +50,7 @@ class AgentListController extends Controller
             $manualAgents = $agentManualRepository->search(
                 $request->agent_name,
                 $request->registration_number,
-            )->paginate(20)
-                ->withQueryString();
+            )->paginate(20)->withQueryString();
         }
 
         if ($isSearchingLocation || $request->filled('registration_number')) {

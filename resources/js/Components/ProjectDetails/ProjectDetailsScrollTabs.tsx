@@ -6,17 +6,14 @@ import LatLngMap from '../Common/Maps/LatLngMap'
 import useProjectAddress from './useProjectAddress'
 import { ProjectDetailData, ProjectLastModified } from '../../Pages/ProjectDetails'
 import { Language } from '../../ui/ui_interfaces'
-import { ExtensionCert, OrderFile } from '../../DataStructures/krera_interfaces'
 import { DocumentsByType } from '../../DataStructures/data_interfaces'
 import Localization from '../../ui/Localization'
+import ProjectOrders from './Sections/Orders/ProjectOrders'
 
 interface Properties {
   projects: ProjectDetailData
   documents: DocumentsByType[]
   orders: DocumentsByType[]
-  extensionOrder: OrderFile | null
-  registrationOrder: OrderFile | null
-  extensionCertificate: ExtensionCert | null
   lang?: Language
   lastModified?: ProjectLastModified | null
   projectHash: string
@@ -29,6 +26,7 @@ const tabItems = [
   { id: 'quick-facts', label: 'Quick Facts', icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4' },
   { id: 'documents', label: 'Documents', icon: 'M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z' },
   { id: 'map-view', label: 'Map View', icon: 'M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7' },
+  { id: 'orders', label: 'Orders', icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414A1 1 0 0119 9.414V19a2 2 0 01-2 2z' },
 ]
 
 const ProjectDetailsScrollTabs = ({
@@ -36,9 +34,6 @@ const ProjectDetailsScrollTabs = ({
   lang = 'en',
   documents,
   orders,
-  extensionOrder,
-  registrationOrder,
-  extensionCertificate,
   lastModified,
   projectHash,
   hasForm6,
@@ -79,11 +74,8 @@ const ProjectDetailsScrollTabs = ({
             reference={{ current: null }}
             lang={lang}
             hasForm6={hasForm6}
-            extensionOrder={extensionOrder}
-            extensionCertificate={extensionCertificate}
             lastModified={lastModified}
             projectHash={projectHash}
-            registrationOrder={registrationOrder}
             today={today}
           />
         )}
@@ -101,7 +93,6 @@ const ProjectDetailsScrollTabs = ({
             project={projects}
             reference={{ current: null }}
             documents={documents}
-            orders={orders}
             lang={lang}
           />
         )}
@@ -167,6 +158,13 @@ const ProjectDetailsScrollTabs = ({
               ></iframe>
             </div>
           </div>
+        )}
+
+        {activeTab === 'orders' && (
+          <ProjectOrders
+            project={projects}
+            orders={orders}
+          />
         )}
       </div>
     </div>

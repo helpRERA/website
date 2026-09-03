@@ -13,7 +13,7 @@ const ComplaintListItem = ({ complaint, setComplaint }: Properties) => {
       <div className='flex flex-col md:flex-row w-full p-4 md:p-6 lg:p-8 items-start md:items-center gap-4 md:gap-0'>
 
         {/* Col 1: Complaint Number & Project Name */}
-        <div className='flex flex-col gap-4 md:gap-6 w-full md:w-[23%] shrink-0 border-b md:border-b-0 md:border-r border-gray-100/80 pb-4 md:pb-0 md:pr-6'>
+        <div className='flex flex-col gap-4 md:gap-6 w-full md:w-[26%] shrink-0 border-b md:border-b-0 md:border-r border-gray-100/80 pb-4 md:pb-0 md:pr-6'>
           <div className='flex flex-col gap-1.5'>
             <div className='flex items-center gap-2 text-[#085484] font-normal text-[15px] md:text-[16px]' style={{ fontFamily: "'DM Sans', sans-serif" }}>
               <img src="/svg/pronum.svg" alt="Complaint Number" className="w-[13px] h-[13px] shrink-0 object-contain" />
@@ -31,7 +31,7 @@ const ComplaintListItem = ({ complaint, setComplaint }: Properties) => {
         </div>
 
         {/* Col 2: Complainant Name & Respondent Name */}
-        <div className='flex flex-col gap-4 md:gap-6 w-full md:w-[32%] shrink-0 border-b md:border-b-0 md:border-r border-gray-100/80 pb-4 md:pb-0 md:px-6'>
+        <div className='flex flex-col gap-4 md:gap-6 w-full md:w-[36%] shrink-0 border-b md:border-b-0 md:border-r border-gray-100/80 pb-4 md:pb-0 md:px-6'>
           <div className='flex flex-col gap-1.5'>
             <div className='flex items-center gap-2 text-[#085484] font-normal text-[15px] md:text-[16px]' style={{ fontFamily: "'DM Sans', sans-serif" }}>
               <img src="/svg/comnanem.svg" alt="Complainant Name" className="w-[13px] h-[13px] shrink-0 object-contain" />
@@ -49,7 +49,7 @@ const ComplaintListItem = ({ complaint, setComplaint }: Properties) => {
         </div>
 
         {/* Col 3: Orders */}
-        <div className='flex flex-col gap-3 w-full md:w-[15%] shrink-0 border-b md:border-b-0 md:border-r border-gray-100/80 pb-4 md:pb-0 md:px-6'>
+        <div className='flex flex-col gap-3 w-full md:w-[19%] shrink-0 border-b md:border-b-0 md:border-r border-gray-100/80 pb-4 md:pb-0 md:px-6'>
           <div className='flex items-center gap-2 text-[#085484] font-normal text-[15px] md:text-[16px]' style={{ fontFamily: "'DM Sans', sans-serif" }}>
             <img src="/svg/order1.svg" alt="Orders" className="w-[13px] h-[13px] shrink-0 object-contain" />
             Orders
@@ -72,18 +72,19 @@ const ComplaintListItem = ({ complaint, setComplaint }: Properties) => {
             )}
           </div>
         </div>
-
+		
+		
         {/* Col 4: Status */}
-        <div className='flex justify-start md:justify-center w-full md:w-[15%] shrink-0 border-b md:border-b-0 md:border-r border-gray-100/80 pb-4 md:pb-0 md:px-6'>
+        {/* <div className='flex justify-start md:justify-center w-full md:w-[15%] shrink-0 border-b md:border-b-0 md:border-r border-gray-100/80 pb-4 md:pb-0 md:px-6'>
           {complaint.FinalOrder === '1' ? (
             <span className='bg-[#e3fbe3] text-[#2c982c] px-6 py-2 rounded-full text-[12px] font-medium min-w-[90px] text-center'>Closed</span>
           ) : (
             <span className='bg-orange-100 text-orange-700 px-6 py-2 rounded-full text-[12px] font-medium min-w-[90px] text-center'>Pending</span>
           )}
-        </div>
+        </div> */}
 
-        {/* Col 5: Actions */}
-        <div className='flex flex-col gap-3 w-full md:w-[15%] md:px-6 shrink-0 mt-2 md:mt-0'>
+        {/* Col 4: Actions */}
+        <div className='flex flex-col gap-3 w-full md:w-[19%] md:px-6 shrink-0 mt-2 md:mt-0'>
           {complaint.Tbl_Name === 'AlreadyRegisteredComplaints' && (
             <button
               className='w-full bg-[#085484] text-white px-4 py-2.5 rounded-[8px] text-[12.5px] font-medium hover:bg-[#063e63] transition-colors text-center'

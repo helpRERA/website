@@ -50,9 +50,8 @@ class AgentListService
                   UserID,
                   DistrictName,
                   AgentName,
-                  (
-                    Address + ', ' + DistrictName + ', ' + Pincode
-                  ) Address,
+                  Address,
+                  CommAddress,
                   Landmark,
                   Pincode,
                   IndivisualEmailID,
@@ -78,8 +77,33 @@ class AgentListService
                         UP.InfoTypeValue in (1)
                       ) then d.Districtname else d1.Districtname end DistrictName,
                       case when (
-                        UP.InfoTypeValue in (1)
-                      ) then IndivisualHouseNo + ', ' + IndivisualBuilding + ', ' + IndivisualStreet + ', ' + IndivisualLocality else companyHouseNo + ', ' + CompanyBuilding + ', ' + CompanyStreet + ', ' + CompanyLocality end Address,
+                        UP.InfoTypeValue = 1
+                      ) then
+                        concat(
+                          UP.IndivisualHouseNo, ', ', UP.IndivisualBuilding, ', ', UP.IndivisualStreet, ', ', UP.IndivisualLocality,
+                          ', ', d.Districtname, ', ', st.Statename, ', ', isnull(UP.IndivisualPinCode, '')
+                        )
+                      else
+                        concat(
+                          UP.CompanyHouseNo, ', ', UP.CompanyBuilding, ', ', UP.CompanyStreet, ', ', UP.CompanyLocality,
+                          ', ', d1.Districtname, ', ', s1.Statename, ', ', isnull(UP.CompanyPinCode, '')
+                        )
+                      end Address,
+                      case when (
+                        UP.InfoTypeValue = 1
+                      ) then
+                        concat(
+                          UP.OfficialIndivisualHouseNo, ', ', UP.OfficialIndivisualBuilding, ', ', UP.OfficialIndivisualStreet,
+                          ', ', UP.OfficialIndivisualLocality, ', ', od.Districtname, ', ', ost.Statename,
+                          ', ', isnull(UP.OfficialIndivisualPinCode, '')
+                        )
+                      else
+                        concat(
+                          UP.OfficialCompanyHouseNo, ', ', UP.OfficialCompanyBuilding, ', ', UP.OfficialCompanyStreet,
+                          ', ', UP.OfficialCompanyLocality, ', ', od1.Districtname, ', ', os1.Statename,
+                          ', ', isnull(UP.OfficialCompanyPinCode, '')
+                        )
+                      end CommAddress,
                       case when (
                         UP.InfoTypeValue in (1)
                       ) then IndivisualLandmark else CompanyLandmark end Landmark,
@@ -101,6 +125,18 @@ class AgentListService
                       and d.Langid = 1
                       left join mstDistrict d1 on UP.CompanyDistrictValue = d1.Districtcode
                       and d1.Langid = 1
+                      left join mstState st on UP.IndivisualState = st.Statecode
+                      and st.Langid = 1
+                      left join mstState s1 on UP.CompanyState = s1.Statecode
+                      and s1.Langid = 1
+                      left join mstDistrict od on UP.OfficialIndivisualDistrictValue = od.Districtcode
+                      and od.Langid = 1
+                      left join mstDistrict od1 on UP.OfficialCompanyDistrictValue = od1.Districtcode
+                      and od1.Langid = 1
+                      left join mstState ost on UP.OfficialIndivisualState = ost.Statecode
+                      and ost.Langid = 1
+                      left join mstState os1 on UP.OfficialCompanyState = os1.Statecode
+                      and os1.Langid = 1
                     where
                       UP.RoleID = 2
                 ".

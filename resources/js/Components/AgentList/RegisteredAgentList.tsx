@@ -8,6 +8,7 @@ const heads = [
   'Agent Name',
   'Agent Type',
   'Address',
+  'AgentData',
   'Land Mark',
   'Email ID',
   'Mobile No',
@@ -35,7 +36,7 @@ const RegisteredAgentList = ({ agents }: Properties) => {
               <td className='standard-td'>
                 {agent.InfoTypeValue === '1' ? 'Individual' : 'Other Than Individual'}
               </td>
-              <td className='standard-td'>{agent.Address}</td>
+              <td className='standard-td'>{agent.CommAddress}</td>
               <td className='standard-td'>{agent.Landmark}</td>
               <td className='standard-td'>
                 <DisplayEmail

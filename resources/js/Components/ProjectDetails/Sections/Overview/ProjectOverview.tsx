@@ -4,17 +4,12 @@ import { ProjectDetailData, ProjectLastModified } from '../../../../Pages/Projec
 import BuildingsAccordion from './BuildingsAccordion'
 import CompanyModal from '../CompanyModal'
 import { Language } from '../../../../ui/ui_interfaces'
-import { ExtensionCert, OrderFile } from '../../../../DataStructures/krera_interfaces'
-import Tooltip from '../../../../ui/Tooltip/Tooltip'
 import AvailabilityProgressLine from '../../../ExploreProject/AvailabilityProgressLine'
 import ProgressLine from '../../../../ui/ProgressLine'
 interface Properties {
   reference: RefObject<HTMLDivElement>
   project: ProjectDetailData
   lang?: Language
-  extensionOrder: OrderFile | null
-  registrationOrder: OrderFile | null
-  extensionCertificate: ExtensionCert | null
   lastModified?: ProjectLastModified | null
   projectHash: string
   hasForm6: boolean
@@ -25,9 +20,6 @@ const ProjectOverview = ({
   reference,
   project,
   lang = 'en',
-  extensionCertificate,
-  extensionOrder,
-  registrationOrder,
   lastModified,
   projectHash,
   today,
@@ -41,48 +33,9 @@ const ProjectOverview = ({
     <div className='mx-auto flex w-full max-w-[1100px] flex-col gap-12 px-4' ref={reference}>
       {/* Top Info Row */}
       <div className='grid grid-cols-1 md:grid-cols-2 gap-8 items-start'>
-        {/* Left: Orders and Info */}
+        {/* Left: Project Info */}
         <div className='flex flex-col gap-4'>
           <h3 className='text-lg font-medium text-[#085484]'>Overview</h3>
-          <div className='mt-2'>
-            <h4 className='text-sm font-medium text-[#085484]'>Orders related to project:</h4>
-            <div className='flex flex-wrap items-center gap-3 mt-3'>
-              {registrationOrder != null && (
-                <a
-                  href={`/registration-order/${registrationOrder?.DocID}`}
-                  className='tooltip-parent text-xs font-bold text-blue-500 hover:text-blue-400'
-                  target='_blank'
-                  rel='noreferrer'
-                >
-                  <img
-                    alt='Registration Order'
-                    src={'/svg/order.svg'}
-                    className='h-8 w-8'
-                  />
-                  <Tooltip text='Registration Order' />
-                </a>
-              )}
-              {extensionOrder != null && (
-                <a
-                  href={`/extension-order/${extensionOrder?.DocID}`}
-                  className='tooltip-parent text-xs font-bold text-blue-500 hover:text-blue-400'
-                  target='_blank'
-                  rel='noreferrer'
-                >
-                  <img
-                    alt='Extension Order'
-                    src={'/svg/order.svg'}
-                    className='h-8 w-8'
-                  />
-                  <Tooltip text='Extension Order' />
-                </a>
-              )}
-              {registrationOrder == null && extensionOrder == null && (
-                <span className='text-sm text-gray-400'>No orders available</span>
-              )}
-            </div>
-          </div>
-
           {lastModified != null && (
             <p className='text-sm text-gray-600 mt-2'>
               Information As Of: {lastModified.date}

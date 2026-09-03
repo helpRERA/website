@@ -31,8 +31,6 @@ const ProjectDetailsContent = ({
   documents,
   orders,
   extensionCertificate,
-  extensionOrder,
-  registrationOrder,
   lastModified,
   projectHash,
   hasForm6,
@@ -45,6 +43,18 @@ const ProjectDetailsContent = ({
   const encodedCertificateUrl = useMemo(() => {
     return encodeURIComponent(project.certificate_info.CertificateNo ?? '')
   }, [project.certificate_info])
+
+  const projectAddress = useMemo(() => {
+    return [
+      project.Street,
+      project.Locality,
+      project.village?.Villagename,
+      project.taluk?.SubDistrictname,
+      project.district?.Districtname,
+    ]
+      .filter((part): part is string => part != null && part.trim() !== '')
+      .join(', ')
+  }, [project])
 
   return (
     <>
@@ -88,20 +98,24 @@ const ProjectDetailsContent = ({
               <svg className='w-5 h-5 text-[#085484] shrink-0' fill='currentColor' viewBox='0 0 20 20'>
                 <path fillRule='evenodd' d='M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z' clipRule='evenodd' />
               </svg>
-              <span className='text-gray-500 uppercase text-[12px] leading-relaxed'>
-                {project.ProjectAddress} {project?.village?.Villagename == null ? '' : `, ${project?.village?.Villagename}`}
-                <br />
-                {project?.taluk?.SubDistrictname == null ? '' : `${project?.taluk?.SubDistrictname}`}
-                <br />
-                {project?.district?.Districtname}
+              <span className='text-gray-500 uppercase text-[12px] leading-5 break-words'>
+                {projectAddress}
               </span>
             </div>
             
-            <div className='mt-2 flex items-center justify-between max-w-[420px]'>
-              <span className='text-gray-500 text-[15px]'>Total Area</span>
-              <span className='text-[22px] font-medium text-gray-700'>
-                {project.TotalFloorAreaUnderResidentialUse ? `${project.TotalFloorAreaUnderResidentialUse} sqm` : 'N/A'}
-              </span>
+            <div className='mt-2 flex max-w-[520px] flex-col gap-2'>
+              <div className='flex items-center justify-between gap-4'>
+                <span className='text-gray-500 text-[15px]'>Total Floor Area Under Residential Use</span>
+                <span className='shrink-0 text-[18px] font-medium text-gray-700'>
+                  {project.TotalFloorAreaUnderResidentialUse ? `${project.TotalFloorAreaUnderResidentialUse} sqm` : 'N/A'}
+                </span>
+              </div>
+              <div className='flex items-center justify-between gap-4'>
+                <span className='text-gray-500 text-[15px]'>Total Floor Area Under Other Use</span>
+                <span className='shrink-0 text-[18px] font-medium text-gray-700'>
+                  {project.TotalFloorAreaUnderOtherUse ? `${project.TotalFloorAreaUnderOtherUse} sqm` : 'N/A'}
+                </span>
+              </div>
             </div>
             
             <div className='flex flex-col gap-1.5 mt-2'>
@@ -141,9 +155,12 @@ const ProjectDetailsContent = ({
                   <Link
                     as='a'
                     href={`/projects?registration_number=${encodedCertificateUrl}`}
-                    className='rounded-full border border-gray-400 px-6 py-1.5 text-[11px] font-medium text-gray-600 hover:bg-gray-50 text-center'
+                    className='inline-flex items-center justify-center gap-1.5 rounded-full border border-[#085484] px-6 py-1.5 text-[11px] font-medium text-[#085484] hover:bg-blue-50 text-center cursor-pointer'
                   >
                     {project.certificate_info.CertificateNo}
+                    <svg className='h-3.5 w-3.5' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
+                      <path strokeLinecap='round' strokeLinejoin='round' d='M9 5l7 7-7 7' />
+                    </svg>
                   </Link>
                 </div>
               )}
@@ -160,9 +177,12 @@ const ProjectDetailsContent = ({
                     href={`/extension-certificate/${project.ID}`}
                     target='_blank'
                     rel='noreferrer'
-                    className='rounded-full border border-gray-400 px-6 py-1.5 text-[11px] font-medium text-gray-600 hover:bg-gray-50 text-center'
+                    className='inline-flex items-center justify-center gap-1.5 rounded-full border border-[#085484] px-6 py-1.5 text-[11px] font-medium text-[#085484] hover:bg-blue-50 text-center cursor-pointer'
                   >
-                    {project.certificate_info.CertificateNo}
+                    View Certificate
+                    <svg className='h-3.5 w-3.5' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
+                      <path strokeLinecap='round' strokeLinejoin='round' d='M9 5l7 7-7 7' />
+                    </svg>
                   </a>
                 </div>
               )}
@@ -180,11 +200,8 @@ const ProjectDetailsContent = ({
           hasForm6={hasForm6}
           documents={documents}
           orders={orders}
-          extensionCertificate={extensionCertificate}
-          extensionOrder={extensionOrder}
           lastModified={lastModified}
           projectHash={projectHash}
-          registrationOrder={registrationOrder}
           today={today}
         />
       </div>

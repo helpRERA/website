@@ -11,6 +11,8 @@ export interface AgentData {
   UserID: string | null
   AgentName: string | null
   Address: string | null
+  CommAddress: string | null
+  AgentData: string | null
   Landmark: string | null
   IndivisualEmailID: string | null
   IndivisualMobileNo: string | null
@@ -26,7 +28,9 @@ export interface AgentManualData {
   SNo: string | null
   RegistrationNumber: string | null
   Agent_Name: string | null
+  Address?: string | null
   PermanentAddress: string | null
+  CommAddress: string | null
   Agent_Type: string | null
   PhoneNumber: string | null
   Certificate: string | null
