@@ -451,11 +451,10 @@ class ProjectMaster extends Model
                     $hasMany->select('ID', 'ProjectID')
                         ->orderByRaw(
                             'CASE 
-                        WHEN DocID = ' . ConsideredDocuments::COVER_PHOTO . ' THEN 2
-                        WHEN DocID = ' . ConsideredDocuments::BROCHURE_PHOTO . ' THEN 1
+                        WHEN DocID = ' . ConsideredDocuments::COVER_PHOTO . ' THEN 1
                         ELSE 0
                      END DESC,
-                     CreatedOn DESC'
+                     CreatedOn DESC, ID DESC'
                         );
                 },
                 'documents' => function ($hasMany) {

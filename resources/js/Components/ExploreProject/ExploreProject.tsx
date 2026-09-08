@@ -15,6 +15,7 @@ export interface ProjectListItem extends Project {
   apartment_count: number
   documents: Pick<ProjectDocument, 'ID' | 'DocID' | 'ProjectId' | 'DocumentName'>[]
   certificate_info?: Pick<Certificate, 'CertificateNo'>
+  hsm?: { DgnID: number; ProjectID: number | null } | null
   today: string
   IsDefault?: number 
   DefaultReason?: string | null

@@ -43,7 +43,7 @@ class ProjectLinkEncryption
         if ($encryptedValue === false) {
             return '';
         }
-
+      
         return base64_encode($encryptedValue);
     }
 

@@ -8,7 +8,7 @@ const heads = [
   'Agent Name',
   'Agent Type',
   'Address',
-  'AgentData',
+  //'AgentData',
   'Land Mark',
   'Email ID',
   'Mobile No',

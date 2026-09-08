@@ -46,6 +46,7 @@ export interface ProjectDetailData {
   Street: string | null
   Village: string | null
   Locality: string | null
+  PinCode: string | null
   district?: District
   taluk?: Taluk
   village?: Village

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { Autoplay } from 'swiper'
-import { Link, router } from '@inertiajs/react'
+import { Link } from '@inertiajs/react'
 import 'swiper/css/bundle'
 import 'swiper/css'
 
@@ -15,6 +15,7 @@ export interface BrowseProjectItem {
   Area: string | number
   ImageId: number | string | null
   CertificateNo: string | null
+  DgnID?: number | null
   NumberOfResidentialUnits: number | string
   NumberOfCommercialUnits: number | string
   apartment_count: number
@@ -222,22 +223,26 @@ const BrowseProjects = ({ projects: initialProjects = [], districts = [] }: Brow
                         </div>
 
                         <div className="flex items-end justify-between mt-auto pt-2">
-                          <div
+                          <button
+                            type='button'
+                            disabled={project.DgnID == null}
                             className="flex flex-col gap-1.5 cursor-pointer"
                             onClick={(event) => {
                               event.preventDefault()
                               event.stopPropagation()
-                              router.get(`/projects?registration_number=${encodeURIComponent(project.CertificateNo ?? '')}`)
+                              if (project.DgnID != null) {
+                                window.open(`/signed-certificate/${project.DgnID}`, '_blank', 'noopener,noreferrer')
+                              }
                             }}
                           >
-                            <div className="flex items-center text-[#595959] text-[11px] font-medium" style={{ fontFamily: '"DM Sans", sans-serif' }}>
+                            <span className="flex items-center text-[#595959] text-[11px] font-medium" style={{ fontFamily: '"DM Sans", sans-serif' }}>
                               <img src="/svg/certificateproject.svg" alt="certificate" className="w-[14px] h-[14px] mr-1.5 shrink-0" />
                               Certificate
-                            </div>
+                            </span>
                             <span className="text-[#595959] font-medium text-[13px] tracking-tight" style={{ fontFamily: '"DM Sans", sans-serif' }}>
                               {project.CertificateNo ?? '—'}
                             </span>
-                          </div>
+                          </button>
 
                           <div className="bg-[#085484] hover:bg-[#064269] text-white p-2.5 rounded-full transition-colors shrink-0">
                             <ArrowRight className="w-4 h-4" />

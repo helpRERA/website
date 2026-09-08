@@ -38,6 +38,7 @@ class BrowseProjectsController extends Controller
             'Area' => $p->Area,
             'ImageId' => $p->images[0]->ID ?? null,
             'CertificateNo' => $p->certificateInfo->CertificateNo ?? null,
+            'DgnID' => $p->hsm->DgnID ?? null,
             'certificatePID' => $p->certificatePID,
             'NumberOfResidentialUnits' => $p->NumberOfResidentialUnits,
             'NumberOfCommercialUnits' => $p->NumberOfCommercialUnits,

@@ -64,8 +64,8 @@ const AgentList = ({ agents, manual, expiredAgents }: Properties) => {
     oldPincode = '',
   } = usePage().props as unknown as PageProperties
 
-  console.log(section)
-  console.log(expiredAgents)
+  //console.log(section)
+  //console.log(expiredAgents)
 
   const [selectedTab, setSelectedTab] = useState(section)
 

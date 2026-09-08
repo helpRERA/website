@@ -25,7 +25,7 @@ class PropertySearch
 
     public function __construct(private ProjectMaster $projectMaster)
     {
-        $this->query = $this->projectMaster->projectSearch();
+        $this->query = $this->projectMaster->projectSearch()->with('hsm:DgnID,ProjectID');
     }
 
     /**

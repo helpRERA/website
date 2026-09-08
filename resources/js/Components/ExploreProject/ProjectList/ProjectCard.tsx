@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { Link, router } from '@inertiajs/react'
+import { Link } from '@inertiajs/react'
 import { getIndianDate } from '../../../libs/dates'
 import useProjectImages from '../../ProjectDetails/ProjectImages/useProjectImages'
 import { ProjectListItem } from '../ExploreProject'
@@ -112,7 +112,7 @@ const ProjectCard = ({ project, today, lang = 'en' }: Properties) => {
           </div>
           {project.PType != PROJECT_TYPE_PLOT && (
             <div className='flex items-center gap-2'>
-              <span className='text-gray-500'>Number of Buildings:</span>
+              <span className='text-gray-500'>Number of Building(s):</span>
               <span className='text-gray-600'>{project.buildings_count}</span>
             </div>
           )}
@@ -163,16 +163,20 @@ const ProjectCard = ({ project, today, lang = 'en' }: Properties) => {
                 </svg>
                 <span>Certificate</span>
               </div>
-              <div
+              <button
+                type='button'
+                disabled={project.hsm?.DgnID == null}
                 className='inline-flex cursor-pointer items-center justify-center rounded-full border border-[#085484] bg-white px-4 py-1.5 text-[11px] font-medium text-gray-600'
                 onClick={(event) => {
                   event.preventDefault()
                   event.stopPropagation()
-                  router.get(`/projects?registration_number=${encodeURIComponent(project.certificate_info?.CertificateNo ?? '')}`)
+                  if (project.hsm?.DgnID != null) {
+                    window.open(`/signed-certificate/${project.hsm.DgnID}`, '_blank', 'noopener,noreferrer')
+                  }
                 }}
               >
                 {project.certificate_info?.CertificateNo}
-              </div>
+              </button>
             </div>
 
             <div className='flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#085484] text-white shadow-md hover:bg-[#06426a] transition-colors'>

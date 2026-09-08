@@ -51,6 +51,7 @@ const ProjectDetailsContent = ({
       project.village?.Villagename,
       project.taluk?.SubDistrictname,
       project.district?.Districtname,
+      project.PinCode,
     ]
       .filter((part): part is string => part != null && part.trim() !== '')
       .join(', ')
@@ -69,7 +70,7 @@ const ProjectDetailsContent = ({
         {/* Right: Project Info */}
         <div className='flex flex-col w-full lg:w-1/2'>
           <div className='flex items-center gap-3 flex-wrap'>
-            <h1 className='text-[32px] font-medium text-[#085484] uppercase tracking-wide'>
+            <h1 className='text-[32px] font-bold text-[#085484] uppercase tracking-wide'>
               {project.Name}
             </h1>
             {isDefault && (
@@ -91,7 +92,7 @@ const ProjectDetailsContent = ({
               <svg className='w-5 h-5 text-gray-600 mt-0.5 shrink-0' fill='currentColor' viewBox='0 0 20 20'>
                 <path fillRule='evenodd' d='M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 110 2h-3a1 1 0 01-1-1v-2a1 1 0 00-1-1H9a1 1 0 00-1 1v2a1 1 0 01-1 1H4a1 1 0 110-2V4zm3 1h2v2H7V5zm2 4H7v2h2V9zm2-4h2v2h-2V5zm2 4h-2v2h2V9z' clipRule='evenodd' />
               </svg>
-              <span className='uppercase text-gray-700 text-[15px] font-medium'>{promoterName}</span>
+              <span className='uppercase text-gray-700 text-[15px] font-bold'>{promoterName}</span>
             </div>
             
             <div className='flex items-start gap-3 -mt-2'>
@@ -104,23 +105,33 @@ const ProjectDetailsContent = ({
             </div>
             
             <div className='mt-2 flex max-w-[520px] flex-col gap-2'>
-              <div className='flex items-center justify-between gap-4'>
+              <div className='flex items-center  gap-4'>
                 <span className='text-gray-500 text-[15px]'>Total Floor Area Under Residential Use</span>
                 <span className='shrink-0 text-[18px] font-medium text-gray-700'>
-                  {project.TotalFloorAreaUnderResidentialUse ? `${project.TotalFloorAreaUnderResidentialUse} sqm` : 'N/A'}
+                  {Number(project.TotalFloorAreaUnderResidentialUse) ? `${project.TotalFloorAreaUnderResidentialUse} sqm` : '0'}
                 </span>
               </div>
-              <div className='flex items-center justify-between gap-4'>
+              <div className='flex items-center  gap-4'>
                 <span className='text-gray-500 text-[15px]'>Total Floor Area Under Other Use</span>
                 <span className='shrink-0 text-[18px] font-medium text-gray-700'>
-                  {project.TotalFloorAreaUnderOtherUse ? `${project.TotalFloorAreaUnderOtherUse} sqm` : 'N/A'}
+                  {Number(project.TotalFloorAreaUnderOtherUse) ? `${project.TotalFloorAreaUnderOtherUse} sqm` : '0'}
                 </span>
               </div>
             </div>
             
             <div className='flex flex-col gap-1.5 mt-2'>
-              <span className='text-[13px] text-gray-500'>Number of Building: {project.BuildingCount}</span>
-              <span className='text-[13px] text-gray-500'>Proposed Completion On: {getDisplayDate(project.ProposedDateOfCompletion)}</span>
+               <div className='flex items-center  gap-4'>
+                  <span className='text-[13px] text-gray-500'>Number of Building(s):</span>  
+                  <span className='shrink-0 text-[18px] font-medium text-gray-700'> 
+                    {project.BuildingCount}
+                  </span>
+                </div>
+                <div className='flex items-center  gap-4'>
+                  <span className='text-[13px] text-gray-500'>Proposed Completion On: </span> 
+                  <span className='shrink-0 text-[18px] font-medium text-gray-700'>
+                    {getDisplayDate(project.ProposedDateOfCompletion)}
+                  </span>
+                </div>
             </div>
             
             {/* Units & Status Pills */}
@@ -151,6 +162,20 @@ const ProjectDetailsContent = ({
                       <path strokeLinecap='round' strokeLinejoin='round' d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' />
                     </svg>
                     <span>Project Certificate</span>
+                    {project.hsm?.DgnID != null && (
+                      <a
+                        href={`/signed-certificate/${project.hsm.DgnID}`}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        title='View signed project certificate'
+                        aria-label='View signed project certificate (opens in a new tab)'
+                        className='inline-flex items-center justify-center p-1 text-[#085484] hover:text-blue-700'
+                      >
+                        <svg className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2} aria-hidden='true'>
+                          <path strokeLinecap='round' strokeLinejoin='round' d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' />
+                        </svg>
+                      </a>
+                    )}
                   </div>
                   <Link
                     as='a'
