@@ -19,9 +19,13 @@ const NavbarLinks = ({ nav, section, lang = 'en' }: Properties) => {
   }, [section, nav])
 
   return (
-    <div className='flex flex-col md:flex-row w-full md:min-h-[450px] mx-auto overflow-hidden whitespace-normal'>
+    <div
+      lang={lang === 'mal' ? 'ml' : 'en'}
+      className='flex min-w-0 flex-col md:flex-row w-full md:min-h-[450px] mx-auto whitespace-normal text-left'
+      style={{ fontFamily: "'DM Sans', 'malayalam', sans-serif" }}
+    >
       {/* Left pane - links */}
-      <div className='flex-1 bg-[#F5F6FF] p-5 md:p-10 flex flex-col gap-5 md:gap-7'>
+      <div className='min-w-0 flex-1 bg-[#F5F6FF] p-5 md:p-10 flex flex-col gap-5 md:gap-7 [overflow-wrap:anywhere]'>
         {menuItems?.items.map((section) => {
           // Determine icon based on section title
           let Icon = LayoutList
@@ -32,16 +36,15 @@ const NavbarLinks = ({ nav, section, lang = 'en' }: Properties) => {
 
           return (
             <div key={section.id.toString()} className='flex flex-col'>
-              <h5 className='mb-3 flex items-center gap-2 text-[15px] font-medium text-[#105d8c]'>
-                <Icon size={18} className='text-[#105d8c]' fill="currentColor" strokeWidth={1} />
-                <Localization language={lang} text={section.section} />
+              <h5 className='mb-3 flex items-start gap-2 text-[15px] leading-relaxed font-medium text-[#105d8c]'>
+                <Icon size={18} className='mt-1 shrink-0 text-[#105d8c]' fill="currentColor" strokeWidth={1} />
+                <span className='min-w-0'><Localization language={lang} text={section.section} /></span>
               </h5>
-              <div className='flex flex-wrap gap-2'>
+              <div className='flex flex-col gap-2 md:flex-row md:flex-wrap'>
                 {section.links.map((item) => (
-                  <div key={item.id.toString()} className='flex items-center rounded bg-[#FFFFFF] border border-transparent px-3.5 py-2 transition hover:border-[#DDDDDD] hover:shadow-sm'>
+                  <div key={item.id.toString()} className='flex min-w-0 max-w-full shrink-0 items-center rounded bg-[#FFFFFF] border border-transparent px-3.5 py-2 transition hover:border-[#DDDDDD] hover:shadow-sm'>
                     <InertiaLink
-                      className='text-[15px] font-normal text-[#5A5A5A] hover:text-[#105d8c]'
-                      style={{ fontFamily: "'DM Sans', sans-serif" }}
+                      className='min-w-0 whitespace-normal text-[15px] leading-relaxed font-normal text-[#5A5A5A] hover:text-[#105d8c]'
                       link={item}
                       language={lang}
                     />

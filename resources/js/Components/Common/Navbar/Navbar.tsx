@@ -75,22 +75,22 @@ const Navbar = () => {
         {/* Thin blue bar at the very top */}
         <div className="absolute top-0 left-0 right-0 h-6 md:h-8 bg-[#085484] -z-10" />
 
-        <div className='relative flex h-[80px] items-center justify-between rounded-lg bg-white px-6 shadow-md md:px-10 lg:px-12'>
-          <div className='flex h-full items-center py-2'>
+        <div className='relative flex h-[80px] items-center justify-between gap-3 rounded-lg bg-white px-3 shadow-md sm:px-6 md:px-10 lg:px-12'>
+          <div className='flex h-full min-w-0 items-center py-2'>
             <Link as='a' href='/' className='flex h-full items-center'>
-              <img src={'/logov2.svg'} alt='K-RERA Logo' className='h-[40px] md:h-[50px] w-auto object-contain' />
+              <img src={'/logov2.svg'} alt='K-RERA Logo' className='h-[40px] md:h-[50px] w-auto max-w-full object-contain' />
             </Link>
           </div>
 
           {/* MIDDLE: Desktop Links (Hidden on mobile/tablet, shown on desktop xl+) */}
-          <div className='hidden flex-1 justify-end pr-6 xl:flex'>
-            <div className='hidden items-center xl:flex'>
+          <div className='hidden min-w-0 flex-1 justify-end xl:flex'>
+            <div className='flex w-full min-w-0 items-center'>
               <DesktopDropdown nav={nav} hoverDropdown={hoverDropdown} lang={lang as Language} />
             </div>
           </div>
 
           {/* RIGHT: Language Switcher and Hamburger (Always visible) */}
-          <div className='flex items-center gap-1 md:gap-2'>
+          <div className='flex shrink-0 items-center gap-1 md:gap-2'>
             {/* Language Pill */}
             <div
               onClick={langToggle}

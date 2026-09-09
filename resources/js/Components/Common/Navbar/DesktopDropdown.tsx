@@ -24,29 +24,27 @@ const DesktopDropdown = ({ nav, hoverDropdown, lang = 'en' }: Properties) => {
       </Link>
       {navSections
         .filter((navSection) => !['ABOUT K-RERA', 'CONTACT US'].includes(navSection.value))
-        .map((navSection, index, filteredNavSections) => {
+        .map((navSection) => {
           const navRecord = nav.find((record) => record.section === navSection.value)
-
-          // Align the dropdown perfectly centered under the hovered nav item
-          let positionClass = 'left-1/2 -translate-x-1/2'
 
           return (
             <div
               onMouseOver={() => {
                 hoverDropdown(navSection.value)
               }}
-              className={`nav-item relative hidden whitespace-nowrap px-4 lg:px-5 text-sm font-medium transition-colors hover:text-[#0f2c59] hover:bg-gray-50 md:inline-flex md:items-center h-[80px] cursor-pointer`}
+              className={`nav-item hidden min-w-0 flex-1 whitespace-normal px-2 2xl:px-4 text-center text-sm leading-relaxed font-medium transition-colors hover:text-[#0f2c59] hover:bg-gray-50 md:inline-flex md:items-center md:justify-center h-[80px] cursor-pointer`}
               key={navSection.value}
             >
               <Link
                 as='a'
+                className='min-w-0 max-w-full [overflow-wrap:anywhere]'
                 href={`${navSection.url}`}
               >
                 <Localization text={localization[navSection.value]} language={lang} />
               </Link>
               {navRecord && navRecord.items && (
-                <div className={`nav-list absolute ${positionClass} top-[80px] z-[9999] w-max max-w-[950px] pt-1`}>
-                  <div className='overflow-hidden rounded-xl border border-gray-100 shadow-xl'>
+                <div className='nav-list absolute left-1/2 top-full z-[9999] w-[950px] max-w-[calc(100%-2rem)] -translate-x-1/2 pt-1 text-left'>
+                  <div className='max-h-[calc(100dvh-140px)] overflow-y-auto overscroll-contain rounded-xl border border-gray-100 shadow-xl' data-lenis-prevent='true'>
                     <NavbarLinks
                       nav={nav}
                       section={navSection.value}

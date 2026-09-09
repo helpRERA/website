@@ -102,12 +102,12 @@ const MobileDropdown = ({
                         isSelected ? 'bg-white shadow-[inset_4px_0_0_0_#105d8c]' : 'hover:bg-white hover:shadow-[inset_4px_0_0_0_#e5e7eb]'
                       }`}
                     >
-                      <span className={`text-[15px] font-medium transition-colors ${isSelected ? 'text-[#105d8c]' : 'text-[#5a5a5a] group-hover:text-[#105d8c]'}`}>
+                      <span className={`min-w-0 [overflow-wrap:anywhere] text-[15px] leading-relaxed font-medium transition-colors ${isSelected ? 'text-[#105d8c]' : 'text-[#5a5a5a] group-hover:text-[#105d8c]'}`}>
                         <Localization text={localization[section.value]} language={lang} />
                       </span>
                       {navRecord && (
                         <svg 
-                          className={`h-4 w-4 transition-transform duration-300 ${isSelected ? 'rotate-90 text-[#105d8c] md:rotate-0' : 'text-gray-400 group-hover:text-[#105d8c]'}`} 
+                          className={`h-4 w-4 shrink-0 transition-transform duration-300 ${isSelected ? 'rotate-90 text-[#105d8c] md:rotate-0' : 'text-gray-400 group-hover:text-[#105d8c]'}`}
                           fill="none" viewBox="0 0 24 24" stroke="currentColor"
                         >
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -128,7 +128,7 @@ const MobileDropdown = ({
           </div>
 
           {/* Right Column (Desktop Submenu Display) */}
-          <div className='hidden min-h-0 flex-1 bg-white md:block overflow-y-auto overscroll-contain' data-lenis-prevent='true'>
+          <div className='hidden min-h-0 min-w-0 flex-1 bg-white md:block overflow-y-auto overscroll-contain' data-lenis-prevent='true'>
             {selectedOption ? (
               <NavbarLinks nav={nav} section={selectedOption} lang={lang} />
             ) : (

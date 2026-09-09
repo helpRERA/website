@@ -139,7 +139,7 @@ class AgreementForSaleController extends Controller
             'facilities_outside_project' => $request->input('facilitiesOutsideProject'),
             'competent_authority' => $request->input('competentAuthorityForDeclaration'),
             'prescribed_by_laws' => $request->input('prescribedByLaws'),
-            'maintenance_clauses' => $request->input('maintenanceClauses'),
+            // maintenanceClauses is saved through the maintenanceClauses relationship.
             'basement_location' => $request->input('basementLocation'),
            // 'additional_terms' => $request->input('additionalTerms'),
             'default_consecutive_demands' => $request->input('defaultConsecutiveDemands'),
