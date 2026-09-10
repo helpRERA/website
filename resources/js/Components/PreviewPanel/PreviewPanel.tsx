@@ -3,20 +3,49 @@ import { ZoomIn, ZoomOut, Eye, Download, RefreshCw, Printer } from 'lucide-react
 import DocumentPages from '../../Components/DocumentPages/DocumentPages';
 import { generatePDF } from '../../utils/pdfGenerator';
 import { AgreementData } from '../../hooks/useAgreementData';
+import { getAgreementFieldStep } from '../../utils/agreementFieldNavigation';
 
 interface PreviewPanelProps {
   data: AgreementData;
   resetData: () => void;
   activeField?: string | null;
   isSaved: boolean;
+  onFieldSelect?: (field: string) => void;
 }
 
-export default function PreviewPanel({ data, activeField, isSaved }: PreviewPanelProps) {
+export default function PreviewPanel({ data, activeField, isSaved, onFieldSelect }: PreviewPanelProps) {
   const [zoom, setZoom] = useState<number>(0.85);
   const [highlightMode, setHighlightMode] = useState<boolean>(true);
   const [isExporting, setIsExporting] = useState<boolean>(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const lastActiveField = useRef<string | null>(null);
+
+  const handleFieldClick = (event: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => {
+    if (isExporting || !(event.target instanceof Element)) return;
+    if (window.getSelection()?.toString()) return;
+    const target = event.target.closest<HTMLElement>('[data-edit-field], [data-field]');
+    if (!target || !event.currentTarget.contains(target)) return;
+    const field = target.dataset.editField || target.dataset.field;
+    if (field && getAgreementFieldStep(field) !== undefined) {
+      // Focusing the form should not scroll the preview away from the clicked value.
+      lastActiveField.current = target.closest<HTMLElement>('[data-field]')?.dataset.field || field;
+      onFieldSelect?.(field);
+    }
+  };
+
+  useEffect(() => {
+    // Keep document markup suitable for export; add editor affordances only in the live preview.
+    panelRef.current?.querySelectorAll<HTMLElement>('[data-edit-field], [data-field]').forEach(target => {
+      const field = target.dataset.editField || target.dataset.field;
+      if (!field || getAgreementFieldStep(field) === undefined) return;
+      // Individual values inside a group provide the more precise click targets.
+      if (target.querySelector('[data-edit-field], [data-field]')) return;
+      target.tabIndex = 0;
+      target.setAttribute('role', 'button');
+      target.title = 'Edit this value in the form';
+      target.classList.add('preview-editable-field');
+    });
+  }, [data]);
 
   const handleZoomIn = () => setZoom(prev => Math.min(prev + 0.05, 1.3));
   const handleZoomOut = () => setZoom(prev => Math.max(prev - 0.05, 0.55));
@@ -65,7 +94,10 @@ export default function PreviewPanel({ data, activeField, isSaved }: PreviewPane
       targets.forEach(el => el.classList.remove('field-focus-pulse'));
     }, 2000);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      targets.forEach(el => el.classList.remove('field-focus-pulse'));
+    };
   }, [activeField]);
 
   return (
@@ -85,6 +117,7 @@ export default function PreviewPanel({ data, activeField, isSaved }: PreviewPane
           <button
             className="control-btn"
             onClick={() => setHighlightMode(h => !h)}
+            aria-pressed={highlightMode}
             style={{
               color: highlightMode ? 'var(--accent-gold)' : 'var(--text-secondary)',
               backgroundColor: highlightMode ? 'rgba(194, 149, 43, 0.1)' : 'transparent',
@@ -135,6 +168,14 @@ export default function PreviewPanel({ data, activeField, isSaved }: PreviewPane
 
       <div
         className={highlightMode ? 'highlight-fillable' : ''}
+        onClick={handleFieldClick}
+        onKeyDown={event => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            if (!(event.target instanceof HTMLElement) || !event.target.classList.contains('preview-editable-field')) return;
+            event.preventDefault();
+            handleFieldClick(event);
+          }
+        }}
         style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}
       >
         <div

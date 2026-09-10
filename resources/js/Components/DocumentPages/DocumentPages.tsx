@@ -8,9 +8,10 @@ interface SpanValProps {
   val: string | undefined;
   fallback?: string;
   fieldKey?: string;
+  editField?: string;
 }
 
-const SpanVal: React.FC<SpanValProps> = ({ val, fallback = '', fieldKey }) => {
+const SpanVal: React.FC<SpanValProps> = ({ val, fallback = '', fieldKey, editField }) => {
   const displayVal = val && val.trim() !== '' ? val : fallback;
   const isTrulyEmpty = !displayVal || displayVal.trim() === '';
   const isEmpty = (!val || val.trim() === '') && !fallback.includes('______');
@@ -18,6 +19,7 @@ const SpanVal: React.FC<SpanValProps> = ({ val, fallback = '', fieldKey }) => {
     <span
       className={`placeholder-field ${isEmpty ? 'empty' : ''} ${isTrulyEmpty ? 'truly-empty' : ''}`}
       data-field={fieldKey}
+      data-edit-field={editField}
     >
       {isTrulyEmpty ? '\u00A0' : displayVal}
     </span>
@@ -26,10 +28,10 @@ const SpanVal: React.FC<SpanValProps> = ({ val, fallback = '', fieldKey }) => {
 
 const BlankLine: React.FC<{ width?: string }> = ({ width = '110px' }) => (
   <span
+    className="placeholder-field empty blank-line"
     style={{
       display: 'inline-block',
       width,
-      borderBottom: '1px dashed #c2952b',
       height: '1em',
       verticalAlign: 'middle',
       margin: '0 2px',
@@ -186,7 +188,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           <p className="legal-section-title" style={{ marginTop: '1rem' }}>WHEREAS:</p>
           {landOwnerEntries.map((entry, idx) => (
             <div className="indent-1" key={entry.id} style={{ marginTop: idx > 0 ? '1rem' : 0 }}>
-              {idx === 0 ? 'A.' : `A(${idx + 1}).`} The Promoter is the absolute and lawful owner of (survey Nos.) (Please insert land details as per local laws). <SpanVal val={entry.surveyNos} fieldKey="landOwnerEntries" /> (Resurvey Nos.) <SpanVal val={entry.resurveyNos} fallback="" fieldKey="landOwnerEntries" /> totally admeasuring <SpanVal val={entry.admeasuring} fieldKey="landOwnerEntries" /> square meters situated at <SpanVal val={entry.situatedAt} fieldKey="landOwnerEntries" /> in Tehsil <SpanVal val={entry.tehsil} fieldKey="landOwnerEntries" /> and District <SpanVal val={entry.district} fieldKey="landOwnerEntries" /> ("Said Land") vide <SpanVal val={entry.deedType ? entry.deedType.toLowerCase() + '(s)' : ''} fieldKey="landOwnerEntries" /> dated <SpanVal val={formatDateDMY(entry.titleDeedDate)} fieldKey="landOwnerEntries" /> registered as documents No. <SpanVal val={entry.titleDeedRegNo} fieldKey="landOwnerEntries" /> at the office of the Sub-Registrar<SpanVal val={entry.deedSubRegistrarOffice ? ` ${entry.deedSubRegistrarOffice}` : ''} fieldKey="landOwnerEntries" />;
+              {idx === 0 ? 'A.' : `A(${idx + 1}).`} The Promoter is the absolute and lawful owner of (survey Nos.) (Please insert land details as per local laws). <SpanVal editField={`landOwnerEntries.${entry.id}.surveyNos`} val={entry.surveyNos} fieldKey={`landOwnerEntries.${entry.id}.surveyNos`} /> (Resurvey Nos.) <SpanVal editField={`landOwnerEntries.${entry.id}.resurveyNos`} val={entry.resurveyNos} fallback="" fieldKey={`landOwnerEntries.${entry.id}.resurveyNos`} /> totally admeasuring <SpanVal editField={`landOwnerEntries.${entry.id}.admeasuring`} val={entry.admeasuring} fieldKey={`landOwnerEntries.${entry.id}.admeasuring`} /> square meters situated at <SpanVal editField={`landOwnerEntries.${entry.id}.situatedAt`} val={entry.situatedAt} fieldKey={`landOwnerEntries.${entry.id}.situatedAt`} /> in Tehsil <SpanVal editField={`landOwnerEntries.${entry.id}.tehsil`} val={entry.tehsil} fieldKey={`landOwnerEntries.${entry.id}.tehsil`} /> and District <SpanVal editField={`landOwnerEntries.${entry.id}.district`} val={entry.district} fieldKey={`landOwnerEntries.${entry.id}.district`} /> ("Said Land") vide <SpanVal editField={`landOwnerEntries.${entry.id}.deedType`} val={entry.deedType ? entry.deedType.toLowerCase() + '(s)' : ''} fieldKey={`landOwnerEntries.${entry.id}.deedType`} /> dated <SpanVal editField={`landOwnerEntries.${entry.id}.titleDeedDate`} val={formatDateDMY(entry.titleDeedDate)} fieldKey={`landOwnerEntries.${entry.id}.titleDeedDate`} /> registered as documents No. <SpanVal editField={`landOwnerEntries.${entry.id}.titleDeedRegNo`} val={entry.titleDeedRegNo} fieldKey={`landOwnerEntries.${entry.id}.titleDeedRegNo`} /> at the office of the Sub-Registrar<SpanVal editField={`landOwnerEntries.${entry.id}.deedSubRegistrarOffice`} val={entry.deedSubRegistrarOffice ? ` ${entry.deedSubRegistrarOffice}` : ''} fieldKey={`landOwnerEntries.${entry.id}.deedSubRegistrarOffice`} />;
             </div>
           ))}
 
@@ -203,7 +205,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
                 </p>
               )}
               <div className="indent-1" style={{ paddingLeft: '2rem', marginBottom: 0 }}>
-                A. <SpanVal val={jda.ownerName} fieldKey="landJDA" /> ("Owner") is the absolute and lawful owner of (khasra Nos./survey Nos.) <SpanVal val={jda.surveyNos} fieldKey="landJDA" /> totally admeasuring <SpanVal val={jda.admeasuring} fieldKey="landJDA" /> square meters situated at <SpanVal val={jda.situatedAt} fieldKey="landJDA" /> in Tehsil <SpanVal val={jda.tehsil} fieldKey="landJDA" /> and District <SpanVal val={jda.district} fieldKey="landJDA" /> vide <SpanVal val={jda.deedType ? jda.deedType.toLowerCase() + '(s)' : ''} fieldKey="landJDA" /> dated <SpanVal val={formatDateDMY(jda.titleDeedDate)} fieldKey="landJDA" /> registered as documents No. <SpanVal val={jda.titleDeedRegNo} fieldKey="landJDA" /> at the office of the Sub-Registrar<SpanVal val={jda.deedSubRegistrarOffice ? `, ${jda.deedSubRegistrarOffice}` : ''} fieldKey="landJDA" />. The Owner and the Promoter have entered into a (collaboration/development/joint development) agreement dated <SpanVal val={formatDateDMY(jda.jdaDate)} fieldKey="landJDA" /> registered as document No. <SpanVal val={jda.regNo} fieldKey="landJDA" /> at the office of the Sub-Registrar <SpanVal val={jda.subRegistrarOffice} fieldKey="landJDA" />{jda.additionalDetails ? ` ` : ''}{jda.additionalDetails ? <SpanVal val={jda.additionalDetails} fieldKey="landJDA" /> : ''};
+                A. <SpanVal editField={`landJDA.${jda.id}.ownerName`} val={jda.ownerName} fieldKey={`landJDA.${jda.id}.ownerName`} /> ("Owner") is the absolute and lawful owner of (khasra Nos./survey Nos.) <SpanVal editField={`landJDA.${jda.id}.surveyNos`} val={jda.surveyNos} fieldKey={`landJDA.${jda.id}.surveyNos`} /> totally admeasuring <SpanVal editField={`landJDA.${jda.id}.admeasuring`} val={jda.admeasuring} fieldKey={`landJDA.${jda.id}.admeasuring`} /> square meters situated at <SpanVal editField={`landJDA.${jda.id}.situatedAt`} val={jda.situatedAt} fieldKey={`landJDA.${jda.id}.situatedAt`} /> in Tehsil <SpanVal editField={`landJDA.${jda.id}.tehsil`} val={jda.tehsil} fieldKey={`landJDA.${jda.id}.tehsil`} /> and District <SpanVal editField={`landJDA.${jda.id}.district`} val={jda.district} fieldKey={`landJDA.${jda.id}.district`} /> vide <SpanVal editField={`landJDA.${jda.id}.deedType`} val={jda.deedType ? jda.deedType.toLowerCase() + '(s)' : ''} fieldKey={`landJDA.${jda.id}.deedType`} /> dated <SpanVal editField={`landJDA.${jda.id}.titleDeedDate`} val={formatDateDMY(jda.titleDeedDate)} fieldKey={`landJDA.${jda.id}.titleDeedDate`} /> registered as documents No. <SpanVal editField={`landJDA.${jda.id}.titleDeedRegNo`} val={jda.titleDeedRegNo} fieldKey={`landJDA.${jda.id}.titleDeedRegNo`} /> at the office of the Sub-Registrar<SpanVal editField={`landJDA.${jda.id}.deedSubRegistrarOffice`} val={jda.deedSubRegistrarOffice ? `, ${jda.deedSubRegistrarOffice}` : ''} fieldKey={`landJDA.${jda.id}.deedSubRegistrarOffice`} />. The Owner and the Promoter have entered into a (collaboration/development/joint development) agreement dated <SpanVal editField={`landJDA.${jda.id}.jdaDate`} val={formatDateDMY(jda.jdaDate)} fieldKey={`landJDA.${jda.id}.jdaDate`} /> registered as document No. <SpanVal editField={`landJDA.${jda.id}.regNo`} val={jda.regNo} fieldKey={`landJDA.${jda.id}.regNo`} /> at the office of the Sub-Registrar <SpanVal editField={`landJDA.${jda.id}.subRegistrarOffice`} val={jda.subRegistrarOffice} fieldKey={`landJDA.${jda.id}.subRegistrarOffice`} />{jda.additionalDetails ? ` ` : ''}{jda.additionalDetails ? <SpanVal editField={`landJDA.${jda.id}.additionalDetails`} val={jda.additionalDetails} fieldKey={`landJDA.${jda.id}.additionalDetails`} /> : ''};
               </div>
             </div>
           ))}
@@ -264,7 +266,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
                 {data.additionalDisclosures.map((item, idx) => (
                   <div
                     key={item.id}
-                    data-field="additionalDisclosures"
+                    data-field="additionalDisclosures" data-edit-field={`additionalDisclosures.${item.id}.text`}
                     style={{ paddingLeft: '1.5rem', marginBottom: '0.25rem' }}
                   >
                     {idx + 1}. {item.text}
@@ -315,8 +317,8 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
               </tr> */}
               {/* Dynamic breakdown inside the same table */}
               {priceBreakdown.map((row) => (
-                <tr key={row.id} data-field="priceBreakdown">
-                  <td>{row.description || 'Description'}</td>
+                <tr key={row.id} data-field="priceBreakdown" data-edit-field={`priceBreakdown.${row.id}.description`}>
+                  <td data-edit-field={`priceBreakdown.${row.id}.description`}>{row.description || 'Description'}</td>
                   <td style={{ textAlign: 'center' }}>
                     {row.amount ? `Rs. ${row.amount}` : <BlankLine width="150px" />}
                   </td>
@@ -344,7 +346,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
                 {garageDetails.length > 0 ? (
                   garageDetails.map((g) => (
                     <tr key={g.id} data-field="garageNo">
-                      <td style={{ textAlign: 'center' }}><SpanVal val={g.no} fallback="" fieldKey="garageNo" /></td>
+                      <td style={{ textAlign: 'center' }}><SpanVal editField={`garageDetails.${g.id}.no`} val={g.no} fallback="" fieldKey="garageNo" /></td>
                       <td style={{ textAlign: 'center' }}><BlankLine width="150px" /></td>
                     </tr>
                   ))
@@ -636,7 +638,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
                 {maintenanceClauses.map((item, idx) => (
                   <div
                     key={item.id}
-                    data-field="maintenanceClauses"
+                    data-field="maintenanceClauses" data-edit-field={`maintenanceClauses.${item.id}.text`}
                     style={{ marginBottom: '0.25rem' }}
                   >
                     {idx + 1}. {item.text}
@@ -785,7 +787,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
               {additionalTerms.map((item, idx) => (
                 <div
                   key={item.id}
-                  data-field="additionalTerms"
+                  data-field="additionalTerms" data-edit-field={`additionalTerms.${item.id}.text`}
                   style={{ marginBottom: '0.5rem' }}
                 >
                   ({toRomanLower(idx + 1)}) {item.text}

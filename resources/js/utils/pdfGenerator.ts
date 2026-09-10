@@ -1,6 +1,34 @@
 import html2canvas from 'html2canvas';
 import { jsPDF, GState } from "jspdf";
 import { PDFDocument } from 'pdf-lib';
+import { findPageEnd, ProtectedBand } from './pdfPagination';
+
+function getProtectedBands(element: HTMLElement, scale: number): ProtectedBand[] {
+  const origin = element.getBoundingClientRect().top;
+  const bands: ProtectedBand[] = [];
+  const addRect = (rect: DOMRect) => {
+    if (rect.height && rect.width) bands.push({
+      top: Math.max(0, Math.floor((rect.top - origin) * scale) - 2),
+      bottom: Math.ceil((rect.bottom - origin) * scale) + 2,
+    });
+  };
+  // Ranges expose individual rendered lines, including text in long clauses.
+  const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+  const range = document.createRange();
+  while (walker.nextNode()) {
+    if (!walker.currentNode.textContent?.trim()) continue;
+    range.selectNodeContents(walker.currentNode);
+    Array.from(range.getClientRects()).forEach(addRect);
+  }
+  element.querySelectorAll<HTMLElement>('tr, .photo-box, .signature-row, img').forEach(node => addRect(node.getBoundingClientRect()));
+  element.querySelectorAll<HTMLElement>('.legal-section-title, h2, h3').forEach(node => {
+    const rect = node.getBoundingClientRect();
+    // Keep the heading with at least the first line of its following content.
+    const next = node.nextElementSibling?.getBoundingClientRect();
+    bands.push({ top: Math.floor((rect.top - origin) * scale), bottom: Math.ceil(((next ? Math.min(next.bottom, next.top + 28) : rect.bottom) - origin) * scale) });
+  });
+  return bands;
+}
 
 async function mergeSchedulePDFs(mainPdfBytes: ArrayBuffer, scheduleUrls: (string | undefined)[]): Promise<Uint8Array> {
   const mergedPdf = await PDFDocument.load(mainPdfBytes);
@@ -52,38 +80,36 @@ export async function generatePDF(
   }
 
   container.classList.add('pdf-export');
-  const html2pdf = (await import('html2pdf.js')).default;
-
-  const options = {
-    margin: [20, 20, 20, 20] as [number, number, number, number],
-    filename,
-    image: { type: 'jpeg' as const, quality: 0.98 },
-    html2canvas: {
-      scale: 2,
-      useCORS: true,
-      logging: false,
-      scrollX: 0,
-      scrollY: 0
-    },
-    jsPDF: {
-      unit: 'mm' as const,
-      format: 'a4' as const,
-      orientation: 'portrait' as const,
-      // encryption: {
-      //   userPassword: '',
-      //   ownerPassword: 'krera-secret',
-      //   userPermissions: []
-      // }
-    },
-    pagebreak: {
-      mode: ['css', 'legacy'],
-      avoid: ['tr', 'h2', 'h3', 'p', 'li', '.placeholder-block', '.photo-box', '.signature-row', '.indent-1', '.indent-2', 'table']
-    }
-  };
-
   try {
-    const worker = html2pdf().set(options).from(container);
-    const pdf = await worker.toPdf().get('pdf');
+    await document.fonts.ready;
+    await Promise.all(Array.from(container.querySelectorAll('img')).map(img => img.decode().catch(() => undefined)));
+    const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+    const margin = 20;
+    const contentWidth = pdf.internal.pageSize.getWidth() - margin * 2;
+    const contentHeight = pdf.internal.pageSize.getHeight() - margin * 2;
+    const sections = Array.from(container.querySelectorAll<HTMLElement>('.paper-page'));
+    let firstPage = true;
+    for (const section of sections.length ? sections : [container]) {
+      const canvas = await html2canvas(section, { scale: 2, useCORS: true, logging: false, backgroundColor: '#ffffff' });
+      const scale = canvas.width / section.getBoundingClientRect().width;
+      const bands = getProtectedBands(section, scale);
+      const pixelsPerMm = canvas.width / contentWidth;
+      const pageHeight = Math.floor(contentHeight * pixelsPerMm);
+      for (let start = 0; start < canvas.height;) {
+        const end = findPageEnd(start, pageHeight, canvas.height, bands);
+        const slice = document.createElement('canvas');
+        slice.width = canvas.width;
+        slice.height = end - start;
+        const context = slice.getContext('2d');
+        if (!context) throw new Error('Unable to create PDF page canvas');
+        context.drawImage(canvas, 0, start, canvas.width, slice.height, 0, 0, slice.width, slice.height);
+        if (!firstPage) pdf.addPage();
+        firstPage = false;
+        pdf.addImage(slice.toDataURL('image/jpeg', 0.98), 'JPEG', margin, margin, contentWidth, slice.height / pixelsPerMm);
+        start = end;
+      }
+      canvas.width = canvas.height = 0;
+    }
 
     const totalPages = pdf.internal.getNumberOfPages();
     const pageWidth = pdf.internal.pageSize.getWidth();

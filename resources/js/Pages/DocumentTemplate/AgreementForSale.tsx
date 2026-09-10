@@ -7,6 +7,7 @@ import '../../index.css';
 import { Edit, FileText } from 'lucide-react';
 import { ToastContainer, toast } from 'react-toastify';
 import { mapAgreementFromServer } from '../../utils/mapAgreementFromServer';
+import { getAgreementFieldStep } from '../../utils/agreementFieldNavigation';
 
 
 
@@ -49,6 +50,16 @@ function MainApp({ projectId, userId, agreement }: {
   const [activeStep, setActiveStep] = useState<number>(1);
   const [activeView, setActiveView] = useState<'form' | 'preview'>('form');
   const [activeField, setActiveField] = useState<string | null>(null);
+  const [focusRequest, setFocusRequest] = useState<{ field: string } | null>(null);
+
+  const handlePreviewFieldSelect = (field: string) => {
+    const step = getAgreementFieldStep(field);
+    if (step === undefined) return;
+    setActiveStep(step);
+    setActiveView('form');
+    // A new request also allows repeated clicks on the same preview value.
+    setFocusRequest({ field });
+  };
   const initialFormData = useMemo(() => mapAgreementFromServer(agreement), [agreement]);
   const { data, updateField, updateNestedField, resetData, resetFields } = useAgreementData(initialFormData);
   const [agreementId, setAgreementId] = useState<number | null>(agreement?.id ?? null);
@@ -121,6 +132,7 @@ function MainApp({ projectId, userId, agreement }: {
         resetData={resetData}
         resetFields={resetFields}
         setActiveField={setActiveField}
+        focusRequest={focusRequest}
         onSave={handleSave}
         isSaving={isSaving}
         isSaved={isSaved}
@@ -129,6 +141,7 @@ function MainApp({ projectId, userId, agreement }: {
         data={data}
         resetData={resetData}
         activeField={activeField}
+        onFieldSelect={handlePreviewFieldSelect}
         isSaved={isSaved}
       />
     </div>

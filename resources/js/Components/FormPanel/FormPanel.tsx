@@ -35,10 +35,12 @@ function DateFieldDDMMYYYY({
   value,
   onChange,
   onFocus,
+  'data-form-field': formField,
 }: {
   value: string;
   onChange: (v: string) => void;
   onFocus?: () => void;
+  'data-form-field'?: string;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -69,6 +71,7 @@ function DateFieldDDMMYYYY({
       </span>
       <input
         ref={inputRef}
+        data-form-field={formField}
         type="date"
         value={value}
         onFocus={onFocus}
@@ -100,9 +103,10 @@ interface FormPanelProps {
   onSave: () => Promise<void>;
   isSaving: boolean;
   isSaved: boolean;
+  focusRequest?: { field: string } | null;
 }
 
-export default function FormPanel({ activeStep, setActiveStep, data, updateField, updateNestedField, resetData, resetFields, setActiveField, onSave, isSaving, isSaved }: FormPanelProps) {
+export default function FormPanel({ activeStep, setActiveStep, data, updateField, updateNestedField, resetData, resetFields, setActiveField, onSave, isSaving, isSaved, focusRequest }: FormPanelProps) {
   console.log('FormPanel received data.landSurveyNos:', data.landSurveyNos);
   const steps = [
     // { id: 0, label: 'Execution' },
@@ -135,7 +139,9 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
 
 
   const formContentRef = useRef<HTMLDivElement>(null);
+  const handledFocusRequest = useRef<typeof focusRequest>(null);
   useEffect(() => {
+    if (focusRequest && handledFocusRequest.current !== focusRequest) return;
     if (formContentRef.current) {
       formContentRef.current.scrollTop = 0;
       const firstField = formContentRef.current.querySelector<HTMLElement>(
@@ -144,6 +150,28 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
       firstField?.focus();
     }
   }, [activeStep]);
+
+  useEffect(() => {
+    if (!focusRequest || handledFocusRequest.current === focusRequest) return;
+    const { field } = focusRequest;
+    const pricingTab = field.startsWith('garageDetails.') ? 'garage'
+      : field.startsWith('plotPricing.') ? 'plot' : null;
+    if (pricingTab && unitPricingTab !== pricingTab) {
+      setUnitPricingTab(pricingTab);
+      return;
+    }
+    const frame = requestAnimationFrame(() => {
+      const controls = Array.from(formContentRef.current?.querySelectorAll<HTMLElement>('[data-form-field]') || []);
+      const target = controls.find(el => el.dataset.formField === field)
+        || controls.find(el => el.dataset.formField?.startsWith(`${field}.`));
+      if (target) {
+        target.focus({ preventScroll: true });
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      handledFocusRequest.current = focusRequest;
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [focusRequest, activeStep, unitPricingTab]);
 
   const handleBack = () => {
     const currentIndex = steps.findIndex(s => s.id === activeStep);
@@ -536,6 +564,17 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
   };
 
 
+  const handleAadhaarPaste = (
+    e: React.ClipboardEvent<HTMLInputElement>,
+    onValue: (digits: string) => void
+  ) => {
+    e.preventDefault();
+    const pasted = e.clipboardData.getData('text');
+    const digitsOnly = pasted.replace(/[^0-9]/g, '').slice(0, 12);
+    onValue(digitsOnly);
+  };
+
+
   const CIN_REGEX = /^[LU][0-9]{5}[A-Z]{2}[0-9]{4}[A-Z]{3}[0-9]{6}$/;
 
   const formatCIN = (value: string) =>
@@ -645,7 +684,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               <>
                 <div className="form-group">
                   <label>Company Name</label>
-                  <input
+                  <input data-form-field="promoterCompany.name"
                     type="text"
                     value={data.promoterCompany.name}
                     onFocus={() => setActiveField('promoterCompany.name')} onChange={(e) => updateNestedField('promoterCompany', 'name', e.target.value)}
@@ -654,7 +693,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 <div className="form-group row-2">
                   <div>
                     <label>CIN</label>
-                    <input
+                    <input data-form-field="promoterCompany.cin"
                       type="text"
                       maxLength={21}
                       value={data.promoterCompany.cin}
@@ -671,7 +710,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
 
                   <div>
                     <label>PAN</label>
-                    <input
+                    <input data-form-field="promoterCompany.pan"
                       type="text"
                       maxLength={10}
                       value={data.promoterCompany.pan}
@@ -688,7 +727,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 </div>
                 <div className="form-group">
                   <label>Registered Office Address</label>
-                  <textarea
+                  <textarea data-form-field="promoterCompany.registeredOffice"
                     rows={2}
                     value={data.promoterCompany.registeredOffice}
                     onFocus={() => setActiveField('promoterCompany.registeredOffice')} onChange={(e) => updateNestedField('promoterCompany', 'registeredOffice', e.target.value)}
@@ -696,7 +735,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 </div>
                 <div className="form-group">
                   <label>Corporate Office Address</label>
-                  <textarea
+                  <textarea data-form-field="promoterCompany.corporateOffice"
                     rows={2}
                     value={data.promoterCompany.corporateOffice}
                     onFocus={() => setActiveField('promoterCompany.corporateOffice')} onChange={(e) => updateNestedField('promoterCompany', 'corporateOffice', e.target.value)}
@@ -705,7 +744,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 <div className="form-group row-2">
                   <div>
                     <label>Authorized Signatory</label>
-                    <input
+                    <input data-form-field="promoterCompany.authorizedSignatory"
                       type="text"
                       value={data.promoterCompany.authorizedSignatory}
                       onFocus={() => setActiveField('promoterCompany.authorizedSignatory')} onChange={(e) => updateNestedField('promoterCompany', 'authorizedSignatory', e.target.value)}
@@ -713,7 +752,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                   </div>
                   <div>
                     <label>Aadhaar No</label>
-                    <input
+                    <input data-form-field="promoterCompany.signatoryAadhaar"
                       type="text"
                       inputMode="numeric"
                       maxLength={12}
@@ -721,6 +760,11 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                       onFocus={() => setActiveField('promoterCompany.signatoryAadhaar')}
                       onChange={(e) =>
                         updateNestedField('promoterCompany', 'signatoryAadhaar', formatAadhaar(e.target.value))
+                      }
+                      onPaste={(e) =>
+                        handleAadhaarPaste(e, (digits) =>
+                          updateNestedField('promoterCompany', 'signatoryAadhaar', digits)
+                        )
                       }
                       style={{
                         borderColor:
@@ -735,7 +779,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 </div>
                 <div className="form-group">
                   <label>Board Resolution Date</label>
-                  <DateFieldDDMMYYYY
+                  <DateFieldDDMMYYYY data-form-field="promoterCompany.boardResolutionDate"
                     value={data.promoterCompany.boardResolutionDate}
                     onFocus={() => setActiveField('promoterCompany.boardResolutionDate')}
                     onChange={(v) => updateNestedField('promoterCompany', 'boardResolutionDate', v)}
@@ -749,7 +793,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               <>
                 <div className="form-group">
                   <label>Partnership Firm Name</label>
-                  <input
+                  <input data-form-field="promoterPartnership.name"
                     type="text"
                     value={data.promoterPartnership.name}
                     onFocus={() => setActiveField('promoterPartnership.name')} onChange={(e) => updateNestedField('promoterPartnership', 'name', e.target.value)}
@@ -757,7 +801,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 </div>
                 <div className="form-group">
                   <label>Principal Place of Business</label>
-                  <textarea
+                  <textarea data-form-field="promoterPartnership.businessPlace"
                     rows={2}
                     value={data.promoterPartnership.businessPlace}
                     onFocus={() => setActiveField('promoterPartnership.businessPlace')} onChange={(e) => updateNestedField('promoterPartnership', 'businessPlace', e.target.value)}
@@ -765,7 +809,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 </div>
                 <div className="form-group">
                   <label>PAN</label>
-                  <input
+                  <input data-form-field="promoterPartnership.pan"
                     type="text"
                     value={data.promoterPartnership.pan}
                     onFocus={() => setActiveField('promoterPartnership.pan')} onChange={(e) => updateNestedField('promoterPartnership', 'pan', e.target.value.replace(/[^a-zA-Z0-9]/g, ''))}
@@ -774,7 +818,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 <div className="form-group row-2">
                   <div>
                     <label>Represented by Partner</label>
-                    <input
+                    <input data-form-field="promoterPartnership.authorizedPartner"
                       type="text"
                       value={data.promoterPartnership.authorizedPartner}
                       onFocus={() => setActiveField('promoterPartnership.authorizedPartner')} onChange={(e) => updateNestedField('promoterPartnership', 'authorizedPartner', e.target.value)}
@@ -783,13 +827,18 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
 
                   <div>
                     <label>Partner Aadhaar No</label>
-                    <input
+                    <input data-form-field="promoterPartnership.partnerAadhaar"
                       type="text"
                       inputMode="numeric"
                       maxLength={12}
                       value={data.promoterPartnership.partnerAadhaar}
                       onFocus={() => setActiveField('promoterPartnership.partnerAadhaar')}
                       onChange={(e) => updateNestedField('promoterPartnership', 'partnerAadhaar', formatAadhaar(e.target.value))}
+                      onPaste={(e) =>
+                        handleAadhaarPaste(e, (digits) =>
+                          updateNestedField('promoterPartnership', 'partnerAadhaar', digits)
+                        )
+                      }
                       style={{
                         borderColor:
                           data.promoterPartnership.partnerAadhaar.length > 0 &&
@@ -804,7 +853,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 </div>
                 <div className="form-group">
                   <label>Authorized Vide (Document details)</label>
-                  <input
+                  <input data-form-field="promoterPartnership.authorizedVide"
                     type="text"
                     value={data.promoterPartnership.authorizedVide}
                     onFocus={() => setActiveField('promoterPartnership.authorizedVide')} onChange={(e) => updateNestedField('promoterPartnership', 'authorizedVide', e.target.value)}
@@ -819,7 +868,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               <>
                 <div className="form-group">
                   <label>Promoter Name (Mr/Ms)</label>
-                  <input
+                  <input data-form-field="promoterIndividual.name"
                     type="text"
                     value={data.promoterIndividual.name}
                     onFocus={() => setActiveField('promoterIndividual.name')} onChange={(e) => updateNestedField('promoterIndividual', 'name', e.target.value)}
@@ -828,7 +877,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 <div className="form-group row-2">
                   <div>
                     <label>Aadhaar No</label>
-                    <input
+                    <input data-form-field="promoterIndividual.aadhaar"
                       type="text"
                       value={data.promoterIndividual.aadhaar}
                       onFocus={() => setActiveField('promoterIndividual.aadhaar')} onChange={(e) => updateNestedField('promoterIndividual', 'aadhaar', formatAadhaar(e.target.value))}
@@ -844,7 +893,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                   </div>
                   <div>
                     <label>PAN</label>
-                    <input
+                    <input data-form-field="promoterIndividual.pan"
                       type="text"
                       value={data.promoterIndividual.pan}
                       onFocus={() => setActiveField('promoterIndividual.pan')} onChange={(e) => updateNestedField('promoterIndividual', 'pan', formatPAN(e.target.value))}
@@ -860,7 +909,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 <div className="form-group row-3">
                   <div>
                     <label>Parent Relationship</label>
-                    <select
+                    <select data-form-field="promoterIndividual.parentType"
                       value={data.promoterIndividual.parentType}
                       onFocus={() => setActiveField('promoterIndividual.parentType')} onChange={(e) => updateNestedField('promoterIndividual', 'parentType', e.target.value)}
                     >
@@ -870,7 +919,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                   </div>
                   <div style={{ gridColumn: 'span 2' }}>
                     <label>Parent Name</label>
-                    <input
+                    <input data-form-field="promoterIndividual.parentName"
                       type="text"
                       value={data.promoterIndividual.parentName}
                       onFocus={() => setActiveField('promoterIndividual.parentName')} onChange={(e) => updateNestedField('promoterIndividual', 'parentName', e.target.value)}
@@ -879,7 +928,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 </div>
                 <div className="form-group">
                   <label>Age (Years)</label>
-                  <input
+                  <input data-form-field="promoterIndividual.age"
                     type="number"
                     value={data.promoterIndividual.age}
                     onFocus={() => setActiveField('promoterIndividual.age')} onChange={(e) => updateNestedField('promoterIndividual', 'age', e.target.value)}
@@ -887,7 +936,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 </div>
                 <div className="form-group">
                   <label>Residential Address</label>
-                  <textarea
+                  <textarea data-form-field="promoterIndividual.residing"
                     rows={2}
                     value={data.promoterIndividual.residing}
                     onFocus={() => setActiveField('promoterIndividual.residing')} onChange={(e) => updateNestedField('promoterIndividual', 'residing', e.target.value)}
@@ -965,22 +1014,22 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                         <div className="form-group row-2">
                           <div>
                             <label style={{ fontSize: '0.7rem' }}>Survey Numbers</label>
-                            <input
+                            <input data-form-field={`landOwnerEntries.${entry.id}.surveyNos`}
                               style={{ padding: '0.35rem' }}
                               type="text"
                               value={entry.surveyNos}
-                              onFocus={() => setActiveField('landOwnerEntries')}
+                              onFocus={() => setActiveField(`landOwnerEntries.${entry.id}.surveyNos`)}
                               onChange={(e) => updateLandOwnerEntry(entry.id, 'surveyNos', e.target.value)}
                               placeholder="e.g. 101/2, 101/3"
                             />
                           </div>
                           <div>
                             <label style={{ fontSize: '0.7rem' }}>Resurvey Numbers</label>
-                            <input
+                            <input data-form-field={`landOwnerEntries.${entry.id}.resurveyNos`}
                               style={{ padding: '0.35rem' }}
                               type="text"
                               value={entry.resurveyNos}
-                              onFocus={() => setActiveField('landOwnerEntries')}
+                              onFocus={() => setActiveField(`landOwnerEntries.${entry.id}.resurveyNos`)}
                               onChange={(e) => updateLandOwnerEntry(entry.id, 'resurveyNos', e.target.value)}
                               placeholder="e.g. 45/1, 45/2"
                             />
@@ -990,22 +1039,22 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                         <div className="form-group row-2">
                           <div>
                             <label style={{ fontSize: '0.7rem' }}>Land Area (Sq. Meters)</label>
-                            <input
+                            <input data-form-field={`landOwnerEntries.${entry.id}.admeasuring`}
                               style={{ padding: '0.35rem' }}
                               type="text"
                               value={entry.admeasuring}
-                              onFocus={() => setActiveField('landOwnerEntries')}
+                              onFocus={() => setActiveField(`landOwnerEntries.${entry.id}.admeasuring`)}
                               onChange={(e) => updateLandOwnerEntry(entry.id, 'admeasuring', e.target.value)}
                               placeholder="e.g. 4,050"
                             />
                           </div>
                           <div>
                             <label style={{ fontSize: '0.7rem' }}>Village</label>
-                            <input
+                            <input data-form-field={`landOwnerEntries.${entry.id}.situatedAt`}
                               style={{ padding: '0.35rem' }}
                               type="text"
                               value={entry.situatedAt}
-                              onFocus={() => setActiveField('landOwnerEntries')}
+                              onFocus={() => setActiveField(`landOwnerEntries.${entry.id}.situatedAt`)}
                               onChange={(e) => updateLandOwnerEntry(entry.id, 'situatedAt', e.target.value)}
                               placeholder="e.g. Pattom"
                             />
@@ -1015,22 +1064,22 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                         <div className="form-group row-2">
                           <div>
                             <label style={{ fontSize: '0.7rem' }}>Tehsil</label>
-                            <input
+                            <input data-form-field={`landOwnerEntries.${entry.id}.tehsil`}
                               style={{ padding: '0.35rem' }}
                               type="text"
                               value={entry.tehsil}
-                              onFocus={() => setActiveField('landOwnerEntries')}
+                              onFocus={() => setActiveField(`landOwnerEntries.${entry.id}.tehsil`)}
                               onChange={(e) => updateLandOwnerEntry(entry.id, 'tehsil', e.target.value)}
                               placeholder="e.g. Thiruvananthapuram"
                             />
                           </div>
                           <div>
                             <label style={{ fontSize: '0.7rem' }}>District</label>
-                            <input
+                            <input data-form-field={`landOwnerEntries.${entry.id}.district`}
                               style={{ padding: '0.35rem' }}
                               type="text"
                               value={entry.district}
-                              onFocus={() => setActiveField('landOwnerEntries')}
+                              onFocus={() => setActiveField(`landOwnerEntries.${entry.id}.district`)}
                               onChange={(e) => updateLandOwnerEntry(entry.id, 'district', e.target.value)}
                               placeholder="e.g. Thiruvananthapuram"
                             />
@@ -1039,10 +1088,10 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
 
                         <div className="form-group">
                           <label style={{ fontSize: '0.7rem' }}>Type of Deed</label>
-                          <select
+                          <select data-form-field={`landOwnerEntries.${entry.id}.deedType`}
                             style={{ padding: '0.35rem' }}
                             value={entry.deedType}
-                            onFocus={() => setActiveField('landOwnerEntries')}
+                            onFocus={() => setActiveField(`landOwnerEntries.${entry.id}.deedType`)}
                             onChange={(e) => updateLandOwnerEntry(entry.id, 'deedType', e.target.value)}
                           >
                             <option value="">Select type</option>
@@ -1058,19 +1107,19 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                         <div className="form-group row-2">
                           <div>
                             <label style={{ fontSize: '0.7rem' }}>Deed Date</label>
-                            <DateFieldDDMMYYYY
+                            <DateFieldDDMMYYYY data-form-field={`landOwnerEntries.${entry.id}.titleDeedDate`}
                               value={entry.titleDeedDate}
-                              onFocus={() => setActiveField('landOwnerEntries')}
+                              onFocus={() => setActiveField(`landOwnerEntries.${entry.id}.titleDeedDate`)}
                               onChange={(v) => updateLandOwnerEntry(entry.id, 'titleDeedDate', v)}
                             />
                           </div>
                           <div>
                             <label style={{ fontSize: '0.7rem' }}>Document No.</label>
-                            <input
+                            <input data-form-field={`landOwnerEntries.${entry.id}.titleDeedRegNo`}
                               style={{ padding: '0.35rem' }}
                               type="text"
                               value={entry.titleDeedRegNo}
-                              onFocus={() => setActiveField('landOwnerEntries')}
+                              onFocus={() => setActiveField(`landOwnerEntries.${entry.id}.titleDeedRegNo`)}
                               onChange={(e) => updateLandOwnerEntry(entry.id, 'titleDeedRegNo', e.target.value)}
                             />
                           </div>
@@ -1078,11 +1127,11 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
 
                         <div className="form-group">
                           <label style={{ fontSize: '0.7rem' }}>Sub-Registrar Office where registered</label>
-                          <input
+                          <input data-form-field={`landOwnerEntries.${entry.id}.deedSubRegistrarOffice`}
                             style={{ padding: '0.35rem' }}
                             type="text"
                             value={entry.deedSubRegistrarOffice}
-                            onFocus={() => setActiveField('landOwnerEntries')}
+                            onFocus={() => setActiveField(`landOwnerEntries.${entry.id}.deedSubRegistrarOffice`)}
                             onChange={(e) => updateLandOwnerEntry(entry.id, 'deedSubRegistrarOffice', e.target.value)}
                           />
                         </div>
@@ -1118,57 +1167,55 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                         </div>
                         <div className="form-group">
                           <label style={{ fontSize: '0.7rem' }}>Absolute Owner Name</label>
-                          <input
+                          <input data-form-field={`landJDA.${jda.id}.ownerName`}
                             style={{ padding: '0.35rem' }}
                             type="text"
                             value={jda.ownerName}
-                            onFocus={() => setActiveField('landJDA')} onChange={(e) => updateJDA(jda.id, 'ownerName', e.target.value)}
+                            onFocus={() => setActiveField(`landJDA.${jda.id}.ownerName`)} onChange={(e) => updateJDA(jda.id, 'ownerName', e.target.value)}
                           />
                         </div>
 
                         <div className="form-group row-2">
                           <div>
                             <label style={{ fontSize: '0.7rem' }}>Survey Numbers</label>
-                            <input
+                            <input data-form-field={`landJDA.${jda.id}.surveyNos`}
                               style={{ padding: '0.35rem' }}
                               type="text"
                               value={jda.surveyNos}
-                              onFocus={() => setActiveField('landJDA')} onChange={(e) => updateJDA(jda.id, 'surveyNos', e.target.value)}
+                              onFocus={() => setActiveField(`landJDA.${jda.id}.surveyNos`)} onChange={(e) => updateJDA(jda.id, 'surveyNos', e.target.value)}
                               placeholder="e.g. 101/2, 101/3"
                             />
                           </div>
                           <div>
                             <label style={{ fontSize: '0.7rem' }}>Land Area (Sq. Meters)</label>
-                            <input
+                            <input data-form-field={`landJDA.${jda.id}.admeasuring`}
                               style={{ padding: '0.35rem' }}
                               type="text"
                               value={jda.admeasuring}
-                              onFocus={() => setActiveField('landJDA')} onChange={(e) => updateJDA(jda.id, 'admeasuring', e.target.value)}
+                              onFocus={() => setActiveField(`landJDA.${jda.id}.admeasuring`)} onChange={(e) => updateJDA(jda.id, 'admeasuring', e.target.value)}
                               placeholder="e.g. 4,050"
                             />
                           </div>
                         </div>
 
-
-
                         <div className="form-group row-2">
                           <div>
                             <label style={{ fontSize: '0.7rem' }}>Village</label>
-                            <input
+                            <input data-form-field={`landJDA.${jda.id}.situatedAt`}
                               style={{ padding: '0.35rem' }}
                               type="text"
                               value={jda.situatedAt}
-                              onFocus={() => setActiveField('landJDA')} onChange={(e) => updateJDA(jda.id, 'situatedAt', e.target.value)}
+                              onFocus={() => setActiveField(`landJDA.${jda.id}.situatedAt`)} onChange={(e) => updateJDA(jda.id, 'situatedAt', e.target.value)}
                               placeholder="e.g. Pattom"
                             />
                           </div>
                           <div>
                             <label style={{ fontSize: '0.7rem' }}>Tehsil</label>
-                            <input
+                            <input data-form-field={`landJDA.${jda.id}.tehsil`}
                               style={{ padding: '0.35rem' }}
                               type="text"
                               value={jda.tehsil}
-                              onFocus={() => setActiveField('landJDA')}
+                              onFocus={() => setActiveField(`landJDA.${jda.id}.tehsil`)}
                               onChange={(e) => updateJDA(jda.id, 'tehsil', e.target.value)}
                               placeholder="e.g. Thiruvananthapuram"
                             />
@@ -1178,21 +1225,21 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                         <div className="form-group row-2">
                           <div>
                             <label style={{ fontSize: '0.7rem' }}>District</label>
-                            <input
+                            <input data-form-field={`landJDA.${jda.id}.district`}
                               style={{ padding: '0.35rem' }}
                               type="text"
                               value={jda.district}
-                              onFocus={() => setActiveField('landJDA')}
+                              onFocus={() => setActiveField(`landJDA.${jda.id}.district`)}
                               onChange={(e) => updateJDA(jda.id, 'district', e.target.value)}
                               placeholder="e.g. Thiruvananthapuram"
                             />
                           </div>
                           <div>
                             <label style={{ fontSize: '0.7rem' }}>Type of Deed</label>
-                            <select
+                            <select data-form-field={`landJDA.${jda.id}.deedType`}
                               style={{ padding: '0.35rem' }}
                               value={jda.deedType}
-                              onFocus={() => setActiveField('landJDA')}
+                              onFocus={() => setActiveField(`landJDA.${jda.id}.deedType`)}
                               onChange={(e) => updateJDA(jda.id, 'deedType', e.target.value)}
                             >
                               <option value="">Select type</option>
@@ -1209,31 +1256,30 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                         <div className="form-group row-2">
                           <div>
                             <label style={{ fontSize: '0.7rem' }}> Deed Date</label>
-                            <DateFieldDDMMYYYY
+                            <DateFieldDDMMYYYY data-form-field={`landJDA.${jda.id}.titleDeedDate`}
                               value={jda.titleDeedDate}
-                              onFocus={() => setActiveField('landJDA')}
+                              onFocus={() => setActiveField(`landJDA.${jda.id}.titleDeedDate`)}
                               onChange={(v) => updateJDA(jda.id, 'titleDeedDate', v)}
                             />
                           </div>
                           <div>
                             <label style={{ fontSize: '0.7rem' }}>Document No.</label>
-                            <input
+                            <input data-form-field={`landJDA.${jda.id}.titleDeedRegNo`}
                               style={{ padding: '0.35rem' }}
                               type="text"
                               value={jda.titleDeedRegNo}
-                              onFocus={() => setActiveField('landJDA')} onChange={(e) => updateJDA(jda.id, 'titleDeedRegNo', e.target.value)}
+                              onFocus={() => setActiveField(`landJDA.${jda.id}.titleDeedRegNo`)} onChange={(e) => updateJDA(jda.id, 'titleDeedRegNo', e.target.value)}
                             />
                           </div>
                         </div>
 
-
                         <div className="form-group">
                           <label style={{ fontSize: '0.7rem' }}>Sub-Registrar Office where deed registered</label>
-                          <input
+                          <input data-form-field={`landJDA.${jda.id}.deedSubRegistrarOffice`}
                             style={{ padding: '0.35rem' }}
                             type="text"
                             value={jda.deedSubRegistrarOffice}
-                            onFocus={() => setActiveField('landJDA')}
+                            onFocus={() => setActiveField(`landJDA.${jda.id}.deedSubRegistrarOffice`)}
                             onChange={(e) => updateJDA(jda.id, 'deedSubRegistrarOffice', e.target.value)}
                           />
                         </div>
@@ -1241,41 +1287,39 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                         <div className="form-group row-2">
                           <div>
                             <label style={{ fontSize: '0.7rem' }}>JDA Execution Date</label>
-                            <DateFieldDDMMYYYY
+                            <DateFieldDDMMYYYY data-form-field={`landJDA.${jda.id}.jdaDate`}
                               value={jda.jdaDate}
-                              onFocus={() => setActiveField('landJDA')}
+                              onFocus={() => setActiveField(`landJDA.${jda.id}.jdaDate`)}
                               onChange={(v) => updateJDA(jda.id, 'jdaDate', v)}
                             />
                           </div>
                           <div>
                             <label style={{ fontSize: '0.7rem' }}>JDA Registered Doc No</label>
-                            <input
+                            <input data-form-field={`landJDA.${jda.id}.regNo`}
                               style={{ padding: '0.35rem' }}
                               type="text"
                               value={jda.regNo}
-                              onFocus={() => setActiveField('landJDA')} onChange={(e) => updateJDA(jda.id, 'regNo', e.target.value)}
+                              onFocus={() => setActiveField(`landJDA.${jda.id}.regNo`)} onChange={(e) => updateJDA(jda.id, 'regNo', e.target.value)}
                             />
                           </div>
                         </div>
 
-
-
                         <div className="form-group">
                           <label style={{ fontSize: '0.7rem' }}>Sub-Registrar Office where registered</label>
-                          <input
+                          <input data-form-field={`landJDA.${jda.id}.subRegistrarOffice`}
                             style={{ padding: '0.35rem' }}
                             type="text"
                             value={jda.subRegistrarOffice}
-                            onFocus={() => setActiveField('landJDA')} onChange={(e) => updateJDA(jda.id, 'subRegistrarOffice', e.target.value)}
+                            onFocus={() => setActiveField(`landJDA.${jda.id}.subRegistrarOffice`)} onChange={(e) => updateJDA(jda.id, 'subRegistrarOffice', e.target.value)}
                           />
                         </div>
                         <div className="form-group">
                           <label style={{ fontSize: '0.7rem' }}>Additional Details</label>
-                          <textarea
+                          <textarea data-form-field={`landJDA.${jda.id}.additionalDetails`}
                             style={{ padding: '0.35rem' }}
                             rows={2}
                             value={jda.additionalDetails}
-                            onFocus={() => setActiveField('landJDA')} onChange={(e) => updateJDA(jda.id, 'additionalDetails', e.target.value)}
+                            onFocus={() => setActiveField(`landJDA.${jda.id}.additionalDetails`)} onChange={(e) => updateJDA(jda.id, 'additionalDetails', e.target.value)}
                             placeholder="Enter any additional details to appear after Sub-Registrar..."
                           />
                         </div>
@@ -1290,7 +1334,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             <div className="form-group row-2">
               <div>
                 <label>Project Type</label>
-                <select
+                <select data-form-field="projectType"
                   value={data.projectType}
                   onFocus={() => setActiveField('projectType')} onChange={(e) => updateField('projectType', e.target.value as any)}
                 >
@@ -1300,7 +1344,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                   <option value="other">Any Other Type</option>
                 </select>
                 {data.projectType === 'other' && (
-                  <input
+                  <input data-form-field="projectTypeOther"
                     type="text"
                     style={{ marginTop: '0.4rem' }}
                     value={data.projectTypeOther}
@@ -1312,7 +1356,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               </div>
               <div>
                 <label>Project Name</label>
-                <input
+                <input data-form-field="projectName"
                   type="text"
                   value={data.projectName}
                   onFocus={() => setActiveField('projectName')} onChange={(e) => updateField('projectName', e.target.value)}
@@ -1323,7 +1367,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             <div className="form-group row-2">
               <div>
                 <label>Building Type</label>
-                <select
+                <select data-form-field="projectBuildingType"
                   value={data.projectBuildingType}
                   onFocus={() => setActiveField('projectBuildingType')} onChange={(e) => updateField('projectBuildingType', e.target.value as any)}
                 >
@@ -1333,7 +1377,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                   <option value="other">Any Other Type</option>
                 </select>
                 {data.projectBuildingType === 'other' && (
-                  <input
+                  <input data-form-field="projectBuildingTypeOther"
                     type="text"
                     style={{ marginTop: '0.4rem' }}
                     value={data.projectBuildingTypeOther}
@@ -1345,7 +1389,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               </div>
               <div>
                 <label>Project Comprising (Details)</label>
-                <input
+                <input data-form-field="projectComprising"
                   type="text"
                   value={data.projectComprising}
                   onFocus={() => setActiveField('projectComprising')} onChange={(e) => updateField('projectComprising', e.target.value)}
@@ -1357,7 +1401,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             {data.projectType !== 'plotted' ? (
               <div className="form-group">
                 <label>Any other components of the project</label>
-                <input
+                <input data-form-field="projectOtherComponents"
                   type="text"
                   value={data.projectOtherComponents}
                   onFocus={() => setActiveField('projectOtherComponents')} onChange={(e) => updateField('projectOtherComponents', e.target.value)}
@@ -1368,7 +1412,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             ) : (
               <div className="form-group">
                 <label>Other Components of Plotted Development</label>
-                <input
+                <input data-form-field="plotOtherComponents"
                   type="text"
                   value={data.plotOtherComponents}
                   onFocus={() => setActiveField('plotOtherComponents')} onChange={(e) => updateField('plotOtherComponents', e.target.value)}
@@ -1387,7 +1431,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             <h3 className="section-title">Regulatory Approvals (Clause D)</h3>
             <div className="form-group">
               <label>Local body</label>
-              <input
+              <input data-form-field="commencementAuthority"
                 type="text"
                 value={data.commencementAuthority}
                 onFocus={() => setActiveField('commencementAuthority')} onChange={(e) => updateField('commencementAuthority', e.target.value)}
@@ -1398,7 +1442,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
 
               <div>
                 <label>Approval Date</label>
-                <DateFieldDDMMYYYY
+                <DateFieldDDMMYYYY data-form-field="commencementDate"
                   value={data.commencementDate}
                   onFocus={() => setActiveField('commencementDate')}
                   onChange={(v) => updateField('commencementDate', v)}
@@ -1406,7 +1450,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               </div>
               <div>
                 <label>Permit No</label>
-                <input
+                <input data-form-field="commencementNo"
                   type="text"
                   value={data.commencementNo}
                   onFocus={() => setActiveField('commencementNo')} onChange={(e) => updateField('commencementNo', e.target.value)}
@@ -1417,7 +1461,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             <h3 className="section-title">Clause E</h3>
             <div className="form-group">
               <label>Local Body</label>
-              <input
+              <input data-form-field="layoutAuthority"
                 type="text"
                 value={data.layoutAuthority}
                 onFocus={() => setActiveField('layoutAuthority')} onChange={(e) => updateField('layoutAuthority', e.target.value)}
@@ -1467,7 +1511,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                       <span style={{ fontSize: '0.75rem', fontWeight: 'bold', paddingTop: '0.4rem', minWidth: '1.5rem' }}>
                         {idx + 1}.
                       </span>
-                      <textarea
+                      <textarea data-form-field={`additionalDisclosures.${item.id}.text`}
                         style={{ flex: 1, padding: '0.35rem' }}
                         rows={2}
                         value={item.text}
@@ -1633,7 +1677,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                     <div style={{ display: 'flex', flex: 1, gap: '0.4rem' }}>
                       <div style={{ flex: 2 }}>
                         <label style={{ fontSize: '0.7rem' }}>Description</label>
-                        <input style={{ padding: '0.35rem' }} type="text" value={row.description} onFocus={() => setActiveField('priceBreakdown')} onChange={(e) => updatePriceBreakdown(row.id, 'description', e.target.value)} />
+                        <input data-form-field={`priceBreakdown.${row.id}.description`} style={{ padding: '0.35rem' }} type="text" value={row.description} onFocus={() => setActiveField('priceBreakdown')} onChange={(e) => updatePriceBreakdown(row.id, 'description', e.target.value)} />
                       </div>
                       {/* <div style={{ flex: 1 }}>
                         <label style={{ fontSize: '0.7rem' }}>Amount (Rs)</label>
@@ -1693,7 +1737,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                       <div key={g.id} className="list-item" style={{ padding: '0.5rem', gap: '0.4rem', border: '1px solid var(--border-ui)' }}>
                         <div className="form-group" style={{ flex: 1 }}>
                           <label style={{ fontSize: '0.7rem' }}>Garage No. / Type / Closed Parking No. - {idx + 1}</label>
-                          <input
+                          <input data-form-field={`garageDetails.${g.id}.no`}
                             style={{ padding: '0.35rem' }}
                             type="text"
                             value={g.no}
@@ -1729,7 +1773,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                       <div key={p.id} className="list-item" style={{ padding: '0.5rem', gap: '0.4rem', border: '1px solid var(--border-ui)' }}>
                         <div className="form-group" style={{ flex: 1 }}>
                           <label style={{ fontSize: '0.7rem' }}>Plot No. / Type</label>
-                          <input
+                          <input data-form-field={`plotPricing.${p.id}.plotNoType`}
                             style={{ padding: '0.35rem' }}
                             type="text"
                             value={p.plotNoType}
@@ -1774,7 +1818,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             <div className="form-group row-2">
               <div>
                 <label>Name of Payee</label>
-                <input
+                <input data-form-field="paymentFavourOf"
                   type="text"
                   value={data.paymentFavourOf}
                   onFocus={() => setActiveField('paymentFavourOf')} onChange={(e) => updateField('paymentFavourOf', e.target.value)}
@@ -1782,7 +1826,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               </div>
               <div>
                 <label>Place of Payment</label>
-                <input
+                <input data-form-field="paymentPayableAt"
                   type="text"
                   value={data.paymentPayableAt}
                   onFocus={() => setActiveField('paymentPayableAt')} onChange={(e) => updateField('paymentPayableAt', e.target.value)}
@@ -1803,7 +1847,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             <div className="form-group row-2">
               <div>
                 <label>Competent Authority </label>
-                <input
+                <input data-form-field="competentAuthorityForDeclaration"
                   type="text"
                   value={data.competentAuthorityForDeclaration}
                   onFocus={() => setActiveField('competentAuthorityForDeclaration')} onChange={(e) => updateField('competentAuthorityForDeclaration', e.target.value)}
@@ -1811,7 +1855,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               </div>
               <div>
                 <label>Relevant State Act</label>
-                <input
+                <input data-form-field="relevantStateAct"
                   type="text"
                   value={data.relevantStateAct}
                   onFocus={() => setActiveField('relevantStateAct')} onChange={(e) => updateField('relevantStateAct', e.target.value)}
@@ -1871,7 +1915,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                     (same as furnished in the registration application)
                   </small>
                 </label>
-                <DateFieldDDMMYYYY
+                <DateFieldDDMMYYYY data-form-field="possessionTargetMonth"
                   value={data.possessionTargetMonth}
                   onFocus={() => setActiveField('possessionTargetMonth')}
                   onChange={(v) => updateField('possessionTargetMonth', v)}
@@ -1879,7 +1923,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               </div>
               <div>
                 <label style={{ display: 'block' }}>Possession offering Duration</label>
-                <input
+                <input data-form-field="gracePeriodDays"
                   type="number"
                   min={1}
                   max={90}
@@ -1929,7 +1973,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             {data.hasEncumbrances === 'yes' && (
               <div className="form-group">
                 <label>Encumbrance Details</label>
-                <textarea
+                <textarea data-form-field="encumbranceDetails"
                   rows={3}
                   value={data.encumbranceDetails}
                   onFocus={() => setActiveField('encumbranceDetails')}
@@ -1943,7 +1987,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             <div className="form-group row-2">
               <div>
                 <label>Number of Consecutive Payment Defaults</label>
-                <input
+                <input data-form-field="defaultConsecutiveDemands"
                   type="text"
                   value={data.defaultConsecutiveDemands}
                   onFocus={() => setActiveField('defaultConsecutiveDemands')} onChange={(e) => updateField('defaultConsecutiveDemands', e.target.value)}
@@ -1952,7 +1996,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               </div>
               <div>
                 <label>Number of Consecutive Months of Continuing Default</label>
-                <input
+                <input data-form-field="defaultConsecutiveMonths"
                   type="text"
                   value={data.defaultConsecutiveMonths}
                   onFocus={() => setActiveField('defaultConsecutiveMonths')} onChange={(e) => updateField('defaultConsecutiveMonths', e.target.value)}
@@ -1993,7 +2037,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                       <span style={{ fontSize: '0.75rem', fontWeight: 'bold', paddingTop: '0.4rem', minWidth: '1.5rem' }}>
                         {idx + 1}.
                       </span>
-                      <textarea
+                      <textarea data-form-field={`maintenanceClauses.${item.id}.text`}
                         style={{ flex: 1, padding: '0.35rem' }}
                         rows={2}
                         value={item.text}
@@ -2041,7 +2085,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
             <div className="form-group row-2" style={{ marginTop: '0.5rem' }}>
               <div>
                 <label>Place of Execution</label>
-                <input
+                <input data-form-field="placeOfExecution"
                   type="text"
                   value={data.placeOfExecution}
                   onFocus={() => setActiveField('placeOfExecution')}
@@ -2051,7 +2095,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               </div>
               <div>
                 <label>Place of Deemed Execution</label>
-                <input
+                <input data-form-field="placeOfDeemedExecution"
                   type="text"
                   value={data.placeOfDeemedExecution}
                   onFocus={() => setActiveField('placeOfDeemedExecution')}
@@ -2092,7 +2136,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                       <span style={{ fontSize: '0.75rem', fontWeight: 'bold', paddingTop: '0.4rem', minWidth: '2rem' }}>
                         ({toRomanLower(idx + 1)})
                       </span>
-                      <textarea
+                      <textarea data-form-field={`additionalTerms.${item.id}.text`}
                         style={{ flex: 1, padding: '0.35rem' }}
                         rows={2}
                         value={item.text}

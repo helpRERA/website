@@ -571,11 +571,11 @@ input:focus, select:focus, textarea:focus {
 
 /* Highlight Mode */
 .highlight-fillable .placeholder-field {
-  background-color: transparent;
+  background-color: var(--highlight-color);
 }
 
 .highlight-fillable .placeholder-field.empty {
-  background-color: transparent;
+  background-color: var(--highlight-color);
   border-bottom: 1.5px dashed var(--accent-gold);
 }
 
@@ -598,9 +598,12 @@ input:focus, select:focus, textarea:focus {
 }
 
 .highlight-fillable .placeholder-field-block {
-  background-color: transparent;
-  padding: 4px 8px;
+  background-color: var(--highlight-color);
   border-radius: 4px;
+}
+
+.highlight-fillable .preview-editable-field {
+  background-color: var(--highlight-color);
 }
 
 .placeholder-block {
@@ -777,9 +780,15 @@ input:focus, select:focus, textarea:focus {
   }
 
   /* Strip decorative styles same as PDF export */
-  .placeholder-field {
+  .placeholder-field,
+  .placeholder-field-block,
+  .preview-editable-field {
     border-bottom: none !important;
     background-color: transparent !important;
+  }
+
+  .placeholder-field.blank-line {
+    border-bottom: 1px dashed #6b7280 !important;
   }
 
   .placeholder-block {
@@ -835,6 +844,17 @@ input:focus, select:focus, textarea:focus {
 }
 
 /* Field focus pulse animation - highlights matching preview span when form input is focused */
+@media screen {
+  .preview-editable-field {
+    cursor: pointer;
+  }
+
+  .preview-editable-field:focus-visible {
+    outline: 2px solid var(--accent-gold);
+    outline-offset: 2px;
+  }
+}
+
 @keyframes field-focus-pulse {
   0%   { background-color: rgba(194, 149, 43, 0);    outline: 2px solid transparent; }
   20%  { background-color: rgba(194, 149, 43, 0.35); outline: 2px solid rgba(194, 149, 43, 0.8); border-radius: 3px; }
@@ -843,7 +863,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .field-focus-pulse {
-  animation: field-focus-pulse 2s ease-in-out forwards;
+  animation: field-focus-pulse 2s ease-in-out;
   border-radius: 3px;
 }
 
@@ -904,6 +924,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .pdf-export .placeholder-field,
+.pdf-export .preview-editable-field,
 .pdf-export .placeholder-field.empty,
 .pdf-export .placeholder-field-block,
 .pdf-export .placeholder-field-block.empty {

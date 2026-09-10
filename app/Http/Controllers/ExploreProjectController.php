@@ -75,6 +75,9 @@ class ExploreProjectController extends Controller
 //                 '1106'
 //             ));
 
+
+
+
         $prevUrl = str_replace(url('/'), '', url()->previous());
 
         $hasForm6 = ProjectDocument::where('ProjectID', $project->ID)
