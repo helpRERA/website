@@ -50,6 +50,11 @@ function MainApp({ projectId, userId, agreement }: {
   const [activeStep, setActiveStep] = useState<number>(1);
   const [activeView, setActiveView] = useState<'form' | 'preview'>('form');
   const [activeField, setActiveField] = useState<string | null>(null);
+  const [fieldFocusVersion, setFieldFocusVersion] = useState(0);
+  const handleFormFieldFocus = (field: string | null) => {
+    setActiveField(field);
+    setFieldFocusVersion(version => version + 1);
+  };
   const [focusRequest, setFocusRequest] = useState<{ field: string } | null>(null);
 
   const handlePreviewFieldSelect = (field: string) => {
@@ -131,16 +136,18 @@ function MainApp({ projectId, userId, agreement }: {
         updateNestedField={handleUpdateNestedField}
         resetData={resetData}
         resetFields={resetFields}
-        setActiveField={setActiveField}
+        setActiveField={handleFormFieldFocus}
         focusRequest={focusRequest}
         onSave={handleSave}
         isSaving={isSaving}
         isSaved={isSaved}
       />
       <PreviewPanel
+        uploadUrl={`/agreement-for-sale/${encodeURIComponent(btoa(`ProjectID=${projectId}&UserID=${userId}`))}/upload`}
         data={data}
         resetData={resetData}
         activeField={activeField}
+        fieldFocusVersion={fieldFocusVersion}
         onFieldSelect={handlePreviewFieldSelect}
         isSaved={isSaved}
       />

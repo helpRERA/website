@@ -22,7 +22,7 @@ const NavbarLinks = ({ nav, section, lang = 'en' }: Properties) => {
     <div
       lang={lang === 'mal' ? 'ml' : 'en'}
       className='flex min-w-0 flex-col md:flex-row w-full md:min-h-[450px] mx-auto whitespace-normal text-left'
-      style={{ fontFamily: "'DM Sans', 'malayalam', sans-serif" }}
+      style={{ fontFamily: lang === 'mal' ? '"Anek Malayalam", sans-serif' : "'DM Sans', 'Anek Malayalam', sans-serif" }}
     >
       {/* Left pane - links */}
       <div className='min-w-0 flex-1 bg-[#F5F6FF] p-5 md:p-10 flex flex-col gap-5 md:gap-7 [overflow-wrap:anywhere]'>

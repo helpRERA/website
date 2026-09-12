@@ -7,6 +7,7 @@ use App\Actions\Property\PropertySearch;
 use App\Models\KRERA\ProjectDocument;
 use App\Models\KRERA\ProjectMaster;
 use App\Repository\Project\ProjectDocumentRepository;
+use App\Services\Complaints\ComplaintsListService;
 use App\Services\ExtensionCertificate\ExtensionCertificateService;
 use App\Services\ExtensionCertificate\ExtensionOrderService;
 use App\Services\Locality\LocalityListService;
@@ -28,9 +29,16 @@ class ExploreProjectController extends Controller
     public function index(
         Request $request,
         PropertySearch $propertySearch,
-        LocalityListService $localityListService
+        LocalityListService $localityListService,
+        ComplaintsListService $complaintsListService
     ) {
         $projects = $propertySearch->search($request->all());
+        $projectIdsWithComplaints = $complaintsListService->getProjectIdsWithComplaints(
+            $projects->getCollection()->pluck('ID')->all()
+        );
+        foreach ($projects as $project) {
+            $project->setAttribute('has_complaints', in_array((string) $project->ID, $projectIdsWithComplaints, true));
+        }
         return Inertia::render('ExploreProjectsPage', [
             'projects' => $projects,
             'districts' => fn () => $localityListService->getDistricts(),
@@ -62,7 +70,8 @@ class ExploreProjectController extends Controller
         ExtensionOrderService $extensionOrder,
         RegistrationOrderService $registrationOrder,
         ProjectLastModified $lastModifiedService,
-        ProjectLinkEncryption $projectLinkEncryption
+        ProjectLinkEncryption $projectLinkEncryption,
+        ComplaintsListService $complaintsListService
     ) {
 
         $project = $fetchProject->getData((int) $projectId);
@@ -86,6 +95,7 @@ class ExploreProjectController extends Controller
             ->exists();
 
         return Inertia::render('ProjectDetails', [
+            'hasComplaints' => $complaintsListService->getProjectIdsWithComplaints([$project->ID]) !== [],
             'today' => now()->toDateString(),
             'project' => $project,
             'projectHash' => $projectLinkEncryption->getEncryptedLink(

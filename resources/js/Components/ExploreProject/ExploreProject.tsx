@@ -11,6 +11,7 @@ import { localization } from '../../Localization/localization'
 import FullSpinnerWrapper from '../../ui/FullSpinnerWrapper'
 
 export interface ProjectListItem extends Project {
+  has_complaints?: boolean
   booked_count: number
   apartment_count: number
   documents: Pick<ProjectDocument, 'ID' | 'DocID' | 'ProjectId' | 'DocumentName'>[]

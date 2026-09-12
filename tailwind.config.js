@@ -16,9 +16,9 @@ module.exports = {
         picture: '4 / 3',
       },
       fontFamily: {
-        sans: ['"DM Sans"', ...defaultTheme.fontFamily.sans],
-        urbanist: ['Urbanist', ...defaultTheme.fontFamily.sans],
-        inter: ['Inter'],
+        sans: ['"DM Sans"', '"Anek Malayalam"', ...defaultTheme.fontFamily.sans],
+        urbanist: ['Urbanist', '"Anek Malayalam"', ...defaultTheme.fontFamily.sans],
+        inter: ['Inter', '"Anek Malayalam"', 'sans-serif'],
       },
        keyframes: {
         blink: {

@@ -16,11 +16,7 @@ use Illuminate\Support\Facades\Storage;
 
 class AgreementForSaleController extends Controller
 {
-    /**
-     * Normalize all user-supplied scalar values, including values in nested
-     * arrays. SQL injection is prevented by Eloquent's parameter binding; this
-     * additionally removes null bytes, HTML tags and surrounding whitespace.
-     */
+   
     private function sanitizeValue(mixed $value): mixed
     {
         if (is_array($value)) {
@@ -645,7 +641,17 @@ class AgreementForSaleController extends Controller
     public function uploadSchedule(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|mimes:pdf|max:5240',
+            'file' => [
+                'bail',
+                'required',
+                'file',
+                'mimes:pdf',
+                function ($attribute, $value, $fail) {
+                    if ($value->getSize() >= 1024 * 1024) {
+                        $fail('Each schedule PDF must be below 1 MB.');
+                    }
+                },
+            ],
         ]);
 
         $path = $request->file('file')->store('schedules', 'public');

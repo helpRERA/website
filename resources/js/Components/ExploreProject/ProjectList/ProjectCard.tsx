@@ -40,10 +40,8 @@ const ProjectCard = ({ project, today, lang = 'en' }: Properties) => {
     : projectTypeLabels[project.PType] ?? project.ProjectType ?? project.PType
 
   return (
-    <Link
-      href={`/projects/${project.ID}?lang=${lang}`}
-      as='a'
-      className={`flex w-full cursor-pointer flex-col lg:flex-row gap-6 rounded-xl p-6 shadow-sm border transition-shadow hover:shadow-md ${isDefault ? 'border-red-300 bg-red-50' : 'border-gray-100 bg-white'
+    <div
+      className={`relative flex w-full flex-col lg:flex-row gap-6 rounded-xl p-6 shadow-sm border transition-shadow hover:shadow-md ${isDefault ? 'border-red-300 bg-red-50' : 'border-gray-100 bg-white'
         }`}
     >
       {/* Left Column - Image */}
@@ -66,7 +64,9 @@ const ProjectCard = ({ project, today, lang = 'en' }: Properties) => {
       <div className='flex w-full flex-col lg:flex-grow border-b border-gray-100 pb-4 lg:border-b-0 lg:border-r lg:pb-0 lg:pr-6'>
         <div className='flex items-center gap-2 flex-wrap'>
           <h1 className='text-[22px] font-bold uppercase text-[#085484] tracking-wide'>
-            {project.Name}
+            <Link href={`/projects/${project.ID}?lang=${lang}`} className="after:absolute after:inset-0">
+              {project.Name}
+            </Link>
           </h1>
           {isDefault && (
             <span className='inline-flex items-center gap-1 rounded-full bg-red-100 px-3 py-1 text-[11px] font-semibold text-red-700 whitespace-nowrap'>
@@ -166,7 +166,7 @@ const ProjectCard = ({ project, today, lang = 'en' }: Properties) => {
               <button
                 type='button'
                 disabled={project.hsm?.DgnID == null}
-                className='inline-flex cursor-pointer items-center justify-center rounded-full border border-[#085484] bg-white px-4 py-1.5 text-[11px] font-medium text-gray-600'
+                className='relative z-10 inline-flex cursor-pointer items-center justify-center rounded-full border border-[#085484] bg-white px-4 py-1.5 text-[11px] font-medium text-gray-600'
                 onClick={(event) => {
                   event.preventDefault()
                   event.stopPropagation()
@@ -185,9 +185,17 @@ const ProjectCard = ({ project, today, lang = 'en' }: Properties) => {
               </svg>
             </div>
           </div>
+          {project.has_complaints && (
+            <Link
+              href={`/complaint-list?project_id=${encodeURIComponent(project.ID)}&ruling_by=all`}
+              className='relative z-10 mt-4 rounded-lg border border-[#085484] px-4 py-2.5 text-center text-[13px] font-medium text-[#085484] hover:bg-[#f0f5fa]'
+            >
+              View Complaints
+            </Link>
+          )}
         </div>
       </div>
-    </Link>
+    </div>
   )
 }
 

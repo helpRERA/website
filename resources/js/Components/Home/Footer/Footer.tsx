@@ -140,7 +140,7 @@ const Footer = () => {
           
           <div className='mt-10 pt-6 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4 text-[14px] text-[#666]'>
             <p>&#169; {new Date().getFullYear()} Kerala Real Estate Regulatory Authority. All Rights Reserved</p>
-            <p>Powered by SRV Infotech</p>
+            <p>Powered by <a href="https://srvinfotech.com" className="hover:text-[#085484] transition-colors break-all" target='_blank'>SRV Infotech</a></p>
           </div>
         </div>
       </footer>

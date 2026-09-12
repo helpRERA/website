@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'sale_agreement' => [
+        'url' => env('SALE_AGREEMENT_UPLOAD_URL', 'https://reraonline.kerala.gov.in/api/SaleAgreementUpload/push'),
+        'api_key' => env('SALE_AGREEMENT_UPLOAD_API_KEY'),
+    ],
 
     /*
     |--------------------------------------------------------------------------

@@ -266,7 +266,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
                 {data.additionalDisclosures.map((item, idx) => (
                   <div
                     key={item.id}
-                    data-field="additionalDisclosures" data-edit-field={`additionalDisclosures.${item.id}.text`}
+                    data-field={`additionalDisclosures.${item.id}.text`} data-edit-field={`additionalDisclosures.${item.id}.text`}
                     style={{ paddingLeft: '1.5rem', marginBottom: '0.25rem' }}
                   >
                     {idx + 1}. {item.text}
@@ -542,7 +542,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
                 (iii) There are encumbrances upon the said Land or the Project, the details of which are as follows:
                 <div
                   data-field="encumbranceDetails"
-                  style={{ marginTop: '0.25rem', paddingLeft: '0.5rem', whiteSpace: 'pre-wrap' }}
+                  style={{ marginTop: '0.25rem', textIndent: 0, whiteSpace: 'pre-wrap' }}
                 >
                   <SpanVal val={encumbranceDetails} fallback="(Please provide details of such encumbrances including any rights, title, interest and name of party in or over such land)" fieldKey="encumbranceDetails" />
                 </div>
@@ -638,7 +638,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
                 {maintenanceClauses.map((item, idx) => (
                   <div
                     key={item.id}
-                    data-field="maintenanceClauses" data-edit-field={`maintenanceClauses.${item.id}.text`}
+                    data-field={`maintenanceClauses.${item.id}.text`} data-edit-field={`maintenanceClauses.${item.id}.text`}
                     style={{ marginBottom: '0.25rem' }}
                   >
                     {idx + 1}. {item.text}

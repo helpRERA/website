@@ -25,7 +25,7 @@ const Localization = ({ text, language = 'en' }: Properties) => {
     return displayText(text, language)
   }, [text, language])
 
-  return <>{value}</>
+  return /[\u0D00-\u0D7F]/.test(value ?? '') ? <span lang='ml'>{value}</span> : <>{value}</>
 }
 
 export default Localization

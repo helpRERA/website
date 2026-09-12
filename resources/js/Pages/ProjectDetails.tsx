@@ -87,6 +87,7 @@ interface Properties {
   projectHash: string
   prevUrl: string
   hasForm6: boolean
+  hasComplaints: boolean
   today: string
 }
 
@@ -102,6 +103,7 @@ export default function ProjectDetails({
   projectHash,
   prevUrl,
   hasForm6,
+  hasComplaints,
   today,
 }: Properties) {
   useEffect(() => {
@@ -119,6 +121,7 @@ export default function ProjectDetails({
             documents={documents}
             orders={orders}
             hasForm6={hasForm6}
+            hasComplaints={hasComplaints}
             extensionCertificate={extensionCertificate}
             extensionOrder={extensionOrder}
             registrationOrder={registrationOrder}

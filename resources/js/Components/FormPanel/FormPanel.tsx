@@ -107,7 +107,7 @@ interface FormPanelProps {
 }
 
 export default function FormPanel({ activeStep, setActiveStep, data, updateField, updateNestedField, resetData, resetFields, setActiveField, onSave, isSaving, isSaved, focusRequest }: FormPanelProps) {
-  console.log('FormPanel received data.landSurveyNos:', data.landSurveyNos);
+  //console.log('FormPanel received data.landSurveyNos:', data.landSurveyNos); 
   const steps = [
     // { id: 0, label: 'Execution' },
     { id: 1, label: 'Promoter' },
@@ -184,6 +184,10 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
   const uploadScheduleFile = async (slot: 'scheduleA' | 'scheduleB' | 'scheduleC' | 'scheduleD', file: File) => {
     if (file.type !== 'application/pdf') {
       toast.error('Only PDF files are allowed');
+      return;
+    }
+    if (file.size >= 1024 * 1024) {
+      toast.error('Each schedule PDF must be below 1 MB.');
       return;
     }
 
@@ -1515,7 +1519,8 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                         style={{ flex: 1, padding: '0.35rem' }}
                         rows={2}
                         value={item.text}
-                        onFocus={() => setActiveField('additionalDisclosures')}
+                        onFocus={() => setActiveField(`additionalDisclosures.${item.id}.text`)}
+                        onClick={() => setActiveField(`additionalDisclosures.${item.id}.text`)}
                         onChange={(e) => updateDisclosure(item.id, e.target.value)}
                         placeholder="Enter disclosure detail"
                       />
@@ -2041,7 +2046,8 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                         style={{ flex: 1, padding: '0.35rem' }}
                         rows={2}
                         value={item.text}
-                        onFocus={() => setActiveField('maintenanceClauses')}
+                        onFocus={() => setActiveField(`maintenanceClauses.${item.id}.text`)}
+                        onClick={() => setActiveField(`maintenanceClauses.${item.id}.text`)}
                         onChange={(e) => updateMaintenanceClause(item.id, e.target.value)}
                         placeholder="Enter maintenance clause"
                       />
@@ -2197,7 +2203,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
           <div className="form-section">
             <h3 className="section-title">Schedule Attachments</h3>
             <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-              Upload PDF files for each schedule. These will be appended to the end of the final agreement PDF.
+              Upload PDF files below 1 MB each for each schedule. These will be appended to the end of the final agreement PDF.
             </p>
 
             {(['scheduleA', 'scheduleB', 'scheduleC', 'scheduleD'] as const).map((slot, idx) => {

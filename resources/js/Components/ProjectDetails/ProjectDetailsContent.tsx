@@ -22,6 +22,7 @@ interface Properties {
   lastModified?: ProjectLastModified | null
   projectHash: string
   hasForm6: boolean
+  hasComplaints: boolean
   today: string
 }
 
@@ -34,6 +35,7 @@ const ProjectDetailsContent = ({
   lastModified,
   projectHash,
   hasForm6,
+  hasComplaints,
   today,
 }: Properties) => {
   const { promoterName } = usePromoterInfo(project.promoter ?? null)
@@ -154,6 +156,17 @@ const ProjectDetailsContent = ({
             </div>
 
             {/* Certificates */}
+            {hasComplaints && (
+              <div className='mt-2'>
+                <Link
+                  href={`/complaint-list?project_id=${encodeURIComponent(project.ID)}&ruling_by=all`}
+                  className='inline-flex items-center justify-center rounded-lg border border-[#085484] px-6 py-2.5 text-[13px] font-medium text-[#085484] hover:bg-[#f0f5fa]'
+                >
+                  View Complaints
+                </Link>
+              </div>
+            )}
+
             <div className='mt-5 flex flex-wrap gap-6'>
               {project.certificate_info?.CertificateNo && (
                 <div className='flex flex-col gap-1.5'>

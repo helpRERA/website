@@ -8,6 +8,7 @@ use App\Http\Controllers\Complaint\ComplaintController;
 use App\Http\Controllers\Complaint\ComplaintInfoController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\AgreementForSaleController;
+use App\Http\Controllers\SaleAgreementUploadController;
 use App\Http\Controllers\Dashboard\DataDashboardController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DisplayPagesController;
@@ -80,8 +81,10 @@ Route::get('/export-projects', [ProjectListController::class, 'exportExcel']);
 //agreement-for-sale
 
 Route::get('agreement-for-sale/{data}', [AgreementForSaleController::class, 'index']);
+Route::post('agreement-for-sale/{data}/upload', [SaleAgreementUploadController::class, 'store'])->middleware('throttle:10,1');
 Route::post('agreements', [AgreementForSaleController::class, 'store']);
 Route::put('agreements/{id}', [AgreementForSaleController::class, 'update']);
+
 
 Route::post('agreements', [AgreementForSaleController::class, 'store']);
 Route::post('/schedules/upload', [AgreementForSaleController::class, 'uploadSchedule']);

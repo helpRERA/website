@@ -102,7 +102,7 @@ const MobileDropdown = ({
                         isSelected ? 'bg-white shadow-[inset_4px_0_0_0_#105d8c]' : 'hover:bg-white hover:shadow-[inset_4px_0_0_0_#e5e7eb]'
                       }`}
                     >
-                      <span className={`min-w-0 [overflow-wrap:anywhere] text-[15px] leading-relaxed font-medium transition-colors ${isSelected ? 'text-[#105d8c]' : 'text-[#5a5a5a] group-hover:text-[#105d8c]'}`}>
+                      <span className={`${section.value === 'APPELLATE TRIBUNAL' ? 'shrink-0 whitespace-nowrap' : 'min-w-0 [overflow-wrap:anywhere]'} text-[15px] leading-relaxed font-medium transition-colors ${isSelected ? 'text-[#105d8c]' : 'text-[#5a5a5a] group-hover:text-[#105d8c]'}`}>
                         <Localization text={localization[section.value]} language={lang} />
                       </span>
                       {navRecord && (

@@ -29,6 +29,7 @@ interface Properties {
   complaints: Paginator<Complaint>
   lang?: Language
   oldSearch: string
+  oldProjectId: string
   oldRulingBy: string
   oldSort: string
   reliefSought: ReliefSought[]
@@ -38,6 +39,7 @@ const ComplaintListPage = ({
   lang = 'en',
   complaints,
   oldSearch,
+  oldProjectId,
   oldRulingBy,
   oldSort,
   reliefSought,
@@ -85,6 +87,7 @@ const ComplaintListPage = ({
         <ComplaintList
           complaints={complaints}
           oldSearch={oldSearch}
+          oldProjectId={oldProjectId}
           oldRulingBy={oldRulingBy}
           oldSort={oldSort}
           reliefSought={reliefSought}

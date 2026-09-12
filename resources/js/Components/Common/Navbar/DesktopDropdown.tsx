@@ -32,12 +32,12 @@ const DesktopDropdown = ({ nav, hoverDropdown, lang = 'en' }: Properties) => {
               onMouseOver={() => {
                 hoverDropdown(navSection.value)
               }}
-              className={`nav-item hidden min-w-0 flex-1 whitespace-normal px-2 2xl:px-4 text-center text-sm leading-relaxed font-medium transition-colors hover:text-[#0f2c59] hover:bg-gray-50 md:inline-flex md:items-center md:justify-center h-[80px] cursor-pointer`}
+              className={`nav-item hidden ${navSection.value === 'APPELLATE TRIBUNAL' ? 'shrink-0 whitespace-nowrap' : 'min-w-0 flex-1 whitespace-normal'} px-2 2xl:px-4 text-center text-sm leading-relaxed font-medium transition-colors hover:text-[#0f2c59] hover:bg-gray-50 md:inline-flex md:items-center md:justify-center h-[80px] cursor-pointer`}
               key={navSection.value}
             >
               <Link
                 as='a'
-                className='min-w-0 max-w-full [overflow-wrap:anywhere]'
+                className={navSection.value === 'APPELLATE TRIBUNAL' ? 'whitespace-nowrap' : 'min-w-0 max-w-full [overflow-wrap:anywhere]'}
                 href={`${navSection.url}`}
               >
                 <Localization text={localization[navSection.value]} language={lang} />

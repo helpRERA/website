@@ -70,6 +70,8 @@ const Navbar = () => {
     <>
       {!isHome && <div className="h-[112px] lg:h-[128px] w-full" aria-hidden="true" />}
       <nav 
+        lang={lang === 'mal' ? 'ml' : 'en'}
+        style={lang === 'mal' ? { fontFamily: '"Anek Malayalam", sans-serif' } : undefined}
         className={`fixed top-0 left-0 right-0 z-[9999] w-full px-4 py-4 md:px-8 lg:px-12 lg:py-6 font-urbanist transition-all duration-300`}
       >
         {/* Thin blue bar at the very top */}

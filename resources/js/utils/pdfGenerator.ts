@@ -3,6 +3,10 @@ import { jsPDF, GState } from "jspdf";
 import { PDFDocument } from 'pdf-lib';
 import { findPageEnd, ProtectedBand } from './pdfPagination';
 
+// Balance readable document text with smaller image-based PDF downloads.
+const PDF_RENDER_SCALE = 1.5;
+const PDF_JPEG_QUALITY = 0.75;
+
 function getProtectedBands(element: HTMLElement, scale: number): ProtectedBand[] {
   const origin = element.getBoundingClientRect().top;
   const bands: ProtectedBand[] = [];
@@ -67,8 +71,9 @@ function downloadBytes(bytes: Uint8Array, filename: string) {
 export async function generatePDF(
   elementId: string,
   filename: string,
-  scheduleUrls?: (string | undefined)[]
-): Promise<void> {
+  scheduleUrls?: (string | undefined)[],
+  output: 'download' | 'blob' = 'download'
+): Promise<Blob | void> {
   const container = document.getElementById(elementId);
   if (!container) throw new Error(`Element #${elementId} not found`);
 
@@ -83,35 +88,50 @@ export async function generatePDF(
   try {
     await document.fonts.ready;
     await Promise.all(Array.from(container.querySelectorAll('img')).map(img => img.decode().catch(() => undefined)));
-    const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+    const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait', compress: true });
     const margin = 20;
     const contentWidth = pdf.internal.pageSize.getWidth() - margin * 2;
     const contentHeight = pdf.internal.pageSize.getHeight() - margin * 2;
     const sections = Array.from(container.querySelectorAll<HTMLElement>('.paper-page'));
     let firstPage = true;
     for (const section of sections.length ? sections : [container]) {
-      const canvas = await html2canvas(section, { scale: 2, useCORS: true, logging: false, backgroundColor: '#ffffff' });
-      const scale = canvas.width / section.getBoundingClientRect().width;
+      const bounds = section.getBoundingClientRect();
+      const scale = PDF_RENDER_SCALE;
       const bands = getProtectedBands(section, scale);
-      const pixelsPerMm = canvas.width / contentWidth;
+      const pixelsPerMm = bounds.width * scale / contentWidth;
       const pageHeight = Math.floor(contentHeight * pixelsPerMm);
-      for (let start = 0; start < canvas.height;) {
-        const end = findPageEnd(start, pageHeight, canvas.height, bands);
+      const totalHeight = Math.ceil(Math.max(bounds.height, section.scrollHeight) * scale);
+      for (let start = 0; start < totalHeight;) {
+        const end = findPageEnd(start, pageHeight, totalHeight, bands);
+        // Render only this page: a full-document canvas can exceed browser limits.
         const slice = document.createElement('canvas');
-        slice.width = canvas.width;
+        slice.width = Math.ceil(bounds.width * scale);
         slice.height = end - start;
+        // Cover rounded edge pixels too; transparent pixels become dark in JPEG.
         const context = slice.getContext('2d');
         if (!context) throw new Error('Unable to create PDF page canvas');
-        context.drawImage(canvas, 0, start, canvas.width, slice.height, 0, 0, slice.width, slice.height);
+        context.fillStyle = '#ffffff';
+        context.fillRect(0, 0, slice.width, slice.height);
+        await html2canvas(section, {
+          canvas: slice,
+          scale,
+          x: 0,
+          y: start / scale,
+          width: bounds.width,
+          height: slice.height / scale,
+          useCORS: true,
+          logging: false,
+          backgroundColor: '#ffffff',
+        });
         if (!firstPage) pdf.addPage();
         firstPage = false;
-        pdf.addImage(slice.toDataURL('image/jpeg', 0.98), 'JPEG', margin, margin, contentWidth, slice.height / pixelsPerMm);
+        pdf.addImage(slice.toDataURL('image/jpeg', PDF_JPEG_QUALITY), 'JPEG', margin, margin, contentWidth, slice.height / pixelsPerMm);
+        slice.width = slice.height = 0;
         start = end;
       }
-      canvas.width = canvas.height = 0;
     }
 
-    const totalPages = pdf.internal.getNumberOfPages();
+    const totalPages = pdf.getNumberOfPages();
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
 
@@ -143,8 +163,10 @@ export async function generatePDF(
 
     if (scheduleUrls && scheduleUrls.some(u => !!u)) {
       const mergedBytes = await mergeSchedulePDFs(mainPdfBytes, scheduleUrls);
+      if (output === 'blob') return new Blob([mergedBytes], { type: 'application/pdf' });
       downloadBytes(mergedBytes, filename);
     } else {
+      if (output === 'blob') return new Blob([mainPdfBytes], { type: 'application/pdf' });
       pdf.save(filename);
     }
   } finally {

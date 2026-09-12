@@ -12,10 +12,27 @@ class ComplaintsListService
 
     const JUDGEMENT_BY_OFFICER = 'Judgements by Adjudicating Officers';
 
+    public function getProjectIdsWithComplaints(array $projectIds): array
+    {
+        if ($projectIds === []) {
+            return [];
+        }
+
+        $placeholders = implode(', ', array_fill(0, count($projectIds), '?'));
+        $rows = DB::connection('k_rera')->select(
+            'select distinct ProjectId from ('.ComplaintListQuery::QUERY.
+            ' and temptable_citizencomplaint.ProjectId in ('.$placeholders.')) complaints',
+            array_values($projectIds)
+        );
+
+        return array_map(static fn ($row) => (string) $row->ProjectId, $rows);
+    }
+
     public function getData(
         ?string $search,
         ?string $rulingBy,
         string $sort,
+        ?string $projectId = null,
     ): LengthAwarePaginator {
         $queryParams = [];
         if ($search != null) {
@@ -26,12 +43,17 @@ class ComplaintsListService
             ];
         }
 
+        if ($projectId !== null) {
+            $queryParams[] = $projectId;
+        }
+
         $list = DB::connection('k_rera')->select(
             ComplaintListQuery::QUERY.
             ($search == null
                 ? ''
                 : ' and (ComplaintNo like ? or RespondentName like ? or Projectname like ?)'
             )
+            .($projectId !== null ? ' and temptable_citizencomplaint.ProjectId = ?' : '')
             .($rulingBy === self::RULING_BY_KRERA ?
                 ' and temptable_citizencomplaint.RulingByMaharera = 1' : ' '
             )

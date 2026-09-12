@@ -26,6 +26,12 @@ const AppLayout = ({ children }: Properties) => {
   const [reduceMotion, setReduceMotion] = useState(false)
 
   useEffect(() => {
+    const previousLanguage = document.documentElement.lang
+    document.documentElement.lang = lang === 'mal' ? 'ml' : 'en'
+    return () => { document.documentElement.lang = previousLanguage }
+  }, [lang])
+
+  useEffect(() => {
     if (flash?.error != null) {
       showError(flash.error)
     }

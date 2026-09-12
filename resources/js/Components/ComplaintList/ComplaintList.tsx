@@ -25,8 +25,9 @@ const heads = [
 ]
 
 const rulingTypes = [
-  { value: 'Rulings of K-RERA Authority' },
-  { value: 'Judgements by Adjudicating Officers' },
+  { value: 'all', label: 'All Judgements / Orders' },
+  { value: 'Rulings of K-RERA Authority', label: 'Rulings of K-RERA Authority' },
+  { value: 'Judgements by Adjudicating Officers', label: 'Judgements by Adjudicating Officers' },
 ]
 
 const sort = [{ value: 'newest' }, { value: 'oldest' }]
@@ -34,12 +35,14 @@ const sort = [{ value: 'newest' }, { value: 'oldest' }]
 const ComplaintList = ({
   complaints,
   oldSearch,
+  oldProjectId,
   oldRulingBy,
   oldSort,
   reliefSought,
 }: {
   complaints: Paginator<Complaint>
   oldSearch: string
+  oldProjectId: string
   oldRulingBy: string
   oldSort: string
   reliefSought: ReliefSought[]
@@ -47,6 +50,7 @@ const ComplaintList = ({
   const [processing, setProcessing] = useState(false)
   const { form, setFormValue, setAll } = useCustomForm({
     search: '',
+    project_id: oldProjectId,
     ruling_by: 'Rulings of K-RERA Authority',
     sort: '',
   })
@@ -54,17 +58,18 @@ const ComplaintList = ({
   useEffect(() => {
     setAll({
       search: oldSearch,
+      project_id: oldProjectId,
       ruling_by: oldRulingBy,
       sort: oldSort,
     })
-  }, [oldSearch, setAll, oldRulingBy, oldSort])
+  }, [oldSearch, oldProjectId, setAll, oldRulingBy, oldSort])
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setProcessing(true)
     router.get(
-      `/complaint-list?search=${form.search}&ruling_by=${form.ruling_by}&sort=${form.sort}`,
-      {},
+      '/complaint-list',
+      form,
       {
         onFinish: () => setProcessing(false),
       }
@@ -107,7 +112,7 @@ const ComplaintList = ({
                 className='bg-white rounded-md border border-gray-200 py-2.5 px-4 text-[13px] text-gray-800 focus:border-[#085484] focus:ring-1 focus:ring-[#085484] outline-none w-full'
               >
                 {rulingTypes.map(type => (
-                  <option key={type.value} value={type.value}>{type.value}</option>
+                  <option key={type.value} value={type.value}>{type.label}</option>
                 ))}
               </select>
             </div>
@@ -121,10 +126,7 @@ const ComplaintList = ({
             <button 
               type='button' 
               onClick={() => {
-                setAll({ search: '', ruling_by: 'Rulings of K-RERA Authority', sort: '' });
-                setTimeout(() => {
-                  router.get(`/complaint-list?search=&ruling_by=Rulings of K-RERA Authority&sort=`);
-                }, 100);
+                router.get('/complaint-list');
               }} 
               className='bg-white text-gray-600 border border-gray-300 px-10 py-2.5 rounded-md font-medium text-[13px] hover:bg-gray-50 transition-colors'
             >
@@ -149,15 +151,13 @@ const ComplaintList = ({
                   onChange={(e) => {
                     const val = e.target.value;
                     setFormValue('sort')(val);
-                    setTimeout(() => {
-                       router.get(`/complaint-list?search=${form.search}&ruling_by=${form.ruling_by}&sort=${val}`);
-                    }, 100);
+                    router.get('/complaint-list', { ...form, sort: val });
                   }}
                   className='bg-white rounded-full border border-gray-300 py-1.5 px-4 text-[12.5px] text-gray-700 hover:border-gray-400 focus:border-[#085484] outline-none w-full appearance-none'
                 >
                   <option value=''>Select Order</option>
-                  <option value='Newest'>Newest</option>
-                  <option value='Oldest'>Oldest</option>
+                  <option value='newest'>Newest</option>
+                  <option value='oldest'>Oldest</option>
                 </select>
                 <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500'>
                   <svg className='h-3.5 w-3.5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M19 9l-7 7-7-7' /></svg>
@@ -166,6 +166,9 @@ const ComplaintList = ({
             </div>
           </div>
         )}  
+          {complaints.data.length === 0 && (
+            <p className='py-10 text-center text-gray-600'>No complaints found matching your search.</p>
+          )}
           <div className='flex flex-col gap-6'>
             {complaints.data?.map((complaint) => {
               return (
