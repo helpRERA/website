@@ -6,6 +6,11 @@ const DashboardSidebarLinks = () => {
     <div className='w-full'>
       <div className='border-gray-300'>
         <div className='flex w-full items-center justify-between'>
+          <Link href='/profile' className='flex w-full cursor-pointer items-center p-2 text-white hover:bg-gray-700'>
+            <span className='ml-2 text-sm'>Profile</span>
+          </Link>
+        </div>
+        <div className='flex w-full items-center justify-between'>
           <a
             className='flex w-full cursor-pointer items-center p-2 text-white hover:bg-gray-700'
             href='/inaugurate'

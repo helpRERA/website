@@ -1850,14 +1850,14 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
               />
             </div> */}
             <div className="form-group row-2">
-              <div>
+              {/* <div>
                 <label>Competent Authority </label>
                 <input data-form-field="competentAuthorityForDeclaration"
                   type="text"
                   value={data.competentAuthorityForDeclaration}
                   onFocus={() => setActiveField('competentAuthorityForDeclaration')} onChange={(e) => updateField('competentAuthorityForDeclaration', e.target.value)}
                 />
-              </div>
+              </div> */}
               <div>
                 <label>Relevant State Act</label>
                 <input data-form-field="relevantStateAct"

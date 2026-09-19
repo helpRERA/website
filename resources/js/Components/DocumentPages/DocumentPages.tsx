@@ -444,7 +444,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           </div>
 
           <div className="indent-1" style={{ marginTop: '1.5rem', textAlign: 'left' }}>
-            1.10 It is understood by the Allottee that all other areas and i.e. areas and facilities falling outside the Project, namely <SpanVal val={projectName} fieldKey="projectName" /> shall not form a part of the declaration to be filed with <SpanVal val={competentAuthorityForDeclaration} fallback="(Please insert the name of the concerned competent authority)" fieldKey="competentAuthorityForDeclaration" /> to be filed in accordance with the <SpanVal val={relevantStateAct} fallback="(Please insert the name of the relevant State act, if any)" fieldKey="relevantStateAct" />.
+            1.10 It is understood by the Allottee that all other areas and i.e. areas and facilities falling outside the Project, namely <SpanVal val={projectName} fieldKey="projectName" /> shall not form a part of the declaration to be filed with <SpanVal val={commencementAuthority} fallback="(Please insert the name of the concerned competent authority)" fieldKey="commencementAuthority" /> to be filed in accordance with the <SpanVal val={relevantStateAct} fallback="(Please insert the name of the relevant State act, if any)" fieldKey="relevantStateAct" />.
           </div>
 
           <div className="indent-1" style={{ marginTop: '1.5rem' }}>
