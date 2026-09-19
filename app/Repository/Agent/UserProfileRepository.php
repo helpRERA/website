@@ -110,13 +110,11 @@ class UserProfileRepository
     {
         $results = DB::connection('k_rera')
             ->select("
-                    select sum(AgentCount)AgentCount from(
-                    select count(*)AgentCount from tbl_UserProfile u
+                    select count(*) as AgentCount from tbl_UserProfile u
                     inner join tbl_CertificateA c on u.UserID=c.UserID
-                    where u.RoleID=2 and c.CertificateNo not in(select RegistrationNumber from tbl_Agent_Manual )
-                    union all
-                    select count(*)AgentCount from tbl_Agent_Manual
-                    ) t
+                    inner join tbl_UserStatusSubMapping us on u.UserID=us.UserID
+                        and isnull(us.IsWithdraw,0)=0 and isnull(us.IsRevoc,0)=0
+                    where u.RoleID=2
             ");
 
         if (empty($results)) {
