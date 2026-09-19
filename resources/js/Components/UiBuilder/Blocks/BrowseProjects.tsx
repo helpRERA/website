@@ -222,28 +222,7 @@ const BrowseProjects = ({ projects: initialProjects = [], districts = [] }: Brow
                           </span>
                         </div>
 
-                        <div className="flex items-end justify-between mt-auto pt-2">
-                          <button
-                            type='button'
-                            disabled={project.DgnID == null}
-                            className="flex flex-col gap-1.5 cursor-pointer"
-                            onClick={(event) => {
-                              event.preventDefault()
-                              event.stopPropagation()
-                              if (project.DgnID != null) {
-                                window.open(`/signed-certificate/${project.DgnID}`, '_blank', 'noopener,noreferrer')
-                              }
-                            }}
-                          >
-                            <span className="flex items-center text-[#595959] text-[11px] font-medium" style={{ fontFamily: '"DM Sans", sans-serif' }}>
-                              <img src="/svg/certificateproject.svg" alt="certificate" className="w-[14px] h-[14px] mr-1.5 shrink-0" />
-                              Certificate
-                            </span>
-                            <span className="text-[#595959] font-medium text-[13px] tracking-tight" style={{ fontFamily: '"DM Sans", sans-serif' }}>
-                              {project.CertificateNo ?? '—'}
-                            </span>
-                          </button>
-
+                        <div className="flex items-end justify-end mt-auto pt-2">
                           <div className="bg-[#085484] hover:bg-[#064269] text-white p-2.5 rounded-full transition-colors shrink-0">
                             <ArrowRight className="w-4 h-4" />
                           </div>

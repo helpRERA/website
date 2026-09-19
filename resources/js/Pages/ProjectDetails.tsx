@@ -1,5 +1,6 @@
 import { Link } from '@inertiajs/react'
-import React, { useEffect } from 'react'
+import React from 'react'
+import { ArrowLeftIcon } from '@heroicons/react/20/solid'
 import AppLayout from '../Components/Layout/AppLayout/AppLayout'
 import ProjectDetailsContent from '../Components/ProjectDetails/ProjectDetailsContent'
 import {
@@ -15,7 +16,6 @@ import {
   UserProfile,
   Village,
 } from '../DataStructures/krera_interfaces'
-import CloseSolid from '../ui/icons/CloseSolid'
 import { Language } from '../ui/ui_interfaces'
 import MetaTags from '../Components/Common/MetaTags'
 import { DocumentsByType } from '../DataStructures/data_interfaces'
@@ -106,15 +106,19 @@ export default function ProjectDetails({
   hasComplaints,
   today,
 }: Properties) {
-  useEffect(() => {
-    //get last url in window history
-  }, [])
-
   return (
     <>
       <MetaTags title={project.Name} />
       <AppLayout>
         <div className='cmpad relative mx-auto w-full flex-col pb-10 mt-10'>
+          <Link
+            href={prevUrl || '/explore-projects'}
+            className='inline-flex min-h-[44px] items-center gap-2 rounded-lg border border-[#085484] px-4 py-2 text-sm font-medium text-[#085484] transition-colors hover:bg-[#eaf5fa] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#085484]'
+            aria-label='Back to projects'
+          >
+            <ArrowLeftIcon className='h-5 w-5' aria-hidden='true' />
+            Back to projects
+          </Link>
           <ProjectDetailsContent
             project={project}
             lang={lang}

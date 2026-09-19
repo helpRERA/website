@@ -19,7 +19,7 @@ interface Properties {
 
 const projectTypeLabels: Record<string, string> = {
   '12': 'Shops/Office Space (Commercial)',
-  '13': 'Residential',
+  '13': 'Residential(Apartments)',
   '15': 'Plots',
   '16': 'Mixed (Commercial & Residential)',
   '33': 'Villas (Plots & Buildings)',
@@ -155,30 +155,7 @@ const ProjectCard = ({ project, today, lang = 'en' }: Properties) => {
           </div>
 
           {/* Bottom Section */}
-          <div className='mt-6 flex items-end justify-between'>
-            <div className='flex flex-col'>
-              <div className='flex items-center gap-1.5 mb-1.5 text-gray-500 text-xs'>
-                <svg className='h-4 w-4 text-[#085484]' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-                  <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' />
-                </svg>
-                <span>Certificate</span>
-              </div>
-              <button
-                type='button'
-                disabled={project.hsm?.DgnID == null}
-                className='relative z-10 inline-flex cursor-pointer items-center justify-center rounded-full border border-[#085484] bg-white px-4 py-1.5 text-[11px] font-medium text-gray-600'
-                onClick={(event) => {
-                  event.preventDefault()
-                  event.stopPropagation()
-                  if (project.hsm?.DgnID != null) {
-                    window.open(`/signed-certificate/${project.hsm.DgnID}`, '_blank', 'noopener,noreferrer')
-                  }
-                }}
-              >
-                {project.certificate_info?.CertificateNo}
-              </button>
-            </div>
-
+          <div className='mt-6 flex items-end justify-end'>
             <div className='flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#085484] text-white shadow-md hover:bg-[#06426a] transition-colors'>
               <svg className='h-5 w-5' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
                 <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M9 5l7 7-7 7' />

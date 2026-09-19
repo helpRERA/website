@@ -277,23 +277,6 @@ export default function ComplaintDashboard({
         </div>
       </div>
 
-      {/* ORDERS */}
-      <div className='mt-6 grid grid-cols-1 gap-6 md:grid-cols-2'>
-        <div className='rounded-[20px] bg-white p-6 border border-[#E5E7EB]'>
-          <p className='text-sm text-gray-500'>Complaints with Interim Orders</p>
-          <h3 className='mt-2 text-4xl font-bold text-[#0463A0]'>
-            {complaintDashboard.interimOrders}
-          </h3>
-        </div>
-
-        <div className='rounded-[20px] bg-white p-6 border border-[#E5E7EB]'>
-          <p className='text-sm text-gray-500'>Complaints with Final Orders</p>
-          <h3 className='mt-2 text-4xl font-bold text-[#0463A0]'>
-            {complaintDashboard.finalOrders}
-          </h3>
-        </div>
-      </div>
-
       {/* RECENT COMPLAINTS */}
       <div className='mt-6 rounded-[20px] bg-white p-6 border border-[#E5E7EB]'>
         <div className='mb-6 flex flex-col gap-2 md:flex-row md:items-center md:justify-between'>

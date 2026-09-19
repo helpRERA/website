@@ -54,7 +54,7 @@ const projectTypes = [
   },
   {
     id: PROJECT_TYPE_RESIDENTIAL,
-    TypeName: 'Residential',
+    TypeName: 'Residential(Apartments)',
   },
   {
     id: PROJECT_TYPE_PLOT,

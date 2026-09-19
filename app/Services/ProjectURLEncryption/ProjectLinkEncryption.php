@@ -61,6 +61,7 @@ class ProjectLinkEncryption
 
     public function decryptLink(string $encryptedLink): string
     {
+        
         $url = urldecode($encryptedLink);
         $result = openssl_decrypt(
             base64_decode($url),

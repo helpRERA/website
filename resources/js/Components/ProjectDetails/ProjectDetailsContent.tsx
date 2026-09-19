@@ -182,7 +182,7 @@ const ProjectDetailsContent = ({
                         rel='noopener noreferrer'
                         title='View signed project certificate'
                         aria-label='View signed project certificate (opens in a new tab)'
-                        className='inline-flex items-center justify-center p-1 text-[#085484] hover:text-blue-700'
+                        className='inline-flex items-center justify-center rounded p-1 text-blue-700 hover:bg-blue-100 hover:text-blue-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-600'
                       >
                         <svg className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2} aria-hidden='true'>
                           <path strokeLinecap='round' strokeLinejoin='round' d='M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' />
@@ -193,7 +193,7 @@ const ProjectDetailsContent = ({
                   <Link
                     as='a'
                     href={`/projects?registration_number=${encodedCertificateUrl}`}
-                    className='inline-flex items-center justify-center gap-1.5 rounded-full border border-[#085484] px-6 py-1.5 text-[11px] font-medium text-[#085484] hover:bg-blue-50 text-center cursor-pointer'
+                    className='inline-flex items-center justify-center gap-1.5 rounded-full border border-blue-600 bg-blue-50 px-6 py-1.5 text-[11px] font-semibold text-blue-700 underline underline-offset-2 hover:bg-blue-100 hover:text-blue-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 text-center cursor-pointer'
                   >
                     {project.certificate_info.CertificateNo}
                     <svg className='h-3.5 w-3.5' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
@@ -215,7 +215,7 @@ const ProjectDetailsContent = ({
                     href={`/extension-certificate/${project.ID}`}
                     target='_blank'
                     rel='noreferrer'
-                    className='inline-flex items-center justify-center gap-1.5 rounded-full border border-[#085484] px-6 py-1.5 text-[11px] font-medium text-[#085484] hover:bg-blue-50 text-center cursor-pointer'
+                    className='inline-flex items-center justify-center gap-1.5 rounded-full border border-blue-600 bg-blue-50 px-6 py-1.5 text-[11px] font-semibold text-blue-700 underline underline-offset-2 hover:bg-blue-100 hover:text-blue-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 text-center cursor-pointer'
                   >
                     View Certificate
                     <svg className='h-3.5 w-3.5' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>

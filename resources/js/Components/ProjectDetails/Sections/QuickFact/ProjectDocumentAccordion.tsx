@@ -141,6 +141,9 @@ const ProjectDocumentAccordion = ({
         >
           <FullSpinnerWrapper processing={loadingFiles}>
             <div className='flex max-h-[50vh] flex-col gap-5 p-2'>
+              {!loadingFiles && files.length === 0 && (
+                <p className='text-sm text-gray-500'>No files available.</p>
+              )}
               {files.map((document) => {
                 return (
                   <div
@@ -155,7 +158,11 @@ const ProjectDocumentAccordion = ({
                     <a
                       className='text-blue-500 hover:text-blue-700'
                       href={`/${
-                        projectCategory.type === 'order' ? 'extension-order' : 'view-file'
+                        projectCategory.type === 'order'
+                          ? ['37', '88'].includes(String(selectedCategory?.DocID))
+                            ? 'registration-order'
+                            : 'extension-order'
+                          : 'view-file'
                       }/${document.ID}`}
                       target='_blank'
                       rel='noreferrer'

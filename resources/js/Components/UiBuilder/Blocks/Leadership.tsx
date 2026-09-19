@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
-import { Block, BlockImage, TextData } from '../../../DataStructures/ui_builder_interfaces'
+import { usePage } from '@inertiajs/react'
+import { Block, BlockImage, Page, TextData } from '../../../DataStructures/ui_builder_interfaces'
 import EditLabel from '../../../ui/button/EditLabel'
 import Localization from '../../../ui/Localization'
 import { Language } from '../../../ui/ui_interfaces'
@@ -49,6 +50,13 @@ const Leadership = ({
   dispatch,
   onFieldEdit,
 }: Properties) => {
+  const { page } = usePage().props as unknown as { page?: Page }
+  const isWhoIsWho = page?.url.replace(/^\/+|\/+$/g, '') === 'who-is-who'
+  const firstLeadershipBlock = page?.blocks.blocks
+    .filter((block) => block.blockName === 'Home Leadership')
+    .sort((a, b) => a.position - b.position)[0]
+  const isTopRow = isWhoIsWho && firstLeadershipBlock?.id === blockData?.id
+
   const addNewAction = useCallback(() => {
     if (dispatch != null) {
       dispatch({
@@ -85,15 +93,22 @@ const Leadership = ({
             )}
           </h2>
         </div>
-        <div className='grid items-center gap-12 md:grid-cols-3'>
-          {blockData?.roles?.items.map((role) => {
+        {editMode && isWhoIsWho && (
+          <p className='mb-6 text-center text-sm text-gray-600'>
+            {isTopRow
+              ? 'The first person appears centered in the top row. Additional people appear below.'
+              : 'These people appear together below the top person.'}
+          </p>
+        )}
+        <div className={isWhoIsWho ? 'flex flex-wrap items-start justify-center gap-12' : 'grid items-center gap-12 md:grid-cols-3'}>
+          {blockData?.roles?.items.map((role, index) => {
             return (
               <div
-                className='space-y-4 text-center'
+                className={`space-y-4 text-center ${isWhoIsWho ? (isTopRow && index === 0 ? 'w-full' : 'w-full sm:w-72') : ''}`}
                 key={role.id}
               >
                 <img
-                  className='mx-auto aspect-picture rounded-xl object-cover md:h-40 md:w-40 lg:h-64 lg:w-64'
+                  className={`mx-auto aspect-picture rounded-xl object-cover md:h-40 md:w-40 lg:h-64 lg:w-64 ${isWhoIsWho ? 'h-64 w-64 max-w-full' : ''}`}
                   src={role.item.image.url}
                   alt={role.item.image.caption}
                   loading='lazy'
@@ -182,7 +197,7 @@ const Leadership = ({
           {editMode && onFieldEdit != null && (
             <div>
               <AddLabel
-                label='ADD SLIDE'
+                label='ADD PERSON'
                 onClick={addNewAction}
               />
             </div>

@@ -4,6 +4,7 @@ namespace App\Services\ExtensionCertificate;
 
 use App\Libs\StreamFileResponse;
 use App\Models\KRERA\ExtensionOrder;
+use App\Models\KRERA\RegistrationOrder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -60,6 +61,27 @@ class ExtensionOrderService extends StreamFileResponse
     $results = collect();
 
     foreach ($docTableMap as $table => $actions) {
+        if ($table === 'tbl_DeskStatus') {
+            foreach ($actions as $action) {
+                $statusIds = $connection->table($table)
+                    ->where('ProjectId', $projectId)
+                    ->where('Action', $action)
+                    ->pluck('Id');
+
+                $count = RegistrationOrder::where('ProjectID', $projectId)
+                    ->whereIn('MoreInfoID', $statusIds)
+                    ->whereNotNull('FileType')
+                    ->whereNotNull('FileContent')
+                    ->count();
+
+                if ($count > 0) {
+                    $results->push((object) ['DocID' => $action, 'no_of_docs' => $count]);
+                }
+            }
+
+            continue;
+        }
+
         $data = $connection
             ->table($table)
             ->where('ProjectId', $projectId)

@@ -51,8 +51,11 @@ const Navbar = () => {
   }
 
   const selectDropdown = (option: string): void => {
+    const isMobileAccordion = window.innerWidth < 768
     setShowDropdown(true)
-    setSelectedOption(option)
+    setSelectedOption((previous) =>
+      isMobileAccordion && previous === option ? '' : option
+    )
   }
 
   const langToggle = () => {

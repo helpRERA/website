@@ -10,6 +10,7 @@ use App\Services\ProjectDocument\ConsideredDocuments;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\JoinClause;
+use Illuminate\Support\Facades\DB;
 
 class FetchProjectDetailData
 {
@@ -22,7 +23,7 @@ class FetchProjectDetailData
 
     public function getData(int $projectId): ProjectMaster
     {
-
+        //DB::connection('k_rera')->enableQueryLog();
         $availabilityQuery = $this->getAvailabilityQuery();
 
         /**
@@ -67,7 +68,11 @@ class FetchProjectDetailData
             . ', CASE WHEN ISNULL(Pd.DefaultReason, \'\') = \'\' THEN 0 ELSE 1 END AS IsDefault'
         );
 
-        return $query->firstOrFail();
+        $project = $query->firstOrFail();
+
+       // dd(DB::connection('k_rera')->getQueryLog());
+
+        return $project;
     }
 
     /**
