@@ -4,7 +4,6 @@ import React, { useMemo } from 'react'
 import AreaChart from '../../rechart/AreaChart'
 import VisualizationToggle from './VisualizationToggle'
 import DashboardDataTable from './DashboardDataTable'
-import dayjs from 'dayjs'
 
 interface Props {
   registeredProjects: Pick<
@@ -56,17 +55,17 @@ export default function ProjectCumulativeArea({
 }: Props) {
   const [showChart, setShowChart] = React.useState(true)
 
-  const last7Years = useMemo(() => {
-    const currentYear = selectedYear == '' ? dayjs(today).year() : Number(selectedYear)
-
-    return Array.from({ length: 6 }, (_, index) => {
-      return currentYear - (5 - index)
-    })
-  }, [selectedYear, today])
+  const chartYears = useMemo(() => {
+    if (selectedYear !== '') return [Number(selectedYear)]
+    return Array.from(new Set(registeredProjects
+      .map((project) => Number(project.ProjectYear))
+      .filter((year) => Number.isFinite(year) && year > 0)
+    )).sort((a, b) => a - b)
+  }, [selectedYear, registeredProjects])
 
   //calculate total area under residential area and other use by year
   const totalAreaYear = useMemo(() => {
-    const totalArea = last7Years.map((year) => {
+    const totalArea = chartYears.map((year) => {
       return {
         year,
         [TOTAL_AREA_UNDER_RESIDENTIAL_USE_KEY]: 0,
@@ -119,7 +118,7 @@ export default function ProjectCumulativeArea({
       )
     })
     return totalArea
-  }, [registeredProjects, last7Years])
+  }, [registeredProjects, chartYears])
 
   return (
     <div className='grid grid-cols-1 gap-5'>

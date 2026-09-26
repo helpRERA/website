@@ -162,14 +162,6 @@ const ProjectCard = ({ project, today, lang = 'en' }: Properties) => {
               </svg>
             </div>
           </div>
-          {project.has_complaints && (
-            <Link
-              href={`/complaint-list?project_id=${encodeURIComponent(project.ID)}&ruling_by=all`}
-              className='relative z-10 mt-4 rounded-lg border border-[#085484] px-4 py-2.5 text-center text-[13px] font-medium text-[#085484] hover:bg-[#f0f5fa]'
-            >
-              View Complaints
-            </Link>
-          )}
         </div>
       </div>
     </div>

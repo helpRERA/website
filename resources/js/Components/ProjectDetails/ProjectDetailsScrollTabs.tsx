@@ -18,6 +18,7 @@ interface Properties {
   lastModified?: ProjectLastModified | null
   projectHash: string
   hasForm6: boolean
+  hasComplaints: boolean
   today: string
 }
 
@@ -37,6 +38,7 @@ const ProjectDetailsScrollTabs = ({
   lastModified,
   projectHash,
   hasForm6,
+  hasComplaints,
   today,
 }: Properties) => {
   const [activeTab, setActiveTab] = useState('overview')
@@ -74,6 +76,7 @@ const ProjectDetailsScrollTabs = ({
             reference={{ current: null }}
             lang={lang}
             hasForm6={hasForm6}
+            hasComplaints={hasComplaints}
             lastModified={lastModified}
             projectHash={projectHash}
             today={today}

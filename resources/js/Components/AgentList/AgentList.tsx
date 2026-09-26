@@ -106,10 +106,10 @@ const AgentList = ({ agents, manual, expiredAgents }: Properties) => {
       //   value: 'Manually Registered Agents',
       //   subtitle: (manual?.total ?? 0).toString() + ' Results',
       // },
-      {
-        value: 'Expired Agents',
-        subtitle: `${expiredAgents?.total ?? 0} Results`,
-      },
+      // {
+      //   value: 'Expired Agents',
+      //   subtitle: `${expiredAgents?.total ?? 0} Results`,
+      // },
     ]
   }, [agents, manual, expiredAgents])
 

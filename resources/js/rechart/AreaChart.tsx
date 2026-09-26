@@ -191,6 +191,7 @@ const AreaChartWrapper = ({
         {keys.map((key, index) => (
           <Area
             type='monotone'
+            dot={dataset.length === 1 ? { r: 4 } : false}
             dataKey={key}
             stroke={solidColors[index % solidColors.length]}
             strokeWidth={2}

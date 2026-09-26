@@ -8,7 +8,6 @@ import { DocumentsByType } from '../../DataStructures/data_interfaces'
 import usePromoterInfo from '../ExploreProject/usePromoterInfo'
 import { getDisplayDate } from '../../libs/dates'
 import Tooltip from '../../ui/Tooltip/Tooltip'
-import { Link } from '@inertiajs/react'
 import ProjectStatusPill from '../ExploreProject/Common/ProjectStatusPill'
 import { PROJECT_TYPE_PLOT } from '../ExploreProject/ProjectFilterForm/ProjectFilterForm'
 interface Properties {
@@ -42,9 +41,9 @@ const ProjectDetailsContent = ({
 
   const isDefault = Number(project.IsDefault) === 1
 
-  const encodedCertificateUrl = useMemo(() => {
-    return encodeURIComponent(project.certificate_info.CertificateNo ?? '')
-  }, [project.certificate_info])
+  const signedCertificateUrl = project.hsm?.DgnID != null
+    ? `/signed-certificate/${project.hsm.DgnID}`
+    : undefined
 
   const projectAddress = useMemo(() => {
     return [
@@ -109,13 +108,13 @@ const ProjectDetailsContent = ({
             <div className='mt-2 flex max-w-[520px] flex-col gap-2'>
               <div className='flex items-center  gap-4'>
                 <span className='text-gray-500 text-[15px]'>Total Floor Area Under Residential Use</span>
-                <span className='shrink-0 text-[18px] font-medium text-gray-700'>
+                <span className='shrink-0 text-[18px] font-medium text-gray-700'> : &nbsp;
                   {Number(project.TotalFloorAreaUnderResidentialUse) ? `${project.TotalFloorAreaUnderResidentialUse} sqm` : '0'}
                 </span>
               </div>
               <div className='flex items-center  gap-4'>
                 <span className='text-gray-500 text-[15px]'>Total Floor Area Under Other Use</span>
-                <span className='shrink-0 text-[18px] font-medium text-gray-700'>
+                <span className='shrink-0 text-[18px] font-medium text-gray-700'> :  &nbsp;
                   {Number(project.TotalFloorAreaUnderOtherUse) ? `${project.TotalFloorAreaUnderOtherUse} sqm` : '0'}
                 </span>
               </div>
@@ -134,6 +133,14 @@ const ProjectDetailsContent = ({
                     {getDisplayDate(project.ProposedDateOfCompletion)}
                   </span>
                 </div>
+                {project.LatestExtensionDate && (
+                  <div className='flex items-center gap-4'>
+                    <span className='text-[13px] text-gray-500'>Extension Date:</span>
+                    <span className='shrink-0 text-[18px] font-medium text-gray-700'>
+                      {getDisplayDate(project.LatestExtensionDate)}
+                    </span>
+                  </div>
+                )}
             </div>
             
             {/* Units & Status Pills */}
@@ -156,17 +163,6 @@ const ProjectDetailsContent = ({
             </div>
 
             {/* Certificates */}
-            {hasComplaints && (
-              <div className='mt-2'>
-                <Link
-                  href={`/complaint-list?project_id=${encodeURIComponent(project.ID)}&ruling_by=all`}
-                  className='inline-flex items-center justify-center rounded-lg border border-[#085484] px-6 py-2.5 text-[13px] font-medium text-[#085484] hover:bg-[#f0f5fa]'
-                >
-                  View Complaints
-                </Link>
-              </div>
-            )}
-
             <div className='mt-5 flex flex-wrap gap-6'>
               {project.certificate_info?.CertificateNo && (
                 <div className='flex flex-col gap-1.5'>
@@ -175,9 +171,9 @@ const ProjectDetailsContent = ({
                       <path strokeLinecap='round' strokeLinejoin='round' d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' />
                     </svg>
                     <span>Project Certificate</span>
-                    {project.hsm?.DgnID != null && (
+                    {signedCertificateUrl && (
                       <a
-                        href={`/signed-certificate/${project.hsm.DgnID}`}
+                        href={signedCertificateUrl}
                         target='_blank'
                         rel='noopener noreferrer'
                         title='View signed project certificate'
@@ -190,16 +186,24 @@ const ProjectDetailsContent = ({
                       </a>
                     )}
                   </div>
-                  <Link
-                    as='a'
-                    href={`/projects?registration_number=${encodedCertificateUrl}`}
-                    className='inline-flex items-center justify-center gap-1.5 rounded-full border border-blue-600 bg-blue-50 px-6 py-1.5 text-[11px] font-semibold text-blue-700 underline underline-offset-2 hover:bg-blue-100 hover:text-blue-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 text-center cursor-pointer'
-                  >
-                    {project.certificate_info.CertificateNo}
-                    <svg className='h-3.5 w-3.5' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
-                      <path strokeLinecap='round' strokeLinejoin='round' d='M9 5l7 7-7 7' />
-                    </svg>
-                  </Link>
+                  {signedCertificateUrl ? (
+                    <a
+                      href={signedCertificateUrl}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      title='View signed project certificate'
+                      className='inline-flex items-center justify-center gap-1.5 rounded-full border border-blue-600 bg-blue-50 px-6 py-1.5 text-[11px] font-semibold text-blue-700 underline underline-offset-2 hover:bg-blue-100 hover:text-blue-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 text-center cursor-pointer'
+                    >
+                      {project.certificate_info.CertificateNo}
+                      <svg className='h-3.5 w-3.5' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2}>
+                        <path strokeLinecap='round' strokeLinejoin='round' d='M9 5l7 7-7 7' />
+                      </svg>
+                    </a>
+                  ) : (
+                    <span className='text-[11px] font-semibold text-blue-700'>
+                      {project.certificate_info.CertificateNo}
+                    </span>
+                  )}
                 </div>
               )}
 
@@ -236,6 +240,7 @@ const ProjectDetailsContent = ({
           projects={project}
           lang={lang}
           hasForm6={hasForm6}
+          hasComplaints={hasComplaints}
           documents={documents}
           orders={orders}
           lastModified={lastModified}

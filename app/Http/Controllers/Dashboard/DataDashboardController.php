@@ -89,9 +89,9 @@ class DataDashboardController extends Controller
             })
             ->leftJoin('tbl_certificateP', 'tbl_Project.ID', '=', 'tbl_certificateP.ProjectID')
             ->whereNotNull('apartment_type.type')
-            ->groupByRaw('tbl_Project.District, apartment_type.type, tbl_Project.ProjectType, Right(tbl_certificateP.CertificateNo, 4)')
+            ->groupByRaw('tbl_Project.ID, tbl_Project.District, apartment_type.type, tbl_Project.ProjectType, Right(tbl_certificateP.CertificateNo, 4)')
             ->selectRaw(
-                'apartment_type.type, SUM(apartment_type.count) as count, tbl_Project.District, tbl_Project.ProjectType, Right(tbl_certificateP.CertificateNo, 4) as ProjectYear'
+                'tbl_Project.ID as ProjectID, apartment_type.type, SUM(apartment_type.count) as count, tbl_Project.District, tbl_Project.ProjectType, Right(tbl_certificateP.CertificateNo, 4) as ProjectYear'
             )
             ->get();
 

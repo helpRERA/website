@@ -14,6 +14,7 @@ import SelectList from '../../ui/form/SelectList'
 import ComplaintDashboard from '../../Components/DataDashboard/ComplaintDashboard'
 
 export interface ApartmentTypeSummary {
+  ProjectID: string
   type: string
   count: string
   District: string
@@ -131,6 +132,10 @@ export default function DataDashboardPage({
 
   const [projectName, setProjectName] = useState('')
 
+  const [draftFilters, setDraftFilters] = useState({
+    name: '', type: '', district: '', year: years.length > 0 ? years[0].year : '',
+  })
+
   /*
    * District selection
    */
@@ -150,40 +155,6 @@ export default function DataDashboardPage({
   )
 
   /*
-   * Project map data
-   */
-  const districtChoropleth = useMemo(() => {
-    const filteredByYear = registeredProjects.filter((project) => {
-      if (project.ProjectYear == null) {
-        return false
-      }
-
-      return selectedYear === '' || project.ProjectYear === selectedYear
-    })
-
-    return districts.map((district) => {
-      return {
-        district: district.Districtname,
-
-        project_count: filteredByYear.filter((project) => {
-          return (
-            project.District === district.Districtcode &&
-            (
-              selectedProjectType === '' ||
-              project.ProjectType === selectedProjectType
-            )
-          )
-        }).length,
-      }
-    })
-  }, [
-    districts,
-    registeredProjects,
-    selectedProjectType,
-    selectedYear,
-  ])
-
-  /*
    * Filter projects
    */
   const filteredProjects = useMemo(() => {
@@ -191,12 +162,13 @@ export default function DataDashboardPage({
       return (
         (
           selectedDistrict == null ||
-          project.District === selectedDistrict.Districtcode
+          String(project.District) === String(selectedDistrict.Districtcode)
         ) &&
         (
           selectedProjectType === '' ||
-          project.ProjectType === selectedProjectType
+          String(project.ProjectType) === String(selectedProjectType)
         ) &&
+        (selectedYear === '' || String(project.ProjectYear) === String(selectedYear)) &&
         (
           projectName === '' ||
           (
@@ -213,7 +185,20 @@ export default function DataDashboardPage({
     selectedDistrict,
     selectedProjectType,
     projectName,
+    selectedYear,
   ])
+
+  const districtChoropleth = useMemo(() => districts.map((district) => ({
+    district: district.Districtname,
+    project_count: filteredProjects.filter((project) =>
+      String(project.District) === String(district.Districtcode)
+    ).length,
+  })), [districts, filteredProjects])
+
+  const filteredApartmentTypes = useMemo(() => {
+    const ids = new Set(filteredProjects.map((project) => String(project.ID)))
+    return apartmentTypeSummary.filter((item) => ids.has(String(item.ProjectID)))
+  }, [apartmentTypeSummary, filteredProjects])
 
   /*
    * Total units
@@ -232,6 +217,7 @@ export default function DataDashboardPage({
    * Reset project filters
    */
   const resetProjectFilters = () => {
+    setDraftFilters({ name: '', type: '', district: '', year: '' })
     setProjectName('')
     setSelectedProjectType('')
     handleDistrictChange(null)
@@ -336,7 +322,13 @@ export default function DataDashboardPage({
 
             <div className='w-full'>
 
-              <div className='mb-8 rounded-xl bg-white p-6 shadow-[0_0_15px_rgba(0,0,0,0.1)]'>
+              <form onSubmit={(event) => {
+                event.preventDefault()
+                setProjectName(draftFilters.name.trim())
+                setSelectedProjectType(draftFilters.type)
+                handleDistrictChange(draftFilters.district)
+                setSelectedYear(draftFilters.year)
+              }} className='mb-8 rounded-xl bg-white p-6 shadow-[0_0_15px_rgba(0,0,0,0.1)]'>
 
                 <h2
                   className='mb-6 text-[#085484] font-medium text-xl md:text-[27px]'
@@ -362,8 +354,8 @@ export default function DataDashboardPage({
                       type='text'
                       className='w-full h-[42px] rounded-lg border border-gray-300 p-2.5 text-sm focus:border-[#0463A0] focus:outline-none focus:ring-1 focus:ring-[#0463A0]'
                       placeholder='Enter Project Name'
-                      value={projectName}
-                      onChange={(e) => setProjectName(e.target.value)}
+                      value={draftFilters.name}
+                      onChange={(e) => setDraftFilters({ ...draftFilters, name: e.target.value })}
                     />
 
                   </div>
@@ -380,8 +372,8 @@ export default function DataDashboardPage({
                       list={projectTypes}
                       dataKey='Id'
                       displayKey='TypeName'
-                      setData={setSelectedProjectType}
-                      data={selectedProjectType}
+                      setData={(value) => setDraftFilters({ ...draftFilters, type: value })}
+                      data={draftFilters.type}
                       showAllOption
                       allOptionText='Select Project Type'
                       className='rounded-lg border-gray-300 py-2.5 text-sm h-[42px]'
@@ -399,9 +391,9 @@ export default function DataDashboardPage({
 
                     <select
                       className='w-full h-[42px] rounded-lg border border-gray-300 bg-white p-2.5 text-sm focus:border-[#0463A0] focus:outline-none focus:ring-1 focus:ring-[#0463A0]'
-                      value={selectedDistrict?.Districtname || ''}
+                      value={draftFilters.district}
                       onChange={(e) =>
-                        handleDistrictChange(e.target.value)
+                        setDraftFilters({ ...draftFilters, district: e.target.value })
                       }
                     >
 
@@ -434,8 +426,8 @@ export default function DataDashboardPage({
                       list={years}
                       dataKey='year'
                       displayKey='year'
-                      setData={setSelectedYear}
-                      data={selectedYear}
+                      setData={(value) => setDraftFilters({ ...draftFilters, year: value })}
+                      data={draftFilters.year}
                       showAllOption
                       allOptionText='Select Year'
                       className='rounded-lg border-gray-300 py-2.5 text-sm h-[42px]'
@@ -450,7 +442,7 @@ export default function DataDashboardPage({
                 <div className='mt-6 flex gap-4'>
 
                   <button
-                    type='button'
+                    type='submit'
                     className='rounded-md bg-[#0463A0] px-8 py-2 text-sm font-semibold text-white hover:bg-blue-800'
                   >
                     Search
@@ -466,7 +458,7 @@ export default function DataDashboardPage({
 
                 </div>
 
-              </div>
+              </form>
 
             </div>
 
@@ -580,6 +572,12 @@ export default function DataDashboardPage({
 
             </div>
 
+            {filteredProjects.length === 0 && (
+              <p role='status' className='mb-6 rounded-lg bg-white p-4 text-gray-600'>
+                No projects match the selected filters. Try another year or reset the filters.
+              </p>
+            )}
+
             {/* --------------------------------------------------
                 PROJECT MAP + CHARTS
             -------------------------------------------------- */}
@@ -595,7 +593,10 @@ export default function DataDashboardPage({
                   <MapCustomControl
                     features={districtChoropleth}
                     title='Select a District'
-                    handleDistrictChange={handleDistrictChange}
+                    handleDistrictChange={(district) => {
+                      handleDistrictChange(district)
+                      setDraftFilters((filters) => ({ ...filters, district: district ?? '' }))
+                    }}
                   />
 
                 </div>
@@ -669,7 +670,7 @@ export default function DataDashboardPage({
                     registeredProjects={filteredProjects}
                     selectedYear={selectedYear}
                     selectedDistrict={selectedDistrict}
-                    apartmentTypeSummary={apartmentTypeSummary}
+                    apartmentTypeSummary={filteredApartmentTypes}
                     selectedProjectType={selectedProjectType}
                   />
 

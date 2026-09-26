@@ -100,7 +100,7 @@ export default function DashboardTopSection({
     const filtered = apartmentTypeSummary.filter(
       (apartmentType) =>
         (selectedDistrict == null || apartmentType.District === selectedDistrict?.Districtcode) &&
-        (selectedProjectType == '' || apartmentType.ProjectType === selectedProjectType) &&
+        (selectedProjectType == '' || String(apartmentType.ProjectType) === String(selectedProjectType)) &&
         (selectedYear == '' || selectedYear == apartmentType.ProjectYear)
     )
 

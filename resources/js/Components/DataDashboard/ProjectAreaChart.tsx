@@ -4,7 +4,6 @@ import React, { useMemo } from 'react'
 import AreaChart from '../../rechart/AreaChart'
 import VisualizationToggle from './VisualizationToggle'
 import DashboardDataTable from './DashboardDataTable'
-import dayjs from 'dayjs'
 
 interface Props {
   registeredProjects: Pick<
@@ -79,14 +78,13 @@ export default function ProjectAreaChart({
 }: Props) {
   const [showChart, setShowChart] = React.useState(true)
 
-  //get last 7 years using dayjs
-  const last7Years = useMemo(() => {
-    const currentYear = selectedYear == '' ? dayjs(today).year() : Number(selectedYear)
-
-    return Array.from({ length: 6 }, (_, index) => {
-      return currentYear - (5 - index)
-    })
-  }, [selectedYear, today])
+  const chartYears = useMemo(() => {
+    if (selectedYear !== '') return [Number(selectedYear)]
+    return Array.from(new Set(registeredProjects
+      .map((project) => Number(project.ProjectYear))
+      .filter((year) => Number.isFinite(year) && year > 0)
+    )).sort((a, b) => a - b)
+  }, [selectedYear, registeredProjects])
 
   const proposedAreaInCurrentYear = useMemo(() => {
     let totalProposedArea = 0
@@ -111,7 +109,7 @@ export default function ProjectAreaChart({
 
   //calculate total area under residential area and other use by year
   const totalAreaYear = useMemo(() => {
-    const totalArea = last7Years.map((year) => {
+    const totalArea = chartYears.map((year) => {
       return {
         year,
         'Total Land Area': 0,
@@ -120,7 +118,7 @@ export default function ProjectAreaChart({
     })
 
     registeredProjects.forEach((project) => {
-      if (project.ProjectStartDate == null) {
+      if (project.ProjectYear == null) {
         return
       }
       const projectYear = Number(project.ProjectYear)
@@ -144,7 +142,7 @@ export default function ProjectAreaChart({
       item['Total Floor Area'] = parseFloat(item['Total Floor Area'].toFixed(2))
     })
     return totalArea
-  }, [registeredProjects, last7Years])
+  }, [registeredProjects, chartYears])
 
   return (
     <div className='flex flex-col gap-6'>

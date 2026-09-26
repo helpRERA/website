@@ -1,4 +1,5 @@
 import React, { RefObject, useMemo } from 'react'
+import { Link } from '@inertiajs/react'
 import { getDisplayDate } from '../../../../libs/dates'
 import { ProjectDetailData, ProjectLastModified } from '../../../../Pages/ProjectDetails'
 import BuildingsAccordion from './BuildingsAccordion'
@@ -13,6 +14,7 @@ interface Properties {
   lastModified?: ProjectLastModified | null
   projectHash: string
   hasForm6: boolean
+  hasComplaints: boolean
   today: string
 }
 
@@ -24,6 +26,7 @@ const ProjectOverview = ({
   projectHash,
   today,
   hasForm6,
+  hasComplaints,
 }: Properties) => {
   const encodedProjectHash = useMemo(() => {
     return encodeURIComponent(projectHash)
@@ -51,6 +54,11 @@ const ProjectOverview = ({
           <p className='text-sm text-gray-600'>
             Proposed Completion On {getDisplayDate(project.ProposedDateOfCompletion)}
           </p>
+          {project.LatestExtensionDate && (
+            <p className='text-sm text-gray-600'>
+              Extension Date: {getDisplayDate(project.LatestExtensionDate)}
+            </p>
+          )}
         </div>
 
         {/* Right: Availability & Progress */}
@@ -85,7 +93,7 @@ const ProjectOverview = ({
       </div>
 
       {/* Buttons Row */}
-      <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
+      <div className={`grid grid-cols-1 gap-4 ${hasComplaints ? 'md:grid-cols-2 lg:grid-cols-4' : 'md:grid-cols-3'}`}>
         <CompanyModal project={project} lang={lang} />
 
         <a
@@ -106,6 +114,17 @@ const ProjectOverview = ({
           <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
           <span className="text-left">Quarterly Progress Report</span>
         </a>
+        {hasComplaints && (
+          <Link
+            className='flex items-center justify-center gap-3 rounded-lg bg-[#085484] px-6 py-4 text-center text-sm font-medium text-white transition hover:bg-[#06426a] shadow-sm'
+            href={`/complaint-list?project_id=${encodeURIComponent(project.ID)}&ruling_by=all`}
+          >
+            <svg className='w-5 h-5 shrink-0' fill='none' viewBox='0 0 24 24' stroke='currentColor' aria-hidden='true'>
+              <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M8 10h8m-8 4h4m-6 6l-3 1V5a2 2 0 012-2h14a2 2 0 012 2v12a2 2 0 01-2 2H8l-2 1z' />
+            </svg>
+            <span className='text-left'>View Complaints</span>
+          </Link>
+        )}
       </div>
 
       {/* Accordions */}

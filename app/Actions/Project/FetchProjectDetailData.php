@@ -70,6 +70,13 @@ class FetchProjectDetailData
 
         $project = $query->firstOrFail();
 
+        $project->setAttribute('LatestExtensionDate', $this->projectMaster->getConnection()
+            ->table('tbl_ExtensionProject')
+            ->where('ProjectID', $projectId)
+            ->orderByDesc('CreatedOn')
+            ->orderByDesc('ID')
+            ->value('ProjectEndDate'));
+
        // dd(DB::connection('k_rera')->getQueryLog());
 
         return $project;

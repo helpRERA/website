@@ -4,7 +4,6 @@ import React, { useMemo } from 'react'
 import BarWrapper from '../../rechart/BarWrapper'
 import VisualizationToggle from './VisualizationToggle'
 import DashboardDataTable from './DashboardDataTable'
-import dayjs from 'dayjs'
 
 interface Properties {
   registeredProjects: Pick<
@@ -47,14 +46,13 @@ export default function ProjectUnitsChart({
 }: Properties) {
   const [showChart, setShowChart] = React.useState(true)
 
-  //get last 7 years using dayjs
-  const last7Years = useMemo(() => {
-    const currentYear = selectedYear == '' ? dayjs(today).year() : Number(selectedYear)
-
-    return Array.from({ length: 6 }, (_, index) => {
-      return currentYear - (5 - index)
-    })
-  }, [selectedYear, today])
+  const chartYears = useMemo(() => {
+    if (selectedYear !== '') return [Number(selectedYear)]
+    return Array.from(new Set(registeredProjects
+      .map((project) => Number(project.ProjectYear))
+      .filter((year) => Number.isFinite(year) && year > 0)
+    )).sort((a, b) => a - b)
+  }, [selectedYear, registeredProjects])
 
   const registeredProjectsInCurrentYear = useMemo(() => {
     return registeredProjects.filter((project) => {
@@ -67,7 +65,7 @@ export default function ProjectUnitsChart({
 
   //calculate total area under residential area and other use by year
   const unitsPerYear = useMemo(() => {
-    const totalArea = last7Years.map((year) => {
+    const totalArea = chartYears.map((year) => {
       return {
         year,
         'Residential Units': 0,
@@ -99,7 +97,7 @@ export default function ProjectUnitsChart({
     })
 
     return totalArea
-  }, [registeredProjects, last7Years])
+  }, [registeredProjects, chartYears])
 
   return (
     <div className='flex flex-col gap-6'>

@@ -37,6 +37,7 @@ export interface ProjectDetailData {
   ID: number
   Name: string
   ProposedDateOfCompletion: string | null
+  LatestExtensionDate: string | null
   NumberOfResidentialUnits: number | null
   NumberOfCommercialUnits: number | null
   BuildingCount: string | null
