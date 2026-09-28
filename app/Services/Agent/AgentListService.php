@@ -139,6 +139,7 @@ class AgentListService
                       and os1.Langid = 1
                     where
                       UP.RoleID = 2
+                      AND DATEADD(DAY, -1, DATEADD(YEAR, 5, CONVERT(date, c.Createdon))) > GETDATE()
                 ".
             $this->queryDistrict($district)
             .$this->queryTaluk($taluk)

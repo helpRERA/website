@@ -108,14 +108,17 @@ class UserProfileRepository
 
     public function registeredAgents(): int
     {
-        $results = DB::connection('k_rera')
-            ->select("
-                    select count(*) as AgentCount from tbl_UserProfile u
-                    inner join tbl_CertificateA c on u.UserID=c.UserID
-                    inner join tbl_UserStatusSubMapping us on u.UserID=us.UserID
-                        and isnull(us.IsWithdraw,0)=0 and isnull(us.IsRevoc,0)=0
-                    where u.RoleID=2
-            ");
+       $results = DB::connection('k_rera')
+                ->select("
+                    SELECT COUNT(*) AS AgentCount
+                    FROM tbl_UserProfile u
+                    INNER JOIN tbl_CertificateA c ON u.UserID = c.UserID
+                    INNER JOIN tbl_UserStatusSubMapping us ON u.UserID = us.UserID
+                        AND ISNULL(us.IsWithdraw, 0) = 0
+                        AND ISNULL(us.IsRevoc, 0) = 0
+                    WHERE u.RoleID = 2
+                    AND DATEADD(DAY, -1, DATEADD(YEAR, 5, CONVERT(date, c.Createdon))) > GETDATE()
+                ");
 
         if (empty($results)) {
             return 0;
