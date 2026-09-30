@@ -5,6 +5,9 @@
 
     RewriteEngine On
 
+    # Block Laravel Ignition endpoints before requests reach the application.
+    RewriteRule ^_ignition(?:/|$) - [F,L,NC]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

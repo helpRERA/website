@@ -67,7 +67,7 @@ function FeeCalculator({ result }: PageProps) {
 
   const submit: FormEventHandler = (e) => {
     e.preventDefault();
-    post(route('fee-calculator.store'));
+    //post(route('fee-calculator.store'));
   };
 
   return (

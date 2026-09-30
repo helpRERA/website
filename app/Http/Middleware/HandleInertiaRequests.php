@@ -6,7 +6,6 @@ use App\Models\UIBuilder\Footer;
 use App\Models\UIBuilder\NavMenuItem;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
-use Tightenco\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -45,11 +44,6 @@ class HandleInertiaRequests extends Middleware
                 'message' => fn () => $request->session()->get('message'),
                 'error' => fn () => $request->session()->get('error')
             ],
-            'ziggy' => function () use ($request) {
-                return array_merge((new Ziggy)->toArray(), [
-                    'location' => $request->url(),
-                ]);
-            },
             'nav' => fn () => NavMenuItem::all(),
             'footer' => fn () => $footer?->items,
             'lang' => fn () => request()->filled('lang') ? request()->lang : 'en',
