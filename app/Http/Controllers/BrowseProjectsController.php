@@ -14,11 +14,14 @@ class BrowseProjectsController extends Controller
     // BrowseProjectsController.php
     public function byDistrict(string $district, PropertySearch $propertySearch): JsonResponse
     {
+       
+       
         try {
             $padded = strtr($district, '-_', '+/');
             $padded .= str_repeat('=', (4 - strlen($padded) % 4) % 4);
             $districtCode = Crypt::decryptString($padded);
         } catch (DecryptException $e) {
+
             abort(404);
         }
 

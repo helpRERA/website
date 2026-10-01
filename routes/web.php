@@ -175,8 +175,6 @@ Route::get('promoter-images/{userId}', PromoterLogoController::class)
 
 require __DIR__.'/auth.php';
 
-Route::get('debug-test', TestController::class);
-
 Route::get('document-list', DocumentListController::class);
 Route::get('order-list', OrderListController::class);
 

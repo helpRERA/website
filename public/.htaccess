@@ -5,8 +5,9 @@
 
     RewriteEngine On
 
-    # Block Laravel Ignition endpoints before requests reach the application.
-    RewriteRule ^_ignition(?:/|$) - [F,L,NC]
+    # Block Laravel Ignition and the legacy debug endpoint before requests
+    # reach the application.
+    RewriteRule ^(?:_ignition|debug-test)(?:/|$) - [F,L,NC]
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
