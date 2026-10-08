@@ -88,24 +88,6 @@ const ProjectQuickFact = ({ reference, project, lang = 'en' }: Properties) => {
         })}
       </div>
 
-      {/* Blue Informational Card */}
-      <div className='mt-8 w-full rounded-2xl bg-[#085484] px-6 py-12 text-center shadow-lg flex flex-col items-center justify-center gap-4 text-white mb-8'>
-        <h4 className='text-[28px] font-semibold' style={{ fontFamily: "'Urbanist', sans-serif" }}>Make Safe & Informed Property Decisions</h4>
-        <p className='text-sm text-blue-100 max-w-2xl'>
-          Access verified project details, check developer credentials, and ensure your investment is secure with trusted information from K-RERA.
-        </p>
-        <a
-          href='/explore-projects'
-          className='mt-4 inline-flex items-center justify-center gap-3 rounded-full bg-white pl-6 pr-1.5 py-1.5 text-sm font-semibold text-[#085484] transition-colors hover:bg-gray-100 shadow-sm'
-        >
-          Verify a Project Now
-          <div className='flex items-center justify-center rounded-full bg-[#085484] text-white p-1.5'>
-            <svg className='h-4 w-4' fill='none' viewBox='0 0 24 24' stroke='currentColor' strokeWidth={2.5}>
-              <path strokeLinecap='round' strokeLinejoin='round' d='M9 5l7 7-7 7' />
-            </svg>
-          </div>
-        </a>
-      </div>
     </div>
   )
 }

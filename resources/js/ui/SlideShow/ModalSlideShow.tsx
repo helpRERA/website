@@ -1,5 +1,6 @@
 import { ButtonBack, ButtonNext, CarouselProvider, Slider } from 'pure-react-carousel'
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useLenis } from '@studio-freight/react-lenis'
 
 interface Properties {
   length: number
@@ -9,8 +10,28 @@ interface Properties {
 }
 
 const ModalSlideShow = ({ children, length, setShowModal, currentSlide }: Properties) => {
+  const lenis = useLenis()
+
+  useEffect(() => {
+    const html = document.documentElement
+    const body = document.body
+    const previousHtmlOverflow = html.style.overflow
+    const previousBodyOverflow = body.style.overflow
+    const wasStopped = lenis?.isStopped
+
+    html.style.overflow = 'hidden'
+    body.style.overflow = 'hidden'
+    lenis?.stop()
+
+    return () => {
+      html.style.overflow = previousHtmlOverflow
+      body.style.overflow = previousBodyOverflow
+      if (lenis && !wasStopped) lenis.start()
+    }
+  }, [lenis])
+
   return (
-    <div className='modal'>
+    <div className='modal overscroll-contain' data-lenis-prevent='true'>
       <div
         className='absolute right-0 top-0 z-30 cursor-pointer p-5
                         text-white hover:bg-gray-700'

@@ -162,7 +162,7 @@ input[type='range']::-webkit-slider-thumb {
   width: 1rem;
   background-color: var(--color-accent-dark);
   cursor: pointer;
-  margin-top: -9px;
+  margin-top: calc(2.5px - 0.5rem);
   pointer-events: auto;
   border-radius: 50%;
 }
@@ -488,15 +488,35 @@ html {
   --a11y-bg: #000;
   --a11y-text: #fff;
   --a11y-surface: #000;
-  filter: contrast(1.15);
+}
+
+.a11y-high-contrast body * {
+  color: var(--a11y-text) !important;
+  border-color: var(--a11y-text) !important;
+  text-shadow: none !important;
 }
 
 .a11y-high-contrast body,
+.a11y-high-contrast [class*="bg-"],
 .a11y-high-contrast .modal,
 .a11y-high-contrast .panel,
-.a11y-high-contrast [class*="dialog"] {
-  background: var(--a11y-surface) !important;
+.a11y-high-contrast [class*="dialog"],
+.a11y-high-contrast input,
+.a11y-high-contrast select,
+.a11y-high-contrast textarea {
+  background-color: var(--a11y-surface) !important;
   color: var(--a11y-text) !important;
+}
+
+.a11y-high-contrast input::placeholder,
+.a11y-high-contrast textarea::placeholder {
+  color: var(--a11y-text) !important;
+  opacity: 1;
+}
+
+/* Logo artwork contains dark lettering and needs a light surface. */
+.a11y-high-contrast img[alt='K-RERA Logo'] {
+  background-color: #fff !important;
 }
 
  .a11y-high-contrast a,
@@ -516,6 +536,22 @@ html {
 .a11y-high-contrast input[type="checkbox"]:checked + .toggle-track {
   background: #fff !important;
   color: #000 !important;
+}
+
+.a11y-high-contrast button[aria-pressed="true"],
+.a11y-high-contrast button[aria-pressed="true"] *,
+.a11y-high-contrast button[role="switch"][aria-checked="true"],
+.a11y-high-contrast .toggle[aria-checked="true"] * {
+  background-color: #fff !important;
+  color: #000 !important;
+}
+
+.a11y-high-contrast button[role="switch"] > span {
+  background-color: #fff !important;
+}
+
+.a11y-high-contrast button[role="switch"][aria-checked="true"] > span {
+  background-color: #000 !important;
 }
 
 

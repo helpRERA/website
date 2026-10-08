@@ -18,8 +18,8 @@ const AboutUs = ({
   promotersCount,
 }: Properties) => {
   return (
-    <div className='cmpad pt-10 lg:pt-16 pb-12 w-full bg-white font-sans'>
-      <div className='pt-6'>
+    <div className='cmpad pt-6 lg:pt-10 pb-12 w-full bg-white font-sans'>
+      <div>
         {/* TOP SECTION: Heading & Text */}
         <div className='grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-x-10 lg:gap-x-20 mb-10'>
           {/* 1. Top Left: Heading Section */}

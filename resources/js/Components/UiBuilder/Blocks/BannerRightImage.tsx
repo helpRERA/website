@@ -150,7 +150,7 @@ function BannerRightImage({
             <div className='w-full rounded-lg bg-white p-6 shadow-md md:p-8 md:pb-6'>
               <form onSubmit={handleSearch}>
                 {activeTab === 'projects' && (
-                  <div className='grid grid-cols-1 gap-4 md:grid-cols-[1fr_1fr_1fr_auto]'>
+                  <div className='grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto]'>
                     <div className='flex flex-col'>
                       <label className='mb-2 text-sm font-medium text-[#246b9a]'>Project Name</label>
                       <input
@@ -166,7 +166,7 @@ function BannerRightImage({
                       <select
                         value={projectDistrict}
                         onChange={(e) => setProjectDistrict(e.target.value)}
-                        className='w-full rounded-md border border-gray-200 p-3 text-sm text-gray-700 focus:border-[#0f2c59] focus:outline-none focus:ring-1 focus:ring-[#0f2c59]'
+                        className='min-w-0 w-full truncate rounded-md border border-gray-200 py-3 pl-3 pr-10 text-sm text-gray-700 focus:border-[#0f2c59] focus:outline-none focus:ring-1 focus:ring-[#0f2c59]'
                       >
                         <option value=''>Select District</option>
                         {districts.map((district) => (
@@ -181,7 +181,7 @@ function BannerRightImage({
                       <select
                         value={projectType}
                         onChange={(e) => setProjectType(e.target.value)}
-                        className='w-full rounded-md border border-gray-200 p-3 text-sm text-gray-700 focus:border-[#0f2c59] focus:outline-none focus:ring-1 focus:ring-[#0f2c59]'
+                        className='min-w-0 w-full truncate rounded-md border border-gray-200 py-3 pl-3 pr-10 text-sm text-gray-700 focus:border-[#0f2c59] focus:outline-none focus:ring-1 focus:ring-[#0f2c59]'
                       >
                         <option value=''>Select Project Type</option>
                         {projectTypes.map((type) => (
@@ -199,7 +199,7 @@ function BannerRightImage({
                   </div>
                 )}
                 {activeTab === 'agents' && (
-                  <div className='grid grid-cols-1 gap-4 md:grid-cols-[1fr_1fr_auto]'>
+                  <div className='grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto]'>
                     <div className='flex flex-col'>
                       <label className='mb-2 text-sm font-medium text-[#246b9a]'>Agent Name</label>
                       <input

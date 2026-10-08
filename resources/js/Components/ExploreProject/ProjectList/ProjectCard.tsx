@@ -41,7 +41,7 @@ const ProjectCard = ({ project, today, lang = 'en' }: Properties) => {
 
   return (
     <div
-      className={`relative flex w-full flex-col lg:flex-row gap-6 rounded-xl p-6 shadow-sm border transition-shadow hover:shadow-md ${isDefault ? 'border-red-300 bg-red-50' : 'border-gray-100 bg-white'
+      className={`relative flex w-full flex-col lg:flex-row gap-6 rounded-xl p-6 max-[320px]:p-4 shadow-sm border transition-shadow hover:shadow-md ${isDefault ? 'border-red-300 bg-red-50' : 'border-gray-100 bg-white'
         }`}
     >
       {/* Left Column - Image */}
@@ -101,24 +101,24 @@ const ProjectCard = ({ project, today, lang = 'en' }: Properties) => {
           </div>
         </div>
 
-        <div className='mt-6 flex flex-col gap-2 text-[13px]'>
-          <div className='flex items-center gap-2'>
-            <span className='text-gray-500 w-[120px]'>Project Type</span>
-            <span className='font-semibold text-gray-800'>{projectType ?? 'N/A'}</span>
+        <div className='mt-6 flex flex-col gap-2 text-[13px] max-[320px]:grid max-[320px]:grid-cols-[auto_minmax(0,1fr)] max-[320px]:items-start max-[320px]:text-[11px]'>
+          <div className='flex items-center gap-2 max-[320px]:contents'>
+            <span className='text-gray-500 w-[120px] max-[320px]:w-auto max-[320px]:whitespace-nowrap'>Project Type</span>
+            <span className='font-semibold text-gray-800 max-[320px]:min-w-0 max-[320px]:break-words max-[320px]:text-right'>{projectType ?? 'N/A'}</span>
           </div>
-          <div className='flex items-center gap-2'>
-            <span className='text-gray-500 w-[120px]'>Total Land Area</span>
-            <span className='font-semibold text-gray-800'>{project.Area} sqm</span>
+          <div className='flex items-center gap-2 max-[320px]:contents'>
+            <span className='text-gray-500 w-[120px] max-[320px]:w-auto max-[320px]:whitespace-nowrap'>Total Land Area</span>
+            <span className='font-semibold text-gray-800 max-[320px]:whitespace-nowrap max-[320px]:text-right'>{project.Area} sqm</span>
           </div>
           {project.PType != PROJECT_TYPE_PLOT && (
-            <div className='flex items-center gap-2'>
-              <span className='text-gray-500'>Number of Building(s):</span>
-              <span className='text-gray-600'>{project.buildings_count}</span>
+            <div className='flex items-center gap-2 max-[320px]:contents'>
+              <span className='text-gray-500 max-[320px]:whitespace-nowrap'>Number of Building(s):</span>
+              <span className='text-gray-600 max-[320px]:whitespace-nowrap max-[320px]:text-right'>{project.buildings_count}</span>
             </div>
           )}
-          <div className='flex items-center gap-2'>
-            <span className='text-gray-500'>Proposed Completion On:</span>
-            <span className='text-gray-600'>{getIndianDate(project.ProposedDateOfCompletion)}</span>
+          <div className='flex items-center gap-2 max-[320px]:contents'>
+            <span className='text-gray-500 max-[320px]:whitespace-nowrap'>Proposed Completion On:</span>
+            <span className='text-gray-600 max-[320px]:whitespace-nowrap max-[320px]:text-right'>{getIndianDate(project.ProposedDateOfCompletion)}</span>
           </div>
         </div>
       </div>

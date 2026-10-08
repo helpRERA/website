@@ -41,10 +41,6 @@ const Navbar = () => {
     })
   }
 
-  const hoverDropdown = (option: string): void => {
-    setSelectedOption(option)
-  }
-
   const submitSearch = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     router.get(`/search?search=${search}&lang=${lang}`)
@@ -90,7 +86,7 @@ const Navbar = () => {
           {/* MIDDLE: Desktop Links (Hidden on mobile/tablet, shown on desktop xl+) */}
           <div className='hidden min-w-0 flex-1 justify-end xl:flex'>
             <div className='flex w-full min-w-0 items-center'>
-              <DesktopDropdown nav={nav} hoverDropdown={hoverDropdown} lang={lang as Language} />
+              <DesktopDropdown nav={nav} lang={lang as Language} />
             </div>
           </div>
 
@@ -141,7 +137,6 @@ const Navbar = () => {
           showDropdown={showDropdown}
           selectDropdown={selectDropdown}
           submitSearch={submitSearch}
-          hoverDropdown={hoverDropdown}
           selectedOption={selectedOption}
           lang={lang}
         />

@@ -36,6 +36,7 @@ const fieldSteps: Record<string, number> = {
   "commencementNo": 4,
   "layoutAuthority": 4,
   "additionalDisclosures": 4,
+  "propertyCategory": 4,
   "priceBreakdown": 5,
   "garageDetails": 5,
   "plotPricing": 5,

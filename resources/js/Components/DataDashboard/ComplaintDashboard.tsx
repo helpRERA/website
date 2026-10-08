@@ -317,11 +317,11 @@ export default function ComplaintDashboard({
                     <td className='px-4 py-3 text-gray-600'>{complaint.projectName || '-'}</td>
                     <td className='px-4 py-3'>
                       {complaint.rulingByMaharera === 1 ? (
-                        <span className='inline-flex rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700'>
+                        <span className='inline-flex whitespace-nowrap rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700'>
                           K-RERA
                         </span>
                       ) : complaint.judgementByOfficer === 1 ? (
-                        <span className='inline-flex rounded-full bg-purple-100 px-3 py-1 text-xs font-semibold text-purple-700'>
+                        <span className='inline-flex whitespace-nowrap rounded-full bg-purple-100 px-3 py-1 text-xs font-semibold text-purple-700'>
                           Adjudicating Officer
                         </span>
                       ) : (

@@ -184,8 +184,8 @@ const ProjectFilterForm = ({
   return (
     <div className='flex w-full flex-col rounded-xl bg-white p-6 shadow-lg lg:p-8'>
       <div className='mb-8'>
-        <h2 className='text-[28px] font-medium text-[#444444]' style={{ fontFamily: "'Urbanist', sans-serif" }}>
-          <span className='text-[28px] text-[#085484]'>Find Your</span> RERA Project
+        <h2 className='text-[28px] font-medium text-[#444444] max-[320px]:whitespace-nowrap max-[320px]:text-[20px]' style={{ fontFamily: "'Urbanist', sans-serif" }}>
+          Find Your RERA Project
         </h2>
         <p className='mt-2 text-sm text-gray-400'>Choose one or more options above to search</p>
       </div>

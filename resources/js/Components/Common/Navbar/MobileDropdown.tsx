@@ -10,7 +10,6 @@ import NavbarLinks from './NavbarLinks'
 
 interface Properties {
   nav: NavMenuRecords[]
-  hoverDropdown: (section: string) => void
   showDropdown: boolean
   search: string
   setSearch: (value: string) => void
@@ -22,7 +21,6 @@ interface Properties {
 
 const MobileDropdown = ({
   nav,
-  hoverDropdown,
   showDropdown,
   search,
   setSearch,
@@ -94,9 +92,6 @@ const MobileDropdown = ({
                       onClick={() => {
                         if (navRecord) selectDropdown(section.value)
                         else router.get(section.url)
-                      }}
-                      onMouseOver={() => {
-                        if (window.innerWidth >= 768 && navRecord) hoverDropdown(section.value)
                       }}
                       className={`group flex w-full cursor-pointer items-center justify-between px-6 py-4 transition-all duration-200 ${
                         isSelected ? 'bg-white shadow-[inset_4px_0_0_0_#105d8c]' : 'hover:bg-white hover:shadow-[inset_4px_0_0_0_#e5e7eb]'

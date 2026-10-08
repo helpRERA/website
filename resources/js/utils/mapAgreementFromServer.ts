@@ -4,6 +4,7 @@ export function mapAgreementFromServer(agreement: any): Partial<AgreementData> {
   if (!agreement) return {};
 
   return {
+    propertyCategory: agreement.property_category ?? '',
     executionPlace: agreement.execution_place ?? '',
     dateDay: agreement.date_day ?? '',
     dateMonth: agreement.date_month ?? '',

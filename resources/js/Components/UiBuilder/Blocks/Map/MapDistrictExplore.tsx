@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import SelectList from '../../../../ui/form/SelectList'
 import axios from 'axios'
 import { DistrictCoordinate } from './ProjectMapsBlock'
 
@@ -33,11 +32,11 @@ const MapDistrictExplore = ({ setDistrict }: Properties) => {
   }, [selectedDistrict, districts, setDistrict])
 
   return (
-    <div className='relative w-full'>
+    <div className='relative min-w-0 w-full'>
       <select
         value={selectedDistrict}
         onChange={(e) => setSelectedDistrict(e.target.value)}
-        className='w-full appearance-none rounded-xl border-0 bg-[#f4f5f6] py-3 pl-4 pr-10 text-sm text-gray-700 outline-none ring-1 ring-transparent hover:bg-[#eceef0] focus:bg-white focus:ring-2 focus:ring-primary-900'
+        className='min-w-0 w-full appearance-none truncate rounded-xl border-0 bg-[#f4f5f6] bg-none py-3 pl-4 pr-10 text-sm text-gray-700 outline-none ring-1 ring-transparent hover:bg-[#eceef0] focus:bg-white focus:ring-2 focus:ring-primary-900'
       >
         <option value='' disabled>
           Select District

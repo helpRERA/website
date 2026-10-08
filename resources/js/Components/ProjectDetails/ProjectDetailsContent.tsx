@@ -71,7 +71,7 @@ const ProjectDetailsContent = ({
         {/* Right: Project Info */}
         <div className='flex flex-col w-full lg:w-1/2'>
           <div className='flex items-center gap-3 flex-wrap'>
-            <h1 className='text-[32px] font-bold text-[#085484] uppercase tracking-wide'>
+            <h1 className='min-w-0 max-w-full break-words text-[20px] leading-tight font-bold text-[#085484] uppercase tracking-normal sm:text-[26px] md:text-[32px] md:tracking-wide'>
               {project.Name}
             </h1>
             {isDefault && (
@@ -144,22 +144,24 @@ const ProjectDetailsContent = ({
             </div>
             
             {/* Units & Status Pills */}
-            <div className='mt-2 flex flex-wrap items-center gap-4'>
+            <div className='mt-2 grid grid-cols-2 items-stretch gap-x-3 gap-y-4 sm:flex sm:flex-wrap sm:items-center sm:gap-4'>
               {project.PType !== PROJECT_TYPE_PLOT && (
                 <>
-                  <span className='rounded-full bg-[#085484] px-8 py-2.5 text-[12px] font-medium text-white shadow-sm'>
+                  <span className='col-span-2 justify-self-center rounded-full bg-[#085484] px-6 py-2.5 text-[12px] font-medium text-white shadow-sm sm:px-8'>
                     {project.NumberOfResidentialUnits || 0} Residential Units
                   </span>
-                  <span className='rounded-full bg-[#f4f7fb] text-[#085484] px-8 py-2.5 text-[12px] font-medium shadow-sm'>
+                  <span className='flex items-center justify-center rounded-full bg-[#f4f7fb] text-[#085484] px-3 py-2.5 text-center text-[12px] font-medium shadow-sm sm:px-8'>
                     {project.NumberOfCommercialUnits || 0} Commercial Units
                   </span>
                 </>
               )}
-              <ProjectStatusPill
+              <div className={`flex items-stretch [&>span]:text-center sm:contents ${project.PType === PROJECT_TYPE_PLOT ? 'col-span-2 justify-self-start' : '[&>span]:flex-1 sm:[&>span]:flex-none'}`}>
+                <ProjectStatusPill
                 completed={hasForm6}
                 proposedDate={project.ProposedDateOfCompletion}
                 today={today}
-              />
+                />
+              </div>
             </div>
 
             {/* Certificates */}

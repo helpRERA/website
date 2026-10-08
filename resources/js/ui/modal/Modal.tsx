@@ -40,42 +40,44 @@ export default function Modal({
           >
             <div className='flex w-full items-start justify-between bg-primary-100 p-2'>
               <h4 className='font-semibold'>{title}</h4>
-              <div
-                onClick={() => setShowModal(false)}
-                className='cursor-pointer transition duration-150
-                  ease-in-out hover:bg-gray-200'
-              >
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  aria-label='Close'
-                  className='icon icon-tabler icon-tabler-x'
-                  width={20}
-                  height={20}
-                  viewBox='0 0 24 24'
-                  strokeWidth='2.5'
-                  stroke='currentColor'
-                  fill='none'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
+              {showClosButton && (
+                <div
+                  onClick={() => setShowModal(false)}
+                  className='cursor-pointer transition duration-150
+                    ease-in-out hover:bg-gray-200'
                 >
-                  <path
-                    stroke='none'
-                    d='M0 0h24v24H0z'
-                  />
-                  <line
-                    x1={18}
-                    y1={6}
-                    x2={6}
-                    y2={18}
-                  />
-                  <line
-                    x1={6}
-                    y1={6}
-                    x2={18}
-                    y2={18}
-                  />
-                </svg>
-              </div>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    aria-label='Close'
+                    className='icon icon-tabler icon-tabler-x'
+                    width={20}
+                    height={20}
+                    viewBox='0 0 24 24'
+                    strokeWidth='2.5'
+                    stroke='currentColor'
+                    fill='none'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                  >
+                    <path
+                      stroke='none'
+                      d='M0 0h24v24H0z'
+                    />
+                    <line
+                      x1={18}
+                      y1={6}
+                      x2={6}
+                      y2={18}
+                    />
+                    <line
+                      x1={6}
+                      y1={6}
+                      x2={18}
+                      y2={18}
+                    />
+                  </svg>
+                </div>
+              )}
             </div>
             {children}
           </motion.div>

@@ -2,8 +2,25 @@ import { Link } from '@inertiajs/react'
 import React from 'react'
 import { Paginator } from '../ui_interfaces'
 
-const calcUrls = (pagination: Paginator<{}>) => {
+interface PaginationProps {
+  pagination: Paginator<{}>
+  focusTargetId?: string
+}
+
+const calcUrls = (pagination: Paginator<{}>, focusTargetId?: string) => {
   if (!pagination || !pagination.links) return null
+  const navigationProps = focusTargetId ? {
+    preserveScroll: true,
+    onSuccess: () => {
+      window.requestAnimationFrame(() => {
+        const target = document.getElementById(focusTargetId)
+        if (target) {
+          target.focus({ preventScroll: true })
+          target.scrollIntoView({ block: 'start', behavior: 'auto' })
+        }
+      })
+    },
+  } : {}
   let index = 0
   const listLength = pagination.links.length
   return pagination.links.map((link) => {
@@ -15,6 +32,7 @@ const calcUrls = (pagination: Paginator<{}>) => {
     if (index === 1) {
       linkElement = (
         <Link
+          {...navigationProps}
           as={link.url ? 'a' : 'div'}
           href={url}
           key={`prev-${index}`}
@@ -40,6 +58,7 @@ const calcUrls = (pagination: Paginator<{}>) => {
       } else {
         linkElement = (
           <Link
+            {...navigationProps}
             as={link.url ? 'a' : 'div'}
             href={url}
             key={`page-${index}-${link.label}`}
@@ -58,6 +77,7 @@ const calcUrls = (pagination: Paginator<{}>) => {
     if (index === listLength) {
       linkElement = (
         <Link
+          {...navigationProps}
           as={link.url ? 'a' : 'div'}
           href={url}
           key={`next-${index}`}
@@ -73,9 +93,9 @@ const calcUrls = (pagination: Paginator<{}>) => {
   })
 }
 
-const Pagination = ({ pagination }: { pagination: Paginator<{}> }) => {
+const Pagination = ({ pagination, focusTargetId }: PaginationProps) => {
   if (!pagination || !pagination.links || pagination.links.length === 0) return null
-  const pageList = calcUrls(pagination)
+  const pageList = calcUrls(pagination, focusTargetId)
 
   return (
     <nav

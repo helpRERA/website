@@ -66,13 +66,14 @@ export default function SelectList<
     <>
       {label && <label className='standard-label'>{label}</label>}
 
-      <div className='relative flex items-center w-full'>
+      <div className='relative flex min-w-0 items-center w-full'>
         <select
           name={multiple ? 'category[]' : 'type'}
           multiple={multiple}
           value={value}
+          title={multiple ? undefined : String(list.find((item) => item[dataKey] == value)?.[displayKey] ?? allOptionText)}
           onChange={handleChange}
-          className={`appearance-none w-full border border-[#DDDDDD] py-1.5 px-4 text-[14px] text-gray-700 focus:border-[#085484] focus:outline-none disabled:bg-gray-100 bg-white transition-colors ${
+          className={`appearance-none min-w-0 w-full border border-[#DDDDDD] py-1.5 pl-4 ${multiple ? 'pr-4' : 'truncate bg-none pr-10'} text-[14px] text-gray-700 focus:border-[#085484] focus:outline-none disabled:bg-gray-100 bg-white transition-colors ${
             className ? className : 'rounded-lg'
           }`}
         >

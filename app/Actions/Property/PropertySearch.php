@@ -149,16 +149,16 @@ class PropertySearch
         ?string $maxAvailableCount
     ): void {
         if ($minApartmentCount != null && $minApartmentCount != 0) {
-            $this->query->where('apartment_types.apartment_count', '>=', $minApartmentCount);
+            $this->query->where('apartment_info.apartment_count', '>=', $minApartmentCount);
         }
         if ($minAvailableCount != null && $minAvailableCount != 0) {
-            $this->query->where('apartment_types.available_count', '>=', $minAvailableCount);
+            $this->query->where('apartment_info.available_count', '>=', $minAvailableCount);
         }
         if ($maxApartmentCount != null && $maxApartmentCount != 300) {
-            $this->query->where('apartment_types.apartment_count', '<=', $maxApartmentCount);
+            $this->query->where('apartment_info.apartment_count', '<=', $maxApartmentCount);
         }
         if ($maxAvailableCount != null && $maxAvailableCount != 300) {
-            $this->query->where('apartment_types.available_count', '<=', $maxAvailableCount);
+            $this->query->where('apartment_info.available_count', '<=', $maxAvailableCount);
         }
     }
 

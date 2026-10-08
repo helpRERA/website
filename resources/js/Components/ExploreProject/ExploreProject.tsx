@@ -106,6 +106,16 @@ const ExploreProject = ({
           sort_order: sortItem.order,
         },
         {
+          preserveScroll: true,
+          onSuccess: () => {
+            window.requestAnimationFrame(() => {
+              const target = document.getElementById('project-results')
+              if (target) {
+                target.focus({ preventScroll: true })
+                target.scrollIntoView({ block: 'start', behavior: 'auto' })
+              }
+            })
+          },
           onFinish: () => {
             setLoading(false)
           },
@@ -157,7 +167,8 @@ const ExploreProject = ({
           />
         </div>
 
-        <div className='mt-10 flex flex-col items-center justify-between gap-4 md:flex-row'>
+        <section id='project-results' aria-label='Project results' tabIndex={-1} className='mt-10 scroll-mt-28 focus:outline-none'>
+        <div className='flex flex-col items-center justify-between gap-4 md:flex-row'>
           <div className='text-[15px] text-gray-500'>
             Showing Results for {projects.total} K-RERA registered projects
           </div>
@@ -183,9 +194,10 @@ const ExploreProject = ({
             today={today}
           />
           <div className='my-8'>
-            <Pagination pagination={projects} />
+            <Pagination pagination={projects} focusTargetId='project-results' />
           </div>
         </FullSpinnerWrapper>
+        </section>
       </div>
     </>
   )

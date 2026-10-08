@@ -236,6 +236,16 @@ const BrowseProjects = ({ projects: initialProjects = [], districts = [] }: Brow
           )}
         </div>
 
+        <div className='mt-8 flex justify-center'>
+          <Link
+            href='/explore-projects'
+            className='inline-flex items-center justify-center gap-2 rounded-full bg-[#085484] px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-[#064269] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#085484]'
+          >
+            View All Projects
+            <ArrowRight className='h-4 w-4 shrink-0' aria-hidden='true' />
+          </Link>
+        </div>
+
       </div>
     </div>
   )

@@ -92,7 +92,7 @@ const RangeSlider = ({
         </label>
       )}
 
-      <div className='relative w-full'>
+      <div className='relative h-4 w-full'>
         <div
           className='absolute top-0 bottom-0 m-auto h-1 w-full rounded transition-[background] duration-300'
           style={{

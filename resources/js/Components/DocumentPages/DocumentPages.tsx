@@ -287,7 +287,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           </div>
 
           <div className="indent-1" style={{ marginTop: '1.5rem' }}>
-            L. In accordance with the terms and conditions set out in this Agreement and as mutually agreed upon by and between the Parties, the Promoter hereby agrees to sell and the Allottee hereby agrees to purchase the [Apartment/Plot] and the garage/closed parking as specified in para G;
+            L. In accordance with the terms and conditions set out in this Agreement and as mutually agreed upon by and between the Parties, the Promoter hereby agrees to sell and the Allottee hereby agrees to purchase the [<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />] and the garage/closed parking as specified in para G;
           </div>
 
           <p style={{ fontWeight: 'bold' }}>
@@ -296,11 +296,11 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title">1. Terms:</p>
           <div className="indent-1">
-            1.1 Subject to the terms and conditions as detailed in this Agreement, the Promoter agrees to sell to the Allottee and the Allottee hereby agrees to purchase the [Apartment/Plot] as specified in para G;
+            1.1 Subject to the terms and conditions as detailed in this Agreement, the Promoter agrees to sell to the Allottee and the Allottee hereby agrees to purchase the [<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />] as specified in para G;
           </div>
 
           <div className="indent-1" style={{ marginTop: '1rem' }}>
-            1.2 The Total Price for the [Apartment/Plot] based on the carpet area is Rs. <SpanVal val={totalPrice} fieldKey="totalPrice" /> (<SpanVal val={totalPriceWords} fieldKey="totalPriceWords" />) ("Total Price") (Give break up and description):
+            1.2 The Total Price for the [<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />] based on the carpet area is Rs. <SpanVal val={totalPrice} fieldKey="totalPrice" /> (<SpanVal val={totalPriceWords} fieldKey="totalPriceWords" />) ("Total Price") (Give break up and description):
           </div>
 
           <table className="doc-table">
@@ -391,10 +391,10 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p style={{ fontWeight: 'bold', margin: '0 0 0.5rem 0' }}>Explanation:—</p>
           <div className="indent-1" style={{ fontSize: '10pt', lineHeight: '1.5' }}>
-            (i) The Total Price above includes the booking amount paid by the allottee to the Promoter towards the [Apartment/Plot];
+            (i) The Total Price above includes the booking amount paid by the allottee to the Promoter towards the [<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />];
           </div>
           <div className="indent-1" style={{ fontSize: '10pt', lineHeight: '1.5' }}>
-            (ii) The Total Price above includes Taxes (consisting of tax paid or payable by the Promoter by way of Goods and Service Tax and Cess or any other similar taxes which may be levied, in connection with the construction of the Project payable by the Promoter) up to the date of handing over the possession of the [Apartment/Plot]:
+            (ii) The Total Price above includes Taxes (consisting of tax paid or payable by the Promoter by way of Goods and Service Tax and Cess or any other similar taxes which may be levied, in connection with the construction of the Project payable by the Promoter) up to the date of handing over the possession of the [<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />]:
           </div>
           <p style={{ fontStyle: 'italic', margin: '0.25rem 0 0.25rem 2rem', fontSize: '9.5pt' }}>
             Provided that in case there is any change/modification in the taxes, the subsequent amount payable by the allottee to the promoter shall be increased/reduced based on such change/modification;
@@ -403,7 +403,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
             (iii) The Promoter shall periodically intimate to the Allottee, the amount payable as stated in (i) above and the Allottee shall make payment within 30 (thirty) days from the date of such written intimation. In addition, the Promoter shall provide to the Allottee the details of the taxes paid or demanded along with the acts/rules/notifications together with dates from which such taxes/levies etc. have been imposed or become effective;
           </div>
           <div className="indent-1" style={{ fontSize: '10pt', lineHeight: '1.5' }}>
-            (iv) The Total Price of [Apartment/Plot] includes: (1) <i>pro rata</i> share in the Common Areas; and (2) garage(s)/closed parking(s) as provided in the agreement.
+            (iv) The Total Price of [<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />] includes: (1) <i>pro rata</i> share in the Common Areas; and (2) garage(s)/closed parking(s) as provided in the agreement.
           </div>
 
           <div className="indent-1" style={{ marginTop: '1.5rem' }}>
@@ -427,20 +427,20 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           </div>
 
           <div className="indent-1" style={{ marginTop: '1rem' }}>
-            1.8 Subject to Clause 9.3 the Promoter agrees and acknowledges, the Allottee shall have the right to the (Apartment/Plot) as mentioned below:
+            1.8 Subject to Clause 9.3 the Promoter agrees and acknowledges, the Allottee shall have the right to the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) as mentioned below:
             <div className="indent-2" style={{ marginTop: '0.25rem' }}>
-              (i) The Allottee shall have exclusive ownership of the (Apartment/Plot);
+              (i) The Allottee shall have exclusive ownership of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />);
             </div>
             <div className="indent-2">
               (ii) The Allottee shall also have undivided proportionate share in the Common Areas. Since the share/interest of Allottee in the Common Areas is undivided and cannot be divided or separated, the Allottee shall use the Common Areas along with other occupants, maintenance staff etc., without causing any inconvenience or hindrance to them. Further, the right of the Allottee to use the Common Areas shall always be subject to the timely payment of maintenance charges and other charges as applicable. It is clarified that the promoter shall convey undivided proportionate title in the common areas to the association of allottees as provided in the Act;
             </div>
             <div className="indent-2">
-              (iii) That the computation of the price of the (Apartment/Plot) includes recovery of price of land, construction of (not only the Apartment but also) the Common Areas, internal development charges, external development charges, taxes, cost of providing electric wiring, fire detection and firefighting equipment in the common areas etc. and includes cost for providing all other facilities as provided within the Project.
+              (iii) That the computation of the price of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) includes recovery of price of land, construction of (not only the Apartment but also) the Common Areas, internal development charges, external development charges, taxes, cost of providing electric wiring, fire detection and firefighting equipment in the common areas etc. and includes cost for providing all other facilities as provided within the Project.
             </div>
           </div>
 
           <div className="indent-1" style={{ marginTop: '1.5rem' }}>
-            1.9 It is made clear by the Promoter and the Allottee agrees that the (Apartment/Plot) along with garage/closed parking shall be treated as a single indivisible unit for all purposes. It is agreed that the Project is an independent, self-contained Project covering the said Land and is not a part of any other project or zone and shall not form a part of and/or linked/combined with any other project in its vicinity or otherwise except for the purpose of integration of infrastructure for the benefit of the Allottee. It is clarified that Project's facilities and amenities shall be available only for use and enjoyment of the Allottees of the Project.
+            1.9 It is made clear by the Promoter and the Allottee agrees that the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) along with garage/closed parking shall be treated as a single indivisible unit for all purposes. It is agreed that the Project is an independent, self-contained Project covering the said Land and is not a part of any other project or zone and shall not form a part of and/or linked/combined with any other project in its vicinity or otherwise except for the purpose of integration of infrastructure for the benefit of the Allottee. It is clarified that Project's facilities and amenities shall be available only for use and enjoyment of the Allottees of the Project.
           </div>
 
           <div className="indent-1" style={{ marginTop: '1.5rem', textAlign: 'left' }}>
@@ -452,7 +452,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           </div>
 
           <div className="indent-1">
-            1.12 The Allottee has paid a sum of Rs. <SpanVal val={bookingAmount} fieldKey="bookingAmount" /> (Rupees <SpanVal val={bookingAmountWords} fieldKey="bookingAmountWords" /> only) as booking amount being part payment towards the Total Price of the (Apartment/Plot) at the time of application the receipt of which the Promoter hereby acknowledges and the Allottee hereby agrees to pay the remaining price of the (Apartment/Plot) as prescribed in the Payment Plan as may be demanded by the Promoter within the time and in the manner specified therein:
+            1.12 The Allottee has paid a sum of Rs. <SpanVal val={bookingAmount} fieldKey="bookingAmount" /> (Rupees <SpanVal val={bookingAmountWords} fieldKey="bookingAmountWords" /> only) as booking amount being part payment towards the Total Price of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) at the time of application the receipt of which the Promoter hereby acknowledges and the Allottee hereby agrees to pay the remaining price of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) as prescribed in the Payment Plan as may be demanded by the Promoter within the time and in the manner specified therein:
           </div>
           {/* <p style={{ fontStyle: 'italic', margin: '0.5rem 0 0.5rem 2rem', fontSize: '9.5pt' }}>
             Provided that if the allottee delays in payment towards any amount for which is payable, he shall be liable to pay interest at the rate of <SpanVal val={delayInterestRate} fieldKey="delayInterestRate" />% p.a..
@@ -483,29 +483,29 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title">5. Time is essence:</p>
           <div className="indent-1">
-            5.1 Time is of essence for the Promoter as well as the Allottee. The Promoter shall abide by the time schedule for completing the project and handing over the (Apartment/Plot) to the Allottee and the common areas to the association of the allottees after receiving the occupancy certificate* or the completion certificate or both, as the case may be. Similarly, the Allottee shall make timely payments of the installment and other dues payable by him/her and meeting the other obligations under the Agreement subject to the simultaneous completion of construction by the Promoter as provided in Schedule C (<b>"Payment Plan"</b>).
+            5.1 Time is of essence for the Promoter as well as the Allottee. The Promoter shall abide by the time schedule for completing the project and handing over the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) to the Allottee and the common areas to the association of the allottees after receiving the occupancy certificate* or the completion certificate or both, as the case may be. Similarly, the Allottee shall make timely payments of the installment and other dues payable by him/her and meeting the other obligations under the Agreement subject to the simultaneous completion of construction by the Promoter as provided in Schedule C (<b>"Payment Plan"</b>).
           </div>
 
           <p className="legal-section-title">6. Construction of the Project/Apartment:</p>
           <p style={{ textIndent: '2rem' }}>
-            The Allottee has seen the specifications of the (Apartment/Plot) and accepted the Payment Plan, floor plans, layout plans (annexured along with this Agreement) which has been approved by the competent authority, as represented by the Promoter. The Promoter shall develop the Project in accordance with the said layout plans, floor plans and specifications. Subject to the terms in this Agreement, the Promoter undertakes to strictly abide by the bye-laws, FAR and density norms and provisions prescribed by the prevailing Development Control Regulations in the locality  and shall not have an option to make any variation/modification in such plans, other than in the manner provided under the Act, and breach of this term by the Promoter shall constitute a material breach of the Agreement.
+            The Allottee has seen the specifications of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) and accepted the Payment Plan, floor plans, layout plans (annexured along with this Agreement) which has been approved by the competent authority, as represented by the Promoter. The Promoter shall develop the Project in accordance with the said layout plans, floor plans and specifications. Subject to the terms in this Agreement, the Promoter undertakes to strictly abide by the bye-laws, FAR and density norms and provisions prescribed by the prevailing Development Control Regulations in the locality  and shall not have an option to make any variation/modification in such plans, other than in the manner provided under the Act, and breach of this term by the Promoter shall constitute a material breach of the Agreement.
           </p>
 
-          <p className="legal-section-title">7. Possession of the Apartment/Plot:</p>
+          <p className="legal-section-title">7. Possession of the <SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />:</p>
           <div className="indent-1">
-            7.1 <i>Schedule for possession of the said (Apartment/Plot):</i> The Promoter agrees and understands that timely delivery of possession of the (Apartment/Plot) is the essence of the Agreement. The Promoter, based on the approved plans and specifications, assures to hand over possession of the (Apartment/Plot) on <SpanVal val={formatDateDMY(possessionTargetMonth)} fieldKey="possessionTargetMonth" /> unless there is delay or failure due to war, flood, drought, fire, cyclone, earthquake or any other calamity caused by nature affecting the regular development of the real estate project (<b>"Force Majeure"</b>). If, however, the completion of the Project is delayed due to the Force Majeure conditions then the Allottee agrees that the Promoter shall be entitled to the extension of time for delivery of possession of the (Apartment/Plot), provided that such Force Majeure conditions are not of a nature which make it impossible for the contract to be implemented. The Allottee agrees and confirms that, in the event it becomes impossible for the Promoter to implement the project due to Force Majeure conditions, then this allotment shall stand terminated and the Promoter shall refund to the Allottee the entire amount received by the Promoter from the allotment within 45 days from that date. After refund of the money paid by the Allottee, Allottee agrees that he/she shall not have any rights, claims etc. against the Promoter and that the Promoter shall be released and discharged from all its obligations and liabilities under this Agreement.
+            7.1 <i>Schedule for possession of the said (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />):</i> The Promoter agrees and understands that timely delivery of possession of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) is the essence of the Agreement. The Promoter, based on the approved plans and specifications, assures to hand over possession of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) on <SpanVal val={formatDateDMY(possessionTargetMonth)} fieldKey="possessionTargetMonth" /> unless there is delay or failure due to war, flood, drought, fire, cyclone, earthquake or any other calamity caused by nature affecting the regular development of the real estate project (<b>"Force Majeure"</b>). If, however, the completion of the Project is delayed due to the Force Majeure conditions then the Allottee agrees that the Promoter shall be entitled to the extension of time for delivery of possession of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />), provided that such Force Majeure conditions are not of a nature which make it impossible for the contract to be implemented. The Allottee agrees and confirms that, in the event it becomes impossible for the Promoter to implement the project due to Force Majeure conditions, then this allotment shall stand terminated and the Promoter shall refund to the Allottee the entire amount received by the Promoter from the allotment within 45 days from that date. After refund of the money paid by the Allottee, Allottee agrees that he/she shall not have any rights, claims etc. against the Promoter and that the Promoter shall be released and discharged from all its obligations and liabilities under this Agreement.
           </div>
 
           <div className="indent-1" style={{ marginTop: '1rem' }}>
-            7.2 <i>Procedure for taking possession:</i> The Promoter, upon obtaining the occupancy certificate* from the competent authority shall offer in writing the possession of the (Apartment/Plot), to the Allottee in terms of this Agreement to be taken within 3 (three) months from the date of issue of such notice and the Promoter shall give possession of the (Apartment/Plot) to the Allottee. The Promoter agrees and undertakes to indemnify the Allottee in case of failure of fulfillment of any of the provisions, formalities, documentation on part of the Promoter. The Allottee agree(s) to pay the maintenance charges as determined by the Promoter/association of allottees, as the case may be. The Promoter on its behalf shall offer the possession to the Allottee in writing within <SpanVal val={gracePeriodDays} fieldKey="gracePeriodDays" /> days of receiving the occupancy certificate* of the Project.
+            7.2 <i>Procedure for taking possession:</i> The Promoter, upon obtaining the occupancy certificate* from the competent authority shall offer in writing the possession of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />), to the Allottee in terms of this Agreement to be taken within 3 (three) months from the date of issue of such notice and the Promoter shall give possession of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) to the Allottee. The Promoter agrees and undertakes to indemnify the Allottee in case of failure of fulfillment of any of the provisions, formalities, documentation on part of the Promoter. The Allottee agree(s) to pay the maintenance charges as determined by the Promoter/association of allottees, as the case may be. The Promoter on its behalf shall offer the possession to the Allottee in writing within <SpanVal val={gracePeriodDays} fieldKey="gracePeriodDays" /> days of receiving the occupancy certificate* of the Project.
           </div>
 
           <div className="indent-1" style={{ marginTop: '1rem' }}>
-            7.3 <i>Failure of Allottee to take Possession of (Apartment/Plot):</i> Upon receiving a written intimation from the Promoter as per clause 7.2, the Allottee shall take possession of the (Apartment/Plot) from the Promoter by executing necessary indemnities, undertakings and such other documentation as prescribed in this Agreement, and the Promoter shall give possession of the (Apartment/Plot) to the allottee. In case the Allottee fails to take possession within the time provided in clause 7.2, such Allottee shall continue to be liable to pay maintenance charges as applicable.
+            7.3 <i>Failure of Allottee to take Possession of (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />):</i> Upon receiving a written intimation from the Promoter as per clause 7.2, the Allottee shall take possession of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) from the Promoter by executing necessary indemnities, undertakings and such other documentation as prescribed in this Agreement, and the Promoter shall give possession of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) to the allottee. In case the Allottee fails to take possession within the time provided in clause 7.2, such Allottee shall continue to be liable to pay maintenance charges as applicable.
           </div>
 
           <div className="indent-1" style={{ marginTop: '1rem' }}>
-            7.4 <i>Possession by the Allottee:</i> After obtaining the occupancy certificate* and handing over physical possession of the (Apartment/Plot) to the Allottees, it shall be the responsibility of the Promoter to hand over the necessary documents and plans, including common areas, to the association of the Allottees or the competent authority, as the case may be, as per the local laws.
+            7.4 <i>Possession by the Allottee:</i> After obtaining the occupancy certificate* and handing over physical possession of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) to the Allottees, it shall be the responsibility of the Promoter to hand over the necessary documents and plans, including common areas, to the association of the Allottees or the competent authority, as the case may be, as per the local laws.
           </div>
 
           <div className="indent-1" style={{ marginTop: '1.5rem' }}>
@@ -518,10 +518,10 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           <div className="indent-1" style={{ marginTop: '1.5rem' }}>
             7.6 <i>Compensation:</i> The Promoter shall compensate the Allottee in case of any loss caused to him due to defective title of the land, on which the project is being developed or has been developed, in the manner as provided under the Act and the claim for compensation under this section shall not be barred by limitation provided under any law for the time being in force.
             <p style={{ textIndent: '2rem', marginTop: '0.25rem' }}>
-              Except for occurrence of a Force Majeure event, if the promoter fails to complete or is unable to give possession of the (Apartment/Plot) (i) in accordance with the terms of this Agreement, duly completed by the date specified herein; or (ii) due to discontinuance of his business as a developer on account of suspension or revocation of the registration under the Act; or for any other reason; the Promoter shall be liable, on demand to the Allottee, in case the Allottee wishes to withdraw from the Project, without prejudice to any other remedy available, to return the total amount received by him in respect of the (Apartment/Plot), with interest at the rate specified in the Rules within 45 days including compensation in the manner as provided under the Act.
+              Except for occurrence of a Force Majeure event, if the promoter fails to complete or is unable to give possession of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) (i) in accordance with the terms of this Agreement, duly completed by the date specified herein; or (ii) due to discontinuance of his business as a developer on account of suspension or revocation of the registration under the Act; or for any other reason; the Promoter shall be liable, on demand to the Allottee, in case the Allottee wishes to withdraw from the Project, without prejudice to any other remedy available, to return the total amount received by him in respect of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />), with interest at the rate specified in the Rules within 45 days including compensation in the manner as provided under the Act.
             </p>
             <p style={{ textIndent: '2rem', marginTop: '0.25rem' }}>
-              Provided that where if the Allottee does not intend to withdraw from the Project, the Promoter shall pay the Allottee interest  at the rate specified in the Rules  for every month of delay, till the handing over of the possession of the (Apartment/Plot).
+              Provided that where if the Allottee does not intend to withdraw from the Project, the Promoter shall pay the Allottee interest  at the rate specified in the Rules  for every month of delay, till the handing over of the possession of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />).
             </p>
           </div>
 
@@ -553,22 +553,22 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           </div>
 
           <div className="indent-1">
-            (iv) There are no litigations pending before any Court of law with respect to the said Land, Project or the (Apartment/Plot);
+            (iv) There are no litigations pending before any Court of law with respect to the said Land, Project or the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />);
           </div>
           <div className="indent-1">
-            (v) All approvals, licenses and permits issued by the competent authorities with respect to the Project, said Land and (Apartment/Plot) are valid and subsisting and have been obtained by following due process of law. Further, the Promoter has been and shall, at all times, remain to be in compliance with all applicable laws in relation to the Project, said Land, Building and (Apartment/Plot) and common areas;
+            (v) All approvals, licenses and permits issued by the competent authorities with respect to the Project, said Land and (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) are valid and subsisting and have been obtained by following due process of law. Further, the Promoter has been and shall, at all times, remain to be in compliance with all applicable laws in relation to the Project, said Land, Building and (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) and common areas;
           </div>
           <div className="indent-1">
             (vi) The Promoter has the right to enter into this Agreement and has not committed or omitted to perform any act or thing, whereby the right, title and interest of the Allottee created herein, may prejudicially be affected;
           </div>
           <div className="indent-1">
-            (vii) The Promoter has not entered into any agreement for sale and/or development agreement or any other agreement/arrangement with any person or party with respect to the said Land, including the Project and the said (Apartment/Plot) which will, in any manner, affect the rights of Allottee under this Agreement;
+            (vii) The Promoter has not entered into any agreement for sale and/or development agreement or any other agreement/arrangement with any person or party with respect to the said Land, including the Project and the said (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) which will, in any manner, affect the rights of Allottee under this Agreement;
           </div>
           <div className="indent-1">
-            (viii) The Promoter confirms that the Promoter is not restricted in any manner whatsoever from selling the said (Apartment/Plot) to the Allottee in the manner contemplated in this Agreement;
+            (viii) The Promoter confirms that the Promoter is not restricted in any manner whatsoever from selling the said (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) to the Allottee in the manner contemplated in this Agreement;
           </div>
           <div className="indent-1">
-            (ix) At the time of execution of the conveyance deed the Promoter shall handover lawful, vacant, peaceful, physical possession of the (Apartment/Plot) to the Allottee and the common areas to the Association of the Allottees;
+            (ix) At the time of execution of the conveyance deed the Promoter shall handover lawful, vacant, peaceful, physical possession of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) to the Allottee and the common areas to the Association of the Allottees;
           </div>
           <div className="indent-1">
             (x) The Schedule Property is not the subject matter of any HUF and that no part thereof is owned by any minor and/or no minor has any right, title and claim over the Schedule Property;
@@ -584,7 +584,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           <div className="indent-1">
             9.1 Subject to the Force Majeure clause, the Promoter shall be considered under a condition of Default, in the following events:
             <div className="indent-2" style={{ marginTop: '0.25rem' }}>
-              (i) Promoter fails to provide ready to move in possession of the (Apartment/Plot) to the Allottee within the time period specified. For the purpose of this clause, 'ready to move in possession' shall mean that the apartment shall be in a habitable condition which is complete in all respects;
+              (i) Promoter fails to provide ready to move in possession of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) to the Allottee within the time period specified. For the purpose of this clause, 'ready to move in possession' shall mean that the apartment shall be in a habitable condition which is complete in all respects;
             </div>
             <div className="indent-2">
               (ii) Discontinuance of the Promoter's business as a developer on account of suspension or revocation of his registration under the provisions of the Act or the rules or regulations made thereunder.
@@ -600,7 +600,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
               (ii) The Allottee shall have the option of terminating the Agreement in which case the Promoter shall be liable to refund the entire money paid by the Allottee under any head whatsoever towards the purchase of the apartment, along with interest at the rate specified in the Rules within forty-five days of receiving the termination notice:
             </div>
             <p style={{ textIndent: '2rem', marginTop: '0.25rem', fontSize: '9.5pt', fontStyle: 'italic' }}>
-              Provided that where an Allottee does not intend to withdraw from the project or terminate the Agreement, he shall be paid, by the promoter,  interest at the rate specified in the Rules, for every month of delay till the handing over of the possession of the (Apartment/Plot).
+              Provided that where an Allottee does not intend to withdraw from the project or terminate the Agreement, he shall be paid, by the promoter,  interest at the rate specified in the Rules, for every month of delay till the handing over of the possession of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />).
             </p>
           </div>
 
@@ -610,18 +610,18 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
               (i) In case the Allottee fails to make payments for <SpanVal val={defaultConsecutiveDemands} fieldKey="defaultConsecutiveDemands" /> consecutive demands made by the Promoter as per the Payment Plan annexed hereto, despite having been issued notice in that regard the allottee shall be liable to pay interest to the promoter on the unpaid amount at the rate specified in the Rules.
             </div>
             <div className="indent-2">
-              (ii) In case of Default by Allottee under the condition listed above continues for a period beyond <SpanVal val={defaultConsecutiveMonths} fieldKey="defaultConsecutiveMonths" /> consecutive months after notice from the Promoter in this regard, the Promoter shall cancel the allotment of the (Apartment/Plot) in favour of the Allottee and refund the amount money paid by him to the allottee by deducting the booking amount and the interest liabilities and this Agreement shall thereupon stand terminated.
+              (ii) In case of Default by Allottee under the condition listed above continues for a period beyond <SpanVal val={defaultConsecutiveMonths} fieldKey="defaultConsecutiveMonths" /> consecutive months after notice from the Promoter in this regard, the Promoter shall cancel the allotment of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) in favour of the Allottee and refund the amount money paid by him to the allottee by deducting the booking amount and the interest liabilities and this Agreement shall thereupon stand terminated.
             </div>
           </div>
 
           <p className="legal-section-title">10. Conveyance of the said apartment:</p>
           <p style={{ textIndent: '2rem' }}>
-            The Promoter, on receipt of complete amount of the Price of the (Apartment/Plot) under the Agreement from the Allottee, shall execute a conveyance deed and convey the title of the (Apartment/Plot) together with proportionate undivided share in the Common Areas within 3 (three) months from the issuance of the occupancy certificate*. However, in case the Allottee fails to deposit the stamp duty, registration charges and all other incidental and legal expenses etc. so demanded within the period mentioned in the demand letter, the Allottee authorizes the Promoter to withhold registration of the conveyance deed in his/her favour till full and final settlement of all dues and stamp duty and registration charges to the Promoter is made by the Allottee. The Allottee shall be solely responsible and liable for compliance of the provisions of <SpanVal val="Kerala Stamp Act, 1959" /> including any actions taken or deficiencies/penalties imposed by the competent authority(ies).
+            The Promoter, on receipt of complete amount of the Price of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) under the Agreement from the Allottee, shall execute a conveyance deed and convey the title of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) together with proportionate undivided share in the Common Areas within 3 (three) months from the issuance of the occupancy certificate*. However, in case the Allottee fails to deposit the stamp duty, registration charges and all other incidental and legal expenses etc. so demanded within the period mentioned in the demand letter, the Allottee authorizes the Promoter to withhold registration of the conveyance deed in his/her favour till full and final settlement of all dues and stamp duty and registration charges to the Promoter is made by the Allottee. The Allottee shall be solely responsible and liable for compliance of the provisions of <SpanVal val="Kerala Stamp Act, 1959" /> including any actions taken or deficiencies/penalties imposed by the competent authority(ies).
           </p>
 
           <p className="legal-section-title">11. Maintenance of the said building/apartment/project:</p>
           <p style={{ textIndent: '2rem' }}>
-            The Promoter shall be responsible to provide and maintain essential services in the Project till the taking over of the maintenance of the project by the association of the allottees. The cost of such maintenance has been included in the Total Price of the (Apartment/Plot).
+            The Promoter shall be responsible to provide and maintain essential services in the Project till the taking over of the maintenance of the project by the association of the allottees. The cost of such maintenance has been included in the Total Price of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />).
           </p>
           {/* <div style={{ paddingLeft: '2rem' }}>
             <div
@@ -659,12 +659,12 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title">13. Right of allottee to use common areas and facilities subject to payment of total maintenance charges:</p>
           <p style={{ textIndent: '2rem' }}>
-            The Allottee hereby agrees to purchase the (Apartment/Plot) on the specific understanding that his/her right to the use of Common Areas shall be subject to timely payment of total maintenance charges, as determined and thereafter billed by the maintenance agency appointed or the association of allottees (or the maintenance agency appointed by it) and performance by the Allottee of all his/her obligations in respect of the terms and conditions specified by the maintenance agency or the association of allottees from time to time.
+            The Allottee hereby agrees to purchase the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) on the specific understanding that his/her right to the use of Common Areas shall be subject to timely payment of total maintenance charges, as determined and thereafter billed by the maintenance agency appointed or the association of allottees (or the maintenance agency appointed by it) and performance by the Allottee of all his/her obligations in respect of the terms and conditions specified by the maintenance agency or the association of allottees from time to time.
           </p>
 
           <p className="legal-section-title">14. Right to enter the apartment for repairs:</p>
           <p style={{ textIndent: '2rem' }}>
-            The Promoter/maintenance agency/association of allottees shall have rights of unrestricted access of all Common Areas, garages/closed parking's and parking spaces for providing necessary maintenance services and the Allottee agrees to permit the association of allottees and/or maintenance agency to enter into the (Apartment/Plot) or any part thereof, after due notice and during the normal working hours, unless the circumstances warrant otherwise, with a view to set right any defect.
+            The Promoter/maintenance agency/association of allottees shall have rights of unrestricted access of all Common Areas, garages/closed parking's and parking spaces for providing necessary maintenance services and the Allottee agrees to permit the association of allottees and/or maintenance agency to enter into the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) or any part thereof, after due notice and during the normal working hours, unless the circumstances warrant otherwise, with a view to set right any defect.
           </p>
 
           <p className="legal-section-title">15. Usage:</p>
@@ -674,12 +674,12 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title">16. General compliance with respect to the apartment:</p>
           <p style={{ textIndent: '2rem' }}>
-            Subject to Clause 12 above, the Allottee shall, after taking possession, be solely responsible to maintain the (Apartment/Plot) at his/her own cost, in good repair and condition and shall not do or suffer to be done anything in or to the Building, or the (Apartment/Plot), or the staircases, lifts, common passages, corridors, circulation areas, atrium or the compound which may be in violation of any laws or rules of any authority or change or alter or make additions to the (Apartment/Plot) and keep the (Apartment/Plot), its walls and partitions, sewers, drains, pipe and appurtenances thereto or belonging thereto, in good and tenantable repair and maintain the same in a fit and proper condition and ensure that the support, shelter etc. of the Building is not in any way damaged or jeopardized. The Allottee further undertakes, assures and guarantees that he/she will not put any sign-board/name-plate, neon light, publicity material or advertisement material etc. on the face/facade of the Building or anywhere on the exterior of the Project, buildings therein or Common Areas. The Allottees shall also not change the colour scheme of the outer walls or painting of the exterior side of the windows or carry out any change in the exterior elevation or design. Further the Allottee shall not store any hazardous or combustible goods in the (Apartment/Plot) or place any heavy material in the common passages or staircase of the Building. The Allottee shall also not remove any wall, including the outer and load bearing wall of the (Apartment/Plot). The Allottee shall plan and distribute its electrical load in conformity with the electrical systems installed by the Promoter and thereafter the association of allottees and/or maintenance agency appointed by association of allottees. The Allottee shall be responsible for any loss or damages arising out of breach of any of the aforesaid conditions.
+            Subject to Clause 12 above, the Allottee shall, after taking possession, be solely responsible to maintain the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) at his/her own cost, in good repair and condition and shall not do or suffer to be done anything in or to the Building, or the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />), or the staircases, lifts, common passages, corridors, circulation areas, atrium or the compound which may be in violation of any laws or rules of any authority or change or alter or make additions to the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) and keep the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />), its walls and partitions, sewers, drains, pipe and appurtenances thereto or belonging thereto, in good and tenantable repair and maintain the same in a fit and proper condition and ensure that the support, shelter etc. of the Building is not in any way damaged or jeopardized. The Allottee further undertakes, assures and guarantees that he/she will not put any sign-board/name-plate, neon light, publicity material or advertisement material etc. on the face/facade of the Building or anywhere on the exterior of the Project, buildings therein or Common Areas. The Allottees shall also not change the colour scheme of the outer walls or painting of the exterior side of the windows or carry out any change in the exterior elevation or design. Further the Allottee shall not store any hazardous or combustible goods in the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) or place any heavy material in the common passages or staircase of the Building. The Allottee shall also not remove any wall, including the outer and load bearing wall of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />). The Allottee shall plan and distribute its electrical load in conformity with the electrical systems installed by the Promoter and thereafter the association of allottees and/or maintenance agency appointed by association of allottees. The Allottee shall be responsible for any loss or damages arising out of breach of any of the aforesaid conditions.
           </p>
 
           <p className="legal-section-title">17. Compliance of laws, notifications etc. by Allottee:</p>
           <p style={{ textIndent: '2rem' }}>
-            The Allottee is entering into this Agreement for the allotment of a (Apartment/Plot) with the full knowledge of all laws, rules, regulations, notifications applicable to the Project in general and this project in particular. That the Allottee hereby undertakes that he/she shall comply with and carry out, from time to time after he/she has taken over for occupation and use the said (Apartment/Plot), all the requirements, requisitions, demands and repairs which are required by any competent Authority in respect of the (Apartment/Plot) at his/her own cost.
+            The Allottee is entering into this Agreement for the allotment of a (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) with the full knowledge of all laws, rules, regulations, notifications applicable to the Project in general and this project in particular. That the Allottee hereby undertakes that he/she shall comply with and carry out, from time to time after he/she has taken over for occupation and use the said (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />), all the requirements, requisitions, demands and repairs which are required by any competent Authority in respect of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) at his/her own cost.
           </p>
 
           <p className="legal-section-title">18. Additional constructions:</p>
@@ -689,7 +689,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title">19. Promoter shall not mortgage or create a charge:</p>
           <p style={{ textIndent: '2rem' }}>
-            After the Promoter executes this Agreement he shall not mortgage or create a charge on the (Apartment/Plot/Building) and if any such mortgage or charge is made or created then notwithstanding anything contained in any other law for the time being in force, such mortgage or charge shall not affect the right and interest of the Allottee who has taken or agreed to take such (Apartment/Plot/Building).
+            After the Promoter executes this Agreement he shall not mortgage or create a charge on the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot/Building" fieldKey="propertyCategory" />) and if any such mortgage or charge is made or created then notwithstanding anything contained in any other law for the time being in force, such mortgage or charge shall not affect the right and interest of the Allottee who has taken or agreed to take such (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot/Building" fieldKey="propertyCategory" />).
           </p>
 
           <p className="legal-section-title">20. Apartment ownership Act:</p>
@@ -704,7 +704,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title">22. Entire agreement:</p>
           <p style={{ textIndent: '2rem' }}>
-            This Agreement, along with its schedules, constitutes the entire Agreement between the Parties with respect to the subject matter hereof and supersedes any and all understandings, any other agreements, allotment letter, correspondences, arrangements whether written or oral, if any, between the Parties in regard to the said apartment/plot/building, as the case may be.
+            This Agreement, along with its schedules, constitutes the entire Agreement between the Parties with respect to the subject matter hereof and supersedes any and all understandings, any other agreements, allotment letter, correspondences, arrangements whether written or oral, if any, between the Parties in regard to the said <SpanVal val={data.propertyCategory} fallback="apartment/plot/building" fieldKey="propertyCategory" />, as the case may be.
           </p>
 
           <p className="legal-section-title">23. Right to amend:</p>
@@ -714,7 +714,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title">24. Provisions of this agreement applicable on Allottee/subsequent Allottees:</p>
           <p style={{ textIndent: '2rem' }}>
-            It is clearly understood and so agreed by and between the Parties hereto that all the provisions contained herein and the obligations arising hereunder in respect of the Project shall equally be applicable to and enforceable against any subsequent Allottees of the (Apartment/Plot), in case of a transfer, as the said obligations go along with the (Apartment/Plot) for all intents and purposes.
+            It is clearly understood and so agreed by and between the Parties hereto that all the provisions contained herein and the obligations arising hereunder in respect of the Project shall equally be applicable to and enforceable against any subsequent Allottees of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />), in case of a transfer, as the said obligations go along with the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) for all intents and purposes.
           </p>
 
           <p className="legal-section-title">25. Waiver not a limitation to enforce:</p>
@@ -736,7 +736,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
 
           <p className="legal-section-title">27. Method of calculation of proportionate share wherever referred to in the agreement:</p>
           <p style={{ textIndent: '2rem' }}>
-            Wherever in this Agreement it is stipulated that the Allottee has to make any payment, in common with other Allottee(s) in Project, the same shall be the proportion which the carpet area of the (Apartment/Plot) bears to the total carpet area of all the (Apartments/Plots) in the Project.
+            Wherever in this Agreement it is stipulated that the Allottee has to make any payment, in common with other Allottee(s) in Project, the same shall be the proportion which the carpet area of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) bears to the total carpet area of all the (<SpanVal val={data.propertyCategory} fallback="Apartments/Plots" fieldKey="propertyCategory" />) in the Project.
           </p>
 
           <p className="legal-section-title">28. Further assurances:</p>
@@ -873,7 +873,7 @@ export default function DocumentPages({ data }: DocumentPagesProps) {
           </div>
 
           <div style={{ marginTop: '1rem', borderTop: '1.5px solid #000', paddingTop: '0.5rem', fontSize: '9pt', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
-            <div><b>Schedule 'A'</b> - Please insert description of the (Apartment/Plot) and the garage/closed parking (if applicable) along with boundaries in all four directions.</div>
+            <div><b>Schedule 'A'</b> - Please insert description of the (<SpanVal val={data.propertyCategory} fallback="Apartment/Plot" fieldKey="propertyCategory" />) and the garage/closed parking (if applicable) along with boundaries in all four directions.</div>
             <div><b>Schedule 'B'</b> - Floor plan of the apartment.</div>
             <div><b>Schedule 'C'</b> - Payment plan by the Allottee.</div>
             <div><b>Schedule 'D'</b> - Details of Common Areas and Facilities.</div>

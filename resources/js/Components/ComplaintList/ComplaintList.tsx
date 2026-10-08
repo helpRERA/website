@@ -101,7 +101,7 @@ const ComplaintList = ({
           </div>
           
           {/* Select field */}
-          <div className='flex w-full flex-col gap-2'>
+          <div className='flex min-w-0 w-full flex-col gap-2'>
             <label className='text-[#085484] text-[13px] font-medium tracking-wide'>
               Judgement / Orders By
             </label>
@@ -109,7 +109,7 @@ const ComplaintList = ({
               <select 
                 value={form.ruling_by}
                 onChange={(e) => setFormValue('ruling_by')(e.target.value)}
-                className='bg-white rounded-md border border-gray-200 py-2.5 px-4 text-[13px] text-gray-800 focus:border-[#085484] focus:ring-1 focus:ring-[#085484] outline-none w-full'
+                className='bg-white rounded-md border border-gray-200 py-2.5 pl-4 pr-10 truncate text-[13px] text-gray-800 focus:border-[#085484] focus:ring-1 focus:ring-[#085484] outline-none w-full min-w-0'
               >
                 {rulingTypes.map(type => (
                   <option key={type.value} value={type.value}>{type.label}</option>

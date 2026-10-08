@@ -86,6 +86,7 @@ class AgreementForSaleController extends Controller
     private function mapData(Request $request)
     {
         return [
+            'property_category' => $request->input('propertyCategory'),
             'execution_place' => $request->input('executionPlace'),
             'date_day' => $request->input('dateDay'),
             'date_month' => $request->input('dateMonth'),

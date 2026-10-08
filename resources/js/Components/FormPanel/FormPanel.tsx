@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Plus, Trash2, ChevronRight, ChevronLeft, RefreshCw } from 'lucide-react';
 import { AgreementData, JointAllottee, GarageDetail, PriceBreakdownItem, PaymentPlanItem, Witness, DisclosureItem, MaintenanceClauseItem, AdditionalTermItem, LandJDA, LandOwnerEntry, PlotPriceItem } from '../../hooks/useAgreementData';
-import logoUrl from '../../../../public/imge/logonew.svg';
+const logoUrl = '/imge/logonew.svg';
 import { toRomanLower } from '../../utils/toRoman';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -217,7 +217,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
     1: ['promoterType', 'promoterCompany', 'promoterPartnership', 'promoterIndividual'],
     2: ['allotteeType', 'allotteeCompany', 'allotteePartnership', 'allotteeIndividual', 'allotteeHuf', 'jointAllottees'],
     3: ['landOwnerEntries', 'landJDA', 'projectType', 'projectTypeOther', 'projectBuildingType', 'projectBuildingTypeOther', 'projectComprising', 'projectName', 'projectOtherComponents', 'plotOtherComponents', 'basementLocation'],
-    4: ['commencementAuthority', 'commencementNo', 'commencementDate', 'layoutAuthority', 'reraRegNo', 'reraRegDate', 'maintenanceClauses', 'facilitiesOutsideProject', 'competentAuthorityForDeclaration', 'relevantStateAct', 'hasEncumbrances', 'encumbranceDetails'],
+    4: ['propertyCategory', 'commencementAuthority', 'commencementNo', 'commencementDate', 'layoutAuthority', 'reraRegNo', 'reraRegDate', 'maintenanceClauses', 'facilitiesOutsideProject', 'competentAuthorityForDeclaration', 'relevantStateAct', 'hasEncumbrances', 'encumbranceDetails'],
     5: ['applicationNo', 'applicationDate', 'apartmentType', 'unitNo', 'unitFloor', 'unitTower', 'unitCarpetArea', 'plotNo', 'plotArea', 'garageDetails', 'ratePerSqFt', 'totalPrice', 'totalPriceWords', 'bookingAmount', 'bookingAmountWords', 'paymentFavourOf', 'paymentPayableAt', 'priceBreakdown', 'plotPricing'],
     6: ['earlyPaymentRebate', 'delayInterestRate', 'possessionTargetMonth', 'gracePeriodDays', 'defaultConsecutiveDemands', 'defaultConsecutiveMonths', 'prescribedByLaws', 'additionalTerms', 'additionalDisclosures', 'paymentPlan', 'placeOfExecution', 'placeOfDeemedExecution'],
     7: ['witnesses', 'apartmentOwnershipAct'],
@@ -1536,6 +1536,26 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
 
 
 
+            <div className="form-group" style={{ marginTop: '1rem' }}>
+              <label htmlFor="propertyCategory">Property Type</label>
+              <select
+                id="propertyCategory"
+                data-form-field="propertyCategory"
+                value={data.propertyCategory}
+                onFocus={() => setActiveField('propertyCategory')}
+                onChange={(e) => updateField('propertyCategory', e.target.value)}
+              >
+                <option value="">Select property type</option>
+                {[
+                  'Shops/Office Space(Commercial)',
+                  'Residential(Apartment)',
+                  'Industrial',
+                  'Plots',
+                  'Mixed(Commercial & Residential)',
+                  'Villas(Plots & Buildings)',
+                ].map(option => <option key={option} value={option}>{option}</option>)}
+              </select>
+            </div>
           </div>
         )}
 

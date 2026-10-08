@@ -141,10 +141,10 @@ const MapCustomControl = ({ features, title, handleDistrictChange }: Props) => {
   )
 
   return (
-    <div className='relative w-full pt-20 md:pt-16'>
-      <div className='absolute left-2 top-1 z-[500] lg:left-6'>
+    <div className='relative w-full min-w-0'>
+      <div className='mb-4 px-2 lg:px-6'>
         <h2 className='text-xl font-bold'>Project Distribution</h2>
-        <p className='text-sm'>
+        <p className='text-sm leading-relaxed'>
           This is an interactive representation of district-wise project registrations for a given
           year. Please use filters section to view data for a different year.
         </p>
