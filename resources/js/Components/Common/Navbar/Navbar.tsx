@@ -85,7 +85,7 @@ const Navbar = () => {
 
           {/* MIDDLE: Desktop Links (Hidden on mobile/tablet, shown on desktop xl+) */}
           <div className='hidden min-w-0 flex-1 justify-end xl:flex'>
-            <div className='flex w-full min-w-0 items-center'>
+            <div className='flex w-full min-w-0 items-center justify-end'>
               <DesktopDropdown nav={nav} lang={lang as Language} />
             </div>
           </div>
