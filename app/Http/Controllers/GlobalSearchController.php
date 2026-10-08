@@ -16,12 +16,12 @@ class GlobalSearchController extends Controller
     ): Response {
 
         $results = $globalSearch->search(
-            $request->section ?? 'Announcements',
+            $request->section ?? 'All',
             $request->search
         );
 
         $results['oldSearch'] = $request->search;
-        $results['section'] = $request->section ?? 'Announcements';
+        $results['section'] = $request->section ?? 'All';
 
         return Inertia::render('GlobalSearchPage', $results);
     }

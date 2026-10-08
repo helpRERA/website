@@ -7,6 +7,7 @@ import { Page } from '../DataStructures/ui_builder_interfaces'
 import { Language, Paginator } from '../ui/ui_interfaces'
 
 export interface GlobalSearchProperties {
+  combined?: Paginator<{ type: 'announcement'; item: Announcement } | { type: 'project'; item: Project }> | null
   section: string
   oldSearch: string
   lang: Language
@@ -22,6 +23,7 @@ const GlobalSearchPage = ({
   announcements,
   pages,
   projects,
+  combined,
 }: GlobalSearchProperties) => {
   return (
     <AppLayout>
@@ -33,6 +35,7 @@ const GlobalSearchPage = ({
           announcements={announcements}
           pages={pages}
           projects={projects}
+          combined={combined}
         />
       </AppLayoutPadding>
     </AppLayout>

@@ -140,23 +140,23 @@ const ProjectDocumentAccordion = ({
           title={`Documents: ${selectedCategory?.name}`}
         >
           <FullSpinnerWrapper processing={loadingFiles}>
-            <div className='flex max-h-[50vh] flex-col gap-5 p-2'>
+            <div className='flex max-h-[50vh] flex-col gap-5 overflow-y-auto overscroll-contain p-3'>
               {!loadingFiles && files.length === 0 && (
                 <p className='text-sm text-gray-500'>No files available.</p>
               )}
               {files.map((document) => {
                 return (
                   <div
-                    className='flex items-center justify-between gap-1 md:gap-5'
+                    className='flex shrink-0 items-center justify-between gap-3 md:gap-5'
                     key={document.ID.toString()}
                   >
-                    <span className='text-xs md:text-sm'>
+                    <span className='min-w-0 break-words text-xs md:text-sm'>
                       <b>
                         {document.DocumentName} ({getIndianDate(document.CreatedOn)})
                       </b>
                     </span>
                     <a
-                      className='text-blue-500 hover:text-blue-700'
+                      className='shrink-0 text-blue-500 hover:text-blue-700'
                       href={`/${
                         projectCategory.type === 'order'
                           ? ['37', '88'].includes(String(selectedCategory?.DocID))

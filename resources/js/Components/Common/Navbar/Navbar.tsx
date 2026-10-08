@@ -78,7 +78,7 @@ const Navbar = () => {
 
         <div className='relative flex h-[80px] items-center justify-between gap-3 rounded-lg bg-white px-3 shadow-md sm:px-6 md:px-10 lg:px-12'>
           <div className='flex h-full min-w-0 items-center py-2'>
-            <Link as='a' href='/' className='flex h-full items-center'>
+            <Link as='a' href='/' aria-label='K-RERA home' data-a11y-underline-control className='flex h-full items-center'>
               <img src={'/logov2.svg'} alt='K-RERA Logo' className='h-[40px] md:h-[50px] w-auto max-w-full object-contain' />
             </Link>
           </div>
@@ -93,7 +93,10 @@ const Navbar = () => {
           {/* RIGHT: Language Switcher and Hamburger (Always visible) */}
           <div className='flex shrink-0 items-center gap-1 md:gap-2'>
             {/* Language Pill */}
-            <div
+            <button
+              type='button'
+              data-a11y-underline-control
+              aria-label={lang === 'mal' ? 'Switch to English' : 'Switch to Malayalam'}
               onClick={langToggle}
               className='flex cursor-pointer items-center overflow-hidden rounded-full border border-gray-200 bg-white p-[2px] md:p-1 shadow-sm'
             >
@@ -109,7 +112,7 @@ const Navbar = () => {
               >
                 മ
               </div>
-            </div>
+            </button>
 
             {/* Mobile hamburger */}
             <svg

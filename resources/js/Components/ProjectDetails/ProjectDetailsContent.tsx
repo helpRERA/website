@@ -108,13 +108,13 @@ const ProjectDetailsContent = ({
             <div className='mt-2 flex max-w-[520px] flex-col gap-2'>
               <div className='flex items-center  gap-4'>
                 <span className='text-gray-500 text-[15px]'>Total Floor Area Under Residential Use</span>
-                <span className='shrink-0 text-[18px] font-medium text-gray-700'> : &nbsp;
+                <span className='shrink-0 text-[15px] font-semibold text-gray-700'> : &nbsp;
                   {Number(project.TotalFloorAreaUnderResidentialUse) ? `${project.TotalFloorAreaUnderResidentialUse} sqm` : '0'}
                 </span>
               </div>
               <div className='flex items-center  gap-4'>
                 <span className='text-gray-500 text-[15px]'>Total Floor Area Under Other Use</span>
-                <span className='shrink-0 text-[18px] font-medium text-gray-700'> :  &nbsp;
+                <span className='shrink-0 text-[15px] font-semibold text-gray-700'> :  &nbsp;
                   {Number(project.TotalFloorAreaUnderOtherUse) ? `${project.TotalFloorAreaUnderOtherUse} sqm` : '0'}
                 </span>
               </div>
@@ -122,21 +122,21 @@ const ProjectDetailsContent = ({
             
             <div className='flex flex-col gap-1.5 mt-2'>
                <div className='flex items-center  gap-4'>
-                  <span className='text-[13px] text-gray-500'>Number of Building(s):</span>  
-                  <span className='shrink-0 text-[18px] font-medium text-gray-700'> 
+                  <span className='text-[15px] text-gray-500'>Number of Building(s):</span>  
+                  <span className='shrink-0 text-[15px] font-semibold text-gray-700'> 
                     {project.BuildingCount}
                   </span>
                 </div>
                 <div className='flex items-center  gap-4'>
-                  <span className='text-[13px] text-gray-500'>Proposed Completion On: </span> 
-                  <span className='shrink-0 text-[18px] font-medium text-gray-700'>
+                  <span className='text-[15px] text-gray-500'>Proposed Completion On: </span> 
+                  <span className='shrink-0 text-[15px] font-semibold text-gray-700'>
                     {getDisplayDate(project.ProposedDateOfCompletion)}
                   </span>
                 </div>
                 {project.LatestExtensionDate && (
                   <div className='flex items-center gap-4'>
-                    <span className='text-[13px] text-gray-500'>Extension Date:</span>
-                    <span className='shrink-0 text-[18px] font-medium text-gray-700'>
+                    <span className='text-[15px] text-gray-500'>Extension Date:</span>
+                    <span className='shrink-0 text-[15px] font-semibold text-gray-700'>
                       {getDisplayDate(project.LatestExtensionDate)}
                     </span>
                   </div>

@@ -24,17 +24,47 @@ class GlobalSearchService
             'pages' => null,
         ];
 
+        if ($section === 'All') {
+            $announcementQuery = $this->announcementRepo->search($search);
+            $projectQuery = $this->projectRepo->search($search)->orderBy('ID');
+            $announcementCount = (clone $announcementQuery)->count();
+            $projectCount = (clone $projectQuery)->count();
+            $page = \Illuminate\Pagination\LengthAwarePaginator::resolveCurrentPage();
+            $perPage = 20;
+            $offset = ($page - 1) * $perPage;
+            $items = collect();
+
+            if ($offset < $announcementCount) {
+                $items = (clone $announcementQuery)->skip($offset)->take($perPage)->get()
+                    ->map(fn ($item) => ['type' => 'announcement', 'item' => $item]);
+            }
+            $remaining = $perPage - $items->count();
+            if ($remaining > 0) {
+                $items = $items->concat(
+                    (clone $projectQuery)->skip(max(0, $offset - $announcementCount))->take($remaining)->get()
+                        ->map(fn ($item) => ['type' => 'project', 'item' => $item])
+                );
+            }
+
+            $results['combined'] = (new \Illuminate\Pagination\LengthAwarePaginator(
+                $items, $announcementCount + $projectCount, $perPage, $page,
+                ['path' => \Illuminate\Pagination\LengthAwarePaginator::resolveCurrentPath()]
+            ))->withQueryString();
+
+            return $results;
+        }
+
         if ($section === 'Announcements') {
             $results['announcements'] = $this->announcementRepo
                 ->search($search)
-                ->paginate(20)
+                ->paginate(20, ['*'], 'announcements_page')
                 ->withQueryString();
         }
 
         if ($section === 'Projects') {
             $results['projects'] = $this->projectRepo
                 ->search($search)
-                ->paginate(20)
+                ->paginate(20, ['*'], 'projects_page')
                 ->withQueryString();
         }
 

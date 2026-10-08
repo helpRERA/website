@@ -1,17 +1,18 @@
 import { router } from '@inertiajs/react'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 import { GlobalSearchProperties } from '../../Pages/GlobalSearchPage'
 import Localization from '../../ui/Localization'
 import Tabs from '../../ui/Tab/Tabs'
 
 const tabs = [
+  { value: 'All', value_malayalam: '' },
   { value: 'Announcements', value_malayalam: '' },
   { value: 'Projects', value_malayalam: '' },
   { value: 'Pages', value_malayalam: '' },
 ]
 
 const GlobalSearchTabs = ({ section, oldSearch, lang }: GlobalSearchProperties) => {
-  const [selectedTab] = useState(section)
+  const selectedTab = section
   const links = useMemo(() => {
     return {
       title: { english: 'Search', malayalam: '' },
@@ -20,9 +21,9 @@ const GlobalSearchTabs = ({ section, oldSearch, lang }: GlobalSearchProperties) 
 
   const onTabChange = useCallback(
     (value: string) => {
-      router.get(`/search?section=${value}&search=${oldSearch ?? ''}`)
+      router.get('/search', { section: value, search: oldSearch ?? '', lang })
     },
-    [oldSearch]
+    [oldSearch, lang]
   )
 
   return (
