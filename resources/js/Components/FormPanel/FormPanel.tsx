@@ -144,10 +144,11 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
     if (focusRequest && handledFocusRequest.current !== focusRequest) return;
     if (formContentRef.current) {
       formContentRef.current.scrollTop = 0;
-      const firstField = formContentRef.current.querySelector<HTMLElement>(
-        'input, select, textarea'
-      );
-      firstField?.focus();
+      const firstField = activeStep === 5
+        ? formContentRef.current.querySelector<HTMLElement>('input[data-form-field^="priceBreakdown."]')
+          || formContentRef.current.querySelector<HTMLElement>('[data-form-field="priceBreakdown"]')
+        : formContentRef.current.querySelector<HTMLElement>('input, select, textarea');
+      firstField?.focus({ preventScroll: true });
     }
   }, [activeStep]);
 
@@ -1537,7 +1538,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
 
 
             <div className="form-group" style={{ marginTop: '1rem' }}>
-              <label htmlFor="propertyCategory">Property Type</label>
+              <label htmlFor="propertyCategory">Project Type</label>
               <select
                 id="propertyCategory"
                 data-form-field="propertyCategory"
@@ -1545,7 +1546,7 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 onFocus={() => setActiveField('propertyCategory')}
                 onChange={(e) => updateField('propertyCategory', e.target.value)}
               >
-                <option value="">Select property type</option>
+                <option value="">Select Project Type</option>
                 {[
                   'Shops/Office Space(Commercial)',
                   'Residential(Apartment)',
@@ -1690,9 +1691,11 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
 
             {/* Custom pricing breakdown list */}
             <div className="form-group" style={{ marginTop: '0.5rem' }}>
+              <h3 className="section-title" style={{ marginTop: '1rem' }}>Terms 1</h3>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
+
                 <label style={{ fontWeight: '600' }}>Breakup of Amounts</label>
-                <button className="btn-secondary" onClick={addPriceBreakdown} style={{ padding: '0.25rem 0.5rem', fontSize: '0.7rem' }}>
+                <button data-form-field="priceBreakdown" className="btn-secondary" onFocus={() => setActiveField('priceBreakdown')} onClick={addPriceBreakdown} style={{ padding: '0.25rem 0.5rem', fontSize: '0.7rem' }}>
                   <Plus size={12} /> Add Breakdown Row
                 </button>
               </div>
