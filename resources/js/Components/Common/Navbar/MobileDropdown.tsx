@@ -34,7 +34,7 @@ const MobileDropdown = ({
       {showDropdown && (
         <div 
           className='absolute left-0 top-[100%] z-[9999] flex w-full flex-col bg-white shadow-2xl md:flex-row border-t border-gray-100 rounded-b-lg overflow-hidden'
-          style={{ maxHeight: 'calc(100vh - 120px)' }}
+          style={{ maxHeight: 'calc(100dvh - var(--header-height, 128px))' }}
         >
           
           {/* Mobile Search Bar */}

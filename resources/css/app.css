@@ -483,6 +483,11 @@ html {
   font-size: calc(100% * var(--a11y-font-scale));
 }
 
+/* Keep navigation in the hamburger at the largest accessibility text size. */
+.a11y-largest-text .desktop-nav-links {
+  display: none;
+}
+
 
 .a11y-high-contrast {
   --a11y-bg: #000;
@@ -519,17 +524,22 @@ html {
   background-color: #fff !important;
 }
 
- .a11y-high-contrast a,
+.a11y-high-contrast a,
 .a11y-high-contrast button,
 .a11y-high-contrast input[type="checkbox"],
 .a11y-high-contrast .toggle,
 .a11y-high-contrast .toggle-track,
 .a11y-high-contrast .toggle-thumb {
-  outline: 1px solid currentColor;
   background: var(--a11y-surface) !important;
   color: var(--a11y-text) !important;
   border-color: currentColor !important;
 } 
+
+/* Indicate keyboard focus without boxing every link and nested control. */
+.a11y-high-contrast :focus-visible {
+  outline: 2px solid var(--a11y-text) !important;
+  outline-offset: 3px;
+}
 
 
 .a11y-high-contrast .toggle[aria-checked="true"],

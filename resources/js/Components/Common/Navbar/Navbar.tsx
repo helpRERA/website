@@ -1,5 +1,5 @@
 import { Link, router, usePage } from '@inertiajs/react'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { NavMenuRecords } from '../../../DataStructures/ui_builder_interfaces'
 import { Language } from '../../../ui/ui_interfaces'
 import DesktopDropdown from './DesktopDropdown'
@@ -14,6 +14,18 @@ const Navbar = () => {
   const [search, setSearch] = useState('')
   const [showDropdown, setShowDropdown] = useState(false)
   const [selectedOption, setSelectedOption] = useState('ABOUT K-RERA')
+  const headerRef = useRef<HTMLElement>(null)
+  const [headerHeight, setHeaderHeight] = useState<number>()
+
+  useEffect(() => {
+    const header = headerRef.current
+    if (!header) return
+    const updateHeight = () => setHeaderHeight(header.getBoundingClientRect().height)
+    const observer = new ResizeObserver(updateHeight)
+    observer.observe(header)
+    updateHeight()
+    return () => observer.disconnect()
+  }, [])
 
   useEffect(() => {
     if (showDropdown) {
@@ -67,16 +79,20 @@ const Navbar = () => {
 
   return (
     <>
-      {!isHome && <div className="h-[112px] lg:h-[128px] w-full" aria-hidden="true" />}
+      {!isHome && <div className="h-[112px] lg:h-[128px] w-full" style={{ height: headerHeight }} aria-hidden="true" />}
       <nav 
+        ref={headerRef}
         lang={lang === 'mal' ? 'ml' : 'en'}
-        style={lang === 'mal' ? { fontFamily: '"Anek Malayalam", sans-serif' } : undefined}
+        style={{
+          ...(lang === 'mal' ? { fontFamily: '"Anek Malayalam", sans-serif' } : {}),
+          '--header-height': `${headerHeight ?? 128}px`,
+        } as React.CSSProperties}
         className={`fixed top-0 left-0 right-0 z-[9999] w-full px-4 py-4 md:px-8 lg:px-12 lg:py-6 font-urbanist transition-all duration-300`}
       >
         {/* Thin blue bar at the very top */}
         <div className="absolute top-0 left-0 right-0 h-6 md:h-8 bg-[#085484] -z-10" />
 
-        <div className='relative flex h-[80px] items-center justify-between gap-3 rounded-lg bg-white px-3 shadow-md sm:px-6 md:px-10 lg:px-12'>
+        <div className='relative flex min-h-[80px] items-center justify-between gap-3 rounded-lg bg-white px-3 shadow-md sm:px-6 md:px-10 lg:px-12'>
           <div className='flex h-full min-w-0 items-center py-2'>
             <Link as='a' href='/' aria-label='K-RERA home' data-a11y-underline-control className='flex h-full items-center'>
               <img src={'/logov2.svg'} alt='K-RERA Logo' className='h-[40px] md:h-[50px] w-auto max-w-full object-contain' />
@@ -84,7 +100,7 @@ const Navbar = () => {
           </div>
 
           {/* MIDDLE: Desktop Links (Hidden on mobile/tablet, shown on desktop xl+) */}
-          <div className='hidden min-w-0 flex-1 justify-end xl:flex'>
+          <div className='desktop-nav-links hidden min-w-0 flex-1 justify-end xl:flex'>
             <div className='flex w-full min-w-0 items-center justify-end'>
               <DesktopDropdown nav={nav} lang={lang as Language} />
             </div>

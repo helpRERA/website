@@ -91,18 +91,6 @@ const Footer = () => {
                 Other Links
               </p>
               <ul className='space-y-2.5 text-[14px] md:text-[15px] text-[#555]'>
-                {['Privacy Policy', 'Terms & Conditions', 'Disclaimer'].map((label) => {
-                  const configuredLink = [footer?.oneLinks, footer?.twoLinks, footer?.threeLinks, footer?.fourLinks]
-                    .flatMap((group) => group?.items ?? [])
-                    .find((entry) => entry.item.name.english?.trim().toLowerCase() === label.toLowerCase())?.item
-                  return (
-                    <li key={label}>
-                      {configuredLink?.link ? (
-                        <a href={configuredLink.link} target={configuredLink.external ? '_blank' : undefined} rel={configuredLink.external ? 'noopener noreferrer' : undefined} className='hover:text-[#085484] transition-colors'>{label}</a>
-                      ) : <span>{label}</span>}
-                    </li>
-                  )
-                })}
                 <li><a href="/contact" className="hover:text-[#085484] transition-colors">Help and Support</a></li>
               </ul>
             </div>

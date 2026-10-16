@@ -113,12 +113,12 @@ const ProjectCard = ({ project, today, lang = 'en' }: Properties) => {
           {project.PType != PROJECT_TYPE_PLOT && (
             <div className='flex items-center gap-2 max-[320px]:contents'>
               <span className='text-gray-500 max-[320px]:whitespace-nowrap'>Number of Building(s):</span>
-              <span className='text-gray-600 max-[320px]:whitespace-nowrap max-[320px]:text-right'>{project.buildings_count}</span>
+              <span className='font-semibold text-gray-800 max-[320px]:whitespace-nowrap max-[320px]:text-right'>{project.buildings_count}</span>
             </div>
           )}
           <div className='flex items-center gap-2 max-[320px]:contents'>
             <span className='text-gray-500 max-[320px]:whitespace-nowrap'>Proposed Completion On:</span>
-            <span className='text-gray-600 max-[320px]:whitespace-nowrap max-[320px]:text-right'>{getIndianDate(project.ProposedDateOfCompletion)}</span>
+            <span className='font-semibold text-gray-800 max-[320px]:whitespace-nowrap max-[320px]:text-right'>{getIndianDate(project.ProposedDateOfCompletion)}</span>
           </div>
         </div>
       </div>

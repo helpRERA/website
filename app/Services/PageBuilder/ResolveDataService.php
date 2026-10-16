@@ -24,10 +24,11 @@ class ResolveDataService
        
         foreach ($page->blocks['blocks'] as $block) {
       
-            if (!isset($block['dependencies'])) {
-                continue;
+            $dependencies = $block['dependencies'] ?? [];
+            if (($block['blockName'] ?? '') === 'Browse Projects') {
+                $dependencies = array_unique(array_merge($dependencies, ['browseProjects', 'districtList']));
             }
-            foreach ($block['dependencies'] as $dependency) {
+            foreach ($dependencies as $dependency) {
                 if (!isset($result[$dependency])) {
                     $result[$dependency] = $this->fetchData->$dependency();
                 }
