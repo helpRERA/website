@@ -483,21 +483,21 @@ html {
   font-size: calc(100% * var(--a11y-font-scale));
 }
 
-/* Keep desktop navigation readable and within its available space when text is enlarged. */
-.a11y-largest-text .desktop-nav-links .nav-item {
+/* Keep desktop navigation readable with enlarged text or the wider dyslexia font. */
+:is(.a11y-largest-text, .a11y-dyslexia-font) .desktop-nav-links .nav-item {
   min-width: min-content;
 }
 
-.a11y-largest-text .desktop-nav-links .nav-item,
-.a11y-largest-text .desktop-nav-links .nav-item > button,
-.a11y-largest-text .desktop-nav-links .nav-item > button span,
-.a11y-largest-text .desktop-nav-links .nav-item > a,
-.a11y-largest-text .desktop-nav-links .nav-item > a span {
+:is(.a11y-largest-text, .a11y-dyslexia-font) .desktop-nav-links .nav-item,
+:is(.a11y-largest-text, .a11y-dyslexia-font) .desktop-nav-links .nav-item > button,
+:is(.a11y-largest-text, .a11y-dyslexia-font) .desktop-nav-links .nav-item > button span,
+:is(.a11y-largest-text, .a11y-dyslexia-font) .desktop-nav-links .nav-item > a,
+:is(.a11y-largest-text, .a11y-dyslexia-font) .desktop-nav-links .nav-item > a span {
   font-size: 16px;
 }
 
-.a11y-largest-text .desktop-nav-links .nav-item span,
-.a11y-largest-text .desktop-nav-links .nav-item > a {
+:is(.a11y-largest-text, .a11y-dyslexia-font) .desktop-nav-links .nav-item span,
+:is(.a11y-largest-text, .a11y-dyslexia-font) .desktop-nav-links .nav-item > a {
   overflow-wrap: normal;
   word-break: normal;
 }

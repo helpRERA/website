@@ -35,7 +35,7 @@ const AboutUs = ({
             {/* Heading */}
             <h2 className='tracking-tight font-urbanist'>
               <span className='text-[#085484] font-semibold text-[28px] md:text-[36px] lg:text-[42px] leading-[1.2]'>Accountability || </span>
-              <span className='text-[#444444] font-normal text-[28px] md:text-[36px] lg:text-[42px] leading-[1.2]'>Financial Discipline || Transparency</span>
+              <span className='text-[#085484] font-semibold  text-[28px] md:text-[36px] lg:text-[42px] leading-[1.2]'>Financial Discipline || Transparency</span>
             </h2>
           </div>
 
