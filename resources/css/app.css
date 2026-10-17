@@ -483,9 +483,23 @@ html {
   font-size: calc(100% * var(--a11y-font-scale));
 }
 
-/* Keep navigation in the hamburger at the largest accessibility text size. */
-.a11y-largest-text .desktop-nav-links {
-  display: none;
+/* Keep desktop navigation readable and within its available space when text is enlarged. */
+.a11y-largest-text .desktop-nav-links .nav-item {
+  min-width: min-content;
+}
+
+.a11y-largest-text .desktop-nav-links .nav-item,
+.a11y-largest-text .desktop-nav-links .nav-item > button,
+.a11y-largest-text .desktop-nav-links .nav-item > button span,
+.a11y-largest-text .desktop-nav-links .nav-item > a,
+.a11y-largest-text .desktop-nav-links .nav-item > a span {
+  font-size: 16px;
+}
+
+.a11y-largest-text .desktop-nav-links .nav-item span,
+.a11y-largest-text .desktop-nav-links .nav-item > a {
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
 
@@ -596,7 +610,10 @@ html {
 
 
 #a11y-panel {
-  overflow: hidden;
+  max-height: calc(100dvh - 100dvh / 3 - 16px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   box-sizing: border-box;
 }
 

@@ -38,7 +38,7 @@ function loadSettings(): A11ySettings {
 function applySettings(settings: A11ySettings) {
   const root = document.documentElement
   root.style.setProperty('--a11y-font-scale', String(settings.fontScale))
-  root.classList.toggle('a11y-largest-text', settings.fontScale === 1.5)
+  root.classList.toggle('a11y-largest-text', settings.fontScale >= 1.15)
   root.classList.toggle('a11y-high-contrast', settings.highContrast)
   root.classList.toggle('a11y-dyslexia-font', settings.dyslexiaFont)
   root.classList.toggle('a11y-reduce-motion', settings.reduceMotion)
@@ -50,7 +50,6 @@ const FONT_SCALES: { label: string; value: FontScale }[] = [
   { label: 'A', value: 1 },
   { label: 'A', value: 1.15 },
   { label: 'A', value: 1.3 },
-  { label: 'A', value: 1.5 },
 ]
 
 const AccessibilityWidget = () => {
@@ -117,6 +116,7 @@ const AccessibilityWidget = () => {
     <div
       ref={panelRef}
       id="a11y-panel"
+      data-lenis-prevent="true"
       role="dialog"
       aria-modal="false"
       aria-label="Accessibility options"

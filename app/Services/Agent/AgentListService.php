@@ -66,13 +66,9 @@ class AgentListService
                     select
                       UP.UserID,
                       UP.InfoTypeValue,
-                      case when (
-                        UP.InfoTypeValue in (1)
-                      ) then (
-                        isnull(UP.IndivisualName, '')+ ' ' + isnull(UP.IndivisualMName, '')+ ' ' + isnull(UP.IndivisualLName, '')
-                      ) WHEN isnull(UP.CompanyName, '') = '' THEN (
-                        isnull(UP.IndivisualName, '')+ ' ' + isnull(UP.IndivisualMName, '')+ ' ' + isnull(UP.IndivisualLName, '')
-                      ) else isnull(UP.CompanyName, '') end as AgentName,
+                      case when UP.InfoTypeValue = 1 or COALESCE(UP.CompanyName, '') = '' then
+                        CONCAT(COALESCE(UP.IndivisualName, ''), ' ', COALESCE(UP.IndivisualMName, ''), ' ', COALESCE(UP.IndivisualLName, ''))
+                      else COALESCE(UP.CompanyName, '') end as AgentName,
                       case when (
                         UP.InfoTypeValue in (1)
                       ) then d.Districtname else d1.Districtname end DistrictName,
@@ -139,7 +135,7 @@ class AgentListService
                       and os1.Langid = 1
                     where
                       UP.RoleID = 2
-                      AND DATEADD(DAY, -1, DATEADD(YEAR, 5, CONVERT(date, c.Createdon))) > GETDATE()
+                      AND DATEADD(DAY, -1, DATEADD(YEAR, 5, CONVERT(date, COALESCE(c.ActualCertificateDate, c.Createdon)))) > GETDATE()
                 ".
             $this->queryDistrict($district)
             .$this->queryTaluk($taluk)
