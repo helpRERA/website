@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-site-verification" content="Hk3eXLhO9fNzv9stpCcFN5mKKHEn7o3AFMB9e7LBbv0" />
     <meta name="base-url" content="{{ url('/') }}">
     <link rel='shortcut icon' type='image/png' href='{{ asset('logo.png') }}'>
     <title inertia>KRERA</title>
