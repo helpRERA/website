@@ -117,7 +117,7 @@ class UserProfileRepository
                         AND ISNULL(us.IsWithdraw, 0) = 0
                         AND ISNULL(us.IsRevoc, 0) = 0
                     WHERE u.RoleID = 2
-                    AND DATEADD(DAY, -1, DATEADD(YEAR, 5, CONVERT(date, c.Createdon))) > GETDATE()
+                    AND DATEADD(DAY, -1, DATEADD(YEAR, 5, CONVERT(date, COALESCE(c.ActualCertificateDate, c.Createdon)))) > GETDATE()
                 ");
 
         if (empty($results)) {

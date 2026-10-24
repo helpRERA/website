@@ -156,7 +156,7 @@ const ActionCarousel = ({ editMode, language, blockData, onFieldEdit, dispatch }
               </div>
               <h3 className="text-white font-medium text-[24px] mb-4 leading-snug">Login and Registration</h3>
               <p className="text-[#E0F0FF] text-[14px] leading-[1.7] mb-8">
-                Web portal for login and new registration, allowing promoters and agents to access services and manage registrations.
+               Web Portal Login & New Registration for Promoters, Agents, Complainants, and RTI Applicants.
               </p>
             </div>
 
