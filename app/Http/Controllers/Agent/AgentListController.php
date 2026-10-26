@@ -41,6 +41,7 @@ class AgentListController extends Controller
             $request->registration_number,
         );
 
+        //dd( $registeredAgents);
 
         $isSearchingLocation = $request->filled('taluk') || $request->filled('village') || $request->filled('district') || $request->filled('pincode');
 

@@ -56,9 +56,14 @@ class AnnouncementRepository
     ): Collection
     {
         return Announcement::orderBy('date', 'desc')
+            ->with('documents.document')
             ->published()
             ->limit($limit)
             ->when($type != null, function ($query) use ($type) {
+                if (in_array($type, ['Notice', 'Notices', 'Public Notice', 'Public Notices'], true)) {
+                    return $query->whereIn('type', ['Notice', 'Notices', 'Public Notice', 'Public Notices']);
+                }
+
                 return $query->where('type', $type);
             })
             ->get();

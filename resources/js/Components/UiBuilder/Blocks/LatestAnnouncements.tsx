@@ -262,9 +262,26 @@ const LatestAnnouncements = ({ announcements, language = 'en', blockData }: Prop
                       </div>
 
                       <div className="flex items-center gap-3 mt-3 sm:mt-0 shrink-0 text-[#085484]">
-                        <button className="p-1.5 hover:bg-[#F0F8FF] rounded-full transition-colors">
-                          <Download className="w-[18px] h-[18px]" strokeWidth={2} />
-                        </button>
+                        {announcement.documents?.some((file) => file.document?.url) ? (
+                          announcement.documents.filter((file) => file.document?.url).map((file) => (
+                            <a
+                              key={file.id.toString()}
+                              href={file.document!.url!}
+                              download={file.document!.name}
+                              target="_blank"
+                              rel="noreferrer"
+                              title={`Download ${file.document!.name}`}
+                              aria-label={`Download ${file.document!.name}`}
+                              className="p-1.5 hover:bg-[#F0F8FF] rounded-full transition-colors"
+                            >
+                              <Download className="w-[18px] h-[18px]" strokeWidth={2} />
+                            </a>
+                          ))
+                        ) : (
+                          <button type="button" disabled title="No files attached" aria-label="No files attached" className="p-1.5 rounded-full opacity-40 cursor-not-allowed">
+                            <Download className="w-[18px] h-[18px]" strokeWidth={2} />
+                          </button>
+                        )}
                         <Link
                           as="a"
                           href={`/announcements/${announcement.id}?lang=${language}`}

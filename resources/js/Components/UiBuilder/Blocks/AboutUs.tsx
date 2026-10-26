@@ -107,7 +107,7 @@ const AboutUs = ({
                 <img src="/svg/promoter.svg" alt="Promoters" className="w-7 h-7" />
               </div>
               <div className='text-[32px] leading-tight font-medium text-[#1B1B1B] mb-1'>{promotersCount}</div>
-              <div className='text-[16px] font-normal text-[#595959]'>Registered Promoters</div>
+              <div className='text-[16px] font-normal text-[#595959]'>Promoters with Registered Projects</div>
             </a>
           </div>
 

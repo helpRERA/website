@@ -70,6 +70,9 @@ class FetchProjectDetailData
 
         $project = $query->firstOrFail();
 
+
+       // dd($query->toSql(), $query->getBindings());
+
         $project->setAttribute('LatestExtensionDate', $this->projectMaster->getConnection()
             ->table('tbl_ExtensionProject')
             ->where('ProjectID', $projectId)
