@@ -2017,18 +2017,26 @@ export default function FormPanel({ activeStep, setActiveStep, data, updateField
                 <label>Number of Consecutive Payment Defaults</label>
                 <input data-form-field="defaultConsecutiveDemands"
                   type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   value={data.defaultConsecutiveDemands}
-                  onFocus={() => setActiveField('defaultConsecutiveDemands')} onChange={(e) => updateField('defaultConsecutiveDemands', e.target.value)}
-                  placeholder="e.g. three"
+                  onFocus={() => setActiveField('defaultConsecutiveDemands')} onChange={(e) => {
+                    if (/^[0-9]*$/.test(e.target.value)) updateField('defaultConsecutiveDemands', e.target.value);
+                  }}
+                  placeholder="e.g. 3"
                 />
               </div>
               <div>
                 <label>Number of Consecutive Months of Continuing Default</label>
                 <input data-form-field="defaultConsecutiveMonths"
                   type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   value={data.defaultConsecutiveMonths}
-                  onFocus={() => setActiveField('defaultConsecutiveMonths')} onChange={(e) => updateField('defaultConsecutiveMonths', e.target.value)}
-                  placeholder="e.g. three"
+                  onFocus={() => setActiveField('defaultConsecutiveMonths')} onChange={(e) => {
+                    if (/^[0-9]*$/.test(e.target.value)) updateField('defaultConsecutiveMonths', e.target.value);
+                  }}
+                  placeholder="e.g. 3"
                 />
               </div>
             </div>

@@ -36,10 +36,29 @@ export default function PreviewPanel({ data, activeField, fieldFocusVersion, isS
       }
       const payload = new FormData();
       payload.append('file', file, filename);
-      const response = await axios.post(uploadUrl, payload);
+      const response = await axios.post(uploadUrl, payload, {
+        headers: { Accept: 'application/json' },
+      });
+      if (response.data?.success !== true) {
+        toast.error('The server returned an unexpected response. Check the project documents before retrying.');
+        return;
+      }
       toast.success(response.data.message, { autoClose: 5000 });
+      window.location.assign('https://reraonline.kerala.gov.in/Document/Document');
     } catch (error: any) {
-      toast.error(error.response?.data?.errors?.file?.[0] || error.response?.data?.message || 'Upload could not be confirmed. Check the project documents before retrying.');
+      const status = error.response?.status;
+      const messages: Record<number, string> = {
+        413: 'The live server rejected the PDF size. Ask the administrator to check the web server and PHP upload limits (the app allows up to 10 MB).',
+        419: 'Your session expired. Save your changes, refresh the page, and upload again.',
+        429: 'Too many upload attempts. Wait one minute before trying again.',
+        500: 'The server could not process the upload (HTTP 500). Ask the administrator to check the Laravel logs.',
+        502: 'The upload service did not confirm the PDF was saved (HTTP 502). Check the project documents before retrying.',
+        503: 'The upload service is unavailable (HTTP 503). Ask the administrator to check its configuration.',
+        504: 'The upload timed out (HTTP 504). Check the project documents before retrying.',
+      };
+      toast.error(messages[status] || error.response?.data?.errors?.file?.[0] || error.response?.data?.message ||
+        (status ? `Upload could not be confirmed (HTTP ${status}). Check the project documents before retrying.` :
+          'Upload could not be confirmed. Check your connection and the project documents before retrying.'));
     } finally {
       uploadInProgress.current = false;
       setIsUploading(false);

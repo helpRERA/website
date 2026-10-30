@@ -156,9 +156,21 @@ class AgreementForSaleController extends Controller
         ];
     }
 
+    private function validateDefaultConditions(Request $request): void
+    {
+        $request->validate([
+            'defaultConsecutiveDemands' => 'nullable|integer|min:0',
+            'defaultConsecutiveMonths' => 'nullable|integer|min:0',
+        ], [], [
+            'defaultConsecutiveDemands' => 'number of consecutive payment defaults',
+            'defaultConsecutiveMonths' => 'number of consecutive months of continuing default',
+        ]);
+    }
+
     public function store(Request $request)
     {
         $this->sanitizeRequest($request);
+        $this->validateDefaultConditions($request);
 
         DB::beginTransaction();
 
@@ -403,10 +415,11 @@ class AgreementForSaleController extends Controller
         } catch (\Exception $e) {
 
             DB::rollBack();
+            report($e);
 
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => 'Unable to save the agreement. Please try again or contact support.'
             ], 500);
 
         }
@@ -415,6 +428,7 @@ class AgreementForSaleController extends Controller
     public function update(Request $request, $id)
     {
         $this->sanitizeRequest($request);
+        $this->validateDefaultConditions($request);
         abort_unless(filter_var($id, FILTER_VALIDATE_INT) !== false, 422, 'Invalid agreement ID.');
 
         DB::beginTransaction();
@@ -631,10 +645,11 @@ class AgreementForSaleController extends Controller
         } catch (\Exception $e) {
 
             DB::rollBack();
+            report($e);
 
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage(),
+                'message' => 'Unable to update the agreement. Please try again or contact support.',
             ], 500);
         }
     }

@@ -102,7 +102,9 @@ function MainApp({ projectId, userId, agreement }: {
       }
       setIsSaved(true);
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Failed to save agreement", { autoClose: 5000 });
+      const validationErrors = err.response?.status === 422 ? err.response.data?.errors : undefined;
+      const firstError = validationErrors ? Object.values(validationErrors).flat()[0] : undefined;
+      toast.error(typeof firstError === 'string' ? firstError : 'Unable to save the agreement. Please try again or contact support.', { autoClose: 5000 });
     } finally {
       setIsSaving(false);
     }

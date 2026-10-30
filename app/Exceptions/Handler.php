@@ -58,6 +58,11 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $e)
     {
         $response = parent::render($request, $e);
+        // The PDF uploader needs the original status and JSON error, including
+        // CSRF failures. Redirects/HTML error pages hide the cause from Axios.
+        if ($request->is('agreement-for-sale/*/upload') && $request->expectsJson()) {
+            return $response;
+        }
         $status = $response->status();
         if ($status === 419) {
             return back()->with([

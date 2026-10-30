@@ -1,9 +1,9 @@
 import html2canvas from 'html2canvas';
 import { jsPDF, GState } from "jspdf";
 import { PDFDocument } from 'pdf-lib';
-import { findPageEnd, ProtectedBand } from './pdfPagination';
+import { findPageEnd, findRasterPageEnd, ProtectedBand } from './pdfPagination';
 
-// Balance readable document text with smaller image-based PDF downloads.
+
 const PDF_RENDER_SCALE = 1.5;
 const PDF_JPEG_QUALITY = 0.75;
 
@@ -16,7 +16,7 @@ function getProtectedBands(element: HTMLElement, scale: number): ProtectedBand[]
       bottom: Math.ceil((rect.bottom - origin) * scale) + 2,
     });
   };
-  // Ranges expose individual rendered lines, including text in long clauses.
+  
   const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
   const range = document.createRange();
   while (walker.nextNode()) {
@@ -27,7 +27,7 @@ function getProtectedBands(element: HTMLElement, scale: number): ProtectedBand[]
   element.querySelectorAll<HTMLElement>('tr, .photo-box, .signature-row, img').forEach(node => addRect(node.getBoundingClientRect()));
   element.querySelectorAll<HTMLElement>('.legal-section-title, h2, h3').forEach(node => {
     const rect = node.getBoundingClientRect();
-    // Keep the heading with at least the first line of its following content.
+
     const next = node.nextElementSibling?.getBoundingClientRect();
     bands.push({ top: Math.floor((rect.top - origin) * scale), bottom: Math.ceil(((next ? Math.min(next.bottom, next.top + 28) : rect.bottom) - origin) * scale) });
   });
@@ -102,7 +102,7 @@ export async function generatePDF(
       const pageHeight = Math.floor(contentHeight * pixelsPerMm);
       const totalHeight = Math.ceil(Math.max(bounds.height, section.scrollHeight) * scale);
       for (let start = 0; start < totalHeight;) {
-        const end = findPageEnd(start, pageHeight, totalHeight, bands);
+        let end = findPageEnd(start, pageHeight, totalHeight, bands);
         // Render only this page: a full-document canvas can exceed browser limits.
         const slice = document.createElement('canvas');
         slice.width = Math.ceil(bounds.width * scale);
@@ -123,6 +123,28 @@ export async function generatePDF(
           logging: false,
           backgroundColor: '#ffffff',
         });
+        if (end < totalHeight) {
+          // Inspect the last two text lines before adding the watermark/JPEG.
+          // Move the cut above any ink touching the bottom of the canvas.
+          const scanHeight = Math.min(slice.height, Math.ceil(64 * scale));
+          const scanTop = slice.height - scanHeight;
+          const pixels = context.getImageData(0, scanTop, slice.width, scanHeight).data;
+          const inkRows = Array.from({ length: scanHeight }, (_, row) => {
+            for (let x = 0; x < slice.width; x++) {
+              const offset = (row * slice.width + x) * 4;
+              if (pixels[offset + 3] && Math.min(pixels[offset], pixels[offset + 1], pixels[offset + 2]) < 245) return true;
+            }
+            return false;
+          });
+          const safeHeight = scanTop + findRasterPageEnd(inkRows);
+          if (safeHeight > 0 && safeHeight < slice.height) {
+            // Resizing clears the canvas, so retain the upper part first.
+            const retained = context.getImageData(0, 0, slice.width, safeHeight);
+            slice.height = safeHeight;
+            context.putImageData(retained, 0, 0);
+            end = start + safeHeight;
+          }
+        }
         if (!firstPage) pdf.addPage();
         firstPage = false;
         pdf.addImage(slice.toDataURL('image/jpeg', PDF_JPEG_QUALITY), 'JPEG', margin, margin, contentWidth, slice.height / pixelsPerMm);

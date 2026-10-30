@@ -5,7 +5,20 @@ const Module = require('node:module');
 const output = buildSync({ entryPoints: ['resources/js/utils/pdfPagination.ts'], bundle: true, platform: 'node', format: 'cjs', write: false }).outputFiles[0].text;
 const fixture = new Module('pdf-pagination-fixture.cjs');
 fixture._compile(output, 'pdf-pagination-fixture.cjs');
-const { findPageEnd } = fixture.exports;
+const { findPageEnd, findRasterPageEnd } = fixture.exports;
+
+test('raster boundary moves clipped glyphs to the next page', () => {
+  assert.equal(findRasterPageEnd([true, true, false, false, false, true, true]), 5);
+});
+
+test('raster boundary preserves a clear bottom margin', () => {
+  assert.equal(findRasterPageEnd([true, true, false, false, false]), 5);
+});
+
+test('raster boundary ignores small gaps within glyphs and advances for solid images', () => {
+  assert.equal(findRasterPageEnd([false, false, false, true, false, true]), 3);
+  assert.equal(findRasterPageEnd([true, true, true]), 3);
+});
 
 test('moves a boundary above a text line and overlapping inline values', () => {
   assert.equal(findPageEnd(0, 100, 250, [{ top: 90, bottom: 105 }, { top: 85, bottom: 95 }]), 85);
